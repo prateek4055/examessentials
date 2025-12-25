@@ -1,14 +1,40 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.jpeg";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const storedOrders = localStorage.getItem("pending_orders");
+      if (storedOrders) {
+        const orderIds = JSON.parse(storedOrders);
+        setCartCount(orderIds.length);
+      } else {
+        setCartCount(0);
+      }
+    };
+
+    updateCartCount();
+    
+    // Listen for storage changes
+    window.addEventListener("storage", updateCartCount);
+    
+    // Custom event for same-tab updates
+    window.addEventListener("cartUpdated", updateCartCount);
+    
+    return () => {
+      window.removeEventListener("storage", updateCartCount);
+      window.removeEventListener("cartUpdated", updateCartCount);
+    };
+  }, [location]);
 
   const mainLinks = [
     { name: "Home", path: "/" },
@@ -97,12 +123,18 @@ const Navbar = () => {
                 <User className="w-5 h-5 text-foreground" />
               </Link>
             )}
-            <button className="p-2 hover:bg-secondary rounded-full transition-colors relative">
+            <Link 
+              to="/cart" 
+              className="p-2 hover:bg-secondary rounded-full transition-colors relative"
+              title="Your Cart"
+            >
               <ShoppingCart className="w-5 h-5 text-foreground" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
-                0
-              </span>
-            </button>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
