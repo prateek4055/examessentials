@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, Instagram, Youtube } from "lucide-react";
 import logo from "@/assets/logo.jpeg";
-
 const Footer = () => {
-  return (
-    <footer className="bg-foreground text-background py-12">
+  return <footer className="bg-foreground text-background py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
@@ -37,7 +35,7 @@ const Footer = () => {
             <ul className="space-y-3 font-body text-sm">
               <li className="flex items-center gap-2 text-background/70">
                 <Mail className="w-4 h-4" />
-                <a href="mailto:support@examessentials.in" className="hover:text-background transition-colors">support@examessentials.in</a>
+                <a href="mailto:support@examessentials.in" className="hover:text-background transition-colors">​examessentials.info@gmail.com</a>
               </li>
             </ul>
           </div>
@@ -46,8 +44,6 @@ const Footer = () => {
           <p className="font-body text-sm text-background/50">© {new Date().getFullYear()} Exam Essentials. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
