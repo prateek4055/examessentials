@@ -10,6 +10,7 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import PurchaseForm from "./pages/PurchaseForm";
 import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import AdminProductForm from "./pages/AdminProductForm";
 import About from "./pages/About";
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/purchase/:id" element={<PurchaseForm />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/product/:id" element={<AdminProductForm />} />
               <Route path="*" element={<NotFound />} />
