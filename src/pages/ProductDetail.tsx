@@ -115,7 +115,7 @@ const ProductDetail = () => {
               {product.images && product.images.length > 0 ? (
                 <div className="space-y-4">
                   {/* Main Image */}
-                  <div className="relative aspect-[4/3] rounded-2xl border border-border overflow-hidden bg-secondary">
+                  <div className="relative rounded-2xl border border-border overflow-hidden bg-secondary">
                     <AnimatePresence mode="wait">
                       <motion.img
                         key={currentImageIndex}
@@ -125,7 +125,7 @@ const ProductDetail = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="w-full h-full object-cover"
+                        className="w-full h-auto max-h-[70vh] object-contain"
                       />
                     </AnimatePresence>
                     
