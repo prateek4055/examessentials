@@ -29,10 +29,18 @@ import {
 import ProductImageUploader from "@/components/ProductImageUploader";
 import logo from "@/assets/logo.jpeg";
 
+const categoryOptions = [
+  { value: "handwritten-notes", label: "Handwritten Notes" },
+  { value: "formula-sheet", label: "Formula Sheet" },
+  { value: "mindmaps", label: "Mindmaps" },
+  { value: "pyqs", label: "PYQs" },
+];
+
 const productSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(200),
   class: z.enum(["11", "12"], { required_error: "Please select a class" }),
   subject: z.string().min(2, "Subject is required").max(100),
+  category: z.enum(["formula-sheet", "mindmaps", "handwritten-notes", "pyqs"], { required_error: "Please select a category" }),
   description: z.string().min(10, "Description must be at least 10 characters").max(1000),
   price: z.coerce.number().min(1, "Price must be at least ₹1"),
   pdf_url: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
@@ -63,6 +71,7 @@ const AdminProductForm = () => {
       title: "",
       class: "11",
       subject: "",
+      category: "handwritten-notes",
       description: "",
       price: 299,
       pdf_url: "",
@@ -71,6 +80,7 @@ const AdminProductForm = () => {
   });
 
   const watchedClass = watch("class");
+  const watchedCategory = watch("category");
   const watchedPublished = watch("published");
 
   useEffect(() => {
@@ -99,6 +109,7 @@ const AdminProductForm = () => {
           title: product.title,
           class: product.class,
           subject: product.subject,
+          category: product.category,
           description: product.description,
           price: product.price,
           pdf_url: product.pdf_url || "",
@@ -130,6 +141,7 @@ const AdminProductForm = () => {
         title: data.title,
         class: data.class as "11" | "12",
         subject: data.subject,
+        category: data.category as "formula-sheet" | "mindmaps" | "handwritten-notes" | "pyqs",
         description: data.description,
         price: data.price,
         pdf_url: data.pdf_url || null,
@@ -276,6 +288,29 @@ const AdminProductForm = () => {
                     <p className="text-sm text-destructive">{errors.subject.message}</p>
                   )}
                 </div>
+              </div>
+
+              {/* Category */}
+              <div className="space-y-2">
+                <Label className="font-body">Category</Label>
+                <Select
+                  value={watchedCategory}
+                  onValueChange={(value) => setValue("category", value as any)}
+                >
+                  <SelectTrigger className="bg-secondary border-border">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categoryOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.category && (
+                  <p className="text-sm text-destructive">{errors.category.message}</p>
+                )}
               </div>
 
               {/* Description */}

@@ -1,10 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
 
+export type ProductCategory = "formula-sheet" | "mindmaps" | "handwritten-notes" | "pyqs";
+
 export interface Product {
   id: string;
   title: string;
   class: "11" | "12";
   subject: string;
+  category: ProductCategory;
   description: string;
   price: number;
   pdf_url?: string | null;
