@@ -1,95 +1,80 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ShoppingCart, Trash2, ArrowLeft, CreditCard } from "lucide-react";
+import { ShoppingCart, Trash2, ArrowLeft, CreditCard, Tag, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { 
+  getCartItems, 
+  removeFromCart as removeCartItem, 
+  clearCart,
+  calculateCartTotal,
+  CartCalculation,
+  CartItem
+} from "@/lib/cartUtils";
 
-interface PendingOrder {
+interface CartProduct {
   id: string;
-  product_id: string | null;
-  student_name: string;
-  email: string;
-  phone: string;
+  title: string;
+  subject: string;
   class: string;
-  amount: number;
-  payment_status: string;
-  created_at: string;
-  product?: {
-    title: string;
-    subject: string;
-    images: string[];
-  };
+  price: number;
+  images: string[] | null;
 }
 
 const Cart = () => {
-  const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [products, setProducts] = useState<CartProduct[]>([]);
+  const [calculation, setCalculation] = useState<CartCalculation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPendingOrders();
-  }, [user]);
+    fetchCartProducts();
+    
+    const handleCartUpdate = () => fetchCartProducts();
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
+  }, []);
 
-  const fetchPendingOrders = async () => {
+  const fetchCartProducts = async () => {
     try {
-      // Get pending orders from localStorage (for guest users)
-      const storedOrders = localStorage.getItem("pending_orders");
-      let localOrderIds: string[] = [];
-      
-      if (storedOrders) {
-        localOrderIds = JSON.parse(storedOrders);
-      }
+      const items = getCartItems();
+      setCartItems(items);
 
-      if (localOrderIds.length === 0) {
-        setPendingOrders([]);
+      if (items.length === 0) {
+        setProducts([]);
+        setCalculation(null);
         setIsLoading(false);
         return;
       }
 
-      // Fetch orders with their product details
-      const { data: orders, error } = await supabase
-        .from("orders")
-        .select("*")
-        .in("id", localOrderIds)
-        .eq("payment_status", "pending")
-        .order("created_at", { ascending: false });
+      const productIds = items.map(item => item.productId);
+      
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, title, subject, class, price, images")
+        .in("id", productIds);
 
       if (error) {
-        console.error("Error fetching orders:", error);
+        console.error("Error fetching products:", error);
         setIsLoading(false);
         return;
       }
 
-      // Fetch product details for each order
-      const ordersWithProducts = await Promise.all(
-        (orders || []).map(async (order) => {
-          if (order.product_id) {
-            const { data: product } = await supabase
-              .from("products")
-              .select("title, subject, images")
-              .eq("id", order.product_id)
-              .single();
-            
-            return { ...order, product } as PendingOrder;
-          }
-          return order as PendingOrder;
-        })
+      const fetchedProducts = (data || []) as CartProduct[];
+      setProducts(fetchedProducts);
+      
+      // Calculate totals with auto-discount
+      const calc = calculateCartTotal(
+        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price }))
       );
-
-      setPendingOrders(ordersWithProducts);
-      
-      // Clean up localStorage - remove orders that are no longer pending
-      const stillPendingIds = ordersWithProducts.map(o => o.id);
-      localStorage.setItem("pending_orders", JSON.stringify(stillPendingIds));
-      
+      setCalculation(calc);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -97,33 +82,34 @@ const Cart = () => {
     }
   };
 
-  const removeFromCart = (orderId: string) => {
-    const storedOrders = localStorage.getItem("pending_orders");
-    if (storedOrders) {
-      const orderIds = JSON.parse(storedOrders).filter((id: string) => id !== orderId);
-      localStorage.setItem("pending_orders", JSON.stringify(orderIds));
-    }
-    setPendingOrders(prev => prev.filter(o => o.id !== orderId));
+  const handleRemoveItem = (productId: string) => {
+    removeCartItem(productId);
     toast.success("Removed from cart");
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const handleClearCart = () => {
+    clearCart();
+    toast.success("Cart cleared");
   };
 
-  const totalAmount = pendingOrders.reduce((sum, order) => sum + order.amount, 0);
+  const handleCheckout = () => {
+    if (products.length === 0) return;
+    
+    // Navigate to purchase with cart data
+    const productIds = products.map(p => p.id).join(",");
+    const total = calculation?.total || 0;
+    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${calculation?.appliedCombo?.id || ""}`);
+  };
+
+  const getProductImage = (product: CartProduct) => {
+    return product.images?.[0] || null;
+  };
 
   return (
     <>
       <Helmet>
         <title>Your Cart - Exam Essentials</title>
-        <meta name="description" content="Complete your pending orders for study notes" />
+        <meta name="description" content="Review your cart and checkout with combo discounts applied automatically" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -132,23 +118,30 @@ const Cart = () => {
         <main className="pt-32 pb-16">
           <div className="container mx-auto px-4 max-w-4xl">
             {/* Header */}
-            <div className="flex items-center gap-4 mb-8">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate(-1)}
-                className="rounded-full"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-              <div>
-                <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground">
-                  Your Cart
-                </h1>
-                <p className="text-muted-foreground">
-                  {pendingOrders.length} pending order{pendingOrders.length !== 1 ? "s" : ""}
-                </p>
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => navigate(-1)}
+                  className="rounded-full"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+                <div>
+                  <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+                    Your Cart
+                  </h1>
+                  <p className="text-muted-foreground">
+                    {products.length} item{products.length !== 1 ? "s" : ""}
+                  </p>
+                </div>
               </div>
+              {products.length > 0 && (
+                <Button variant="ghost" size="sm" onClick={handleClearCart} className="text-destructive">
+                  Clear All
+                </Button>
+              )}
             </div>
 
             {isLoading ? (
@@ -168,7 +161,7 @@ const Cart = () => {
                   </Card>
                 ))}
               </div>
-            ) : pendingOrders.length === 0 ? (
+            ) : products.length === 0 ? (
               <Card className="text-center py-16">
                 <CardContent>
                   <ShoppingCart className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
@@ -176,7 +169,7 @@ const Cart = () => {
                     Your cart is empty
                   </h2>
                   <p className="text-muted-foreground mb-6">
-                    No pending orders found. Start shopping for study notes!
+                    Add some study notes to get started!
                   </p>
                   <Button asChild>
                     <Link to="/products">Browse Notes</Link>
@@ -185,91 +178,147 @@ const Cart = () => {
               </Card>
             ) : (
               <div className="space-y-4">
-                {/* Cart Items */}
-                {pendingOrders.map((order) => (
-                  <Card key={order.id} className="overflow-hidden">
-                    <CardContent className="p-4 md:p-6">
-                      <div className="flex gap-4">
-                        {/* Product Image */}
-                        <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-muted">
-                          {order.product?.images?.[0] ? (
-                            <img
-                              src={order.product.images[0]}
-                              alt={order.product.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center">
-                              <ShoppingCart className="w-8 h-8 text-muted-foreground" />
-                            </div>
-                          )}
-                        </div>
+                {/* Combo Discount Banner */}
+                {calculation?.appliedCombo && (
+                  <Card className="bg-gradient-to-r from-accent/20 to-primary/20 border-accent/30">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <div className="p-2 bg-accent/20 rounded-full">
+                        <Sparkles className="w-5 h-5 text-accent" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-display font-semibold text-foreground">
+                          {calculation.appliedCombo.label} Applied!
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          You're saving ₹{calculation.discount} with this combo
+                        </p>
+                      </div>
+                      <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
+                        <Tag className="w-3 h-3 mr-1" />
+                        ₹{calculation.discount} OFF
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                )}
 
-                        {/* Order Details */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <h3 className="font-display font-semibold text-foreground truncate">
-                                {order.product?.title || "Product"}
-                              </h3>
-                              <p className="text-sm text-muted-foreground">
-                                {order.product?.subject || "Notes"} • Class {order.class}
-                              </p>
-                            </div>
-                            <Badge variant="outline" className="bg-amber-500/10 text-amber-600 border-amber-500/30">
-                              Pending
-                            </Badge>
+                {/* Cart Items */}
+                {products.map((product) => {
+                  const itemCalc = calculation?.items.find(i => i.productId === product.id);
+                  const isInCombo = itemCalc?.inCombo || false;
+                  
+                  return (
+                    <Card key={product.id} className={`overflow-hidden ${isInCombo ? "border-accent/30" : ""}`}>
+                      <CardContent className="p-4 md:p-6">
+                        <div className="flex gap-4">
+                          {/* Product Image */}
+                          <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-muted">
+                            {getProductImage(product) ? (
+                              <img
+                                src={getProductImage(product)!}
+                                alt={product.title}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <ShoppingCart className="w-8 h-8 text-muted-foreground" />
+                              </div>
+                            )}
                           </div>
 
-                          <div className="mt-2 flex items-center justify-between">
-                            <div>
-                              <p className="font-display text-lg font-bold text-primary">
-                                ₹{order.amount}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                Added {formatDate(order.created_at)}
-                              </p>
+                          {/* Product Details */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <h3 className="font-display font-semibold text-foreground truncate">
+                                  {product.title}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                  {product.subject} • Class {product.class}
+                                </p>
+                              </div>
+                              {isInCombo && (
+                                <Badge variant="outline" className="bg-accent/10 text-accent border-accent/30 whitespace-nowrap">
+                                  In Combo
+                                </Badge>
+                              )}
                             </div>
-                            
-                            <div className="flex items-center gap-2">
+
+                            <div className="mt-2 flex items-center justify-between">
+                              <div>
+                                {isInCombo ? (
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-display text-lg font-bold text-primary">
+                                      Included
+                                    </p>
+                                    <span className="text-sm text-muted-foreground line-through">
+                                      ₹{product.price}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <p className="font-display text-lg font-bold text-primary">
+                                    ₹{product.price}
+                                  </p>
+                                )}
+                              </div>
+                              
                               <Button
                                 variant="ghost"
                                 size="icon"
                                 className="text-destructive hover:bg-destructive/10"
-                                onClick={() => removeFromCart(order.id)}
+                                onClick={() => handleRemoveItem(product.id)}
                               >
                                 <Trash2 className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                onClick={() => navigate(`/purchase/${order.product_id}`)}
-                              >
-                                <CreditCard className="w-4 h-4 mr-2" />
-                                Pay Now
                               </Button>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
 
                 {/* Cart Summary */}
                 <Card className="bg-secondary/50">
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-muted-foreground">Total ({pendingOrders.length} items)</span>
-                      <span className="font-display text-2xl font-bold text-foreground">
-                        ₹{totalAmount}
-                      </span>
-                    </div>
+                    {calculation && (
+                      <div className="space-y-3 mb-4">
+                        <div className="flex items-center justify-between text-muted-foreground">
+                          <span>Subtotal ({products.length} items)</span>
+                          <span>₹{calculation.subtotal}</span>
+                        </div>
+                        
+                        {calculation.discount > 0 && (
+                          <div className="flex items-center justify-between text-accent">
+                            <span className="flex items-center gap-1">
+                              <Tag className="w-4 h-4" />
+                              {calculation.appliedCombo?.label} Discount
+                            </span>
+                            <span>-₹{calculation.discount}</span>
+                          </div>
+                        )}
+                        
+                        <div className="border-t border-border pt-3 flex items-center justify-between">
+                          <span className="font-display font-semibold text-foreground">Total</span>
+                          <span className="font-display text-2xl font-bold text-foreground">
+                            ₹{calculation.total}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    
                     <p className="text-sm text-muted-foreground mb-4">
-                      Complete your payment to access your study materials instantly.
+                      {calculation?.appliedCombo 
+                        ? `Great choice! You're getting the best deal with ${calculation.appliedCombo.label}.`
+                        : "Add more subjects to unlock combo discounts!"}
                     </p>
+                    
                     <div className="flex gap-3">
                       <Button variant="outline" className="flex-1" asChild>
-                        <Link to="/products">Continue Shopping</Link>
+                        <Link to="/products">Add More</Link>
+                      </Button>
+                      <Button variant="gradient" className="flex-1" onClick={handleCheckout}>
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        Checkout ₹{calculation?.total || 0}
                       </Button>
                     </div>
                   </CardContent>

@@ -6,7 +6,8 @@ import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRig
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { fetchProductById, createOrder, Product } from "@/lib/api";
+import { fetchProductById, fetchPublishedProducts, Product } from "@/lib/api";
+import { addToCart, addMultipleToCart, getComboSubjects, comboConfigs } from "@/lib/cartUtils";
 import { toast } from "sonner";
 
 // Combo pricing options
@@ -22,6 +23,7 @@ const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCombo, setSelectedCombo] = useState("single");
@@ -36,8 +38,12 @@ const ProductDetail = () => {
   const loadProduct = async () => {
     if (!id) return;
     try {
-      const data = await fetchProductById(id);
+      const [data, products] = await Promise.all([
+        fetchProductById(id),
+        fetchPublishedProducts()
+      ]);
       setProduct(data);
+      setAllProducts(products);
     } catch (error) {
       console.error("Error loading product:", error);
     } finally {
@@ -56,32 +62,36 @@ const ProductDetail = () => {
     
     setIsAddingToCart(true);
     try {
-      // Create a pending order
-      const order = await createOrder({
-        product_id: product.id,
-        student_name: "Guest",
-        email: "pending@cart.local",
-        phone: "0000000000",
-        class: product.class,
-        amount: getDisplayPrice(),
-      });
-
-      // Save order to localStorage for cart tracking
-      const storedOrders = localStorage.getItem("pending_orders");
-      const orderIds = storedOrders ? JSON.parse(storedOrders) : [];
-      if (!orderIds.includes(order.id)) {
-        orderIds.push(order.id);
-        localStorage.setItem("pending_orders", JSON.stringify(orderIds));
-        window.dispatchEvent(new Event("cartUpdated"));
+      if (selectedCombo === "single") {
+        // Add just this product
+        addToCart(product.id);
+        toast.success("Added to cart!", {
+          description: `${product.title} added successfully.`,
+          action: {
+            label: "View Cart",
+            onClick: () => navigate("/cart"),
+          },
+        });
+      } else {
+        // Add all products in the combo
+        const comboSubjects = getComboSubjects(selectedCombo);
+        const sameClassProducts = allProducts.filter(p => p.class === product.class);
+        const comboProductIds = sameClassProducts
+          .filter(p => comboSubjects.map(s => s.toLowerCase()).includes(p.subject.toLowerCase()))
+          .map(p => p.id);
+        
+        if (comboProductIds.length > 0) {
+          addMultipleToCart(comboProductIds);
+          const comboLabel = comboConfigs.find(c => c.id === selectedCombo)?.label || "Combo";
+          toast.success(`${comboLabel} added to cart!`, {
+            description: `${comboProductIds.length} subjects added. Discount will be applied at checkout.`,
+            action: {
+              label: "View Cart",
+              onClick: () => navigate("/cart"),
+            },
+          });
+        }
       }
-
-      toast.success("Added to cart!", {
-        description: `${selectedCombo !== "single" ? comboOptions.find(o => o.id === selectedCombo)?.label : product.title} added successfully.`,
-        action: {
-          label: "View Cart",
-          onClick: () => navigate("/cart"),
-        },
-      });
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
     } finally {

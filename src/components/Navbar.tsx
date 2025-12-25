@@ -3,6 +3,7 @@ import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { getCartCount } from "@/lib/cartUtils";
 import logo from "@/assets/logo.jpeg";
 
 const Navbar = () => {
@@ -13,13 +14,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const updateCartCount = () => {
-      const storedOrders = localStorage.getItem("pending_orders");
-      if (storedOrders) {
-        const orderIds = JSON.parse(storedOrders);
-        setCartCount(orderIds.length);
-      } else {
-        setCartCount(0);
-      }
+      setCartCount(getCartCount());
     };
 
     updateCartCount();
