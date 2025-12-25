@@ -8,7 +8,8 @@ const orderSchema = z.object({
   email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
   phone: z.string().regex(/^[0-9+\-\s()]{10,15}$/, "Invalid phone number format"),
   class: z.enum(["11", "12"], { errorMap: () => ({ message: "Class must be 11 or 12" }) }),
-  amount: z.number().int().positive("Amount must be a positive number")
+  amount: z.number().int().positive("Amount must be a positive number"),
+  user_id: z.string().uuid().nullable().optional()
 });
 
 export type ProductCategory = "formula-sheet" | "mindmaps" | "handwritten-notes" | "pyqs";
@@ -31,6 +32,7 @@ export interface Product {
 export interface Order {
   id: string;
   product_id: string | null;
+  user_id: string | null;
   student_name: string;
   email: string;
   phone: string;
@@ -135,17 +137,24 @@ export const deleteProduct = async (id: string): Promise<void> => {
   }
 };
 
-// Create order (public)
+// Create order (public - supports both guest and authenticated users)
 export const createOrder = async (
-  order: Omit<Order, "id" | "created_at" | "payment_status">
+  order: Omit<Order, "id" | "created_at" | "payment_status" | "user_id">
 ): Promise<Order> => {
+  // Get current user if authenticated
+  const { data: { user } } = await supabase.auth.getUser();
+  
   // Validate input before database insertion
-  const validatedOrder = orderSchema.parse(order);
+  const validatedOrder = orderSchema.parse({
+    ...order,
+    user_id: user?.id || null
+  });
 
   const { data, error } = await supabase
     .from("orders")
     .insert({
       product_id: validatedOrder.product_id,
+      user_id: validatedOrder.user_id,
       student_name: validatedOrder.student_name,
       email: validatedOrder.email,
       phone: validatedOrder.phone,
