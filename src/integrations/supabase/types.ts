@@ -64,6 +64,7 @@ export type Database = {
           created_at: string
           description: string
           id: string
+          images: string[] | null
           pdf_url: string | null
           price: number
           published: boolean
@@ -76,6 +77,7 @@ export type Database = {
           created_at?: string
           description: string
           id?: string
+          images?: string[] | null
           pdf_url?: string | null
           price: number
           published?: boolean
@@ -88,6 +90,7 @@ export type Database = {
           created_at?: string
           description?: string
           id?: string
+          images?: string[] | null
           pdf_url?: string | null
           price?: number
           published?: boolean

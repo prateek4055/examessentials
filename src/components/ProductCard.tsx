@@ -25,10 +25,20 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         </span>
       </div>
 
-      {/* Icon */}
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gradient-purple to-gradient-blue flex items-center justify-center mb-4">
-        <BookOpen className="w-6 h-6 text-foreground" />
-      </div>
+      {/* Product Image or Icon */}
+      {product.images && product.images.length > 0 ? (
+        <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 border border-border">
+          <img
+            src={product.images[0]}
+            alt={product.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      ) : (
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gradient-purple to-gradient-blue flex items-center justify-center mb-4">
+          <BookOpen className="w-6 h-6 text-foreground" />
+        </div>
+      )}
 
       {/* Content */}
       <div className="mb-6">

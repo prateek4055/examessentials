@@ -26,6 +26,7 @@ import {
   updateProduct,
   Product,
 } from "@/lib/api";
+import ProductImageUploader from "@/components/ProductImageUploader";
 import logo from "@/assets/logo.jpeg";
 
 const productSchema = z.object({
@@ -44,6 +45,7 @@ const AdminProductForm = () => {
   const { id } = useParams<{ id: string }>();
   const isEditing = id && id !== "new";
   const [isLoading, setIsLoading] = useState(false);
+  const [productImages, setProductImages] = useState<string[]>([]);
   const { user, isAdmin, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -102,6 +104,7 @@ const AdminProductForm = () => {
           pdf_url: product.pdf_url || "",
           published: product.published,
         });
+        setProductImages(product.images || []);
       } else {
         toast({
           title: "Error",
@@ -130,6 +133,7 @@ const AdminProductForm = () => {
         description: data.description,
         price: data.price,
         pdf_url: data.pdf_url || null,
+        images: productImages,
         published: data.published,
       };
 
@@ -321,6 +325,19 @@ const AdminProductForm = () => {
                 {errors.pdf_url && (
                   <p className="text-sm text-destructive">{errors.pdf_url.message}</p>
                 )}
+              </div>
+
+              {/* Product Images */}
+              <div className="space-y-2">
+                <Label className="font-body">Product Images</Label>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Upload up to 5 product images. The first image will be the main display image.
+                </p>
+                <ProductImageUploader
+                  images={productImages}
+                  onImagesChange={setProductImages}
+                  maxImages={5}
+                />
               </div>
 
               {/* Published Toggle */}
