@@ -19,20 +19,20 @@ const HeroSection = () => {
     {
       icon: FileText,
       label: "Formula Sheet",
-      color: "bg-brand-red",
-      link: "/products",
+      color: "bg-blue-500",
+      link: "/products?category=formula-sheet",
     },
     {
       icon: Brain,
       label: "Mindmaps",
-      color: "bg-brand-red",
-      link: "/products",
+      color: "bg-purple-500",
+      link: "/products?category=mindmaps",
     },
     {
       icon: PenTool,
       label: "Handwritten Notes",
-      color: "bg-brand-red",
-      link: "/products",
+      color: "bg-green-500",
+      link: "/products?category=handwritten-notes",
     },
   ];
 

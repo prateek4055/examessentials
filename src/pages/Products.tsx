@@ -9,10 +9,18 @@ import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { fetchPublishedProducts, Product } from "@/lib/api";
 
+const categoryLabels: Record<string, string> = {
+  "formula-sheet": "Formula Sheets",
+  "mindmaps": "Mindmaps",
+  "handwritten-notes": "Handwritten Notes",
+  "pyqs": "PYQs",
+};
+
 const Products = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const classFilter = searchParams.get("class");
+  const categoryFilter = searchParams.get("category");
   const searchQuery = searchParams.get("search") || "";
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,6 +60,10 @@ const Products = () => {
   if (classFilter) {
     filteredProducts = filteredProducts.filter((p) => p.class === classFilter);
   }
+
+  if (categoryFilter) {
+    filteredProducts = filteredProducts.filter((p) => p.category === categoryFilter);
+  }
   
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
@@ -66,7 +78,9 @@ const Products = () => {
   const class11Products = filteredProducts.filter((p) => p.class === "11");
   const class12Products = filteredProducts.filter((p) => p.class === "12");
 
-  const pageTitle = classFilter
+  const pageTitle = categoryFilter
+    ? `${categoryLabels[categoryFilter] || categoryFilter} | Exam Essentials`
+    : classFilter
     ? `Class ${classFilter} Notes | Exam Essentials`
     : searchQuery
     ? `Search: ${searchQuery} | Exam Essentials`
@@ -108,16 +122,16 @@ const Products = () => {
             </button>
           </motion.form>
 
-          {/* Filter buttons */}
+          {/* Class Filter buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex items-center justify-center gap-3 mb-8"
+            className="flex items-center justify-center gap-3 mb-4"
           >
             <Button
               asChild
-              variant={!classFilter && !searchQuery ? "default" : "outline"}
+              variant={!classFilter && !categoryFilter && !searchQuery ? "default" : "outline"}
               size="sm"
             >
               <Link to="/products">All</Link>
@@ -127,14 +141,59 @@ const Products = () => {
               variant={classFilter === "11" ? "default" : "outline"}
               size="sm"
             >
-              <Link to="/products?class=11">Class 11</Link>
+              <Link to={categoryFilter ? `/products?class=11&category=${categoryFilter}` : "/products?class=11"}>Class 11</Link>
             </Button>
             <Button
               asChild
               variant={classFilter === "12" ? "default" : "outline"}
               size="sm"
             >
-              <Link to="/products?class=12">Class 12</Link>
+              <Link to={categoryFilter ? `/products?class=12&category=${categoryFilter}` : "/products?class=12"}>Class 12</Link>
+            </Button>
+          </motion.div>
+
+          {/* Category Filter buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="flex flex-wrap items-center justify-center gap-2 mb-8"
+          >
+            <Button
+              asChild
+              variant={categoryFilter === "handwritten-notes" ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to={classFilter ? `/products?class=${classFilter}&category=handwritten-notes` : "/products?category=handwritten-notes"}>
+                Handwritten Notes
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant={categoryFilter === "formula-sheet" ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to={classFilter ? `/products?class=${classFilter}&category=formula-sheet` : "/products?category=formula-sheet"}>
+                Formula Sheets
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant={categoryFilter === "mindmaps" ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to={classFilter ? `/products?class=${classFilter}&category=mindmaps` : "/products?category=mindmaps"}>
+                Mindmaps
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant={categoryFilter === "pyqs" ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to={classFilter ? `/products?class=${classFilter}&category=pyqs` : "/products?category=pyqs"}>
+                PYQs
+              </Link>
             </Button>
           </motion.div>
 
@@ -161,7 +220,7 @@ const Products = () => {
           ) : (
             <>
               {/* Products Grid */}
-              {!classFilter && !searchQuery ? (
+              {!classFilter && !categoryFilter && !searchQuery ? (
                 <>
                   {/* Class 11 Section */}
                   {class11Products.length > 0 && (
@@ -193,9 +252,11 @@ const Products = () => {
                 </>
               ) : (
                 <>
-                  {classFilter && (
+                  {(classFilter || categoryFilter) && (
                     <div className="section-header rounded-lg mb-6">
-                      Class {classFilter} Notes
+                      {categoryFilter ? categoryLabels[categoryFilter] : ""} 
+                      {categoryFilter && classFilter ? " - " : ""}
+                      {classFilter ? `Class ${classFilter}` : ""}
                     </div>
                   )}
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
