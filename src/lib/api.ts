@@ -8,6 +8,7 @@ export interface Product {
   description: string;
   price: number;
   pdf_url?: string | null;
+  images?: string[];
   published: boolean;
   created_at?: string;
   updated_at?: string;
