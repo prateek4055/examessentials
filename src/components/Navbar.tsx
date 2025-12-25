@@ -75,8 +75,9 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center gap-2">
                 <Link
-                  to="/auth"
+                  to="/profile"
                   className="p-2 hover:bg-secondary rounded-full transition-colors"
+                  title="My Profile"
                 >
                   <User className="w-5 h-5 text-foreground" />
                 </Link>
@@ -91,6 +92,7 @@ const Navbar = () => {
               <Link
                 to="/auth"
                 className="p-2 hover:bg-secondary rounded-full transition-colors"
+                title="Login / Register"
               >
                 <User className="w-5 h-5 text-foreground" />
               </Link>
