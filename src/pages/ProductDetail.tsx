@@ -14,6 +14,7 @@ const comboOptions = [
   { id: "phy-chem", label: "Physics + Chemistry", price: 99 },
   { id: "pcm", label: "PCM Combo", price: 139 },
   { id: "pcb", label: "PCB Combo", price: 149 },
+  { id: "pcmb", label: "PCMB Combo", price: 179 },
 ];
 
 const ProductDetail = () => {
@@ -298,8 +299,9 @@ const ProductDetail = () => {
                       </p>
                       {selectedCombo !== "single" && (
                         <span className="text-sm text-muted-foreground line-through">
-                          ₹{(comboOptions.find(o => o.id === selectedCombo)?.label.includes("PCM") ? 199 : 
-                             comboOptions.find(o => o.id === selectedCombo)?.label.includes("PCB") ? 209 : 149)}
+                          ₹{selectedCombo === "pcmb" ? 259 : 
+                             selectedCombo === "pcb" ? 209 : 
+                             selectedCombo === "pcm" ? 199 : 149}
                         </span>
                       )}
                     </div>
