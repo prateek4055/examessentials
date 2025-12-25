@@ -2,11 +2,13 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.jpeg";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const mainLinks = [
     { name: "Home", path: "/" },
@@ -70,9 +72,29 @@ const Navbar = () => {
 
           {/* Right side icons */}
           <div className="hidden md:flex items-center gap-4">
-            <button className="p-2 hover:bg-secondary rounded-full transition-colors">
-              <User className="w-5 h-5 text-foreground" />
-            </button>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/auth"
+                  className="p-2 hover:bg-secondary rounded-full transition-colors"
+                >
+                  <User className="w-5 h-5 text-foreground" />
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/auth"
+                className="p-2 hover:bg-secondary rounded-full transition-colors"
+              >
+                <User className="w-5 h-5 text-foreground" />
+              </Link>
+            )}
             <button className="p-2 hover:bg-secondary rounded-full transition-colors relative">
               <ShoppingCart className="w-5 h-5 text-foreground" />
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
