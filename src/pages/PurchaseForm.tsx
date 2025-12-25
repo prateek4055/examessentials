@@ -40,6 +40,7 @@ const comboConfig: Record<string, { label: string; subjects: string[]; originalP
   "phy-chem": { label: "Physics + Chemistry Combo", subjects: ["Physics", "Chemistry"], originalPrice: 149 },
   "pcm": { label: "PCM Combo", subjects: ["Physics", "Chemistry", "Mathematics"], originalPrice: 199 },
   "pcb": { label: "PCB Combo", subjects: ["Physics", "Chemistry", "Biology"], originalPrice: 209 },
+  "pcmb": { label: "PCMB Combo", subjects: ["Physics", "Chemistry", "Mathematics", "Biology"], originalPrice: 259 },
 };
 
 const PurchaseForm = () => {
