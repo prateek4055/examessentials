@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, FileText, Brain, PenTool, ClipboardList } from "lucide-react";
+import { Search, FileText, Brain, PenTool } from "lucide-react";
 import { useState } from "react";
 import heroBackground from "@/assets/hero-background.png";
 
@@ -33,12 +33,6 @@ const HeroSection = () => {
       label: "Handwritten Notes",
       color: "bg-green-500",
       link: "/products?category=handwritten-notes",
-    },
-    {
-      icon: ClipboardList,
-      label: "PYQs",
-      color: "bg-orange-500",
-      link: "/products?category=pyqs",
     },
   ];
 
