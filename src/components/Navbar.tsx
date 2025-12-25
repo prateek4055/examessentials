@@ -18,8 +18,6 @@ const Navbar = () => {
   const categoryTabs = [
     { name: "Class 11", path: "/products?class=11" },
     { name: "Class 12", path: "/products?class=12" },
-    { name: "NEET", path: "/products?category=neet" },
-    { name: "JEE", path: "/products?category=jee" },
     { name: "All Notes", path: "/products" },
   ];
 
