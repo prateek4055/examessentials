@@ -6,7 +6,8 @@ import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRig
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { fetchProductById, Product } from "@/lib/api";
+import { fetchProductById, createOrder, Product } from "@/lib/api";
+import { toast } from "sonner";
 
 // Combo pricing options
 const comboOptions = [
@@ -24,6 +25,7 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCombo, setSelectedCombo] = useState("single");
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -47,6 +49,44 @@ const ProductDetail = () => {
     const selected = comboOptions.find(opt => opt.id === selectedCombo);
     if (selected?.price !== null) return selected?.price;
     return product?.price || 0;
+  };
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    
+    setIsAddingToCart(true);
+    try {
+      // Create a pending order
+      const order = await createOrder({
+        product_id: product.id,
+        student_name: "Guest",
+        email: "pending@cart.local",
+        phone: "0000000000",
+        class: product.class,
+        amount: getDisplayPrice(),
+      });
+
+      // Save order to localStorage for cart tracking
+      const storedOrders = localStorage.getItem("pending_orders");
+      const orderIds = storedOrders ? JSON.parse(storedOrders) : [];
+      if (!orderIds.includes(order.id)) {
+        orderIds.push(order.id);
+        localStorage.setItem("pending_orders", JSON.stringify(orderIds));
+        window.dispatchEvent(new Event("cartUpdated"));
+      }
+
+      toast.success("Added to cart!", {
+        description: `${selectedCombo !== "single" ? comboOptions.find(o => o.id === selectedCombo)?.label : product.title} added successfully.`,
+        action: {
+          label: "View Cart",
+          onClick: () => navigate("/cart"),
+        },
+      });
+    } catch (error) {
+      toast.error("Failed to add to cart. Please try again.");
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const features = [
@@ -308,11 +348,15 @@ const ProductDetail = () => {
                   </div>
                 </div>
 
-                <Button asChild variant="gradient" size="xl" className="w-full">
-                  <Link to={`/purchase/${product.id}?combo=${selectedCombo}&price=${getDisplayPrice()}`}>
-                    <ShoppingCart className="w-5 h-5 mr-2" />
-                    Buy Now
-                  </Link>
+                <Button 
+                  variant="gradient" 
+                  size="xl" 
+                  className="w-full"
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart}
+                >
+                  <ShoppingCart className="w-5 h-5 mr-2" />
+                  {isAddingToCart ? "Adding..." : "Add to Cart"}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center mt-4 font-body">
