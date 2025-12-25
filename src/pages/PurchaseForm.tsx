@@ -131,7 +131,7 @@ const PurchaseForm = () => {
   const onSubmit = async (data: PurchaseFormData) => {
     try {
       // Create order in database with combo price
-      await createOrder({
+      const order = await createOrder({
         product_id: product.id,
         student_name: data.fullName,
         email: data.email,
@@ -139,6 +139,16 @@ const PurchaseForm = () => {
         class: data.studentClass,
         amount: getFinalPrice(),
       });
+
+      // Save order to localStorage for cart tracking
+      const storedOrders = localStorage.getItem("pending_orders");
+      const orderIds = storedOrders ? JSON.parse(storedOrders) : [];
+      if (!orderIds.includes(order.id)) {
+        orderIds.push(order.id);
+        localStorage.setItem("pending_orders", JSON.stringify(orderIds));
+        // Dispatch event to update navbar cart count
+        window.dispatchEvent(new Event("cartUpdated"));
+      }
 
       toast({
         title: "Order Created!",
