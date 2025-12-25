@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, FileText, Brain, PenTool } from "lucide-react";
 import { useState } from "react";
-import MathDoodleBackground from "./MathDoodleBackground";
+import heroBackground from "@/assets/hero-background.png";
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,8 +38,11 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-32 pb-16">
-      {/* Math Doodle Background */}
-      <MathDoodleBackground />
+      {/* Hero Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+        style={{ backgroundImage: `url(${heroBackground})` }}
+      />
 
       {/* Decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
