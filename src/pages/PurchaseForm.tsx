@@ -1,8 +1,8 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowLeft, Lock } from "lucide-react";
+import { ArrowLeft, Lock, Tag } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -34,12 +34,27 @@ const purchaseSchema = z.object({
 
 type PurchaseFormData = z.infer<typeof purchaseSchema>;
 
+// Combo configuration
+const comboConfig: Record<string, { label: string; subjects: string[]; originalPrice: number }> = {
+  "single": { label: "Single Subject", subjects: [], originalPrice: 0 },
+  "phy-chem": { label: "Physics + Chemistry Combo", subjects: ["Physics", "Chemistry"], originalPrice: 149 },
+  "pcm": { label: "PCM Combo", subjects: ["Physics", "Chemistry", "Mathematics"], originalPrice: 199 },
+  "pcb": { label: "PCB Combo", subjects: ["Physics", "Chemistry", "Biology"], originalPrice: 209 },
+};
+
 const PurchaseForm = () => {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Get combo info from URL
+  const comboType = searchParams.get("combo") || "single";
+  const comboPrice = parseInt(searchParams.get("price") || "0");
+  const combo = comboConfig[comboType] || comboConfig["single"];
+  const isCombo = comboType !== "single";
 
   const {
     register,
@@ -72,6 +87,11 @@ const PurchaseForm = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getFinalPrice = () => {
+    if (isCombo && comboPrice > 0) return comboPrice;
+    return product?.price || 0;
   };
 
   if (isLoading) {
@@ -109,14 +129,14 @@ const PurchaseForm = () => {
 
   const onSubmit = async (data: PurchaseFormData) => {
     try {
-      // Create order in database
+      // Create order in database with combo price
       await createOrder({
         product_id: product.id,
         student_name: data.fullName,
         email: data.email,
         phone: data.phone,
         class: data.studentClass,
-        amount: product.price,
+        amount: getFinalPrice(),
       });
 
       toast({
@@ -293,33 +313,91 @@ const PurchaseForm = () => {
                   Order Summary
                 </h2>
 
-                <div className="space-y-4 mb-6">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-body font-medium text-foreground">
-                        {product.title}
-                      </p>
-                      <p className="text-sm text-muted-foreground font-body">
-                        {product.subject} • Class {product.class}
-                      </p>
+                {/* Combo Badge */}
+                {isCombo && (
+                  <div className="mb-4 p-3 rounded-lg bg-accent/10 border border-accent/20">
+                    <div className="flex items-center gap-2 text-accent">
+                      <Tag className="w-4 h-4" />
+                      <span className="font-body font-semibold text-sm">{combo.label}</span>
                     </div>
                   </div>
+                )}
+
+                <div className="space-y-3 mb-6">
+                  {isCombo ? (
+                    // Show combo subjects
+                    combo.subjects.map((subject, index) => (
+                      <div key={index} className="flex justify-between items-start py-2 border-b border-border/50 last:border-0">
+                        <div>
+                          <p className="font-body font-medium text-foreground">
+                            {subject} Notes
+                          </p>
+                          <p className="text-sm text-muted-foreground font-body">
+                            Class {product.class} • Full Chapter Notes
+                          </p>
+                        </div>
+                        <span className="text-sm text-muted-foreground line-through">
+                          ₹{Math.round(combo.originalPrice / combo.subjects.length)}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    // Show single product
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-body font-medium text-foreground">
+                          {product.title}
+                        </p>
+                        <p className="text-sm text-muted-foreground font-body">
+                          {product.subject} • Class {product.class}
+                        </p>
+                      </div>
+                      <span className="font-body font-medium text-foreground">
+                        ₹{product.price}
+                      </span>
+                    </div>
+                  )}
                 </div>
+
+                {/* Discount Section for Combo */}
+                {isCombo && (
+                  <div className="border-t border-border pt-4 mb-4 space-y-2">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-body text-muted-foreground">Subtotal</span>
+                      <span className="font-body text-muted-foreground line-through">
+                        ₹{combo.originalPrice}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-body text-green-500">Combo Discount</span>
+                      <span className="font-body text-green-500">
+                        -₹{combo.originalPrice - getFinalPrice()}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 <div className="border-t border-border pt-4">
                   <div className="flex justify-between items-center">
                     <span className="font-body text-muted-foreground">
                       Total
                     </span>
-                    <span className="font-display text-2xl font-bold text-foreground">
-                      ₹{product.price}
-                    </span>
+                    <div className="text-right">
+                      <span className="font-display text-2xl font-bold text-foreground">
+                        ₹{getFinalPrice()}
+                      </span>
+                      {isCombo && (
+                        <p className="text-xs text-green-500 font-body">
+                          You save ₹{combo.originalPrice - getFinalPrice()}!
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <div className="mt-6 p-4 rounded-xl bg-secondary/50">
                   <p className="text-sm text-muted-foreground font-body">
-                    After payment, your PDF will be delivered to your email
+                    After payment, {isCombo ? "all PDFs" : "your PDF"} will be delivered to your email
                     within 5 minutes.
                   </p>
                 </div>
