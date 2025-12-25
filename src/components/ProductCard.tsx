@@ -19,12 +19,12 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         to={`/product/${product.id}`}
         className="group block bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
       >
-        <div className="relative aspect-[3/4] bg-secondary overflow-hidden">
+        <div className="relative aspect-square bg-secondary overflow-hidden flex items-center justify-center">
           {product.images && product.images.length > 0 ? (
             <img
               src={product.images[0]}
               alt={product.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
