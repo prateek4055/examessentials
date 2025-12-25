@@ -1,0 +1,285 @@
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { motion } from "framer-motion";
+import { ArrowLeft, Lock } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { mockProducts } from "@/data/mockProducts";
+import { useToast } from "@/hooks/use-toast";
+
+const purchaseSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().email("Please enter a valid email").max(255),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15)
+    .regex(/^[0-9+\-\s]+$/, "Please enter a valid phone number"),
+  studentClass: z.string().min(1, "Please select your class"),
+});
+
+type PurchaseFormData = z.infer<typeof purchaseSchema>;
+
+const PurchaseForm = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const product = mockProducts.find((p) => p.id === id);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<PurchaseFormData>({
+    resolver: zodResolver(purchaseSchema),
+    defaultValues: {
+      studentClass: product?.class || "",
+    },
+  });
+
+  if (!product) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-24 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="font-display text-2xl font-bold text-foreground mb-4">
+              Product Not Found
+            </h1>
+            <Button asChild variant="outline">
+              <Link to="/products">Browse All Notes</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  const onSubmit = async (data: PurchaseFormData) => {
+    // Here we would save to database and redirect to Razorpay
+    // For now, show a toast and simulate redirect
+    console.log("Form submitted:", { ...data, productId: product.id, price: product.price });
+    
+    toast({
+      title: "Redirecting to payment...",
+      description: "You'll be redirected to Razorpay to complete your purchase.",
+    });
+
+    // Placeholder: In production, redirect to actual Razorpay payment link
+    setTimeout(() => {
+      toast({
+        title: "Payment Gateway",
+        description: "Razorpay integration will be added with backend setup.",
+      });
+    }, 1500);
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Purchase {product.title} | Exam Essentials</title>
+        <meta
+          name="description"
+          content={`Complete your purchase of ${product.title} - Premium handwritten notes for Class ${product.class}.`}
+        />
+      </Helmet>
+
+      <Navbar />
+      <main className="min-h-screen pt-24 pb-16">
+        <div className="container mx-auto px-4">
+          {/* Back Button */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="mb-8"
+          >
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            {/* Form */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1 className="font-display text-3xl font-bold text-foreground mb-2">
+                Complete Your Purchase
+              </h1>
+              <p className="font-body text-muted-foreground mb-8">
+                Fill in your details to proceed with payment.
+              </p>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Full Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="fullName" className="font-body">
+                    Full Name
+                  </Label>
+                  <Input
+                    id="fullName"
+                    placeholder="Enter your full name"
+                    {...register("fullName")}
+                    className="bg-card border-border focus:border-gold"
+                  />
+                  {errors.fullName && (
+                    <p className="text-sm text-destructive font-body">
+                      {errors.fullName.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="font-body">
+                    Email Address
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    {...register("email")}
+                    className="bg-card border-border focus:border-gold"
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-destructive font-body">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Phone */}
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="font-body">
+                    Phone Number
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    {...register("phone")}
+                    className="bg-card border-border focus:border-gold"
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-destructive font-body">
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Class */}
+                <div className="space-y-2">
+                  <Label className="font-body">Class</Label>
+                  <Select
+                    defaultValue={product.class}
+                    onValueChange={(value) => setValue("studentClass", value)}
+                  >
+                    <SelectTrigger className="bg-card border-border">
+                      <SelectValue placeholder="Select your class" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="11">Class 11</SelectItem>
+                      <SelectItem value="12">Class 12</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.studentClass && (
+                    <p className="text-sm text-destructive font-body">
+                      {errors.studentClass.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  variant="gradient"
+                  size="xl"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Processing..." : "Proceed to Payment"}
+                </Button>
+
+                <p className="text-xs text-muted-foreground text-center font-body flex items-center justify-center gap-2">
+                  <Lock className="w-3 h-3" />
+                  Secure payment via Razorpay
+                </p>
+              </form>
+            </motion.div>
+
+            {/* Order Summary */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="sticky top-28 p-6 rounded-2xl bg-card border border-border">
+                <h2 className="font-display text-xl font-semibold text-foreground mb-6">
+                  Order Summary
+                </h2>
+
+                <div className="space-y-4 mb-6">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-body font-medium text-foreground">
+                        {product.title}
+                      </p>
+                      <p className="text-sm text-muted-foreground font-body">
+                        {product.subject} • Class {product.class}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-body text-muted-foreground">
+                      Total
+                    </span>
+                    <span className="font-display text-2xl font-bold text-foreground">
+                      ₹{product.price}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 rounded-xl bg-secondary/50">
+                  <p className="text-sm text-muted-foreground font-body">
+                    After payment, your PDF will be delivered to your email
+                    within 5 minutes.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+};
+
+export default PurchaseForm;
