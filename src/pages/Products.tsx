@@ -1,7 +1,8 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
+import { Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -10,13 +11,20 @@ import { fetchPublishedProducts, Product } from "@/lib/api";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const classFilter = searchParams.get("class");
+  const searchQuery = searchParams.get("search") || "";
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [localSearch, setLocalSearch] = useState(searchQuery);
 
   useEffect(() => {
     loadProducts();
   }, []);
+
+  useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
 
   const loadProducts = async () => {
     try {
@@ -29,15 +37,39 @@ const Products = () => {
     }
   };
 
-  const filteredProducts = classFilter
-    ? products.filter((p) => p.class === classFilter)
-    : products;
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (localSearch.trim()) {
+      navigate(`/products?search=${encodeURIComponent(localSearch.trim())}`);
+    } else {
+      navigate("/products");
+    }
+  };
+
+  // Filter products
+  let filteredProducts = products;
+  
+  if (classFilter) {
+    filteredProducts = filteredProducts.filter((p) => p.class === classFilter);
+  }
+  
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filteredProducts = filteredProducts.filter(
+      (p) =>
+        p.title.toLowerCase().includes(query) ||
+        p.subject.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query)
+    );
+  }
 
   const class11Products = filteredProducts.filter((p) => p.class === "11");
   const class12Products = filteredProducts.filter((p) => p.class === "12");
 
   const pageTitle = classFilter
     ? `Class ${classFilter} Notes | Exam Essentials`
+    : searchQuery
+    ? `Search: ${searchQuery} | Exam Essentials`
     : "All Notes | Exam Essentials";
 
   return (
@@ -51,57 +83,73 @@ const Products = () => {
       </Helmet>
 
       <Navbar />
-      <main className="min-h-screen pt-24 pb-16">
+      <main className="min-h-screen pt-32 pb-16 bg-background">
         <div className="container mx-auto px-4">
-          {/* Header */}
-          <motion.div
+          {/* Search Bar */}
+          <motion.form
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            onSubmit={handleSearch}
+            className="relative max-w-2xl mx-auto mb-8"
           >
-            <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
-              {classFilter ? (
-                <>
-                  Class {classFilter}{" "}
-                  <span className="gradient-text">Handwritten Notes</span>
-                </>
-              ) : (
-                <>
-                  Browse All{" "}
-                  <span className="gradient-text">Handwritten Notes</span>
-                </>
-              )}
-            </h1>
-            <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto">
-              Premium notes designed to help you excel in your exams.
-            </p>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              className="search-input pr-14"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-foreground text-background rounded-full hover:opacity-80 transition-opacity"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+          </motion.form>
 
-            {/* Filter buttons */}
-            <div className="flex items-center justify-center gap-3 mt-8">
-              <Button
-                asChild
-                variant={!classFilter ? "gradient" : "outline"}
-                size="sm"
-              >
-                <Link to="/products">All</Link>
-              </Button>
-              <Button
-                asChild
-                variant={classFilter === "11" ? "gradient" : "outline"}
-                size="sm"
-              >
-                <Link to="/products?class=11">Class 11</Link>
-              </Button>
-              <Button
-                asChild
-                variant={classFilter === "12" ? "gradient" : "outline"}
-                size="sm"
-              >
-                <Link to="/products?class=12">Class 12</Link>
-              </Button>
-            </div>
+          {/* Filter buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex items-center justify-center gap-3 mb-8"
+          >
+            <Button
+              asChild
+              variant={!classFilter && !searchQuery ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to="/products">All</Link>
+            </Button>
+            <Button
+              asChild
+              variant={classFilter === "11" ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to="/products?class=11">Class 11</Link>
+            </Button>
+            <Button
+              asChild
+              variant={classFilter === "12" ? "default" : "outline"}
+              size="sm"
+            >
+              <Link to="/products?class=12">Class 12</Link>
+            </Button>
           </motion.div>
+
+          {/* Search Results Info */}
+          {searchQuery && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center mb-8"
+            >
+              <p className="text-muted-foreground font-body">
+                Showing results for "{searchQuery}" ({filteredProducts.length} products)
+              </p>
+            </motion.div>
+          )}
 
           {/* Loading State */}
           {isLoading ? (
@@ -113,16 +161,15 @@ const Products = () => {
           ) : (
             <>
               {/* Products Grid */}
-              {!classFilter ? (
+              {!classFilter && !searchQuery ? (
                 <>
                   {/* Class 11 Section */}
                   {class11Products.length > 0 && (
-                    <section className="mb-16">
-                      <h2 className="font-display text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-gradient-to-r from-gradient-purple to-gradient-blue" />
+                    <section className="mb-12">
+                      <div className="section-header rounded-lg mb-6">
                         Class 11 Notes
-                      </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {class11Products.map((product, index) => (
                           <ProductCard key={product.id} product={product} index={index} />
                         ))}
@@ -133,11 +180,10 @@ const Products = () => {
                   {/* Class 12 Section */}
                   {class12Products.length > 0 && (
                     <section>
-                      <h2 className="font-display text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-gradient-to-r from-gradient-pink to-gradient-orange" />
+                      <div className="section-header rounded-lg mb-6">
                         Class 12 Notes
-                      </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {class12Products.map((product, index) => (
                           <ProductCard key={product.id} product={product} index={index} />
                         ))}
@@ -146,20 +192,29 @@ const Products = () => {
                   )}
                 </>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {filteredProducts.map((product, index) => (
-                    <ProductCard key={product.id} product={product} index={index} />
-                  ))}
-                </div>
+                <>
+                  {classFilter && (
+                    <div className="section-header rounded-lg mb-6">
+                      Class {classFilter} Notes
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    {filteredProducts.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </div>
+                </>
               )}
 
               {filteredProducts.length === 0 && (
                 <div className="text-center py-16">
                   <p className="text-muted-foreground font-body mb-4">
-                    No products available yet. Check back soon!
+                    {searchQuery
+                      ? `No products found for "${searchQuery}"`
+                      : "No products available yet. Check back soon!"}
                   </p>
                   <Button asChild variant="outline">
-                    <Link to="/">Go Home</Link>
+                    <Link to="/products">View All Products</Link>
                   </Button>
                 </div>
               )}
