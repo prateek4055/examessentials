@@ -44,32 +44,6 @@ const HeroSection = () => {
         style={{ backgroundImage: `url(${heroBackground})` }}
       />
 
-      {/* Decorative elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Soft curved lines */}
-        <svg
-          className="absolute top-1/3 left-1/4 w-64 h-64 opacity-20"
-          viewBox="0 0 200 200"
-        >
-          <path
-            d="M 20 100 Q 100 20 180 100 Q 100 180 20 100"
-            fill="none"
-            stroke="hsl(var(--brand-green))"
-            strokeWidth="3"
-          />
-        </svg>
-        <svg
-          className="absolute bottom-1/4 right-1/4 w-48 h-48 opacity-20"
-          viewBox="0 0 200 200"
-        >
-          <path
-            d="M 20 100 Q 100 20 180 100 Q 100 180 20 100"
-            fill="none"
-            stroke="hsl(var(--brand-pink))"
-            strokeWidth="3"
-          />
-        </svg>
-      </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
