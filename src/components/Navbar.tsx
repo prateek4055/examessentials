@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.jpeg";
@@ -8,40 +8,58 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
-  const navLinks = [
+  const mainLinks = [
     { name: "Home", path: "/" },
+    { name: "Shop", path: "/products", hasDropdown: true },
+    { name: "About Us", path: "/about" },
+    { name: "Contact", path: "/contact" },
+  ];
+
+  const categoryTabs = [
     { name: "Class 11", path: "/products?class=11" },
     { name: "Class 12", path: "/products?class=12" },
+    { name: "NEET", path: "/products?category=neet" },
+    { name: "JEE", path: "/products?category=jee" },
+    { name: "All Notes", path: "/products" },
   ];
 
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
-    return location.pathname + location.search === path;
+    if (path.includes("?")) {
+      return location.pathname + location.search === path;
+    }
+    return location.pathname === path;
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
+      {/* Main Navbar */}
+      <nav className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img
               src={logo}
               alt="Exam Essentials"
-              className="h-10 w-10 md:h-12 md:w-12 rounded-lg object-cover"
+              className="h-10 w-10 rounded-lg object-cover"
             />
-            <span className="font-display text-lg md:text-xl font-semibold text-foreground">
-              Exam Essentials
-            </span>
+            <div className="flex flex-col">
+              <span className="font-display text-lg font-bold text-foreground leading-tight">
+                Exam Essentials
+              </span>
+              <span className="text-xs text-muted-foreground">
+                India's Best Notes
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {mainLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`font-body text-sm transition-colors duration-300 ${
+                className={`font-body text-sm font-medium transition-colors duration-300 ${
                   isActive(link.path)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
@@ -50,9 +68,19 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <Button asChild variant="gradient" size="sm">
-              <Link to="/products">Browse Notes</Link>
-            </Button>
+          </div>
+
+          {/* Right side icons */}
+          <div className="hidden md:flex items-center gap-4">
+            <button className="p-2 hover:bg-secondary rounded-full transition-colors">
+              <User className="w-5 h-5 text-foreground" />
+            </button>
+            <button className="p-2 hover:bg-secondary rounded-full transition-colors relative">
+              <ShoppingCart className="w-5 h-5 text-foreground" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
+                0
+              </span>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -64,35 +92,65 @@ const Navbar = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+      </nav>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border/50 animate-fade-in">
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
+      {/* Category Tabs - Desktop */}
+      <div className="hidden md:block bg-secondary border-t border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-8">
+            {categoryTabs.map((tab) => (
+              <Link
+                key={tab.name}
+                to={tab.path}
+                className={`category-tab ${isActive(tab.path) ? "active" : ""}`}
+              >
+                {tab.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-background border-t border-border animate-fade-in">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex flex-col gap-2">
+              {mainLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`font-body text-base py-2 transition-colors ${
+                  className={`font-body text-base py-3 px-4 rounded-lg transition-colors ${
                     isActive(link.path)
-                      ? "text-foreground"
-                      : "text-muted-foreground"
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
                   }`}
                 >
                   {link.name}
                 </Link>
               ))}
-              <Button asChild variant="gradient" className="mt-2">
-                <Link to="/products" onClick={() => setIsMenuOpen(false)}>
-                  Browse Notes
+              <div className="border-t border-border my-2" />
+              <p className="text-xs text-muted-foreground px-4 py-2">Categories</p>
+              {categoryTabs.map((tab) => (
+                <Link
+                  key={tab.name}
+                  to={tab.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`font-body text-sm py-2 px-4 rounded-lg transition-colors ${
+                    isActive(tab.path)
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
+                  }`}
+                >
+                  {tab.name}
                 </Link>
-              </Button>
+              ))}
             </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      )}
+    </header>
   );
 };
 
