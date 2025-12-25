@@ -8,12 +8,21 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { fetchProductById, Product } from "@/lib/api";
 
+// Combo pricing options
+const comboOptions = [
+  { id: "single", label: "Single Subject", price: null }, // Uses product price
+  { id: "phy-chem", label: "Physics + Chemistry", price: 99 },
+  { id: "pcm", label: "PCM Combo", price: 139 },
+  { id: "pcb", label: "PCB Combo", price: 149 },
+];
+
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedCombo, setSelectedCombo] = useState("single");
 
   useEffect(() => {
     if (id) {
@@ -31,6 +40,12 @@ const ProductDetail = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getDisplayPrice = () => {
+    const selected = comboOptions.find(opt => opt.id === selectedCombo);
+    if (selected?.price !== null) return selected?.price;
+    return product?.price || 0;
   };
 
   const features = [
@@ -245,21 +260,54 @@ const ProductDetail = () => {
                 </ul>
               </div>
 
+              {/* Combo Selection */}
+              <div className="mb-8">
+                <h3 className="font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                  Select Option
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {comboOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      onClick={() => setSelectedCombo(option.id)}
+                      className={`px-4 py-2 rounded-lg border text-sm font-body font-medium transition-all ${
+                        selectedCombo === option.id
+                          ? "border-accent bg-accent text-accent-foreground"
+                          : "border-border bg-card text-foreground hover:border-accent/50"
+                      }`}
+                    >
+                      {option.label}
+                      {option.price !== null && (
+                        <span className="ml-2 text-xs opacity-75">₹{option.price}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Price & CTA */}
               <div className="mt-auto pt-8 border-t border-border">
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <p className="text-sm font-body text-muted-foreground mb-1">
-                      One-time payment
+                      {selectedCombo !== "single" ? "Combo Price" : "One-time payment"}
                     </p>
-                    <p className="text-4xl font-display font-bold text-foreground">
-                      ₹{product.price}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <p className="text-4xl font-display font-bold text-foreground">
+                        ₹{getDisplayPrice()}
+                      </p>
+                      {selectedCombo !== "single" && (
+                        <span className="text-sm text-muted-foreground line-through">
+                          ₹{(comboOptions.find(o => o.id === selectedCombo)?.label.includes("PCM") ? 199 : 
+                             comboOptions.find(o => o.id === selectedCombo)?.label.includes("PCB") ? 209 : 149)}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <Button asChild variant="gradient" size="xl" className="w-full">
-                  <Link to={`/purchase/${product.id}`}>
+                  <Link to={`/purchase/${product.id}?combo=${selectedCombo}&price=${getDisplayPrice()}`}>
                     <ShoppingCart className="w-5 h-5 mr-2" />
                     Buy Now
                   </Link>
