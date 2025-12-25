@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, FileText, Video, Users } from "lucide-react";
+import { Search, FileText, Brain, PenTool } from "lucide-react";
 import { useState } from "react";
 import MathDoodleBackground from "./MathDoodleBackground";
 
@@ -23,14 +23,14 @@ const HeroSection = () => {
       link: "/products",
     },
     {
-      icon: Video,
-      label: "Video Lectures",
+      icon: Brain,
+      label: "Mindmaps",
       color: "bg-brand-red",
       link: "/products",
     },
     {
-      icon: Users,
-      label: "Students Shop",
+      icon: PenTool,
+      label: "Handwritten Notes",
       color: "bg-brand-red",
       link: "/products",
     },
