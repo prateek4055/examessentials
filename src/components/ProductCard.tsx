@@ -27,11 +27,11 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
       {/* Product Image or Icon */}
       {product.images && product.images.length > 0 ? (
-        <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 border border-border">
+        <div className="rounded-xl overflow-hidden mb-4 border border-border bg-secondary">
           <img
             src={product.images[0]}
             alt={product.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-auto max-h-48 object-contain group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       ) : (
