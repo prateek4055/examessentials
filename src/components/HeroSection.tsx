@@ -115,16 +115,6 @@ const HeroSection = () => {
             ))}
           </motion.div>
 
-          {/* Boost Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-12 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-green text-accent-foreground font-body font-semibold"
-          >
-            <span>Boost Your Marks</span>
-            <span className="text-xl">97%</span>
-          </motion.div>
         </div>
       </div>
     </section>
