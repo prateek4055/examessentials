@@ -142,7 +142,7 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Address:</h3>
                   <p className="text-muted-foreground">
-                    India
+                    Deewan complex, Behror, Rajasthan, 301701
                   </p>
                 </div>
               </div>
@@ -154,12 +154,12 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">WhatsApp Number:</h3>
                   <a 
-                    href="https://wa.me/918830472458" 
+                    href="https://wa.me/919460970342" 
                     className="text-muted-foreground hover:text-primary transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    +91 8830472458
+                    +91 9460970342
                   </a>
                 </div>
               </div>
@@ -171,10 +171,10 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Email:</h3>
                   <a 
-                    href="mailto:examessentials@gmail.com" 
+                    href="mailto:examessentials.in@gmail.com" 
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    examessentials@gmail.com
+                    examessentials.in@gmail.com
                   </a>
                 </div>
               </div>
