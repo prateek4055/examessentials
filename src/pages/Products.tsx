@@ -1,0 +1,143 @@
+import { useSearchParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { motion } from "framer-motion";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ProductCard, { Product } from "@/components/ProductCard";
+import { mockProducts } from "@/data/mockProducts";
+import { Button } from "@/components/ui/button";
+
+const Products = () => {
+  const [searchParams] = useSearchParams();
+  const classFilter = searchParams.get("class");
+
+  const filteredProducts = classFilter
+    ? mockProducts.filter((p) => p.class === classFilter && p.published)
+    : mockProducts.filter((p) => p.published);
+
+  const class11Products = filteredProducts.filter((p) => p.class === "11");
+  const class12Products = filteredProducts.filter((p) => p.class === "12");
+
+  const pageTitle = classFilter
+    ? `Class ${classFilter} Notes | Exam Essentials`
+    : "All Notes | Exam Essentials";
+
+  return (
+    <>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta
+          name="description"
+          content={`Browse premium handwritten notes for ${classFilter ? `Class ${classFilter}` : "Class 11 & 12"}. Physics, Chemistry, Maths, Biology notes available.`}
+        />
+      </Helmet>
+
+      <Navbar />
+      <main className="min-h-screen pt-24 pb-16">
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
+              {classFilter ? (
+                <>
+                  Class {classFilter}{" "}
+                  <span className="gradient-text">Handwritten Notes</span>
+                </>
+              ) : (
+                <>
+                  Browse All{" "}
+                  <span className="gradient-text">Handwritten Notes</span>
+                </>
+              )}
+            </h1>
+            <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto">
+              Premium notes designed to help you excel in your exams.
+            </p>
+
+            {/* Filter buttons */}
+            <div className="flex items-center justify-center gap-3 mt-8">
+              <Button
+                asChild
+                variant={!classFilter ? "gradient" : "outline"}
+                size="sm"
+              >
+                <Link to="/products">All</Link>
+              </Button>
+              <Button
+                asChild
+                variant={classFilter === "11" ? "gradient" : "outline"}
+                size="sm"
+              >
+                <Link to="/products?class=11">Class 11</Link>
+              </Button>
+              <Button
+                asChild
+                variant={classFilter === "12" ? "gradient" : "outline"}
+                size="sm"
+              >
+                <Link to="/products?class=12">Class 12</Link>
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Products Grid */}
+          {!classFilter ? (
+            <>
+              {/* Class 11 Section */}
+              {class11Products.length > 0 && (
+                <section className="mb-16">
+                  <h2 className="font-display text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-r from-gradient-purple to-gradient-blue" />
+                    Class 11 Notes
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {class11Products.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Class 12 Section */}
+              {class12Products.length > 0 && (
+                <section>
+                  <h2 className="font-display text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-r from-gradient-pink to-gradient-orange" />
+                    Class 12 Notes
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {class12Products.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </div>
+                </section>
+              )}
+            </>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+          )}
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground font-body">
+                No products found. Check back soon!
+              </p>
+            </div>
+          )}
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+};
+
+export default Products;
