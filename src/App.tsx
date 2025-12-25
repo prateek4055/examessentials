@@ -12,6 +12,7 @@ import PurchaseForm from "./pages/PurchaseForm";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import AdminProductForm from "./pages/AdminProductForm";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/purchase/:id" element={<PurchaseForm />} />
