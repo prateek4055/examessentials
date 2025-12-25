@@ -77,7 +77,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6 }}
             className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6"
           >
-            The Best Notes For You
+            Exam Essentials
           </motion.h1>
 
           {/* Subheadline */}
@@ -87,7 +87,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-body text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-10"
           >
-            Unlock your Full potential with our Most Engaging Notes & Score High
+            <span className="gradient-text text-2xl md:text-3xl">&nbsp;Handwritten Notes&nbsp;</span> That Make Learning Simple
           </motion.p>
 
           {/* Search Bar */}
