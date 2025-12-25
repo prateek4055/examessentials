@@ -2,16 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-
-export interface Product {
-  id: string;
-  title: string;
-  class: "11" | "12";
-  subject: string;
-  description: string;
-  price: number;
-  published?: boolean;
-}
+import { Product } from "@/lib/api";
 
 interface ProductCardProps {
   product: Product;

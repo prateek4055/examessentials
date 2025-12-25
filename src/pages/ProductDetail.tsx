@@ -1,17 +1,58 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowLeft, BookOpen, CheckCircle, FileText, ShoppingCart } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { mockProducts } from "@/data/mockProducts";
+import { fetchProductById, Product } from "@/lib/api";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
-  const product = mockProducts.find((p) => p.id === id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      loadProduct();
+    }
+  }, [id]);
+
+  const loadProduct = async () => {
+    if (!id) return;
+    try {
+      const data = await fetchProductById(id);
+      setProduct(data);
+    } catch (error) {
+      console.error("Error loading product:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const features = [
+    "Handwritten for better retention",
+    "Exam-focused content only",
+    "Clear diagrams & flowcharts",
+    "Quick revision summaries",
+    "Instant PDF delivery",
+  ];
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-24 flex items-center justify-center">
+          <div className="animate-pulse text-muted-foreground font-body">
+            Loading...
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   if (!product) {
     return (
@@ -31,14 +72,6 @@ const ProductDetail = () => {
       </>
     );
   }
-
-  const features = [
-    "Handwritten for better retention",
-    "Exam-focused content only",
-    "Clear diagrams & flowcharts",
-    "Quick revision summaries",
-    "Instant PDF delivery",
-  ];
 
   return (
     <>
