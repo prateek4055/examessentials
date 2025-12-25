@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, Instagram, Youtube } from "lucide-react";
+import { Mail, Instagram, Linkedin, MessageCircle } from "lucide-react";
 import logo from "@/assets/logo.jpeg";
 const Footer = () => {
   return <footer className="bg-foreground text-background py-12">
@@ -35,7 +35,19 @@ const Footer = () => {
             <ul className="space-y-3 font-body text-sm">
               <li className="flex items-center gap-2 text-background/70">
                 <Mail className="w-4 h-4" />
-                <a href="mailto:support@examessentials.in" className="hover:text-background transition-colors">​examessentials.info@gmail.com</a>
+                <a href="mailto:examessentials.info@gmail.com" className="hover:text-background transition-colors">examessentials.info@gmail.com</a>
+              </li>
+              <li className="flex items-center gap-2 text-background/70">
+                <Instagram className="w-4 h-4" />
+                <a href="https://www.instagram.com/exam_essentials_?igsh=MW1xM3puOWgydGVrYw==" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">Instagram</a>
+              </li>
+              <li className="flex items-center gap-2 text-background/70">
+                <Linkedin className="w-4 h-4" />
+                <a href="https://www.linkedin.com/company/exam-essentials7" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">LinkedIn</a>
+              </li>
+              <li className="flex items-center gap-2 text-background/70">
+                <MessageCircle className="w-4 h-4" />
+                <a href="https://wa.me/c/919460970342" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">WhatsApp</a>
               </li>
             </ul>
           </div>
