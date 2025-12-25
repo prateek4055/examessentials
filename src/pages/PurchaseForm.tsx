@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { ArrowLeft, Lock } from "lucide-react";
@@ -17,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { mockProducts } from "@/data/mockProducts";
+import { fetchProductById, createOrder, Product } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 const purchaseSchema = z.object({
@@ -37,8 +38,8 @@ const PurchaseForm = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  const product = mockProducts.find((p) => p.id === id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     register,
@@ -48,9 +49,44 @@ const PurchaseForm = () => {
   } = useForm<PurchaseFormData>({
     resolver: zodResolver(purchaseSchema),
     defaultValues: {
-      studentClass: product?.class || "",
+      studentClass: "",
     },
   });
+
+  useEffect(() => {
+    if (id) {
+      loadProduct();
+    }
+  }, [id]);
+
+  const loadProduct = async () => {
+    if (!id) return;
+    try {
+      const data = await fetchProductById(id);
+      setProduct(data);
+      if (data) {
+        setValue("studentClass", data.class);
+      }
+    } catch (error) {
+      console.error("Error loading product:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-24 flex items-center justify-center">
+          <div className="animate-pulse text-muted-foreground font-body">
+            Loading...
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   if (!product) {
     return (
@@ -72,22 +108,37 @@ const PurchaseForm = () => {
   }
 
   const onSubmit = async (data: PurchaseFormData) => {
-    // Here we would save to database and redirect to Razorpay
-    // For now, show a toast and simulate redirect
-    console.log("Form submitted:", { ...data, productId: product.id, price: product.price });
-    
-    toast({
-      title: "Redirecting to payment...",
-      description: "You'll be redirected to Razorpay to complete your purchase.",
-    });
-
-    // Placeholder: In production, redirect to actual Razorpay payment link
-    setTimeout(() => {
-      toast({
-        title: "Payment Gateway",
-        description: "Razorpay integration will be added with backend setup.",
+    try {
+      // Create order in database
+      await createOrder({
+        product_id: product.id,
+        student_name: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        class: data.studentClass,
+        amount: product.price,
       });
-    }, 1500);
+
+      toast({
+        title: "Order Created!",
+        description: "Redirecting to payment gateway...",
+      });
+
+      // Placeholder: In production, redirect to actual Razorpay payment link
+      setTimeout(() => {
+        toast({
+          title: "Payment Gateway",
+          description:
+            "Razorpay integration will redirect you to complete payment. Contact admin for PDF delivery.",
+        });
+      }, 1500);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create order. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
