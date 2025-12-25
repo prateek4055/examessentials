@@ -39,7 +39,7 @@ interface Order {
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isAdmin, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -59,12 +59,16 @@ const Profile = () => {
     resolver: zodResolver(profileSchema),
   });
 
-  // Redirect if not logged in
+  // Redirect if not logged in, or to admin panel if admin
   useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth");
+    if (!authLoading) {
+      if (!user) {
+        navigate("/auth");
+      } else if (isAdmin) {
+        navigate("/admin");
+      }
     }
-  }, [user, authLoading, navigate]);
+  }, [user, isAdmin, authLoading, navigate]);
 
   // Fetch profile data and orders
   useEffect(() => {
