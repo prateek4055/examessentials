@@ -1,4 +1,15 @@
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+// Order validation schema
+const orderSchema = z.object({
+  product_id: z.string().uuid().nullable(),
+  student_name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  phone: z.string().regex(/^[0-9+\-\s()]{10,15}$/, "Invalid phone number format"),
+  class: z.enum(["11", "12"], { errorMap: () => ({ message: "Class must be 11 or 12" }) }),
+  amount: z.number().int().positive("Amount must be a positive number")
+});
 
 export type ProductCategory = "formula-sheet" | "mindmaps" | "handwritten-notes" | "pyqs";
 
@@ -128,14 +139,24 @@ export const deleteProduct = async (id: string): Promise<void> => {
 export const createOrder = async (
   order: Omit<Order, "id" | "created_at" | "payment_status">
 ): Promise<Order> => {
+  // Validate input before database insertion
+  const validatedOrder = orderSchema.parse(order);
+
   const { data, error } = await supabase
     .from("orders")
-    .insert({ ...order, payment_status: "pending" })
+    .insert({
+      product_id: validatedOrder.product_id,
+      student_name: validatedOrder.student_name,
+      email: validatedOrder.email,
+      phone: validatedOrder.phone,
+      class: validatedOrder.class,
+      amount: validatedOrder.amount,
+      payment_status: "pending" as const
+    })
     .select()
     .single();
 
   if (error) {
-    console.error("Error creating order:", error);
     throw error;
   }
 
