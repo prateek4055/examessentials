@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom"
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowLeft, Lock, Tag } from "lucide-react";
+import { ArrowLeft, Lock, Tag, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -19,7 +19,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { fetchProductById, createOrder, Product } from "@/lib/api";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { clearCart, comboConfigs } from "@/lib/cartUtils";
 
 const purchaseSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -34,14 +36,13 @@ const purchaseSchema = z.object({
 
 type PurchaseFormData = z.infer<typeof purchaseSchema>;
 
-// Combo configuration
-const comboConfig: Record<string, { label: string; subjects: string[]; originalPrice: number }> = {
-  "single": { label: "Single Subject", subjects: [], originalPrice: 0 },
-  "phy-chem": { label: "Physics + Chemistry Combo", subjects: ["Physics", "Chemistry"], originalPrice: 149 },
-  "pcm": { label: "PCM Combo", subjects: ["Physics", "Chemistry", "Mathematics"], originalPrice: 199 },
-  "pcb": { label: "PCB Combo", subjects: ["Physics", "Chemistry", "Biology"], originalPrice: 209 },
-  "pcmb": { label: "PCMB Combo", subjects: ["Physics", "Chemistry", "Mathematics", "Biology"], originalPrice: 259 },
-};
+interface CartProduct {
+  id: string;
+  title: string;
+  subject: string;
+  class: string;
+  price: number;
+}
 
 const PurchaseForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,13 +50,19 @@ const PurchaseForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
+  const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Get combo info from URL
+  // Check if this is a cart checkout
+  const isCartCheckout = id === "cart";
+  const cartProductIds = searchParams.get("products")?.split(",") || [];
+  const cartTotal = parseInt(searchParams.get("total") || "0");
+  const appliedComboId = searchParams.get("combo") || "";
+  const appliedCombo = comboConfigs.find(c => c.id === appliedComboId);
+
+  // Legacy single product combo support
   const comboType = searchParams.get("combo") || "single";
   const comboPrice = parseInt(searchParams.get("price") || "0");
-  const combo = comboConfig[comboType] || comboConfig["single"];
-  const isCombo = comboType !== "single";
 
   const {
     register,
@@ -70,10 +77,12 @@ const PurchaseForm = () => {
   });
 
   useEffect(() => {
-    if (id) {
+    if (isCartCheckout) {
+      loadCartProducts();
+    } else if (id) {
       loadProduct();
     }
-  }, [id]);
+  }, [id, isCartCheckout]);
 
   const loadProduct = async () => {
     if (!id) return;
@@ -90,8 +99,52 @@ const PurchaseForm = () => {
     }
   };
 
+  const loadCartProducts = async () => {
+    if (cartProductIds.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+    
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, title, subject, class, price")
+        .in("id", cartProductIds);
+
+      if (error) throw error;
+      
+      setCartProducts((data || []) as CartProduct[]);
+      if (data && data.length > 0) {
+        setValue("studentClass", data[0].class);
+      }
+    } catch (error) {
+      console.error("Error loading cart products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getSubtotal = () => {
+    if (isCartCheckout) {
+      return cartProducts.reduce((sum, p) => sum + p.price, 0);
+    }
+    return product?.price || 0;
+  };
+
+  const getDiscount = () => {
+    if (isCartCheckout && appliedCombo) {
+      return getSubtotal() - cartTotal;
+    }
+    if (!isCartCheckout && comboType !== "single" && comboPrice > 0) {
+      const combo = comboConfigs.find(c => c.id === comboType);
+      return combo ? combo.originalPrice - comboPrice : 0;
+    }
+    return 0;
+  };
+
   const getFinalPrice = () => {
-    if (isCombo && comboPrice > 0) return comboPrice;
+    if (isCartCheckout) return cartTotal;
+    if (comboType !== "single" && comboPrice > 0) return comboPrice;
     return product?.price || 0;
   };
 
@@ -109,7 +162,7 @@ const PurchaseForm = () => {
     );
   }
 
-  if (!product) {
+  if (!isCartCheckout && !product) {
     return (
       <>
         <Navbar />
@@ -128,26 +181,51 @@ const PurchaseForm = () => {
     );
   }
 
+  if (isCartCheckout && cartProducts.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-24 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="font-display text-2xl font-bold text-foreground mb-4">
+              Cart is Empty
+            </h1>
+            <Button asChild variant="outline">
+              <Link to="/products">Browse All Notes</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   const onSubmit = async (data: PurchaseFormData) => {
     try {
-      // Create order in database with combo price
-      const order = await createOrder({
-        product_id: product.id,
-        student_name: data.fullName,
-        email: data.email,
-        phone: data.phone,
-        class: data.studentClass,
-        amount: getFinalPrice(),
-      });
-
-      // Save order to localStorage for cart tracking
-      const storedOrders = localStorage.getItem("pending_orders");
-      const orderIds = storedOrders ? JSON.parse(storedOrders) : [];
-      if (!orderIds.includes(order.id)) {
-        orderIds.push(order.id);
-        localStorage.setItem("pending_orders", JSON.stringify(orderIds));
-        // Dispatch event to update navbar cart count
-        window.dispatchEvent(new Event("cartUpdated"));
+      if (isCartCheckout) {
+        // Create orders for all cart products
+        for (const cartProduct of cartProducts) {
+          await createOrder({
+            product_id: cartProduct.id,
+            student_name: data.fullName,
+            email: data.email,
+            phone: data.phone,
+            class: data.studentClass,
+            amount: Math.round(getFinalPrice() / cartProducts.length),
+          });
+        }
+        
+        // Clear cart after successful order
+        clearCart();
+      } else if (product) {
+        await createOrder({
+          product_id: product.id,
+          student_name: data.fullName,
+          email: data.email,
+          phone: data.phone,
+          class: data.studentClass,
+          amount: getFinalPrice(),
+        });
       }
 
       toast({
@@ -172,13 +250,19 @@ const PurchaseForm = () => {
     }
   };
 
+  const pageTitle = isCartCheckout 
+    ? "Checkout" 
+    : `Purchase ${product?.title}`;
+
   return (
     <>
       <Helmet>
-        <title>Purchase {product.title} | Exam Essentials</title>
+        <title>{pageTitle} | Exam Essentials</title>
         <meta
           name="description"
-          content={`Complete your purchase of ${product.title} - Premium handwritten notes for Class ${product.class}.`}
+          content={isCartCheckout 
+            ? "Complete your purchase of study notes with combo discounts applied."
+            : `Complete your purchase of ${product?.title} - Premium handwritten notes.`}
         />
       </Helmet>
 
@@ -277,7 +361,7 @@ const PurchaseForm = () => {
                 <div className="space-y-2">
                   <Label className="font-body">Class</Label>
                   <Select
-                    defaultValue={product.class}
+                    defaultValue={isCartCheckout ? cartProducts[0]?.class : product?.class}
                     onValueChange={(value) => setValue("studentClass", value)}
                   >
                     <SelectTrigger className="bg-card border-border">
@@ -303,7 +387,7 @@ const PurchaseForm = () => {
                   className="w-full"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Processing..." : "Proceed to Payment"}
+                  {isSubmitting ? "Processing..." : `Pay ₹${getFinalPrice()}`}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center font-body flex items-center justify-center gap-2">
@@ -324,31 +408,31 @@ const PurchaseForm = () => {
                   Order Summary
                 </h2>
 
-                {/* Combo Badge */}
-                {isCombo && (
+                {/* Combo Applied Badge */}
+                {appliedCombo && (
                   <div className="mb-4 p-3 rounded-lg bg-accent/10 border border-accent/20">
                     <div className="flex items-center gap-2 text-accent">
-                      <Tag className="w-4 h-4" />
-                      <span className="font-body font-semibold text-sm">{combo.label}</span>
+                      <Sparkles className="w-4 h-4" />
+                      <span className="font-body font-semibold text-sm">{appliedCombo.label} Applied!</span>
                     </div>
                   </div>
                 )}
 
                 <div className="space-y-3 mb-6">
-                  {isCombo ? (
-                    // Show combo subjects
-                    combo.subjects.map((subject, index) => (
-                      <div key={index} className="flex justify-between items-start py-2 border-b border-border/50 last:border-0">
+                  {isCartCheckout ? (
+                    // Show cart products
+                    cartProducts.map((cartProduct) => (
+                      <div key={cartProduct.id} className="flex justify-between items-start py-2 border-b border-border/50 last:border-0">
                         <div>
                           <p className="font-body font-medium text-foreground">
-                            {subject} Notes
+                            {cartProduct.title}
                           </p>
                           <p className="text-sm text-muted-foreground font-body">
-                            Class {product.class} • Full Chapter Notes
+                            {cartProduct.subject} • Class {cartProduct.class}
                           </p>
                         </div>
-                        <span className="text-sm text-muted-foreground line-through">
-                          ₹{Math.round(combo.originalPrice / combo.subjects.length)}
+                        <span className={`font-body ${appliedCombo ? "text-muted-foreground line-through text-sm" : "font-medium text-foreground"}`}>
+                          ₹{cartProduct.price}
                         </span>
                       </div>
                     ))
@@ -357,32 +441,35 @@ const PurchaseForm = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-body font-medium text-foreground">
-                          {product.title}
+                          {product?.title}
                         </p>
                         <p className="text-sm text-muted-foreground font-body">
-                          {product.subject} • Class {product.class}
+                          {product?.subject} • Class {product?.class}
                         </p>
                       </div>
                       <span className="font-body font-medium text-foreground">
-                        ₹{product.price}
+                        ₹{product?.price}
                       </span>
                     </div>
                   )}
                 </div>
 
-                {/* Discount Section for Combo */}
-                {isCombo && (
+                {/* Discount Section */}
+                {getDiscount() > 0 && (
                   <div className="border-t border-border pt-4 mb-4 space-y-2">
                     <div className="flex justify-between items-center text-sm">
                       <span className="font-body text-muted-foreground">Subtotal</span>
-                      <span className="font-body text-muted-foreground line-through">
-                        ₹{combo.originalPrice}
+                      <span className="font-body text-muted-foreground">
+                        ₹{getSubtotal()}
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
-                      <span className="font-body text-green-500">Combo Discount</span>
-                      <span className="font-body text-green-500">
-                        -₹{combo.originalPrice - getFinalPrice()}
+                      <span className="font-body text-accent flex items-center gap-1">
+                        <Tag className="w-3 h-3" />
+                        {appliedCombo?.label || "Combo"} Discount
+                      </span>
+                      <span className="font-body text-accent">
+                        -₹{getDiscount()}
                       </span>
                     </div>
                   </div>
@@ -397,9 +484,9 @@ const PurchaseForm = () => {
                       <span className="font-display text-2xl font-bold text-foreground">
                         ₹{getFinalPrice()}
                       </span>
-                      {isCombo && (
-                        <p className="text-xs text-green-500 font-body">
-                          You save ₹{combo.originalPrice - getFinalPrice()}!
+                      {getDiscount() > 0 && (
+                        <p className="text-xs text-accent font-body">
+                          You save ₹{getDiscount()}!
                         </p>
                       )}
                     </div>
@@ -408,7 +495,7 @@ const PurchaseForm = () => {
 
                 <div className="mt-6 p-4 rounded-xl bg-secondary/50">
                   <p className="text-sm text-muted-foreground font-body">
-                    After payment, {isCombo ? "all PDFs" : "your PDF"} will be delivered to your email
+                    After payment, {isCartCheckout ? "all PDFs" : "your PDF"} will be delivered to your email
                     within 5 minutes.
                   </p>
                 </div>
