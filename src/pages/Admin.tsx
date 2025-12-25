@@ -39,17 +39,29 @@ const Admin = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    // Wait for auth loading to complete before checking permissions
     if (!authLoading) {
       if (!user) {
         navigate("/auth");
-      } else if (!isAdmin) {
-        toast({
-          title: "Access Denied",
-          description: "You don't have admin privileges.",
-          variant: "destructive",
-        });
-        navigate("/");
       }
+    }
+  }, [user, authLoading, navigate]);
+
+  // Separate effect for admin check with a slight delay to ensure role is loaded
+  useEffect(() => {
+    if (!authLoading && user && !isAdmin) {
+      // Give a small delay to allow admin status to be fetched
+      const timer = setTimeout(() => {
+        if (!isAdmin) {
+          toast({
+            title: "Access Denied",
+            description: "You don't have admin privileges.",
+            variant: "destructive",
+          });
+          navigate("/");
+        }
+      }, 1500);
+      return () => clearTimeout(timer);
     }
   }, [user, isAdmin, authLoading, navigate, toast]);
 
