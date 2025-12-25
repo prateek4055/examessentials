@@ -13,12 +13,12 @@ export interface ComboConfig {
   originalPrice: number;
 }
 
-// All available combos
+// All available combos - NOTE: Use "Maths" to match database subject names
 export const comboConfigs: ComboConfig[] = [
   { id: "phy-chem", label: "Physics + Chemistry", subjects: ["Physics", "Chemistry"], price: 99, originalPrice: 149 },
-  { id: "pcm", label: "PCM Combo", subjects: ["Physics", "Chemistry", "Mathematics"], price: 139, originalPrice: 199 },
+  { id: "pcm", label: "PCM Combo", subjects: ["Physics", "Chemistry", "Maths"], price: 139, originalPrice: 199 },
   { id: "pcb", label: "PCB Combo", subjects: ["Physics", "Chemistry", "Biology"], price: 149, originalPrice: 209 },
-  { id: "pcmb", label: "PCMB Combo", subjects: ["Physics", "Chemistry", "Mathematics", "Biology"], price: 179, originalPrice: 259 },
+  { id: "pcmb", label: "PCMB Combo", subjects: ["Physics", "Chemistry", "Maths", "Biology"], price: 179, originalPrice: 259 },
 ];
 
 // Get cart items from localStorage
