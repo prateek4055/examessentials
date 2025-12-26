@@ -2,7 +2,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRight, Shield, BadgeCheck, Lock, Headphones, MessageCircle, Star, Users } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -369,12 +370,133 @@ const ProductDetail = () => {
                   {isAddingToCart ? "Adding..." : "Add to Cart"}
                 </Button>
 
-                <p className="text-xs text-muted-foreground text-center mt-4 font-body">
-                  Secure payment via Razorpay. Instant PDF delivery.
-                </p>
+                {/* Trust Bar */}
+                <div className="mt-6 p-4 bg-secondary/50 rounded-xl border border-border">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                        <Shield className="w-4 h-4 text-emerald-500" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-foreground font-body">Razorpay</p>
+                        <p className="text-[10px] text-emerald-500 font-body">Trusted Business</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <BadgeCheck className="w-4 h-4 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-foreground font-body">Verified</p>
+                        <p className="text-[10px] text-muted-foreground font-body">Business</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <Lock className="w-4 h-4 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-foreground font-body">Secured</p>
+                        <p className="text-[10px] text-muted-foreground font-body">Payments</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <Headphones className="w-4 h-4 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-foreground font-body">Prompt</p>
+                        <p className="text-[10px] text-muted-foreground font-body">Support</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* WhatsApp Button */}
+                <a
+                  href="https://api.whatsapp.com/send?phone=919876543210&text=Hi!%20I'm%20interested%20in%20Exam%20Essentials%20notes."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-secondary border border-border rounded-xl text-foreground font-body font-medium hover:bg-secondary/80 transition-colors"
+                >
+                  <MessageCircle className="w-5 h-5 text-emerald-500" />
+                  Enquire on WhatsApp
+                </a>
               </div>
             </motion.div>
           </div>
+
+          {/* Tabbed Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="max-w-6xl mx-auto mt-16"
+          >
+            <Tabs defaultValue="reviews" className="w-full">
+              <TabsList className="w-full max-w-md mx-auto grid grid-cols-1 bg-secondary/50 rounded-xl p-1">
+                <TabsTrigger value="reviews" className="font-body rounded-lg data-[state=active]:bg-background">
+                  Reviews (158)
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="reviews" className="mt-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[
+                    { name: "Aryan Sharma", rating: 5, text: "These notes are amazing! Helped me score 95% in my boards.", class: "12" },
+                    { name: "Priya Patel", rating: 5, text: "Crystal clear explanations and beautiful diagrams. Highly recommended!", class: "11" },
+                    { name: "Rahul Verma", rating: 5, text: "Best investment for my exam prep. Instant delivery was a plus!", class: "12" },
+                    { name: "Sneha Gupta", rating: 5, text: "The handwritten style makes it so easy to understand and remember.", class: "11" },
+                  ].map((review, index) => (
+                    <div key={index} className="p-6 bg-secondary/30 rounded-xl border border-border">
+                      <div className="flex items-center gap-1 mb-3">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+                        ))}
+                      </div>
+                      <p className="font-body text-muted-foreground mb-4">"{review.text}"</p>
+                      <div className="flex items-center justify-between">
+                        <p className="font-body font-medium text-foreground">{review.name}</p>
+                        <span className="text-xs text-muted-foreground font-body">Class {review.class}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </motion.div>
+
+          {/* Bottom Trust Badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="max-w-3xl mx-auto mt-16"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col items-center p-6 bg-secondary/30 rounded-xl border border-border text-center">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
+                  <Shield className="w-8 h-8 text-emerald-500" />
+                </div>
+                <h4 className="font-display text-lg font-semibold text-foreground mb-1">
+                  100% Safe & Secure Payments
+                </h4>
+                <p className="text-sm text-muted-foreground font-body">
+                  All transactions are encrypted and secure
+                </p>
+              </div>
+              <div className="flex flex-col items-center p-6 bg-secondary/30 rounded-xl border border-border text-center">
+                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-4">
+                  <Users className="w-8 h-8 text-accent" />
+                </div>
+                <h4 className="font-display text-lg font-semibold text-foreground mb-1">
+                  Trusted by 1000+ Students
+                </h4>
+                <p className="text-sm text-muted-foreground font-body">
+                  Join our community of successful learners
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </main>
       <Footer />
