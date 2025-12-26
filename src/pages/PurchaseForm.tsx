@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { fetchProductById, createOrder, Product } from "@/lib/api";
+import { fetchProductById, Product } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearCart, comboConfigs } from "@/lib/cartUtils";
@@ -302,44 +302,64 @@ const PurchaseForm = () => {
           : product?.title || "Premium Notes",
         order_id: orderData.orderId,
         handler: async (response: RazorpayResponse) => {
-          console.log("Payment successful:", response);
+          console.log("Payment received, verifying signature...");
           
-          // Capture form data for order creation
-          const orderData = {
-            student_name: data.fullName,
-            email: data.email,
-            phone: data.phone,
-            class: data.studentClass as "11" | "12",
-            razorpay_payment_id: response.razorpay_payment_id,
-          };
-          
-          console.log("Creating order with data:", orderData);
-          
-          // Create orders in database after successful payment
           try {
+            // Verify payment and create orders via edge function
             if (isCartCheckout) {
+              // For cart checkout, verify and create each order
               for (const cartProduct of cartProducts) {
-                console.log("Creating order for cart product:", cartProduct.id);
-                await createOrder({
-                  product_id: cartProduct.id,
-                  student_name: orderData.student_name,
-                  email: orderData.email,
-                  phone: orderData.phone,
-                  class: orderData.class,
-                  amount: Math.round(getFinalPrice() / cartProducts.length),
-                });
+                console.log("Verifying and creating order for cart product:", cartProduct.id);
+                const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+                  "verify-razorpay-payment",
+                  {
+                    body: {
+                      razorpay_order_id: response.razorpay_order_id,
+                      razorpay_payment_id: response.razorpay_payment_id,
+                      razorpay_signature: response.razorpay_signature,
+                      orderData: {
+                        product_id: cartProduct.id,
+                        student_name: data.fullName,
+                        email: data.email,
+                        phone: data.phone,
+                        class: data.studentClass,
+                        amount: Math.round(getFinalPrice() / cartProducts.length),
+                      },
+                    },
+                  }
+                );
+
+                if (verifyError || !verifyData?.verified) {
+                  console.error("Payment verification failed:", verifyError);
+                  throw new Error("Payment verification failed");
+                }
               }
               clearCart();
             } else if (product) {
-              console.log("Creating order for single product:", product.id);
-              await createOrder({
-                product_id: product.id,
-                student_name: orderData.student_name,
-                email: orderData.email,
-                phone: orderData.phone,
-                class: orderData.class,
-                amount: getFinalPrice(),
-              });
+              console.log("Verifying and creating order for single product:", product.id);
+              const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+                "verify-razorpay-payment",
+                {
+                  body: {
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                    orderData: {
+                      product_id: product.id,
+                      student_name: data.fullName,
+                      email: data.email,
+                      phone: data.phone,
+                      class: data.studentClass,
+                      amount: getFinalPrice(),
+                    },
+                  },
+                }
+              );
+
+              if (verifyError || !verifyData?.verified) {
+                console.error("Payment verification failed:", verifyError);
+                throw new Error("Payment verification failed");
+              }
             } else {
               console.error("No product found for order creation");
               throw new Error("Product not found");
@@ -348,10 +368,12 @@ const PurchaseForm = () => {
             // Show success modal
             setShowSuccessModal(true);
           } catch (error: any) {
-            console.error("Error saving order:", error);
-            console.error("Error details:", error?.message, error?.issues);
-            // Still show success modal since payment was successful
-            setShowSuccessModal(true);
+            console.error("Error verifying payment:", error);
+            toast({
+              title: "Verification Failed",
+              description: "Payment verification failed. Please contact support if amount was deducted.",
+              variant: "destructive",
+            });
           }
         },
         prefill: {
