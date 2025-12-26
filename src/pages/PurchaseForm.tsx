@@ -183,6 +183,21 @@ const PurchaseForm = () => {
     return product?.price || 0;
   };
 
+  // Load Razorpay script - must be before any early returns
+  const loadRazorpayScript = useCallback((): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  }, []);
+
   if (isLoading) {
     return (
       <>
@@ -234,21 +249,6 @@ const PurchaseForm = () => {
       </>
     );
   }
-
-  // Load Razorpay script
-  const loadRazorpayScript = useCallback((): Promise<boolean> => {
-    return new Promise((resolve) => {
-      if (window.Razorpay) {
-        resolve(true);
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  }, []);
 
   const onSubmit = async (data: PurchaseFormData) => {
     try {
