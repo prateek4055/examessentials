@@ -88,10 +88,15 @@ const AdminProductForm = () => {
       if (!user) {
         navigate("/auth");
       } else if (!isAdmin) {
+        toast({
+          title: "Access Denied",
+          description: "You don't have admin privileges.",
+          variant: "destructive",
+        });
         navigate("/");
       }
     }
-  }, [user, isAdmin, authLoading, navigate]);
+  }, [user, isAdmin, authLoading, navigate, toast]);
 
   useEffect(() => {
     if (isEditing && isAdmin) {
