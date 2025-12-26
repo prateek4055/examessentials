@@ -302,29 +302,45 @@ const PurchaseForm = () => {
         handler: async (response: RazorpayResponse) => {
           console.log("Payment successful:", response);
           
+          // Capture form data for order creation
+          const orderData = {
+            student_name: data.fullName,
+            email: data.email,
+            phone: data.phone,
+            class: data.studentClass as "11" | "12",
+            razorpay_payment_id: response.razorpay_payment_id,
+          };
+          
+          console.log("Creating order with data:", orderData);
+          
           // Create orders in database after successful payment
           try {
             if (isCartCheckout) {
               for (const cartProduct of cartProducts) {
+                console.log("Creating order for cart product:", cartProduct.id);
                 await createOrder({
                   product_id: cartProduct.id,
-                  student_name: data.fullName,
-                  email: data.email,
-                  phone: data.phone,
-                  class: data.studentClass,
+                  student_name: orderData.student_name,
+                  email: orderData.email,
+                  phone: orderData.phone,
+                  class: orderData.class,
                   amount: Math.round(getFinalPrice() / cartProducts.length),
                 });
               }
               clearCart();
             } else if (product) {
+              console.log("Creating order for single product:", product.id);
               await createOrder({
                 product_id: product.id,
-                student_name: data.fullName,
-                email: data.email,
-                phone: data.phone,
-                class: data.studentClass,
+                student_name: orderData.student_name,
+                email: orderData.email,
+                phone: orderData.phone,
+                class: orderData.class,
                 amount: getFinalPrice(),
               });
+            } else {
+              console.error("No product found for order creation");
+              throw new Error("Product not found");
             }
 
             toast({
@@ -333,8 +349,9 @@ const PurchaseForm = () => {
             });
             
             navigate("/products");
-          } catch (error) {
+          } catch (error: any) {
             console.error("Error saving order:", error);
+            console.error("Error details:", error?.message, error?.issues);
             toast({
               title: "Payment Received",
               description: "Payment was successful but there was an issue saving your order. Please contact support with your payment ID: " + response.razorpay_payment_id,
