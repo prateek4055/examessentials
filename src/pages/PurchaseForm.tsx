@@ -307,7 +307,8 @@ const PurchaseForm = () => {
           try {
             // Verify payment and create orders via edge function
             if (isCartCheckout) {
-              // For cart checkout, verify and create each order
+              // For cart checkout, verify and create each order with full validation data
+              const finalPrice = getFinalPrice();
               for (const cartProduct of cartProducts) {
                 console.log("Verifying and creating order for cart product:", cartProduct.id);
                 const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
@@ -323,15 +324,20 @@ const PurchaseForm = () => {
                         email: data.email,
                         phone: data.phone,
                         class: data.studentClass,
-                        amount: Math.round(getFinalPrice() / cartProducts.length),
+                        amount: Math.round(finalPrice / cartProducts.length),
                       },
+                      // Additional fields for server-side price validation
+                      isCartCheckout: true,
+                      productIds: cartProducts.map(p => p.id),
+                      comboId: appliedComboId || undefined,
+                      totalAmount: finalPrice,
                     },
                   }
                 );
 
                 if (verifyError || !verifyData?.verified) {
                   console.error("Payment verification failed:", verifyError);
-                  throw new Error("Payment verification failed");
+                  throw new Error(verifyData?.error || "Payment verification failed");
                 }
               }
               clearCart();
@@ -350,15 +356,17 @@ const PurchaseForm = () => {
                       email: data.email,
                       phone: data.phone,
                       class: data.studentClass,
-                      amount: getFinalPrice(),
+                      amount: product.price, // Use database price, not client-calculated
                     },
+                    // Additional fields for server-side price validation
+                    isCartCheckout: false,
                   },
                 }
               );
 
               if (verifyError || !verifyData?.verified) {
                 console.error("Payment verification failed:", verifyError);
-                throw new Error("Payment verification failed");
+                throw new Error(verifyData?.error || "Payment verification failed");
               }
             } else {
               console.error("No product found for order creation");
@@ -371,7 +379,7 @@ const PurchaseForm = () => {
             console.error("Error verifying payment:", error);
             toast({
               title: "Verification Failed",
-              description: "Payment verification failed. Please contact support if amount was deducted.",
+              description: error?.message || "Payment verification failed. Please contact support if amount was deducted.",
               variant: "destructive",
             });
           }
