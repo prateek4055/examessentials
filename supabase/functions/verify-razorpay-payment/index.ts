@@ -7,6 +7,14 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Combo configurations - must match frontend exactly
+const comboConfigs = [
+  { id: "phy-chem", subjects: ["Physics", "Chemistry"], price: 99 },
+  { id: "pcm", subjects: ["Physics", "Chemistry", "Maths"], price: 139 },
+  { id: "pcb", subjects: ["Physics", "Chemistry", "Biology"], price: 149 },
+  { id: "pcmb", subjects: ["Physics", "Chemistry", "Maths", "Biology"], price: 179 },
+];
+
 interface VerifyPaymentRequest {
   razorpay_order_id: string;
   razorpay_payment_id: string;
@@ -19,6 +27,55 @@ interface VerifyPaymentRequest {
     class: string;
     amount: number;
   };
+  // Additional fields for cart checkout validation
+  isCartCheckout?: boolean;
+  productIds?: string[];
+  comboId?: string;
+  totalAmount?: number;
+}
+
+// Detect best combo for given subjects (server-side validation)
+function detectBestCombo(subjects: string[]): { id: string; price: number } | null {
+  const uniqueSubjects = [...new Set(subjects.map(s => s.toLowerCase()))];
+  
+  // Sort combos by savings (most savings first)
+  const sortedCombos = [...comboConfigs].sort((a, b) => 
+    (b.price) - (a.price) // Higher price combos have more subjects
+  ).reverse();
+  
+  for (const combo of sortedCombos) {
+    const comboSubjectsLower = combo.subjects.map(s => s.toLowerCase());
+    const hasAllSubjects = comboSubjectsLower.every(sub => 
+      uniqueSubjects.includes(sub)
+    );
+    
+    if (hasAllSubjects) {
+      return { id: combo.id, price: combo.price };
+    }
+  }
+  
+  return null;
+}
+
+// Calculate expected price for cart
+function calculateExpectedCartTotal(products: { price: number; subject: string }[], comboId?: string): number {
+  const subjects = products.map(p => p.subject);
+  const bestCombo = detectBestCombo(subjects);
+  
+  if (bestCombo && (!comboId || comboId === bestCombo.id)) {
+    const comboConfig = comboConfigs.find(c => c.id === bestCombo.id);
+    if (comboConfig) {
+      const comboSubjectsLower = comboConfig.subjects.map(s => s.toLowerCase());
+      const nonComboProducts = products.filter(p => 
+        !comboSubjectsLower.includes(p.subject.toLowerCase())
+      );
+      const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
+      return comboConfig.price + nonComboTotal;
+    }
+  }
+  
+  // No combo - return full price
+  return products.reduce((sum, p) => sum + p.price, 0);
 }
 
 serve(async (req) => {
@@ -42,12 +99,17 @@ serve(async (req) => {
       throw new Error("Supabase credentials not configured");
     }
 
+    const requestData: VerifyPaymentRequest = await req.json();
     const { 
       razorpay_order_id, 
       razorpay_payment_id, 
       razorpay_signature, 
-      orderData 
-    }: VerifyPaymentRequest = await req.json();
+      orderData,
+      isCartCheckout,
+      productIds,
+      comboId,
+      totalAmount
+    } = requestData;
 
     // Validate required fields
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -108,6 +170,71 @@ serve(async (req) => {
 
     if (!orderData.amount || orderData.amount <= 0) {
       throw new Error("Invalid amount");
+    }
+
+    // SERVER-SIDE PRICE VALIDATION
+    console.log("Validating price against database...");
+
+    if (isCartCheckout && productIds && productIds.length > 0) {
+      // Cart checkout - validate total against product prices and combo rules
+      const { data: products, error: productsError } = await supabase
+        .from("products")
+        .select("id, price, subject")
+        .in("id", productIds)
+        .eq("published", true);
+
+      if (productsError || !products || products.length !== productIds.length) {
+        console.error("Failed to fetch products for validation:", productsError);
+        throw new Error("Invalid products in cart");
+      }
+
+      const expectedTotal = calculateExpectedCartTotal(products, comboId);
+      const providedTotal = totalAmount || orderData.amount;
+
+      console.log(`Cart validation - Expected: ${expectedTotal}, Provided: ${providedTotal}`);
+
+      if (providedTotal !== expectedTotal) {
+        console.error(`Price mismatch! Expected: ${expectedTotal}, Got: ${providedTotal}`);
+        return new Response(
+          JSON.stringify({ error: "Price mismatch detected. Please refresh and try again.", verified: false }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          }
+        );
+      }
+
+      console.log("Cart price validated successfully");
+    } else if (orderData.product_id) {
+      // Single product checkout - validate price against database
+      const { data: product, error: productError } = await supabase
+        .from("products")
+        .select("id, price")
+        .eq("id", orderData.product_id)
+        .eq("published", true)
+        .maybeSingle();
+
+      if (productError || !product) {
+        console.error("Failed to fetch product for validation:", productError);
+        throw new Error("Product not found or not available");
+      }
+
+      console.log(`Single product validation - DB Price: ${product.price}, Provided: ${orderData.amount}`);
+
+      if (product.price !== orderData.amount) {
+        console.error(`Price mismatch! Expected: ${product.price}, Got: ${orderData.amount}`);
+        return new Response(
+          JSON.stringify({ error: "Price mismatch detected. Please refresh and try again.", verified: false }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          }
+        );
+      }
+
+      console.log("Single product price validated successfully");
+    } else {
+      throw new Error("No product information provided for validation");
     }
 
     // Get user ID from JWT if authenticated
