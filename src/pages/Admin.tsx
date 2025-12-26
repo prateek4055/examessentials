@@ -43,33 +43,23 @@ const Admin = () => {
     if (!authLoading) {
       if (!user) {
         navigate("/auth");
+      } else if (!isAdmin) {
+        toast({
+          title: "Access Denied",
+          description: "You don't have admin privileges.",
+          variant: "destructive",
+        });
+        navigate("/");
       }
-    }
-  }, [user, authLoading, navigate]);
-
-  // Separate effect for admin check with a slight delay to ensure role is loaded
-  useEffect(() => {
-    if (!authLoading && user && !isAdmin) {
-      // Give a small delay to allow admin status to be fetched
-      const timer = setTimeout(() => {
-        if (!isAdmin) {
-          toast({
-            title: "Access Denied",
-            description: "You don't have admin privileges.",
-            variant: "destructive",
-          });
-          navigate("/");
-        }
-      }, 1500);
-      return () => clearTimeout(timer);
     }
   }, [user, isAdmin, authLoading, navigate, toast]);
 
+  // Only load data after confirmed admin status
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin && !authLoading) {
       loadData();
     }
-  }, [isAdmin]);
+  }, [isAdmin, authLoading]);
 
   const loadData = async () => {
     setIsLoading(true);
@@ -155,7 +145,8 @@ const Admin = () => {
     navigate("/");
   };
 
-  if (authLoading || isLoading) {
+  // Show loading state until auth completes and we confirm admin status
+  if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-pulse text-foreground font-body">Loading...</div>
@@ -163,6 +154,16 @@ const Admin = () => {
     );
   }
 
+  // Show loading while data is being fetched (only for admins)
+  if (isAdmin && isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-foreground font-body">Loading...</div>
+      </div>
+    );
+  }
+
+  // Don't render admin UI if not admin (redirect will happen via useEffect)
   if (!isAdmin) {
     return null;
   }
