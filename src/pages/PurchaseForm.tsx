@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { ArrowLeft, Lock, Tag, Sparkles } from "lucide-react";
@@ -22,6 +22,41 @@ import { fetchProductById, createOrder, Product } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearCart, comboConfigs } from "@/lib/cartUtils";
+
+declare global {
+  interface Window {
+    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
+  }
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorpayResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  theme: {
+    color: string;
+  };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+  on: (event: string, callback: () => void) => void;
+}
+
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+}
 
 const purchaseSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -200,51 +235,136 @@ const PurchaseForm = () => {
     );
   }
 
+  // Load Razorpay script
+  const loadRazorpayScript = useCallback((): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  }, []);
+
   const onSubmit = async (data: PurchaseFormData) => {
     try {
-      if (isCartCheckout) {
-        // Create orders for all cart products
-        for (const cartProduct of cartProducts) {
-          await createOrder({
-            product_id: cartProduct.id,
-            student_name: data.fullName,
-            email: data.email,
-            phone: data.phone,
-            class: data.studentClass,
-            amount: Math.round(getFinalPrice() / cartProducts.length),
-          });
-        }
-        
-        // Clear cart after successful order
-        clearCart();
-      } else if (product) {
-        await createOrder({
-          product_id: product.id,
-          student_name: data.fullName,
-          email: data.email,
-          phone: data.phone,
-          class: data.studentClass,
-          amount: getFinalPrice(),
+      // Load Razorpay script
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        toast({
+          title: "Error",
+          description: "Failed to load payment gateway. Please refresh and try again.",
+          variant: "destructive",
         });
+        return;
       }
 
-      toast({
-        title: "Order Created!",
-        description: "Redirecting to payment gateway...",
-      });
+      // Create Razorpay order via edge function
+      const { data: orderData, error: orderError } = await supabase.functions.invoke(
+        "create-razorpay-order",
+        {
+          body: {
+            amount: getFinalPrice(),
+            currency: "INR",
+            receipt: `order_${Date.now()}`,
+            notes: {
+              customer_name: data.fullName,
+              customer_email: data.email,
+              customer_phone: data.phone,
+              customer_class: data.studentClass,
+              products: isCartCheckout 
+                ? cartProducts.map(p => p.title).join(", ")
+                : product?.title || "",
+            },
+          },
+        }
+      );
 
-      // Placeholder: In production, redirect to actual Razorpay payment link
-      setTimeout(() => {
+      if (orderError || !orderData) {
+        console.error("Error creating Razorpay order:", orderError);
+        throw new Error("Failed to create payment order");
+      }
+
+      // Open Razorpay checkout
+      const options: RazorpayOptions = {
+        key: orderData.keyId,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "Exam Essentials",
+        description: isCartCheckout 
+          ? `${cartProducts.length} Notes Bundle`
+          : product?.title || "Premium Notes",
+        order_id: orderData.orderId,
+        handler: async (response: RazorpayResponse) => {
+          console.log("Payment successful:", response);
+          
+          // Create orders in database after successful payment
+          try {
+            if (isCartCheckout) {
+              for (const cartProduct of cartProducts) {
+                await createOrder({
+                  product_id: cartProduct.id,
+                  student_name: data.fullName,
+                  email: data.email,
+                  phone: data.phone,
+                  class: data.studentClass,
+                  amount: Math.round(getFinalPrice() / cartProducts.length),
+                });
+              }
+              clearCart();
+            } else if (product) {
+              await createOrder({
+                product_id: product.id,
+                student_name: data.fullName,
+                email: data.email,
+                phone: data.phone,
+                class: data.studentClass,
+                amount: getFinalPrice(),
+              });
+            }
+
+            toast({
+              title: "Payment Successful! 🎉",
+              description: "Your order has been placed. You will receive the PDF on your email shortly.",
+            });
+            
+            navigate("/products");
+          } catch (error) {
+            console.error("Error saving order:", error);
+            toast({
+              title: "Payment Received",
+              description: "Payment was successful but there was an issue saving your order. Please contact support with your payment ID: " + response.razorpay_payment_id,
+            });
+          }
+        },
+        prefill: {
+          name: data.fullName,
+          email: data.email,
+          contact: data.phone,
+        },
+        theme: {
+          color: "#8B5CF6",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.on("payment.failed", () => {
         toast({
-          title: "Payment Gateway",
-          description:
-            "Razorpay integration will redirect you to complete payment. Contact admin for PDF delivery.",
+          title: "Payment Failed",
+          description: "Your payment was not successful. Please try again.",
+          variant: "destructive",
         });
-      }, 1500);
+      });
+      razorpay.open();
     } catch (error) {
+      console.error("Payment error:", error);
       toast({
         title: "Error",
-        description: "Failed to create order. Please try again.",
+        description: "Failed to initiate payment. Please try again.",
         variant: "destructive",
       });
     }
