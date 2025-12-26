@@ -2,8 +2,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRight, Shield, BadgeCheck, Lock, Headphones, MessageCircle, Star, Users } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRight, Shield, BadgeCheck, Lock, Headphones, MessageCircle, Users } from "lucide-react";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -425,45 +425,6 @@ const ProductDetail = () => {
               </div>
             </motion.div>
           </div>
-
-          {/* Tabbed Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="max-w-6xl mx-auto mt-16"
-          >
-            <Tabs defaultValue="reviews" className="w-full">
-              <TabsList className="w-full max-w-md mx-auto grid grid-cols-1 bg-secondary/50 rounded-xl p-1">
-                <TabsTrigger value="reviews" className="font-body rounded-lg data-[state=active]:bg-background">
-                  Reviews (158)
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="reviews" className="mt-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {[
-                    { name: "Aryan Sharma", rating: 5, text: "These notes are amazing! Helped me score 95% in my boards.", class: "12" },
-                    { name: "Priya Patel", rating: 5, text: "Crystal clear explanations and beautiful diagrams. Highly recommended!", class: "11" },
-                    { name: "Rahul Verma", rating: 5, text: "Best investment for my exam prep. Instant delivery was a plus!", class: "12" },
-                    { name: "Sneha Gupta", rating: 5, text: "The handwritten style makes it so easy to understand and remember.", class: "11" },
-                  ].map((review, index) => (
-                    <div key={index} className="p-6 bg-secondary/30 rounded-xl border border-border">
-                      <div className="flex items-center gap-1 mb-3">
-                        {[...Array(review.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-gold text-gold" />
-                        ))}
-                      </div>
-                      <p className="font-body text-muted-foreground mb-4">"{review.text}"</p>
-                      <div className="flex items-center justify-between">
-                        <p className="font-body font-medium text-foreground">{review.name}</p>
-                        <span className="text-xs text-muted-foreground font-body">Class {review.class}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
-          </motion.div>
 
           {/* Bottom Trust Badges */}
           <motion.div
