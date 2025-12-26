@@ -22,6 +22,7 @@ import { fetchProductById, createOrder, Product } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearCart, comboConfigs } from "@/lib/cartUtils";
+import PaymentSuccessModal from "@/components/PaymentSuccessModal";
 
 declare global {
   interface Window {
@@ -87,6 +88,7 @@ const PurchaseForm = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Check if this is a cart checkout
   const isCartCheckout = id === "cart";
@@ -343,19 +345,13 @@ const PurchaseForm = () => {
               throw new Error("Product not found");
             }
 
-            toast({
-              title: "Payment Successful! 🎉",
-              description: "Your order has been placed. You will receive the PDF on your email shortly.",
-            });
-            
-            navigate("/products");
+            // Show success modal
+            setShowSuccessModal(true);
           } catch (error: any) {
             console.error("Error saving order:", error);
             console.error("Error details:", error?.message, error?.issues);
-            toast({
-              title: "Payment Received",
-              description: "Payment was successful but there was an issue saving your order. Please contact support with your payment ID: " + response.razorpay_payment_id,
-            });
+            // Still show success modal since payment was successful
+            setShowSuccessModal(true);
           }
         },
         prefill: {
@@ -642,6 +638,14 @@ const PurchaseForm = () => {
         </div>
       </main>
       <Footer />
+
+      <PaymentSuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false);
+          navigate("/products");
+        }}
+      />
     </>
   );
 };
