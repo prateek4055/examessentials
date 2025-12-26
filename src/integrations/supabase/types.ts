@@ -24,6 +24,8 @@ export type Database = {
           payment_status: string
           phone: string
           product_id: string | null
+          razorpay_order_id: string | null
+          razorpay_payment_id: string | null
           student_name: string
           user_id: string | null
         }
@@ -36,6 +38,8 @@ export type Database = {
           payment_status?: string
           phone: string
           product_id?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
           student_name: string
           user_id?: string | null
         }
@@ -48,6 +52,8 @@ export type Database = {
           payment_status?: string
           phone?: string
           product_id?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
           student_name?: string
           user_id?: string | null
         }
