@@ -47,7 +47,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2 text-background/70">
                 <MessageCircle className="w-4 h-4" />
-                <a href="https://wa.me/c/919460970342" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">WhatsApp</a>
+                <a href="https://api.whatsapp.com/send?phone=919460970342" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">WhatsApp</a>
               </li>
             </ul>
           </div>
