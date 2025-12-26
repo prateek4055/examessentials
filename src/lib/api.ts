@@ -172,11 +172,12 @@ export const createOrder = async (
   return data as Order;
 };
 
-// Fetch all orders (admin only)
+// Fetch all orders (admin only - excludes guest orders)
 export const fetchAllOrders = async (): Promise<Order[]> => {
   const { data, error } = await supabase
     .from("orders")
     .select("*")
+    .not("user_id", "is", null)
     .order("created_at", { ascending: false });
 
   if (error) {
