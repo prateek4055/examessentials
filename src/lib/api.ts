@@ -172,14 +172,11 @@ export const createOrder = async (
   return data as Order;
 };
 
-// Fetch all orders (admin only - excludes guest orders)
+// Fetch all orders (admin only - includes guest orders)
 export const fetchAllOrders = async (): Promise<Order[]> => {
   const { data, error } = await supabase
     .from("orders")
     .select("*")
-    // PostgREST syntax for NOT NULL is: user_id=not.is.null
-    // Passing "null" as a string reliably generates that filter.
-    .not("user_id", "is", "null")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -187,8 +184,7 @@ export const fetchAllOrders = async (): Promise<Order[]> => {
     throw error;
   }
 
-  // Extra guard (in case some older rows have null/empty user_id)
-  return ((data || []) as Order[]).filter((o) => Boolean(o.user_id));
+  return (data || []) as Order[];
 };
 
 // Update order status (admin only)
