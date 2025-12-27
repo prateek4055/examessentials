@@ -1,9 +1,20 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+// Allowed origins for CORS - restrict to your domains
+const ALLOWED_ORIGINS = [
+  "https://jewjjbrdriccunhyoxww.lovableproject.com",
+  "http://localhost:5173",
+  "http://localhost:8080",
+];
+
+function getCorsHeaders(origin: string | null): Record<string, string> {
+  const allowedOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  };
+}
 
 interface OrderRequest {
   amount: number;
@@ -13,6 +24,9 @@ interface OrderRequest {
 }
 
 serve(async (req) => {
+  const origin = req.headers.get("origin");
+  const corsHeaders = getCorsHeaders(origin);
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -68,7 +82,7 @@ serve(async (req) => {
         orderId: order.id,
         amount: order.amount,
         currency: order.currency,
-        keyId: RAZORPAY_KEY_ID, // Send key ID to frontend for checkout
+        keyId: RAZORPAY_KEY_ID,
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
