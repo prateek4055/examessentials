@@ -266,6 +266,7 @@ const PurchaseForm = () => {
       }
 
       // Create Razorpay order via edge function
+      console.log("Creating Razorpay order for amount:", getFinalPrice());
       const { data: orderData, error: orderError } = await supabase.functions.invoke(
         "create-razorpay-order",
         {
@@ -286,9 +287,16 @@ const PurchaseForm = () => {
         }
       );
 
-      if (orderError || !orderData) {
+      console.log("Razorpay order response:", { orderData, orderError });
+
+      if (orderError) {
         console.error("Error creating Razorpay order:", orderError);
-        throw new Error("Failed to create payment order");
+        throw new Error(orderError.message || "Failed to create payment order");
+      }
+
+      if (!orderData || !orderData.orderId) {
+        console.error("Invalid order data received:", orderData);
+        throw new Error("Invalid payment order response");
       }
 
       // Open Razorpay checkout
