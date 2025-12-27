@@ -6,9 +6,10 @@ function isAllowedOrigin(origin: string | null): boolean {
   
   // Allow localhost for development
   if (origin.startsWith("http://localhost:")) return true;
-  
-  // Allow all lovableproject.com subdomains (preview URLs)
+
+  // Allow Lovable preview + production domains
   if (origin.endsWith(".lovableproject.com")) return true;
+  if (origin.endsWith(".lovable.app")) return true;
   
   // Add your production domain here when you have one
   // if (origin === "https://yourdomain.com") return true;
