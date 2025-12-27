@@ -2,15 +2,24 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { createHmac } from "https://deno.land/std@0.168.0/node/crypto.ts";
 
-// Allowed origins for CORS - restrict to your domains
-const ALLOWED_ORIGINS = [
-  "https://jewjjbrdriccunhyoxww.lovableproject.com",
-  "http://localhost:5173",
-  "http://localhost:8080",
-];
+// Check if origin is allowed
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  
+  // Allow localhost for development
+  if (origin.startsWith("http://localhost:")) return true;
+  
+  // Allow all lovableproject.com subdomains (preview URLs)
+  if (origin.endsWith(".lovableproject.com")) return true;
+  
+  // Add your production domain here when you have one
+  // if (origin === "https://yourdomain.com") return true;
+  
+  return false;
+}
 
 function getCorsHeaders(origin: string | null): Record<string, string> {
-  const allowedOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowedOrigin = isAllowedOrigin(origin) ? origin! : "https://lovableproject.com";
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Credentials": "true",
