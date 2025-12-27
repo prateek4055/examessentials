@@ -2,27 +2,12 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { createHmac } from "https://deno.land/std@0.168.0/node/crypto.ts";
 
-// Check if origin is allowed
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return false;
-  
-  // Allow localhost for development
-  if (origin.startsWith("http://localhost:")) return true;
-
-  // Allow Lovable preview + production domains
-  if (origin.endsWith(".lovableproject.com")) return true;
-  if (origin.endsWith(".lovable.app")) return true;
-  
-  // Add your production domain here when you have one
-  // if (origin === "https://yourdomain.com") return true;
-  
-  return false;
-}
+// Only allow the production domain
+const ALLOWED_ORIGIN = "https://examessentials.lovable.app";
 
 function getCorsHeaders(origin: string | null): Record<string, string> {
-  const allowedOrigin = isAllowedOrigin(origin) ? origin! : "https://lovableproject.com";
   return {
-    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Origin": origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN,
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   };
@@ -48,7 +33,6 @@ interface VerifyPaymentRequest {
     class: string;
     amount: number;
   };
-  // Additional fields for cart checkout validation
   isCartCheckout?: boolean;
   productIds?: string[];
   comboId?: string;
@@ -59,9 +43,8 @@ interface VerifyPaymentRequest {
 function detectBestCombo(subjects: string[]): { id: string; price: number } | null {
   const uniqueSubjects = [...new Set(subjects.map(s => s.toLowerCase()))];
   
-  // Sort combos by savings (most savings first)
   const sortedCombos = [...comboConfigs].sort((a, b) => 
-    (b.price) - (a.price) // Higher price combos have more subjects
+    (b.price) - (a.price)
   ).reverse();
   
   for (const combo of sortedCombos) {
@@ -95,7 +78,6 @@ function calculateExpectedCartTotal(products: { price: number; subject: string }
     }
   }
   
-  // No combo - return full price
   return products.reduce((sum, p) => sum + p.price, 0);
 }
 
@@ -106,6 +88,18 @@ serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Block requests from non-production origins
+  if (origin !== ALLOWED_ORIGIN) {
+    console.log(`Blocked request from origin: ${origin}`);
+    return new Response(
+      JSON.stringify({ error: "Payments are only available on the live website", verified: false }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 403,
+      }
+    );
   }
 
   try {
@@ -135,7 +129,6 @@ serve(async (req) => {
       totalAmount
     } = requestData;
 
-    // Validate required fields
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       console.error("Missing payment verification fields");
       throw new Error("Missing payment verification fields");
@@ -200,7 +193,6 @@ serve(async (req) => {
     console.log("Validating price against database...");
 
     if (isCartCheckout && productIds && productIds.length > 0) {
-      // Cart checkout - validate total against product prices and combo rules
       const { data: products, error: productsError } = await supabase
         .from("products")
         .select("id, price, subject")
@@ -230,7 +222,6 @@ serve(async (req) => {
 
       console.log("Cart price validated successfully");
     } else if (orderData.product_id) {
-      // Single product checkout - validate price against database
       const { data: product, error: productError } = await supabase
         .from("products")
         .select("id, price")

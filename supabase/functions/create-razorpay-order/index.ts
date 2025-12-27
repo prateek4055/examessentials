@@ -1,26 +1,11 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-// Check if origin is allowed
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return false;
-  
-  // Allow localhost for development
-  if (origin.startsWith("http://localhost:")) return true;
-
-  // Allow Lovable preview + production domains
-  if (origin.endsWith(".lovableproject.com")) return true;
-  if (origin.endsWith(".lovable.app")) return true;
-  
-  // Add your production domain here when you have one
-  // if (origin === "https://yourdomain.com") return true;
-  
-  return false;
-}
+// Only allow the production domain
+const ALLOWED_ORIGIN = "https://examessentials.lovable.app";
 
 function getCorsHeaders(origin: string | null): Record<string, string> {
-  const allowedOrigin = isAllowedOrigin(origin) ? origin! : "https://lovableproject.com";
   return {
-    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Origin": origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN,
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   };
@@ -40,6 +25,18 @@ serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Block requests from non-production origins
+  if (origin !== ALLOWED_ORIGIN) {
+    console.log(`Blocked request from origin: ${origin}`);
+    return new Response(
+      JSON.stringify({ error: "Payments are only available on the live website" }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 403,
+      }
+    );
   }
 
   try {
