@@ -1,11 +1,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-// Only allow the production domain
-const ALLOWED_ORIGIN = "https://examessentials.lovable.app";
+// Allowed origins for Razorpay payments
+const ALLOWED_ORIGINS = [
+  "https://examessentials.lovable.app",
+  "https://jewjjbrdriccunhyoxww.lovableproject.com",
+  "https://preview--jewjjbrdriccunhyoxww.lovable.app",
+  "https://gptengineer.app",
+];
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  return ALLOWED_ORIGINS.some(allowed => origin === allowed || origin.startsWith(allowed.replace(/\/$/, '')));
+}
 
 function getCorsHeaders(origin: string | null): Record<string, string> {
+  const allowedOrigin = isAllowedOrigin(origin) ? origin! : ALLOWED_ORIGINS[0];
   return {
-    "Access-Control-Allow-Origin": origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN,
+    "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   };
@@ -27,11 +38,11 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Block requests from non-production origins
-  if (origin !== ALLOWED_ORIGIN) {
+  // Block requests from non-allowed origins
+  if (!isAllowedOrigin(origin)) {
     console.log(`Blocked request from origin: ${origin}`);
     return new Response(
-      JSON.stringify({ error: "Payments are only available on the live website" }),
+      JSON.stringify({ error: "Payments are only available on allowed websites" }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 403,
