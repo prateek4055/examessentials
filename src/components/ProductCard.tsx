@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FileText, Eye } from "lucide-react";
+import { FileText } from "lucide-react";
 import { Product } from "@/lib/api";
 import ProductImageHoverPreview from "./ProductImageHoverPreview";
 
@@ -29,18 +29,17 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     }
   }, []);
 
-  // For mobile tap
-  const handlePreviewTap = (e: React.MouseEvent | React.TouchEvent) => {
-    if (window.innerWidth < 768 && hasImages) {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsMobilePreviewOpen(true);
-    }
-  };
-
   const closePreview = () => {
     setShowPreview(false);
     setIsMobilePreviewOpen(false);
+  };
+
+  // Mobile touch to toggle preview
+  const handleMobileTouch = (e: React.TouchEvent) => {
+    if (window.innerWidth < 768 && hasImages) {
+      e.preventDefault();
+      setIsMobilePreviewOpen((prev) => !prev);
+    }
   };
 
   return (
@@ -55,7 +54,10 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="relative bg-secondary overflow-hidden">
+        <div 
+          className="relative bg-secondary overflow-hidden"
+          onTouchStart={handleMobileTouch}
+        >
           {hasImages ? (
             <>
               <img
@@ -63,21 +65,12 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
                 alt={product.title}
                 className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
               />
-              {/* Hover preview overlay */}
+              {/* Auto-scroll preview overlay */}
               <ProductImageHoverPreview
                 images={product.images!}
                 productTitle={product.title}
                 isVisible={showPreview || isMobilePreviewOpen}
-                onClose={closePreview}
               />
-              {/* Mobile preview button */}
-              <button
-                onClick={handlePreviewTap}
-                className="md:hidden absolute bottom-2 right-2 p-2 bg-background/80 backdrop-blur-sm rounded-full border border-border shadow-sm z-10"
-                aria-label="Preview images"
-              >
-                <Eye className="w-4 h-4 text-foreground" />
-              </button>
             </>
           ) : (
             <div className="w-full h-full flex items-center justify-center aspect-[4/3]">
