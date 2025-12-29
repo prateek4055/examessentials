@@ -6,15 +6,23 @@ const ALLOWED_ORIGINS = [
   "https://jewjjbrdriccunhyoxww.lovableproject.com",
   "https://preview--jewjjbrdriccunhyoxww.lovable.app",
   "https://gptengineer.app",
+  "http://localhost",
 ];
 
 function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return false;
-  return ALLOWED_ORIGINS.some(allowed => origin === allowed || origin.startsWith(allowed.replace(/\/$/, '')));
+  // Allow null origin for server-to-server calls (like supabase.functions.invoke)
+  if (!origin) return true;
+  return ALLOWED_ORIGINS.some(allowed => 
+    origin === allowed || 
+    origin.startsWith(allowed.replace(/\/$/, '')) ||
+    origin.includes("lovable.app") ||
+    origin.includes("lovableproject.com") ||
+    origin.includes("localhost")
+  );
 }
 
 function getCorsHeaders(origin: string | null): Record<string, string> {
-  const allowedOrigin = isAllowedOrigin(origin) ? origin! : ALLOWED_ORIGINS[0];
+  const allowedOrigin = origin && isAllowedOrigin(origin) ? origin : "*";
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Credentials": "true",
