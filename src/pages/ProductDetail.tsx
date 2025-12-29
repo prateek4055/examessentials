@@ -316,11 +316,8 @@ const ProductDetail = () => {
                     .map(point => point.trim())
                     .filter(point => point.length > 0)
                     .map((point, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 flex-shrink-0" />
-                        <span className="font-body text-muted-foreground leading-relaxed">
-                          {point}
-                        </span>
+                      <li key={index} className="font-body text-muted-foreground leading-relaxed">
+                        {point}
                       </li>
                     ))}
                 </ul>
