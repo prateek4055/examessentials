@@ -309,9 +309,22 @@ const ProductDetail = () => {
               </h1>
 
               {/* Description */}
-              <p className="font-body text-lg text-muted-foreground mb-8 leading-relaxed">
-                {product.description}
-              </p>
+              <div className="mb-8">
+                <ul className="space-y-2">
+                  {product.description
+                    .split(/[.•\n]/)
+                    .map(point => point.trim())
+                    .filter(point => point.length > 0)
+                    .map((point, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 flex-shrink-0" />
+                        <span className="font-body text-muted-foreground leading-relaxed">
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                </ul>
+              </div>
 
               {/* What's Included */}
               <div className="mb-8">
