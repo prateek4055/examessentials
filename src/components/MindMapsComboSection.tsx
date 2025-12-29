@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Sparkles, Check, ArrowRight, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/lib/api";
+import { mindMapsComboConfigs, ComboConfig } from "@/lib/cartUtils";
 
 export interface MindMapCombo {
   id: string;
@@ -13,48 +14,31 @@ export interface MindMapCombo {
   badgeType?: "best-value" | "popular" | "new";
 }
 
-// Mind Maps specific combos - easily extendable
-export const mindMapCombos: Record<string, MindMapCombo[]> = {
-  "12": [
-    {
-      id: "pcb-mindmaps-12",
-      name: "PCB Mind Maps Combo",
-      subjects: ["Physics", "Chemistry", "Biology"],
-      price: 299,
-      originalPrice: 447,
-      badge: "Best Value",
-      badgeType: "best-value",
-    },
-    {
-      id: "phy-chem-mindmaps-12",
-      name: "Physics + Chemistry Combo",
-      subjects: ["Physics", "Chemistry"],
-      price: 249,
-      originalPrice: 298,
-      badge: "Most Popular",
-      badgeType: "popular",
-    },
-  ],
-  "11": [
-    {
-      id: "pcb-mindmaps-11",
-      name: "PCB Mind Maps Combo",
-      subjects: ["Physics", "Chemistry", "Biology"],
-      price: 299,
-      originalPrice: 447,
-      badge: "Best Value",
-      badgeType: "best-value",
-    },
-    {
-      id: "phy-chem-mindmaps-11",
-      name: "Physics + Chemistry Combo",
-      subjects: ["Physics", "Chemistry"],
-      price: 249,
-      originalPrice: 298,
-      badge: "Most Popular",
-      badgeType: "popular",
-    },
-  ],
+// Convert cartUtils configs to display format with badges
+const getMindMapCombosForClass = (classLevel: string): MindMapCombo[] => {
+  return mindMapsComboConfigs.map((config, index) => {
+    let badge: string | undefined;
+    let badgeType: "best-value" | "popular" | "new" | undefined;
+    
+    // Assign badges based on combo type
+    if (config.subjects.length === 3 && config.subjects.includes("Biology")) {
+      badge = "Best Value";
+      badgeType = "best-value";
+    } else if (config.subjects.length === 2) {
+      badge = "Most Popular";
+      badgeType = "popular";
+    }
+    
+    return {
+      id: `${config.id}-${classLevel}`,
+      name: config.label.replace(" Mind Maps", "") + " Combo",
+      subjects: config.subjects,
+      price: config.price,
+      originalPrice: config.originalPrice,
+      badge,
+      badgeType,
+    };
+  });
 };
 
 interface MindMapsComboSectionProps {
@@ -69,7 +53,7 @@ const MindMapsComboSection = ({
   onSelectCombo,
 }: MindMapsComboSectionProps) => {
   const productClass = currentProduct.class;
-  const combos = mindMapCombos[productClass] || [];
+  const combos = getMindMapCombosForClass(productClass);
 
   if (combos.length === 0) return null;
 

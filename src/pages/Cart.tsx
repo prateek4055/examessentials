@@ -25,6 +25,7 @@ interface CartProduct {
   class: string;
   price: number;
   images: string[] | null;
+  category: string;
 }
 
 const Cart = () => {
@@ -58,7 +59,7 @@ const Cart = () => {
       
       const { data, error } = await supabase
         .from("products")
-        .select("id, title, subject, class, price, images")
+        .select("id, title, subject, class, price, images, category")
         .in("id", productIds);
 
       if (error) {
@@ -70,9 +71,9 @@ const Cart = () => {
       const fetchedProducts = (data || []) as CartProduct[];
       setProducts(fetchedProducts);
       
-      // Calculate totals with auto-discount
+      // Calculate totals with auto-discount (pass category for correct pricing)
       const calc = calculateCartTotal(
-        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price }))
+        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category }))
       );
       setCalculation(calc);
     } catch (error) {
