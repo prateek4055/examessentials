@@ -6,12 +6,13 @@ import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRig
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import MindMapsComboSection from "@/components/MindMapsComboSection";
 import { Button } from "@/components/ui/button";
 import { fetchProductById, fetchPublishedProducts, Product } from "@/lib/api";
-import { addToCart, addMultipleToCart, getComboSubjects, comboConfigs } from "@/lib/cartUtils";
+import { addToCart, addMultipleToCart, getComboSubjects, comboConfigs, clearCart } from "@/lib/cartUtils";
 import { toast } from "sonner";
 
-// Combo pricing options
+// Combo pricing options - ONLY for non-mindmaps products
 const comboOptions = [
   { id: "single", label: "Single Subject", price: null }, // Uses product price
   { id: "phy-chem", label: "Physics + Chemistry", price: 99 },
@@ -98,6 +99,23 @@ const ProductDetail = () => {
     } finally {
       setIsAddingToCart(false);
     }
+  };
+
+  // Check if product is a Mind Map
+  const isMindMap = product?.category === "mindmaps";
+
+  // Handle Mind Maps combo selection from the dedicated section
+  const handleMindMapsComboSelect = (comboProductIds: string[]) => {
+    clearCart(); // Clear cart first
+    addMultipleToCart(comboProductIds);
+    toast.success("Combo added to cart!", {
+      description: `${comboProductIds.length} Mind Maps added. Proceeding to cart.`,
+      action: {
+        label: "View Cart",
+        onClick: () => navigate("/cart"),
+      },
+    });
+    navigate("/cart");
   };
 
   const features = [
@@ -312,43 +330,45 @@ const ProductDetail = () => {
                 </ul>
               </div>
 
-              {/* Combo Selection */}
-              <div className="mb-8">
-                <h3 className="font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Select Option
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {comboOptions.map((option) => (
-                    <button
-                      key={option.id}
-                      onClick={() => setSelectedCombo(option.id)}
-                      className={`px-4 py-2 rounded-lg border text-sm font-body font-medium transition-all ${
-                        selectedCombo === option.id
-                          ? "border-accent bg-accent text-accent-foreground"
-                          : "border-border bg-card text-foreground hover:border-accent/50"
-                      }`}
-                    >
-                      {option.label}
-                      {option.price !== null && (
-                        <span className="ml-2 text-xs opacity-75">₹{option.price}</span>
-                      )}
-                    </button>
-                  ))}
+              {/* Combo Selection - Only for non-mindmaps products */}
+              {!isMindMap && (
+                <div className="mb-8">
+                  <h3 className="font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                    Select Option
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {comboOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        onClick={() => setSelectedCombo(option.id)}
+                        className={`px-4 py-2 rounded-lg border text-sm font-body font-medium transition-all ${
+                          selectedCombo === option.id
+                            ? "border-accent bg-accent text-accent-foreground"
+                            : "border-border bg-card text-foreground hover:border-accent/50"
+                        }`}
+                      >
+                        {option.label}
+                        {option.price !== null && (
+                          <span className="ml-2 text-xs opacity-75">₹{option.price}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Price & CTA */}
               <div className="mt-auto pt-8 border-t border-border">
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <p className="text-sm font-body text-muted-foreground mb-1">
-                      {selectedCombo !== "single" ? "Combo Price" : "One-time payment"}
+                      {!isMindMap && selectedCombo !== "single" ? "Combo Price" : "One-time payment"}
                     </p>
                     <div className="flex items-center gap-3">
                       <p className="text-4xl font-display font-bold text-foreground">
-                        ₹{getDisplayPrice()}
+                        ₹{isMindMap ? product?.price : getDisplayPrice()}
                       </p>
-                      {selectedCombo !== "single" && (
+                      {!isMindMap && selectedCombo !== "single" && (
                         <span className="text-sm text-muted-foreground line-through">
                           ₹{selectedCombo === "pcmb" ? 259 : 
                              selectedCombo === "pcb" ? 209 : 
@@ -458,6 +478,15 @@ const ProductDetail = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* Mind Maps Combo Section - Only for Mind Maps products */}
+          {isMindMap && (
+            <MindMapsComboSection
+              currentProduct={product}
+              allProducts={allProducts}
+              onSelectCombo={handleMindMapsComboSelect}
+            />
+          )}
         </div>
       </main>
       <Footer />
