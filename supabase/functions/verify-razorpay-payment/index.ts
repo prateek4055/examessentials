@@ -8,6 +8,7 @@ const ALLOWED_ORIGINS = [
   "https://jewjjbrdriccunhyoxww.lovableproject.com",
   "https://preview--jewjjbrdriccunhyoxww.lovable.app",
   "https://gptengineer.app",
+  "https://examessentials.in",
   "http://localhost",
 ];
 
@@ -19,6 +20,7 @@ function isAllowedOrigin(origin: string | null): boolean {
     origin.startsWith(allowed.replace(/\/$/, '')) ||
     origin.includes("lovable.app") ||
     origin.includes("lovableproject.com") ||
+    origin.includes("examessentials.in") ||
     origin.includes("localhost")
   );
 }
