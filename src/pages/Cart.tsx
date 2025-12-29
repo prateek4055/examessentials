@@ -99,7 +99,8 @@ const Cart = () => {
     // Navigate to purchase with cart data
     const productIds = products.map(p => p.id).join(",");
     const total = calculation?.total || 0;
-    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${calculation?.appliedCombo?.id || ""}`);
+    const comboIds = calculation?.appliedCombos?.map(c => c.id).join(",") || "";
+    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${comboIds}`);
   };
 
   const getProductImage = (product: CartProduct) => {
@@ -179,27 +180,34 @@ const Cart = () => {
               </Card>
             ) : (
               <div className="space-y-4">
-                {/* Combo Discount Banner */}
-                {calculation?.appliedCombo && (
-                  <Card className="bg-gradient-to-r from-accent/20 to-primary/20 border-accent/30">
-                    <CardContent className="p-4 flex items-center gap-3">
-                      <div className="p-2 bg-accent/20 rounded-full">
-                        <Sparkles className="w-5 h-5 text-accent" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-display font-semibold text-foreground">
-                          {calculation.appliedCombo.label} Applied!
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          You're saving ₹{calculation.discount} with this combo
-                        </p>
-                      </div>
-                      <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
-                        <Tag className="w-3 h-3 mr-1" />
-                        ₹{calculation.discount} OFF
-                      </Badge>
-                    </CardContent>
-                  </Card>
+                {/* Combo Discount Banners - one for each applied combo */}
+                {calculation?.appliedCombos && calculation.appliedCombos.length > 0 && (
+                  <div className="space-y-2">
+                    {calculation.appliedCombos.map((combo) => {
+                      const comboSavings = combo.originalPrice - combo.price;
+                      return (
+                        <Card key={combo.id} className="bg-gradient-to-r from-accent/20 to-primary/20 border-accent/30">
+                          <CardContent className="p-4 flex items-center gap-3">
+                            <div className="p-2 bg-accent/20 rounded-full">
+                              <Sparkles className="w-5 h-5 text-accent" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="font-display font-semibold text-foreground">
+                                {combo.label} Applied!
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                You're saving ₹{comboSavings} with this combo
+                              </p>
+                            </div>
+                            <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
+                              <Tag className="w-3 h-3 mr-1" />
+                              ₹{comboSavings} OFF
+                            </Badge>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
                 )}
 
                 {/* Cart Items */}
@@ -288,15 +296,18 @@ const Cart = () => {
                           <span>₹{calculation.subtotal}</span>
                         </div>
                         
-                        {calculation.discount > 0 && (
-                          <div className="flex items-center justify-between text-accent">
-                            <span className="flex items-center gap-1">
-                              <Tag className="w-4 h-4" />
-                              {calculation.appliedCombo?.label} Discount
-                            </span>
-                            <span>-₹{calculation.discount}</span>
-                          </div>
-                        )}
+                        {calculation.appliedCombos && calculation.appliedCombos.length > 0 && calculation.appliedCombos.map((combo) => {
+                          const comboSavings = combo.originalPrice - combo.price;
+                          return (
+                            <div key={combo.id} className="flex items-center justify-between text-accent">
+                              <span className="flex items-center gap-1">
+                                <Tag className="w-4 h-4" />
+                                {combo.label}
+                              </span>
+                              <span>-₹{comboSavings}</span>
+                            </div>
+                          );
+                        })}
                         
                         <div className="border-t border-border pt-3 flex items-center justify-between">
                           <span className="font-display font-semibold text-foreground">Total</span>
@@ -308,8 +319,8 @@ const Cart = () => {
                     )}
                     
                     <p className="text-sm text-muted-foreground mb-4">
-                      {calculation?.appliedCombo 
-                        ? `Great choice! You're getting the best deal with ${calculation.appliedCombo.label}.`
+                      {calculation?.appliedCombos && calculation.appliedCombos.length > 0
+                        ? `Great choice! You're getting the best deal with ${calculation.appliedCombos.map(c => c.label).join(" & ")}.`
                         : "Add more subjects to unlock combo discounts!"}
                     </p>
                     
