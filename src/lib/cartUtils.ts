@@ -116,8 +116,8 @@ export const detectBestCombo = (subjects: string[], category?: string): ComboCon
 
 // Calculate cart total with auto-applied discounts
 export interface CartCalculation {
-  items: { productId: string; subject: string; originalPrice: number; finalPrice: number; inCombo: boolean }[];
-  appliedCombo: ComboConfig | null;
+  items: { productId: string; subject: string; originalPrice: number; finalPrice: number; inCombo: boolean; comboCategory?: string }[];
+  appliedCombos: ComboConfig[]; // Multiple combos can be applied
   subtotal: number;
   discount: number;
   total: number;
@@ -130,15 +130,13 @@ export interface ProductForCalculation {
   category?: string;
 }
 
-export const calculateCartTotal = (
-  products: ProductForCalculation[]
-): CartCalculation => {
-  // Determine if all products are from the same category
-  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
-  const primaryCategory = categories.length === 1 ? categories[0] : undefined;
-  
+// Calculate combo for a single category
+const calculateCategoryCombo = (
+  products: ProductForCalculation[],
+  category: string
+): { items: CartCalculation['items']; combo: ComboConfig | null; comboTotal: number; originalTotal: number } => {
   const subjects = products.map(p => p.subject);
-  const bestCombo = detectBestCombo(subjects, primaryCategory);
+  const bestCombo = detectBestCombo(subjects, category);
   
   if (bestCombo) {
     const comboSubjectsLower = bestCombo.subjects.map(s => s.toLowerCase());
@@ -149,12 +147,9 @@ export const calculateCartTotal = (
       !comboSubjectsLower.includes(p.subject.toLowerCase())
     );
     
-    const subtotal = products.reduce((sum, p) => sum + p.price, 0);
+    const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
     const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
-    
-    // Replace combo products total with combo price
-    const total = bestCombo.price + nonComboTotal;
-    const discount = subtotal - total;
+    const comboTotal = bestCombo.price + nonComboTotal;
     
     const items = products.map(p => ({
       productId: p.id,
@@ -164,22 +159,71 @@ export const calculateCartTotal = (
         ? Math.round(bestCombo.price / comboProducts.length) 
         : p.price,
       inCombo: comboSubjectsLower.includes(p.subject.toLowerCase()),
+      comboCategory: comboSubjectsLower.includes(p.subject.toLowerCase()) ? category : undefined,
     }));
     
-    return { items, appliedCombo: bestCombo, subtotal, discount, total };
+    return { items, combo: bestCombo, comboTotal, originalTotal };
   }
   
-  // No combo applicable
-  const subtotal = products.reduce((sum, p) => sum + p.price, 0);
+  // No combo applicable for this category
+  const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
   const items = products.map(p => ({
     productId: p.id,
     subject: p.subject,
     originalPrice: p.price,
     finalPrice: p.price,
     inCombo: false,
+    comboCategory: undefined,
   }));
   
-  return { items, appliedCombo: null, subtotal, discount: 0, total: subtotal };
+  return { items, combo: null, comboTotal: originalTotal, originalTotal };
+};
+
+export const calculateCartTotal = (
+  products: ProductForCalculation[]
+): CartCalculation => {
+  // Group products by category
+  const mindmapProducts = products.filter(p => p.category === "mindmaps");
+  const formulaSheetProducts = products.filter(p => p.category === "formula-sheet");
+  const otherProducts = products.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet");
+  
+  // Calculate combos for each category separately
+  const mindmapResult = mindmapProducts.length > 0 
+    ? calculateCategoryCombo(mindmapProducts, "mindmaps")
+    : { items: [], combo: null, comboTotal: 0, originalTotal: 0 };
+    
+  const formulaResult = formulaSheetProducts.length > 0 
+    ? calculateCategoryCombo(formulaSheetProducts, "formula-sheet")
+    : { items: [], combo: null, comboTotal: 0, originalTotal: 0 };
+  
+  // Other products have no combos
+  const otherItems = otherProducts.map(p => ({
+    productId: p.id,
+    subject: p.subject,
+    originalPrice: p.price,
+    finalPrice: p.price,
+    inCombo: false,
+    comboCategory: undefined,
+  }));
+  const otherTotal = otherProducts.reduce((sum, p) => sum + p.price, 0);
+  
+  // Combine all results
+  const allItems = [...mindmapResult.items, ...formulaResult.items, ...otherItems];
+  const appliedCombos: ComboConfig[] = [];
+  if (mindmapResult.combo) appliedCombos.push(mindmapResult.combo);
+  if (formulaResult.combo) appliedCombos.push(formulaResult.combo);
+  
+  const subtotal = mindmapResult.originalTotal + formulaResult.originalTotal + otherTotal;
+  const total = mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
+  const discount = subtotal - total;
+  
+  return { 
+    items: allItems, 
+    appliedCombos, 
+    subtotal, 
+    discount, 
+    total 
+  };
 };
 
 // Get subjects for a combo ID
