@@ -55,7 +55,7 @@ const RefundPolicy = () => {
               To request a refund, please follow these steps:
             </p>
             <ol className="list-decimal pl-6 space-y-2">
-              <li>Email us at <a href="mailto:examessentials4@gmail.com" className="text-primary hover:underline">examessentials4@gmail.com</a> within 7 days of purchase.</li>
+              <li>Email us at <a href="mailto:examessentials.info@gmail.com" className="text-primary hover:underline">examessentials.info@gmail.com</a> within 7 days of purchase.</li>
               <li>Include your order details: Order ID, email used for purchase, and product name.</li>
               <li>Describe the issue you encountered.</li>
               <li>Attach any relevant screenshots if applicable.</li>
@@ -93,8 +93,8 @@ const RefundPolicy = () => {
               For any questions regarding our Cancellation and Refund Policy, please contact us:
             </p>
             <p>
-              Email: <a href="mailto:examessentials4@gmail.com" className="text-primary hover:underline">examessentials4@gmail.com</a><br />
-              WhatsApp: <a href="https://wa.me/919818546306" className="text-primary hover:underline">+91 98185 46306</a>
+              Email: <a href="mailto:examessentials.info@gmail.com" className="text-primary hover:underline">examessentials.info@gmail.com</a><br />
+              WhatsApp: <a href="https://wa.me/919460970342" className="text-primary hover:underline">+91 94609 70342</a>
             </p>
           </section>
         </div>

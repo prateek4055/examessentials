@@ -100,7 +100,8 @@ const TermsAndConditions = () => {
               For any questions regarding these Terms and Conditions, please contact us at:
             </p>
             <p>
-              Email: <a href="mailto:examessentials4@gmail.com" className="text-primary hover:underline">examessentials4@gmail.com</a>
+              Email: <a href="mailto:examessentials.info@gmail.com" className="text-primary hover:underline">examessentials.info@gmail.com</a><br />
+              Phone: <a href="tel:+919460970342" className="text-primary hover:underline">+91 94609 70342</a>
             </p>
           </section>
         </div>
