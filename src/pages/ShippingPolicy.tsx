@@ -54,7 +54,7 @@ const ShippingPolicy = () => {
             <ol className="list-decimal pl-6 space-y-2">
               <li>Check your spam/junk email folder.</li>
               <li>Verify that you provided the correct email address during purchase.</li>
-              <li>Contact us at <a href="mailto:examessentials4@gmail.com" className="text-primary hover:underline">examessentials4@gmail.com</a> with your order details.</li>
+              <li>Contact us at <a href="mailto:examessentials.info@gmail.com" className="text-primary hover:underline">examessentials.info@gmail.com</a> with your order details.</li>
             </ol>
           </section>
 
@@ -77,8 +77,8 @@ const ShippingPolicy = () => {
               For any questions regarding product delivery, please contact us:
             </p>
             <p>
-              Email: <a href="mailto:examessentials4@gmail.com" className="text-primary hover:underline">examessentials4@gmail.com</a><br />
-              WhatsApp: <a href="https://wa.me/919818546306" className="text-primary hover:underline">+91 98185 46306</a>
+              Email: <a href="mailto:examessentials.info@gmail.com" className="text-primary hover:underline">examessentials.info@gmail.com</a><br />
+              WhatsApp: <a href="https://wa.me/919460970342" className="text-primary hover:underline">+91 94609 70342</a>
             </p>
           </section>
         </div>
