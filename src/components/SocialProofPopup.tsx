@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -21,10 +21,60 @@ const AUTO_HIDE_DELAY = 5000; // 5 seconds
 const MAX_POPUPS_PER_SESSION = 3;
 const SESSION_KEY = "socialProofCount";
 
+// Subtle notification sound using Web Audio API
+const playNotificationSound = () => {
+  try {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // Create a gentle "pop" sound
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Soft, pleasant frequency
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
+    
+    oscillator.type = "sine";
+    
+    // Quick fade in/out for subtle effect
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.02);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.15);
+  } catch (error) {
+    // Silently fail if audio context isn't available
+    console.log("Audio notification not available");
+  }
+};
+
 const SocialProofPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(SOCIAL_PROOF_MESSAGES[0]);
   const [popupCount, setPopupCount] = useState(0);
+
+  const hasUserInteracted = useRef(false);
+
+  // Track user interaction to enable audio
+  useEffect(() => {
+    const handleInteraction = () => {
+      hasUserInteracted.current = true;
+    };
+    
+    window.addEventListener("click", handleInteraction, { once: true });
+    window.addEventListener("keydown", handleInteraction, { once: true });
+    window.addEventListener("touchstart", handleInteraction, { once: true });
+    
+    return () => {
+      window.removeEventListener("click", handleInteraction);
+      window.removeEventListener("keydown", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+    };
+  }, []);
 
   const getRandomMessage = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * SOCIAL_PROOF_MESSAGES.length);
@@ -40,6 +90,11 @@ const SocialProofPopup = () => {
 
     setCurrentMessage(getRandomMessage());
     setIsVisible(true);
+    
+    // Play subtle notification sound if user has interacted
+    if (hasUserInteracted.current) {
+      playNotificationSound();
+    }
     
     const newCount = sessionCount + 1;
     sessionStorage.setItem(SESSION_KEY, newCount.toString());
