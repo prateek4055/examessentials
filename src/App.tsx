@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollToTop from "@/components/ScrollToTop";
+import SocialProofPopup from "@/components/SocialProofPopup";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <WhatsAppButton />
+            <SocialProofPopup />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
