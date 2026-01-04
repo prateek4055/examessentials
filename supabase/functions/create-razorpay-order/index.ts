@@ -1,5 +1,45 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
+// Simple in-memory rate limiting (resets on cold starts, but provides basic protection)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 10; // 10 orders per minute per IP
+
+function getClientIP(req: Request): string {
+  // Try various headers that proxies might use
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0].trim();
+  }
+  const realIP = req.headers.get("x-real-ip");
+  if (realIP) {
+    return realIP;
+  }
+  const cfIP = req.headers.get("cf-connecting-ip");
+  if (cfIP) {
+    return cfIP;
+  }
+  return "unknown";
+}
+
+function isRateLimited(clientIP: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(clientIP);
+  
+  if (!record || now > record.resetTime) {
+    // Reset or create new record
+    rateLimitMap.set(clientIP, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  
+  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
+    return true;
+  }
+  
+  record.count++;
+  return false;
+}
+
 // Allowed origins for Razorpay payments
 const ALLOWED_ORIGINS = [
   "https://examessentials.lovable.app",
@@ -56,6 +96,19 @@ serve(async (req) => {
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 403,
+      }
+    );
+  }
+
+  // Rate limiting check
+  const clientIP = getClientIP(req);
+  if (isRateLimited(clientIP)) {
+    console.log(`Rate limited request from IP: ${clientIP}`);
+    return new Response(
+      JSON.stringify({ error: "Too many requests. Please try again later." }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 429,
       }
     );
   }
