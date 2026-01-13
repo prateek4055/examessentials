@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,8 +37,34 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Exam Essentials",
+      "telephone": "+91-9460970342",
+      "email": "examessentials.info@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Deewan complex",
+        "addressLocality": "Behror",
+        "addressRegion": "Rajasthan",
+        "postalCode": "301701",
+        "addressCountry": "IN"
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Contact Us"
+        description="Get in touch with Exam Essentials. We're here to help with any questions about our handwritten notes for Class 11 & 12 students."
+        canonical="/contact"
+        keywords="contact exam essentials, customer support, study notes help, CBSE notes enquiry"
+        structuredData={structuredData}
+      />
       <Navbar />
 
       <main className="pt-32 pb-20">

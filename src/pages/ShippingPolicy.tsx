@@ -1,14 +1,16 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 
 const ShippingPolicy = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Helmet>
-        <title>Shipping Policy - Exam Essentials</title>
-        <meta name="description" content="Shipping Policy for Exam Essentials - Learn about our digital product delivery process." />
-      </Helmet>
+      <SEOHead
+        title="Shipping Policy"
+        description="Shipping Policy for Exam Essentials - Learn about our digital product delivery process. All products are delivered instantly via email."
+        canonical="/shipping-policy"
+        keywords="shipping policy, delivery policy, digital delivery, instant download, exam essentials delivery"
+      />
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">Shipping Policy</h1>

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { ShoppingCart, Trash2, ArrowLeft, CreditCard, Tag, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { 
@@ -109,10 +109,11 @@ const Cart = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Your Cart - Exam Essentials</title>
-        <meta name="description" content="Review your cart and checkout with combo discounts applied automatically" />
-      </Helmet>
+      <SEOHead
+        title="Your Cart"
+        description="Review your cart and checkout with combo discounts applied automatically. Premium handwritten notes for Class 11 & 12."
+        noIndex={true}
+      />
 
       <div className="min-h-screen bg-background">
         <Navbar />

@@ -1,14 +1,16 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Helmet>
-        <title>Privacy Policy - Exam Essentials</title>
-        <meta name="description" content="Privacy Policy for Exam Essentials - Learn how we collect, use, and protect your personal information." />
-      </Helmet>
+      <SEOHead
+        title="Privacy Policy"
+        description="Privacy Policy for Exam Essentials - Learn how we collect, use, and protect your personal information when using our study materials platform."
+        canonical="/privacy-policy"
+        keywords="privacy policy, data protection, personal information, exam essentials privacy"
+      />
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">Privacy Policy</h1>

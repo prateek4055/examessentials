@@ -1,14 +1,16 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 
 const RefundPolicy = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Helmet>
-        <title>Cancellation and Refund Policy - Exam Essentials</title>
-        <meta name="description" content="Cancellation and Refund Policy for Exam Essentials - Learn about our refund policy for digital study materials." />
-      </Helmet>
+      <SEOHead
+        title="Cancellation and Refund Policy"
+        description="Cancellation and Refund Policy for Exam Essentials - Learn about our refund policy for digital study materials and how to request a refund."
+        canonical="/refund-policy"
+        keywords="refund policy, cancellation policy, exam essentials refund, digital products refund"
+      />
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">Cancellation and Refund Policy</h1>

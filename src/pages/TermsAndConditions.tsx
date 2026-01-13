@@ -1,14 +1,16 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 
 const TermsAndConditions = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Helmet>
-        <title>Terms and Conditions - Exam Essentials</title>
-        <meta name="description" content="Terms and Conditions for Exam Essentials - Read our terms of service for using our platform and purchasing study materials." />
-      </Helmet>
+      <SEOHead
+        title="Terms and Conditions"
+        description="Terms and Conditions for Exam Essentials - Read our terms of service for using our platform and purchasing study materials."
+        canonical="/terms-and-conditions"
+        keywords="terms and conditions, terms of service, exam essentials terms, user agreement"
+      />
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">Terms and Conditions</h1>
