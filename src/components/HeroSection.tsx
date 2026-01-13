@@ -2,38 +2,78 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
+// Science doodle elements for floating background
+const doodleElements = [
+  // Physics
+  { symbol: "E = mc²", x: "5%", y: "15%", rotate: -15, delay: 0, scale: 1.2 },
+  { symbol: "F = ma", x: "88%", y: "20%", rotate: 12, delay: 0.3, scale: 1 },
+  { symbol: "λ = h/p", x: "12%", y: "75%", rotate: 8, delay: 0.6, scale: 1.1 },
+  { symbol: "v = fλ", x: "82%", y: "70%", rotate: -10, delay: 0.9, scale: 0.9 },
+  
+  // Chemistry
+  { symbol: "H₂O", x: "8%", y: "40%", rotate: 20, delay: 0.2, scale: 1.3 },
+  { symbol: "CO₂", x: "92%", y: "45%", rotate: -18, delay: 0.5, scale: 1 },
+  { symbol: "NaCl", x: "15%", y: "60%", rotate: 5, delay: 0.8, scale: 1.1 },
+  { symbol: "CH₄", x: "85%", y: "85%", rotate: -8, delay: 1.1, scale: 0.95 },
+  
+  // Maths
+  { symbol: "∫ dx", x: "3%", y: "30%", rotate: -12, delay: 0.4, scale: 1.15 },
+  { symbol: "Σ", x: "95%", y: "35%", rotate: 15, delay: 0.7, scale: 1.4 },
+  { symbol: "π r²", x: "10%", y: "85%", rotate: 10, delay: 1.0, scale: 1 },
+  { symbol: "√x", x: "90%", y: "60%", rotate: -20, delay: 1.3, scale: 1.2 },
+  { symbol: "∞", x: "6%", y: "55%", rotate: 0, delay: 0.1, scale: 1.5 },
+  { symbol: "dy/dx", x: "94%", y: "15%", rotate: -5, delay: 1.4, scale: 1 },
+  
+  // Biology
+  { symbol: "DNA", x: "18%", y: "25%", rotate: -8, delay: 0.35, scale: 1.1 },
+  { symbol: "ATP", x: "80%", y: "30%", rotate: 12, delay: 0.65, scale: 1.05 },
+  { symbol: "RNA", x: "20%", y: "70%", rotate: 18, delay: 0.95, scale: 0.9 },
+  { symbol: "O₂", x: "78%", y: "80%", rotate: -15, delay: 1.25, scale: 1.15 },
+];
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-24 pb-16">
       {/* Gradient background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card/30" />
       
-      {/* Floating 3D shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="absolute top-20 right-10 md:right-20 lg:right-40"
-        >
-          <div className="floating-card w-32 h-40 md:w-48 md:h-56 rotate-12" />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
-          className="absolute top-40 right-20 md:right-32 lg:right-56"
-        >
-          <div className="floating-card-alt w-24 h-32 md:w-36 md:h-44 -rotate-6" />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
-          className="absolute bottom-20 right-16 md:right-24 lg:right-48"
-        >
-          <div className="floating-card w-20 h-28 md:w-32 md:h-40 rotate-3" />
-        </motion.div>
+      {/* Floating 3D Science Doodles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ perspective: "1000px" }}>
+        {doodleElements.map((doodle, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.5, rotateX: -30 }}
+            animate={{ 
+              opacity: [0.15, 0.35, 0.15],
+              scale: [doodle.scale * 0.95, doodle.scale * 1.05, doodle.scale * 0.95],
+              y: [0, -15, 0],
+              rotateX: [0, 10, 0],
+              rotateZ: [doodle.rotate - 3, doodle.rotate + 3, doodle.rotate - 3],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 2,
+              delay: doodle.delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute font-body font-bold select-none"
+            style={{
+              left: doodle.x,
+              top: doodle.y,
+              fontSize: `${1.2 * doodle.scale}rem`,
+              color: "hsl(var(--muted-foreground))",
+              textShadow: `
+                0 0 20px hsl(var(--gradient-purple) / 0.3),
+                0 0 40px hsl(var(--gradient-blue) / 0.2),
+                0 4px 8px hsl(0 0% 0% / 0.5)
+              `,
+              transform: `rotate(${doodle.rotate}deg)`,
+              transformStyle: "preserve-3d",
+            }}
+          >
+            {doodle.symbol}
+          </motion.div>
+        ))}
         
         {/* Glow orbs */}
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-purple/10 rounded-full blur-3xl" />
