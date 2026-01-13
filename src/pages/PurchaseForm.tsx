@@ -381,6 +381,24 @@ const PurchaseForm = () => {
               throw new Error("Product not found");
             }
 
+            // Fire GA4 purchase event on successful payment
+            if (typeof window !== 'undefined' && (window as any).gtag) {
+              const itemName = isCartCheckout 
+                ? cartProducts.map(p => p.title).join(", ")
+                : product?.title || "Unknown Product";
+              const itemId = isCartCheckout 
+                ? cartProducts.map(p => p.id).join(",")
+                : product?.id || "unknown";
+              
+              (window as any).gtag('event', 'purchase', {
+                value: getFinalPrice(),
+                currency: 'INR',
+                item_name: itemName,
+                item_id: itemId,
+              });
+              console.log("GA4 purchase event fired:", { value: getFinalPrice(), item_name: itemName, item_id: itemId });
+            }
+
             // Show success modal
             setShowSuccessModal(true);
           } catch (error: any) {
