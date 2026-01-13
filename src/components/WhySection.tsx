@@ -40,7 +40,7 @@ const WhySection = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Why <span className="gradient-text">&nbsp;Exam Essentials&nbsp;</span>?
+            Why <span className="text-gradient-purple">Exam Essentials</span>?
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
             We understand the pressure of exams. That's why we created notes that
