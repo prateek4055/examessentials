@@ -7,22 +7,30 @@ import lungsDoodle from "@/assets/doodles/lungs.png";
 import heartDoodle from "@/assets/doodles/heart.png";
 import brainDoodle from "@/assets/doodles/brain.png";
 import prismDoodle from "@/assets/doodles/prism.png";
+import atomDoodle from "@/assets/doodles/atom.png";
+import dnaDoodle from "@/assets/doodles/dna.png";
+import geometryDoodle from "@/assets/doodles/geometry.png";
+import moleculeDoodle from "@/assets/doodles/molecule.png";
 
 // 3D doodle elements for floating background
 const doodleElements = [
-  // Left side doodles
-  { image: lungsDoodle, x: "3%", y: "20%", rotate: -8, delay: 0, size: 140 },
-  { image: prismDoodle, x: "8%", y: "55%", rotate: 12, delay: 0.4, size: 100 },
-  { image: brainDoodle, x: "5%", y: "75%", rotate: -5, delay: 0.8, size: 120 },
+  // Left side doodles - Biology & Chemistry
+  { image: lungsDoodle, x: "2%", y: "18%", rotate: -8, delay: 0, size: 120 },
+  { image: atomDoodle, x: "6%", y: "42%", rotate: 12, delay: 0.4, size: 100 },
+  { image: dnaDoodle, x: "3%", y: "68%", rotate: -5, delay: 0.8, size: 110 },
+  { image: geometryDoodle, x: "12%", y: "85%", rotate: 10, delay: 1.2, size: 90 },
   
-  // Right side doodles
-  { image: heartDoodle, x: "85%", y: "15%", rotate: 10, delay: 0.2, size: 130 },
-  { image: brainDoodle, x: "88%", y: "50%", rotate: -12, delay: 0.6, size: 110 },
-  { image: lungsDoodle, x: "82%", y: "78%", rotate: 8, delay: 1.0, size: 125 },
+  // Right side doodles - Physics & Math
+  { image: heartDoodle, x: "84%", y: "12%", rotate: 10, delay: 0.2, size: 115 },
+  { image: moleculeDoodle, x: "88%", y: "38%", rotate: -12, delay: 0.6, size: 95 },
+  { image: brainDoodle, x: "85%", y: "62%", rotate: 8, delay: 1.0, size: 110 },
+  { image: prismDoodle, x: "80%", y: "82%", rotate: -8, delay: 1.4, size: 85 },
   
-  // Additional floating elements
-  { image: prismDoodle, x: "15%", y: "35%", rotate: 15, delay: 0.3, size: 80 },
-  { image: heartDoodle, x: "78%", y: "35%", rotate: -10, delay: 0.7, size: 90 },
+  // Additional floating elements for depth
+  { image: prismDoodle, x: "18%", y: "28%", rotate: 15, delay: 0.3, size: 70 },
+  { image: atomDoodle, x: "75%", y: "25%", rotate: -10, delay: 0.7, size: 75 },
+  { image: geometryDoodle, x: "15%", y: "55%", rotate: -6, delay: 1.1, size: 65 },
+  { image: dnaDoodle, x: "78%", y: "75%", rotate: 12, delay: 0.9, size: 80 },
 ];
 
 const HeroSection = () => {
@@ -38,15 +46,15 @@ const HeroSection = () => {
             key={index}
             initial={{ opacity: 0, scale: 0.5, rotateX: -20 }}
             animate={{ 
-              opacity: [0.4, 0.7, 0.4],
-              scale: [0.95, 1.05, 0.95],
-              y: [0, -20, 0],
-              rotateX: [0, 8, 0],
-              rotateY: [-5, 5, -5],
-              rotateZ: [doodle.rotate - 3, doodle.rotate + 3, doodle.rotate - 3],
+              opacity: [0.35, 0.65, 0.35],
+              scale: [0.95, 1.08, 0.95],
+              y: [0, -25, 0],
+              rotateX: [0, 10, 0],
+              rotateY: [-8, 8, -8],
+              rotateZ: [doodle.rotate - 4, doodle.rotate + 4, doodle.rotate - 4],
             }}
             transition={{
-              duration: 5 + Math.random() * 2,
+              duration: 5 + Math.random() * 3,
               delay: doodle.delay,
               repeat: Infinity,
               ease: "easeInOut",
@@ -59,7 +67,7 @@ const HeroSection = () => {
               height: doodle.size,
               transform: `rotate(${doodle.rotate}deg)`,
               transformStyle: "preserve-3d",
-              filter: "drop-shadow(0 10px 30px rgba(139, 92, 246, 0.3)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))",
+              filter: "drop-shadow(0 12px 35px rgba(139, 92, 246, 0.35)) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.25))",
             }}
           >
             <img 
@@ -73,9 +81,10 @@ const HeroSection = () => {
           </motion.div>
         ))}
         
-        {/* Glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-purple/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-blue/10 rounded-full blur-3xl" />
+        {/* Glow orbs for ambiance */}
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-purple/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-blue/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-gradient-purple/5 to-gradient-blue/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
