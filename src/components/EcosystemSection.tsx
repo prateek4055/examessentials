@@ -311,7 +311,7 @@ const EcosystemSection = () => {
                         <img 
                           src={app.image} 
                           alt={app.name}
-                          className="w-28 h-28 object-contain relative z-10 drop-shadow-2xl"
+                          className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl relative z-10 drop-shadow-2xl"
                         />
                       </div>
                     ) : (
@@ -431,7 +431,7 @@ const EcosystemSection = () => {
                         <img 
                           src={app.image} 
                           alt={app.name}
-                          className="w-28 h-28 object-contain relative z-10 drop-shadow-2xl"
+                          className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl relative z-10 drop-shadow-2xl"
                         />
                       </div>
                     ) : (
