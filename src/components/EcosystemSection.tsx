@@ -12,6 +12,7 @@ import medneuroLogo from "@/assets/apps/medneuro.png";
 import medpharmaLogo from "@/assets/apps/medpharma.png";
 import medphysioLogo from "@/assets/apps/medphysio.png";
 import medradioLogo from "@/assets/apps/medradio.png";
+import medorthoLogo from "@/assets/apps/medortho.png";
 
 interface AppCard {
   name: string;
@@ -28,6 +29,13 @@ const apps: AppCard[] = [
     category: "parent",
   },
   // Medical Apps
+  {
+    name: "MedOrtho",
+    description: "Orthopedic tests & notes",
+    image: medorthoLogo,
+    category: "medical",
+    comingSoon: true,
+  },
   {
     name: "MedCardio",
     description: "Cardiology education & ECG",
@@ -227,7 +235,7 @@ const EcosystemSection = () => {
             Medical Education Apps
           </motion.h3>
           <div 
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
             style={{ perspective: "1000px" }}
           >
             {medicalApps.map((app, index) => (
@@ -303,7 +311,7 @@ const EcosystemSection = () => {
                         <img 
                           src={app.image} 
                           alt={app.name}
-                          className="w-20 h-20 object-contain relative z-10 drop-shadow-2xl"
+                          className="w-28 h-28 object-contain relative z-10 drop-shadow-2xl"
                         />
                       </div>
                     ) : (
@@ -423,7 +431,7 @@ const EcosystemSection = () => {
                         <img 
                           src={app.image} 
                           alt={app.name}
-                          className="w-20 h-20 object-contain relative z-10 drop-shadow-2xl"
+                          className="w-28 h-28 object-contain relative z-10 drop-shadow-2xl"
                         />
                       </div>
                     ) : (
