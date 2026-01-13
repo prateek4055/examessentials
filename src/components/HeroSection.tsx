@@ -2,33 +2,27 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
-// Science doodle elements for floating background
+// Import 3D doodle images
+import lungsDoodle from "@/assets/doodles/lungs.png";
+import heartDoodle from "@/assets/doodles/heart.png";
+import brainDoodle from "@/assets/doodles/brain.png";
+import prismDoodle from "@/assets/doodles/prism.png";
+
+// 3D doodle elements for floating background
 const doodleElements = [
-  // Physics
-  { symbol: "E = mc²", x: "5%", y: "15%", rotate: -15, delay: 0, scale: 1.2 },
-  { symbol: "F = ma", x: "88%", y: "20%", rotate: 12, delay: 0.3, scale: 1 },
-  { symbol: "λ = h/p", x: "12%", y: "75%", rotate: 8, delay: 0.6, scale: 1.1 },
-  { symbol: "v = fλ", x: "82%", y: "70%", rotate: -10, delay: 0.9, scale: 0.9 },
+  // Left side doodles
+  { image: lungsDoodle, x: "3%", y: "20%", rotate: -8, delay: 0, size: 140 },
+  { image: prismDoodle, x: "8%", y: "55%", rotate: 12, delay: 0.4, size: 100 },
+  { image: brainDoodle, x: "5%", y: "75%", rotate: -5, delay: 0.8, size: 120 },
   
-  // Chemistry
-  { symbol: "H₂O", x: "8%", y: "40%", rotate: 20, delay: 0.2, scale: 1.3 },
-  { symbol: "CO₂", x: "92%", y: "45%", rotate: -18, delay: 0.5, scale: 1 },
-  { symbol: "NaCl", x: "15%", y: "60%", rotate: 5, delay: 0.8, scale: 1.1 },
-  { symbol: "CH₄", x: "85%", y: "85%", rotate: -8, delay: 1.1, scale: 0.95 },
+  // Right side doodles
+  { image: heartDoodle, x: "85%", y: "15%", rotate: 10, delay: 0.2, size: 130 },
+  { image: brainDoodle, x: "88%", y: "50%", rotate: -12, delay: 0.6, size: 110 },
+  { image: lungsDoodle, x: "82%", y: "78%", rotate: 8, delay: 1.0, size: 125 },
   
-  // Maths
-  { symbol: "∫ dx", x: "3%", y: "30%", rotate: -12, delay: 0.4, scale: 1.15 },
-  { symbol: "Σ", x: "95%", y: "35%", rotate: 15, delay: 0.7, scale: 1.4 },
-  { symbol: "π r²", x: "10%", y: "85%", rotate: 10, delay: 1.0, scale: 1 },
-  { symbol: "√x", x: "90%", y: "60%", rotate: -20, delay: 1.3, scale: 1.2 },
-  { symbol: "∞", x: "6%", y: "55%", rotate: 0, delay: 0.1, scale: 1.5 },
-  { symbol: "dy/dx", x: "94%", y: "15%", rotate: -5, delay: 1.4, scale: 1 },
-  
-  // Biology
-  { symbol: "DNA", x: "18%", y: "25%", rotate: -8, delay: 0.35, scale: 1.1 },
-  { symbol: "ATP", x: "80%", y: "30%", rotate: 12, delay: 0.65, scale: 1.05 },
-  { symbol: "RNA", x: "20%", y: "70%", rotate: 18, delay: 0.95, scale: 0.9 },
-  { symbol: "O₂", x: "78%", y: "80%", rotate: -15, delay: 1.25, scale: 1.15 },
+  // Additional floating elements
+  { image: prismDoodle, x: "15%", y: "35%", rotate: 15, delay: 0.3, size: 80 },
+  { image: heartDoodle, x: "78%", y: "35%", rotate: -10, delay: 0.7, size: 90 },
 ];
 
 const HeroSection = () => {
@@ -37,41 +31,45 @@ const HeroSection = () => {
       {/* Gradient background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card/30" />
       
-      {/* Floating 3D Science Doodles */}
+      {/* Floating 3D Doodles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ perspective: "1000px" }}>
         {doodleElements.map((doodle, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, scale: 0.5, rotateX: -30 }}
+            initial={{ opacity: 0, scale: 0.5, rotateX: -20 }}
             animate={{ 
-              opacity: [0.15, 0.35, 0.15],
-              scale: [doodle.scale * 0.95, doodle.scale * 1.05, doodle.scale * 0.95],
-              y: [0, -15, 0],
-              rotateX: [0, 10, 0],
+              opacity: [0.4, 0.7, 0.4],
+              scale: [0.95, 1.05, 0.95],
+              y: [0, -20, 0],
+              rotateX: [0, 8, 0],
+              rotateY: [-5, 5, -5],
               rotateZ: [doodle.rotate - 3, doodle.rotate + 3, doodle.rotate - 3],
             }}
             transition={{
-              duration: 4 + Math.random() * 2,
+              duration: 5 + Math.random() * 2,
               delay: doodle.delay,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute font-body font-bold select-none"
+            className="absolute select-none"
             style={{
               left: doodle.x,
               top: doodle.y,
-              fontSize: `${1.2 * doodle.scale}rem`,
-              color: "hsl(var(--muted-foreground))",
-              textShadow: `
-                0 0 20px hsl(var(--gradient-purple) / 0.3),
-                0 0 40px hsl(var(--gradient-blue) / 0.2),
-                0 4px 8px hsl(0 0% 0% / 0.5)
-              `,
+              width: doodle.size,
+              height: doodle.size,
               transform: `rotate(${doodle.rotate}deg)`,
               transformStyle: "preserve-3d",
+              filter: "drop-shadow(0 10px 30px rgba(139, 92, 246, 0.3)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))",
             }}
           >
-            {doodle.symbol}
+            <img 
+              src={doodle.image} 
+              alt="" 
+              className="w-full h-full object-contain"
+              style={{
+                filter: "brightness(1.1) saturate(1.2)",
+              }}
+            />
           </motion.div>
         ))}
         
