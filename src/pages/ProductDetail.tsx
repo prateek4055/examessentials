@@ -1,11 +1,11 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, BookOpen, CheckCircle, ShoppingCart, ChevronLeft, ChevronRight, Shield, BadgeCheck, Lock, Headphones, MessageCircle, Users } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import MindMapsComboSection from "@/components/MindMapsComboSection";
 import { Button } from "@/components/ui/button";
 import { fetchProductById, fetchPublishedProducts, Product } from "@/lib/api";
@@ -159,15 +159,41 @@ const ProductDetail = () => {
     );
   }
 
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.title,
+    "description": product.description,
+    "image": product.images?.[0] || "https://examessentials.in/favicon.png",
+    "brand": {
+      "@type": "Brand",
+      "name": "Exam Essentials"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://examessentials.in/product/${product.id}`,
+      "priceCurrency": "INR",
+      "price": product.price,
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Exam Essentials"
+      }
+    },
+    "category": `Class ${product.class} ${product.subject} Notes`
+  };
+
   return (
     <>
-      <Helmet>
-        <title>{product.title} | Exam Essentials</title>
-        <meta
-          name="description"
-          content={`${product.title} - ${product.description}. Premium handwritten notes for Class ${product.class} ${product.subject}.`}
-        />
-      </Helmet>
+      <SEOHead
+        title={`${product.title} - Class ${product.class} ${product.subject} Notes`}
+        description={`${product.title} - ${product.description.slice(0, 150)}. Premium handwritten notes for Class ${product.class} ${product.subject}. Instant PDF delivery.`}
+        canonical={`/product/${product.id}`}
+        ogImage={product.images?.[0] || "https://examessentials.in/favicon.png"}
+        ogType="product"
+        keywords={`${product.subject} notes, class ${product.class} ${product.subject}, ${product.title}, CBSE ${product.subject} notes, handwritten notes`}
+        structuredData={productStructuredData}
+      />
 
       <Navbar />
       <main className="min-h-screen pt-24 pb-16">

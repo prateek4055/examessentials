@@ -1,10 +1,10 @@
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { fetchPublishedProducts, Product } from "@/lib/api";
@@ -86,15 +86,51 @@ const Products = () => {
     ? `Search: ${searchQuery} | Exam Essentials`
     : "All Notes | Exam Essentials";
 
+  const pageDescription = categoryFilter
+    ? `Browse premium ${categoryLabels[categoryFilter] || categoryFilter} for Class 11 & 12. Physics, Chemistry, Maths, Biology available.`
+    : classFilter
+    ? `Premium handwritten notes for Class ${classFilter} students. Physics, Chemistry, Maths, Biology notes available.`
+    : "Browse all premium handwritten notes for Class 11 & 12 students. Physics, Chemistry, Maths, Biology notes available.";
+
+  const canonicalPath = categoryFilter && classFilter
+    ? `/products?class=${classFilter}&category=${categoryFilter}`
+    : categoryFilter
+    ? `/products?category=${categoryFilter}`
+    : classFilter
+    ? `/products?class=${classFilter}`
+    : "/products";
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": pageTitle,
+    "description": pageDescription,
+    "url": `https://examessentials.in${canonicalPath}`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": filteredProducts.length,
+      "itemListElement": filteredProducts.slice(0, 10).map((product, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Product",
+          "name": product.title,
+          "description": product.description,
+          "url": `https://examessentials.in/product/${product.id}`
+        }
+      }))
+    }
+  };
+
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Browse premium handwritten notes for ${classFilter ? `Class ${classFilter}` : "Class 11 & 12"}. Physics, Chemistry, Maths, Biology notes available.`}
-        />
-      </Helmet>
+      <SEOHead
+        title={pageTitle}
+        description={pageDescription}
+        canonical={canonicalPath}
+        keywords={`${categoryFilter ? categoryLabels[categoryFilter] + ", " : ""}${classFilter ? "class " + classFilter + " notes, " : ""}handwritten notes, CBSE notes, physics notes, chemistry notes, maths notes, biology notes`}
+        structuredData={structuredData}
+      />
 
       <Navbar />
       <main className="min-h-screen pt-32 pb-16 bg-background">
@@ -225,9 +261,9 @@ const Products = () => {
                   {/* Class 11 Section */}
                   {class11Products.length > 0 && (
                     <section className="mb-12">
-                      <div className="section-header rounded-lg mb-6">
+                      <h2 className="section-header rounded-lg mb-6">
                         Class 11 Notes
-                      </div>
+                      </h2>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {class11Products.map((product, index) => (
                           <ProductCard key={product.id} product={product} index={index} />
@@ -239,9 +275,9 @@ const Products = () => {
                   {/* Class 12 Section */}
                   {class12Products.length > 0 && (
                     <section>
-                      <div className="section-header rounded-lg mb-6">
+                      <h2 className="section-header rounded-lg mb-6">
                         Class 12 Notes
-                      </div>
+                      </h2>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {class12Products.map((product, index) => (
                           <ProductCard key={product.id} product={product} index={index} />
@@ -253,11 +289,11 @@ const Products = () => {
               ) : (
                 <>
                   {(classFilter || categoryFilter) && (
-                    <div className="section-header rounded-lg mb-6">
+                    <h2 className="section-header rounded-lg mb-6">
                       {categoryFilter ? categoryLabels[categoryFilter] : ""} 
                       {categoryFilter && classFilter ? " - " : ""}
                       {classFilter ? `Class ${classFilter}` : ""}
-                    </div>
+                    </h2>
                   )}
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                     {filteredProducts.map((product, index) => (

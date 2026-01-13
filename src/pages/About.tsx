@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { CheckCircle } from "lucide-react";
 
 const About = () => {
@@ -11,8 +12,27 @@ const About = () => {
     "Made to save time during revision",
   ];
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Exam Essentials",
+      "description": "Premium handwritten notes for Class 11 & 12 students",
+      "foundingDate": "2024",
+      "areaServed": "India"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="About Us"
+        description="Learn about Exam Essentials - We create carefully structured handwritten notes that simplify complex topics for Class 11 & 12 students."
+        canonical="/about"
+        keywords="about exam essentials, handwritten notes company, study materials india, CBSE notes provider"
+        structuredData={structuredData}
+      />
       <Navbar />
       
       <main className="pt-32 pb-20">
