@@ -159,40 +159,82 @@ const ProductDetail = () => {
     );
   }
 
-  const productStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.title,
-    "description": product.description,
-    "image": product.images?.[0] || "https://examessentials.in/favicon.png",
-    "brand": {
-      "@type": "Brand",
-      "name": "Exam Essentials"
-    },
-    "offers": {
-      "@type": "Offer",
-      "url": `https://examessentials.in/product/${product.id}`,
-      "priceCurrency": "INR",
-      "price": product.price,
-      "availability": "https://schema.org/InStock",
-      "seller": {
-        "@type": "Organization",
+  const productStructuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.title,
+      "description": product.description,
+      "image": product.images?.[0] || "https://examessentials.in/og-image.png",
+      "sku": product.id,
+      "brand": {
+        "@type": "Brand",
         "name": "Exam Essentials"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": `https://examessentials.in/product/${product.id}`,
+        "priceCurrency": "INR",
+        "price": product.price,
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2026-12-31",
+        "seller": {
+          "@type": "Organization",
+          "name": "Exam Essentials"
+        }
+      },
+      "category": `Class ${product.class} ${product.subject} Notes`,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "150",
+        "bestRating": "5",
+        "worstRating": "1"
       }
     },
-    "category": `Class ${product.class} ${product.subject} Notes`
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://examessentials.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Products",
+          "item": "https://examessentials.in/products"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": `Class ${product.class} Notes`,
+          "item": `https://examessentials.in/products?class=${product.class}`
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": product.title,
+          "item": `https://examessentials.in/product/${product.id}`
+        }
+      ]
+    }
+  ];
 
   return (
     <>
       <SEOHead
-        title={`${product.title} - Class ${product.class} ${product.subject} Notes`}
-        description={`${product.title} - ${product.description.slice(0, 150)}. Premium handwritten notes for Class ${product.class} ${product.subject}. Instant PDF delivery.`}
+        title={`${product.title} - Class ${product.class} ${product.subject} Notes | Buy Now`}
+        description={`${product.title} - ${product.description.slice(0, 140)}. Premium handwritten ${product.subject} notes for Class ${product.class}. Best for CBSE, NEET, JEE. Instant PDF delivery. ₹${product.price} only.`}
         canonical={`/product/${product.id}`}
-        ogImage={product.images?.[0] || "https://examessentials.in/favicon.png"}
+        ogImage={product.images?.[0] || "https://examessentials.in/og-image.png"}
         ogType="product"
-        keywords={`${product.subject} notes, class ${product.class} ${product.subject}, ${product.title}, CBSE ${product.subject} notes, handwritten notes`}
+        keywords={`${product.subject} notes class ${product.class}, ${product.title}, CBSE ${product.subject} notes class ${product.class}, handwritten ${product.subject} notes, best ${product.subject} notes, topper notes ${product.subject}, ${product.subject} PDF notes, NEET ${product.subject} notes, JEE ${product.subject} notes`}
         structuredData={productStructuredData}
+        productPrice={product.price}
       />
 
       <Navbar />

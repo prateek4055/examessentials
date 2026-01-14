@@ -79,18 +79,18 @@ const Products = () => {
   const class12Products = filteredProducts.filter((p) => p.class === "12");
 
   const pageTitle = categoryFilter
-    ? `${categoryLabels[categoryFilter] || categoryFilter} | Exam Essentials`
+    ? `${categoryLabels[categoryFilter] || categoryFilter} for Class ${classFilter || "11 & 12"} | Best Study Notes`
     : classFilter
-    ? `Class ${classFilter} Notes | Exam Essentials`
+    ? `Class ${classFilter} Handwritten Notes | Physics, Chemistry, Maths, Biology`
     : searchQuery
-    ? `Search: ${searchQuery} | Exam Essentials`
-    : "All Notes | Exam Essentials";
+    ? `Search: ${searchQuery} | Study Notes`
+    : "All Premium Handwritten Notes | Class 11 & 12 | CBSE, NEET, JEE";
 
   const pageDescription = categoryFilter
-    ? `Browse premium ${categoryLabels[categoryFilter] || categoryFilter} for Class 11 & 12. Physics, Chemistry, Maths, Biology available.`
+    ? `Buy premium ${categoryLabels[categoryFilter] || categoryFilter} for Class ${classFilter || "11 & 12"}. Best handwritten Physics, Chemistry, Maths, Biology notes by toppers. Instant PDF delivery.`
     : classFilter
-    ? `Premium handwritten notes for Class ${classFilter} students. Physics, Chemistry, Maths, Biology notes available.`
-    : "Browse all premium handwritten notes for Class 11 & 12 students. Physics, Chemistry, Maths, Biology notes available.";
+    ? `Premium handwritten notes for Class ${classFilter} CBSE students. Physics, Chemistry, Maths, Biology notes for boards, NEET & JEE. Buy now with instant delivery.`
+    : "India's best handwritten notes for Class 11 & 12 students. Premium Physics, Chemistry, Maths, Biology notes by toppers. Perfect for CBSE Boards, NEET, JEE preparation.";
 
   const canonicalPath = categoryFilter && classFilter
     ? `/products?class=${classFilter}&category=${categoryFilter}`
@@ -100,27 +100,53 @@ const Products = () => {
     ? `/products?class=${classFilter}`
     : "/products";
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": pageTitle,
-    "description": pageDescription,
-    "url": `https://examessentials.in${canonicalPath}`,
-    "mainEntity": {
-      "@type": "ItemList",
-      "numberOfItems": filteredProducts.length,
-      "itemListElement": filteredProducts.slice(0, 10).map((product, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "Product",
-          "name": product.title,
-          "description": product.description,
-          "url": `https://examessentials.in/product/${product.id}`
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": pageTitle,
+      "description": pageDescription,
+      "url": `https://examessentials.in${canonicalPath}`,
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": filteredProducts.length,
+        "itemListElement": filteredProducts.slice(0, 10).map((product, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "Product",
+            "name": product.title,
+            "description": product.description,
+            "url": `https://examessentials.in/product/${product.id}`,
+            "offers": {
+              "@type": "Offer",
+              "price": product.price,
+              "priceCurrency": "INR",
+              "availability": "https://schema.org/InStock"
+            }
+          }
+        }))
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://examessentials.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": classFilter ? `Class ${classFilter} Notes` : "All Products",
+          "item": `https://examessentials.in${canonicalPath}`
         }
-      }))
+      ]
     }
-  };
+  ];
 
   return (
     <>
@@ -128,7 +154,7 @@ const Products = () => {
         title={pageTitle}
         description={pageDescription}
         canonical={canonicalPath}
-        keywords={`${categoryFilter ? categoryLabels[categoryFilter] + ", " : ""}${classFilter ? "class " + classFilter + " notes, " : ""}handwritten notes, CBSE notes, physics notes, chemistry notes, maths notes, biology notes`}
+        keywords={`${categoryFilter ? categoryLabels[categoryFilter] + " class 11, " + categoryLabels[categoryFilter] + " class 12, " : ""}${classFilter ? "class " + classFilter + " notes, class " + classFilter + " handwritten notes, " : ""}handwritten notes India, CBSE notes PDF, physics notes, chemistry notes, maths notes, biology notes, best study notes, topper notes, NEET notes, JEE notes`}
         structuredData={structuredData}
       />
 
