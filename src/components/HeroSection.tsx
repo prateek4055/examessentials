@@ -8,21 +8,17 @@ import heartDoodle from "@/assets/doodles/heart.png";
 import brainDoodle from "@/assets/doodles/brain.png";
 import prismDoodle from "@/assets/doodles/prism.png";
 
-// 3D doodle elements for floating background
+// 3D doodle elements for floating background - with mobile responsive sizes
 const doodleElements = [
-  // Left side doodles
-  { image: lungsDoodle, x: "3%", y: "20%", rotate: -8, delay: 0, size: 140 },
-  { image: prismDoodle, x: "8%", y: "55%", rotate: 12, delay: 0.4, size: 100 },
-  { image: brainDoodle, x: "5%", y: "75%", rotate: -5, delay: 0.8, size: 120 },
+  // Left side doodles (desktop: larger, mobile: smaller and repositioned)
+  { image: lungsDoodle, x: "2%", y: "15%", rotate: -8, delay: 0, desktopSize: 120, mobileSize: 50 },
+  { image: prismDoodle, x: "5%", y: "60%", rotate: 12, delay: 0.4, desktopSize: 90, mobileSize: 40 },
+  { image: brainDoodle, x: "3%", y: "80%", rotate: -5, delay: 0.8, desktopSize: 100, mobileSize: 45 },
   
   // Right side doodles
-  { image: heartDoodle, x: "85%", y: "15%", rotate: 10, delay: 0.2, size: 130 },
-  { image: brainDoodle, x: "88%", y: "50%", rotate: -12, delay: 0.6, size: 110 },
-  { image: lungsDoodle, x: "82%", y: "78%", rotate: 8, delay: 1.0, size: 125 },
-  
-  // Additional floating elements
-  { image: prismDoodle, x: "15%", y: "35%", rotate: 15, delay: 0.3, size: 80 },
-  { image: heartDoodle, x: "78%", y: "35%", rotate: -10, delay: 0.7, size: 90 },
+  { image: heartDoodle, x: "88%", y: "12%", rotate: 10, delay: 0.2, desktopSize: 110, mobileSize: 48 },
+  { image: brainDoodle, x: "90%", y: "50%", rotate: -12, delay: 0.6, desktopSize: 95, mobileSize: 42 },
+  { image: lungsDoodle, x: "85%", y: "82%", rotate: 8, delay: 1.0, desktopSize: 105, mobileSize: 46 },
 ];
 
 const HeroSection = () => {
@@ -38,9 +34,9 @@ const HeroSection = () => {
             key={index}
             initial={{ opacity: 0, scale: 0.5, rotateX: -20 }}
             animate={{ 
-              opacity: [0.4, 0.7, 0.4],
+              opacity: [0.3, 0.6, 0.3],
               scale: [0.95, 1.05, 0.95],
-              y: [0, -20, 0],
+              y: [0, -15, 0],
               rotateX: [0, 8, 0],
               rotateY: [-5, 5, -5],
               rotateZ: [doodle.rotate - 3, doodle.rotate + 3, doodle.rotate - 3],
@@ -51,12 +47,12 @@ const HeroSection = () => {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute select-none"
+            className="absolute select-none hidden sm:block"
             style={{
               left: doodle.x,
               top: doodle.y,
-              width: doodle.size,
-              height: doodle.size,
+              width: doodle.desktopSize,
+              height: doodle.desktopSize,
               transform: `rotate(${doodle.rotate}deg)`,
               transformStyle: "preserve-3d",
               filter: "drop-shadow(0 10px 30px rgba(139, 92, 246, 0.3)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))",
@@ -73,9 +69,46 @@ const HeroSection = () => {
           </motion.div>
         ))}
         
+        {/* Mobile doodles - smaller and repositioned */}
+        {doodleElements.slice(0, 4).map((doodle, index) => (
+          <motion.div
+            key={`mobile-${index}`}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ 
+              opacity: [0.25, 0.45, 0.25],
+              scale: [0.95, 1.05, 0.95],
+              y: [0, -10, 0],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 2,
+              delay: doodle.delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute select-none block sm:hidden"
+            style={{
+              left: index < 2 ? "3%" : "85%",
+              top: index % 2 === 0 ? "20%" : "70%",
+              width: doodle.mobileSize,
+              height: doodle.mobileSize,
+              transform: `rotate(${doodle.rotate}deg)`,
+              filter: "drop-shadow(0 6px 20px rgba(139, 92, 246, 0.25))",
+            }}
+          >
+            <img 
+              src={doodle.image} 
+              alt="" 
+              className="w-full h-full object-contain"
+              style={{
+                filter: "brightness(1.1) saturate(1.2)",
+              }}
+            />
+          </motion.div>
+        ))}
+        
         {/* Glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-purple/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-blue/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-32 md:w-64 h-32 md:h-64 bg-gradient-purple/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-48 md:w-96 h-48 md:h-96 bg-gradient-blue/10 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
