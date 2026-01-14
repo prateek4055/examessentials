@@ -1,50 +1,46 @@
 import { motion } from "framer-motion";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const faqs = [
   {
     question: "What are Exam Essentials handwritten notes?",
-    answer: "Exam Essentials provides premium handwritten notes for Class 11 & 12 students covering Physics, Chemistry, Maths, and Biology. Our notes are created by toppers and are specifically designed for CBSE Board exams, NEET, and JEE preparation."
+    answer:
+      "Exam Essentials provides premium handwritten notes for Class 11 & 12 students covering Physics, Chemistry, Maths, and Biology. Our notes are created by toppers and are specifically designed for CBSE Board exams, NEET, and JEE preparation.",
   },
   {
     question: "How are the notes delivered?",
-    answer: "All our notes are delivered instantly as digital PDFs. After successful payment, you'll receive the download link via email and can also access it from your account dashboard."
+    answer:
+      "All our notes are delivered instantly as digital PDFs. After successful payment, you'll receive the download link via email and can also access it from your account dashboard.",
   },
   {
     question: "Are these notes good for NEET and JEE preparation?",
-    answer: "Yes! Our notes are comprehensive and cover all important concepts, formulas, and diagrams required for both CBSE Board exams and competitive exams like NEET and JEE. They are created with exam-focused content by toppers."
-  },
-  {
-    question: "Can I get a refund if I'm not satisfied?",
-    answer: "Yes, we offer refunds within 7 days of purchase if you're not satisfied with the quality of our notes. Please refer to our refund policy for complete details."
+    answer:
+      "Yes! Our notes are comprehensive and cover all important concepts, formulas, and diagrams required for both CBSE Board exams and competitive exams like NEET and JEE. They are created with exam-focused content by toppers.",
   },
   {
     question: "Which subjects are available?",
-    answer: "We offer handwritten notes for Physics, Chemistry, Mathematics, and Biology for both Class 11 and Class 12. We also have formula sheets, mind maps, and previous year question papers (PYQs)."
+    answer:
+      "We offer handwritten notes for Physics, Chemistry, Mathematics, and Biology for both Class 11 and Class 12. We also have formula sheets, mind maps, and previous year question papers (PYQs).",
   },
   {
     question: "Are combo offers available?",
-    answer: "Yes! We offer special combo pricing for multiple subjects. You can get Physics + Chemistry combo, PCM (Physics, Chemistry, Maths), PCB (Physics, Chemistry, Biology), and PCMB (all 4 subjects) at discounted prices."
-  }
+    answer:
+      "Yes! We offer special combo pricing for multiple subjects. You can get Physics + Chemistry combo, PCM (Physics, Chemistry, Maths), PCB (Physics, Chemistry, Biology), and PCMB (all 4 subjects) at discounted prices.",
+  },
 ];
 
 // Structured data for FAQ
 export const faqStructuredData = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": faqs.map(faq => ({
+  mainEntity: faqs.map((faq) => ({
     "@type": "Question",
-    "name": faq.question,
-    "acceptedAnswer": {
+    name: faq.question,
+    acceptedAnswer: {
       "@type": "Answer",
-      "text": faq.answer
-    }
-  }))
+      text: faq.answer,
+    },
+  })),
 };
 
 const FAQSection = () => {
@@ -83,9 +79,7 @@ const FAQSection = () => {
                 <AccordionTrigger className="text-left font-display text-lg font-semibold text-foreground hover:no-underline py-5">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground font-body pb-5">
-                  {faq.answer}
-                </AccordionContent>
+                <AccordionContent className="text-muted-foreground font-body pb-5">{faq.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
