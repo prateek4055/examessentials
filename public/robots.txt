@@ -1,9 +1,17 @@
 # Robots.txt for examessentials.in
-# Allow all crawlers to index public pages
+# Optimized for SEO indexing
 
+# Allow all search engine crawlers
 User-agent: Googlebot
 Allow: /
+Allow: /products
+Allow: /product/*
+Allow: /about
+Allow: /contact
 Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Allow: /
 
 User-agent: Bingbot
 Allow: /
@@ -15,10 +23,16 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
 User-agent: *
 Allow: /
 
-# Block admin and auth pages from indexing
+# Block private/user-specific pages from indexing
 Disallow: /admin
 Disallow: /admin/*
 Disallow: /auth
@@ -26,5 +40,10 @@ Disallow: /profile
 Disallow: /purchase/*
 Disallow: /cart
 
-# Sitemap location
+# Sitemap locations
 Sitemap: https://examessentials.in/sitemap.xml
+Sitemap: https://examessentials.in/sitemap-pages.xml
+Sitemap: https://examessentials.in/sitemap-products.xml
+
+# Host
+Host: https://examessentials.in

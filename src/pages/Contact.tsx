@@ -37,32 +37,62 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "mainEntity": {
-      "@type": "Organization",
-      "name": "Exam Essentials",
-      "telephone": "+91-9460970342",
-      "email": "examessentials.info@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Deewan complex",
-        "addressLocality": "Behror",
-        "addressRegion": "Rajasthan",
-        "postalCode": "301701",
-        "addressCountry": "IN"
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact Exam Essentials",
+      "description": "Get in touch with Exam Essentials for any questions about our handwritten notes",
+      "url": "https://examessentials.in/contact",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Exam Essentials",
+        "telephone": "+91-9460970342",
+        "email": "examessentials.info@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Deewan complex",
+          "addressLocality": "Behror",
+          "addressRegion": "Rajasthan",
+          "postalCode": "301701",
+          "addressCountry": "IN"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-9460970342",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "Hindi"],
+          "areaServed": "IN"
+        }
       }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://examessentials.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact Us",
+          "item": "https://examessentials.in/contact"
+        }
+      ]
     }
-  };
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Contact Us"
-        description="Get in touch with Exam Essentials. We're here to help with any questions about our handwritten notes for Class 11 & 12 students."
+        title="Contact Us - Exam Essentials | Customer Support"
+        description="Contact Exam Essentials for questions about handwritten notes for Class 11 & 12. WhatsApp: +91 9460970342. Email: examessentials.info@gmail.com. We're here to help!"
         canonical="/contact"
-        keywords="contact exam essentials, customer support, study notes help, CBSE notes enquiry"
+        keywords="contact exam essentials, customer support study notes, buy handwritten notes, CBSE notes enquiry, notes help India"
         structuredData={structuredData}
       />
       <Navbar />

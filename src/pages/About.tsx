@@ -12,25 +12,52 @@ const About = () => {
     "Made to save time during revision",
   ];
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "mainEntity": {
-      "@type": "Organization",
-      "name": "Exam Essentials",
-      "description": "Premium handwritten notes for Class 11 & 12 students",
-      "foundingDate": "2024",
-      "areaServed": "India"
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "About Exam Essentials",
+      "description": "India's #1 premium handwritten notes for Class 11 & 12 students",
+      "url": "https://examessentials.in/about",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Exam Essentials",
+        "description": "Premium handwritten notes for Class 11 & 12 students. We create exam-focused study materials for CBSE Boards, NEET & JEE preparation.",
+        "foundingDate": "2024",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "knowsAbout": ["CBSE Education", "NEET Preparation", "JEE Preparation", "Class 11 Notes", "Class 12 Notes"]
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://examessentials.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About Us",
+          "item": "https://examessentials.in/about"
+        }
+      ]
     }
-  };
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="About Us"
-        description="Learn about Exam Essentials - We create carefully structured handwritten notes that simplify complex topics for Class 11 & 12 students."
+        title="About Us - India's #1 Handwritten Notes Provider"
+        description="Exam Essentials creates premium handwritten notes that simplify complex topics for Class 11 & 12 students. Trusted by thousands for CBSE Boards, NEET & JEE preparation."
         canonical="/about"
-        keywords="about exam essentials, handwritten notes company, study materials india, CBSE notes provider"
+        keywords="about exam essentials, handwritten notes company India, best study materials, CBSE notes provider, NEET notes, JEE notes, topper notes"
         structuredData={structuredData}
       />
       <Navbar />
