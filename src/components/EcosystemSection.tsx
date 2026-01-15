@@ -1,7 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import { useRef } from "react";
 
 // Import app logos
+import examEssentialsLogo from "@/assets/exam-essentials-logo.png";
 import neetLogo from "@/assets/apps/neet.png";
 import upscLogo from "@/assets/apps/upsc.png";
 import catLogo from "@/assets/apps/cat.png";
@@ -109,13 +111,172 @@ const apps: AppCard[] = [
   },
 ];
 
+// Tree Root SVG Component
+const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
+  const pathLength1 = useTransform(scrollProgress, [0, 0.3], [0, 1]);
+  const pathLength2 = useTransform(scrollProgress, [0.1, 0.4], [0, 1]);
+  const pathLength3 = useTransform(scrollProgress, [0.15, 0.45], [0, 1]);
+  const pathLength4 = useTransform(scrollProgress, [0.2, 0.5], [0, 1]);
+  const pathLength5 = useTransform(scrollProgress, [0.25, 0.55], [0, 1]);
+  const pathLength6 = useTransform(scrollProgress, [0.3, 0.6], [0, 1]);
+  const pathLength7 = useTransform(scrollProgress, [0.05, 0.35], [0, 1]);
+  const pathLength8 = useTransform(scrollProgress, [0.12, 0.42], [0, 1]);
+  const pathLength9 = useTransform(scrollProgress, [0.18, 0.48], [0, 1]);
+  const pathLength10 = useTransform(scrollProgress, [0.22, 0.52], [0, 1]);
+  const pathLength11 = useTransform(scrollProgress, [0.28, 0.58], [0, 1]);
+
+  return (
+    <svg
+      className="absolute left-1/2 top-[280px] -translate-x-1/2 w-full max-w-5xl h-[600px] pointer-events-none z-0"
+      viewBox="0 0 1000 600"
+      fill="none"
+      preserveAspectRatio="xMidYMin meet"
+    >
+      <defs>
+        <linearGradient id="rootGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="hsl(270, 70%, 65%)" stopOpacity="0.8" />
+          <stop offset="50%" stopColor="hsl(210, 100%, 65%)" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="hsl(145, 60%, 50%)" stopOpacity="0.4" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Medical Apps Roots (Left side - 6 apps) */}
+      {/* MedOrtho - far left */}
+      <motion.path
+        d="M500 50 Q500 100 350 150 Q200 200 80 350"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength1 }}
+        strokeLinecap="round"
+      />
+      {/* MedCardio */}
+      <motion.path
+        d="M500 50 Q500 100 380 140 Q280 180 180 350"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength2 }}
+        strokeLinecap="round"
+      />
+      {/* MedNeuro */}
+      <motion.path
+        d="M500 50 Q500 110 420 140 Q360 180 320 350"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength3 }}
+        strokeLinecap="round"
+      />
+      {/* MedPhysio */}
+      <motion.path
+        d="M500 50 Q500 110 540 140 Q600 180 680 350"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength4 }}
+        strokeLinecap="round"
+      />
+      {/* MedRadio */}
+      <motion.path
+        d="M500 50 Q500 100 600 140 Q700 180 820 350"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength5 }}
+        strokeLinecap="round"
+      />
+      {/* MedPharma - far right */}
+      <motion.path
+        d="M500 50 Q500 100 620 150 Q780 200 920 350"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength6 }}
+        strokeLinecap="round"
+      />
+
+      {/* Exam Apps Roots (Bottom - 5 apps) */}
+      {/* NEET Essentials */}
+      <motion.path
+        d="M500 50 Q500 200 200 450 Q120 500 100 550"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength7 }}
+        strokeLinecap="round"
+      />
+      {/* JEE Essentials */}
+      <motion.path
+        d="M500 50 Q500 220 350 450 Q300 500 300 550"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength8 }}
+        strokeLinecap="round"
+      />
+      {/* CAT Essentials - center */}
+      <motion.path
+        d="M500 50 Q500 250 500 450 Q500 500 500 550"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength9 }}
+        strokeLinecap="round"
+      />
+      {/* SSC Essentials */}
+      <motion.path
+        d="M500 50 Q500 220 650 450 Q700 500 700 550"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength10 }}
+        strokeLinecap="round"
+      />
+      {/* UPSC Essentials */}
+      <motion.path
+        d="M500 50 Q500 200 800 450 Q880 500 900 550"
+        stroke="url(#rootGradient)"
+        strokeWidth="3"
+        fill="none"
+        filter="url(#glow)"
+        style={{ pathLength: pathLength11 }}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+
 const EcosystemSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
   const parentApp = apps.find((app) => app.category === "parent");
   const medicalApps = apps.filter((app) => app.category === "medical");
   const examApps = apps.filter((app) => app.category === "exam");
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden" style={{ perspective: "1200px" }}>
+    <section ref={sectionRef} className="py-24 bg-background relative overflow-hidden" style={{ perspective: "1200px" }}>
       {/* Animated gradient background */}
       <div className="absolute inset-0">
         <motion.div 
@@ -163,18 +324,18 @@ const EcosystemSection = () => {
           </p>
         </motion.div>
 
-        {/* Parent App - Center Card with enhanced 3D */}
+        {/* Parent App - Center Card with Logo */}
         {parentApp && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, rotateX: -20 }}
             whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
             viewport={{ once: true }}
-            className="flex justify-center mb-16"
+            className="flex justify-center mb-16 relative"
             style={{ transformStyle: "preserve-3d" }}
           >
             <motion.div 
-              className="ecosystem-card-parent relative"
+              className="ecosystem-card-parent relative z-10"
               animate={{
                 y: [-10, 10, -10],
                 rotateZ: [-1, 1, -1],
@@ -210,9 +371,36 @@ const EcosystemSection = () => {
                   ease: "easeInOut"
                 }}
               />
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-gradient-purple/20 to-gradient-blue/20 mb-4">
-                <Sparkles className="w-12 h-12 text-foreground" />
+              
+              {/* Logo Image with glow */}
+              <div className="relative mb-4">
+                <motion.div
+                  className="absolute inset-0 rounded-2xl"
+                  style={{
+                    background: "radial-gradient(circle, hsl(var(--gradient-purple) / 0.4) 0%, transparent 70%)",
+                    filter: "blur(20px)"
+                  }}
+                  animate={{
+                    opacity: [0.5, 0.8, 0.5],
+                    scale: [0.9, 1.1, 0.9]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.img 
+                  src={examEssentialsLogo}
+                  alt="Exam Essentials"
+                  className="w-40 h-40 md:w-48 md:h-48 object-contain relative z-10 drop-shadow-2xl"
+                  animate={{
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
               </div>
+              
               <h3 className="font-display text-2xl font-bold text-foreground mb-2">
                 {parentApp.name}
               </h3>
@@ -223,8 +411,11 @@ const EcosystemSection = () => {
           </motion.div>
         )}
 
+        {/* Tree Roots Animation */}
+        <TreeRoots scrollProgress={scrollYProgress} />
+
         {/* Medical Apps */}
-        <div className="mb-16">
+        <div className="mb-16 relative z-10">
           <motion.h3
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -344,7 +535,7 @@ const EcosystemSection = () => {
         </div>
 
         {/* Exam Apps */}
-        <div>
+        <div className="relative z-10">
           <motion.h3
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
