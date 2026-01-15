@@ -111,156 +111,295 @@ const apps: AppCard[] = [
   },
 ];
 
+// Connection Node Component - animated pulse at connection points
+const ConnectionNode = ({ x, y, delay = 0 }: { x: number; y: number; delay?: number }) => (
+  <motion.g>
+    {/* Outer glow ring */}
+    <motion.circle
+      cx={x}
+      cy={y}
+      r="12"
+      fill="none"
+      stroke="url(#nodeGlow)"
+      strokeWidth="2"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ 
+        scale: [1, 1.5, 1], 
+        opacity: [0.6, 0.2, 0.6] 
+      }}
+      transition={{ 
+        duration: 2, 
+        repeat: Infinity, 
+        ease: "easeInOut",
+        delay 
+      }}
+    />
+    {/* Inner solid node */}
+    <motion.circle
+      cx={x}
+      cy={y}
+      r="6"
+      fill="url(#nodeFill)"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: delay + 0.3, type: "spring", stiffness: 200 }}
+    />
+  </motion.g>
+);
+
 // Tree Root SVG Component
 const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
-  const pathLength1 = useTransform(scrollProgress, [0, 0.3], [0, 1]);
-  const pathLength2 = useTransform(scrollProgress, [0.1, 0.4], [0, 1]);
-  const pathLength3 = useTransform(scrollProgress, [0.15, 0.45], [0, 1]);
-  const pathLength4 = useTransform(scrollProgress, [0.2, 0.5], [0, 1]);
-  const pathLength5 = useTransform(scrollProgress, [0.25, 0.55], [0, 1]);
-  const pathLength6 = useTransform(scrollProgress, [0.3, 0.6], [0, 1]);
-  const pathLength7 = useTransform(scrollProgress, [0.05, 0.35], [0, 1]);
-  const pathLength8 = useTransform(scrollProgress, [0.12, 0.42], [0, 1]);
-  const pathLength9 = useTransform(scrollProgress, [0.18, 0.48], [0, 1]);
-  const pathLength10 = useTransform(scrollProgress, [0.22, 0.52], [0, 1]);
-  const pathLength11 = useTransform(scrollProgress, [0.28, 0.58], [0, 1]);
+  // Staggered path animations for organic growth effect
+  const pathLength1 = useTransform(scrollProgress, [0.1, 0.4], [0, 1]);
+  const pathLength2 = useTransform(scrollProgress, [0.12, 0.42], [0, 1]);
+  const pathLength3 = useTransform(scrollProgress, [0.14, 0.44], [0, 1]);
+  const pathLength4 = useTransform(scrollProgress, [0.16, 0.46], [0, 1]);
+  const pathLength5 = useTransform(scrollProgress, [0.18, 0.48], [0, 1]);
+  const pathLength6 = useTransform(scrollProgress, [0.2, 0.5], [0, 1]);
+  
+  // Exam apps - slightly later
+  const pathLength7 = useTransform(scrollProgress, [0.22, 0.52], [0, 1]);
+  const pathLength8 = useTransform(scrollProgress, [0.24, 0.54], [0, 1]);
+  const pathLength9 = useTransform(scrollProgress, [0.26, 0.56], [0, 1]);
+  const pathLength10 = useTransform(scrollProgress, [0.28, 0.58], [0, 1]);
+  const pathLength11 = useTransform(scrollProgress, [0.3, 0.6], [0, 1]);
+
+  // Node visibility based on scroll
+  const nodeOpacity = useTransform(scrollProgress, [0.35, 0.5], [0, 1]);
+
+  // Medical app end positions (6 columns grid) - viewBox 1200 width
+  const medicalEndX = [100, 300, 500, 700, 900, 1100];
+  const medicalEndY = 380;
+  
+  // Exam app end positions (5 columns grid)
+  const examEndX = [120, 360, 600, 840, 1080];
+  const examEndY = 680;
+
+  const medicalPaths = [
+    { pathLength: pathLength1, endX: medicalEndX[0] },
+    { pathLength: pathLength2, endX: medicalEndX[1] },
+    { pathLength: pathLength3, endX: medicalEndX[2] },
+    { pathLength: pathLength4, endX: medicalEndX[3] },
+    { pathLength: pathLength5, endX: medicalEndX[4] },
+    { pathLength: pathLength6, endX: medicalEndX[5] },
+  ];
+
+  const examPaths = [
+    { pathLength: pathLength7, endX: examEndX[0] },
+    { pathLength: pathLength8, endX: examEndX[1] },
+    { pathLength: pathLength9, endX: examEndX[2] },
+    { pathLength: pathLength10, endX: examEndX[3] },
+    { pathLength: pathLength11, endX: examEndX[4] },
+  ];
 
   return (
-    <svg
-      className="absolute left-1/2 top-[280px] -translate-x-1/2 w-full max-w-5xl h-[600px] pointer-events-none z-0"
-      viewBox="0 0 1000 600"
-      fill="none"
-      preserveAspectRatio="xMidYMin meet"
-    >
-      <defs>
-        <linearGradient id="rootGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="hsl(270, 70%, 65%)" stopOpacity="0.8" />
-          <stop offset="50%" stopColor="hsl(210, 100%, 65%)" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="hsl(145, 60%, 50%)" stopOpacity="0.4" />
-        </linearGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-      
-      {/* Medical Apps Roots (Left side - 6 apps) */}
-      {/* MedOrtho - far left */}
-      <motion.path
-        d="M500 50 Q500 100 350 150 Q200 200 80 350"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
+    <>
+      {/* Desktop/Tablet SVG */}
+      <svg
+        className="absolute left-1/2 top-[320px] -translate-x-1/2 w-full max-w-6xl pointer-events-none z-0 hidden md:block"
+        style={{ height: "750px" }}
+        viewBox="0 0 1200 750"
         fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength1 }}
-        strokeLinecap="round"
-      />
-      {/* MedCardio */}
-      <motion.path
-        d="M500 50 Q500 100 380 140 Q280 180 180 350"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength2 }}
-        strokeLinecap="round"
-      />
-      {/* MedNeuro */}
-      <motion.path
-        d="M500 50 Q500 110 420 140 Q360 180 320 350"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength3 }}
-        strokeLinecap="round"
-      />
-      {/* MedPhysio */}
-      <motion.path
-        d="M500 50 Q500 110 540 140 Q600 180 680 350"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength4 }}
-        strokeLinecap="round"
-      />
-      {/* MedRadio */}
-      <motion.path
-        d="M500 50 Q500 100 600 140 Q700 180 820 350"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength5 }}
-        strokeLinecap="round"
-      />
-      {/* MedPharma - far right */}
-      <motion.path
-        d="M500 50 Q500 100 620 150 Q780 200 920 350"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength6 }}
-        strokeLinecap="round"
-      />
+        preserveAspectRatio="xMidYMin slice"
+      >
+        <defs>
+          {/* Premium gradient for roots */}
+          <linearGradient id="rootGradient" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stopColor="hsl(270, 70%, 70%)" stopOpacity="1" />
+            <stop offset="40%" stopColor="hsl(250, 80%, 65%)" stopOpacity="0.9" />
+            <stop offset="70%" stopColor="hsl(210, 100%, 60%)" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="hsl(180, 70%, 55%)" stopOpacity="0.5" />
+          </linearGradient>
+          
+          {/* Node gradients */}
+          <radialGradient id="nodeFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(270, 80%, 75%)" />
+            <stop offset="100%" stopColor="hsl(250, 70%, 60%)" />
+          </radialGradient>
+          <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(270, 80%, 70%)" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="hsl(210, 100%, 65%)" stopOpacity="0" />
+          </radialGradient>
+          
+          {/* Enhanced glow filter */}
+          <filter id="rootGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="blur1" />
+            <feGaussianBlur stdDeviation="8" result="blur2" />
+            <feMerge>
+              <feMergeNode in="blur2" />
+              <feMergeNode in="blur1" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          
+          {/* Soft shadow for depth */}
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="hsl(270, 70%, 50%)" floodOpacity="0.3" />
+          </filter>
+        </defs>
 
-      {/* Exam Apps Roots (Bottom - 5 apps) */}
-      {/* NEET Essentials */}
-      <motion.path
-        d="M500 50 Q500 200 200 450 Q120 500 100 550"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
+        {/* Central trunk from logo */}
+        <motion.path
+          d="M600 0 L600 80"
+          stroke="url(#rootGradient)"
+          strokeWidth="8"
+          fill="none"
+          filter="url(#rootGlow)"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+        />
+        
+        {/* Medical Apps Branch Lines (Top Section) */}
+        {medicalPaths.map((path, index) => {
+          const controlX = 600 + (path.endX - 600) * 0.3;
+          const controlY = 120 + Math.abs(path.endX - 600) * 0.15;
+          const control2X = path.endX;
+          const control2Y = 250;
+          
+          return (
+            <motion.path
+              key={`medical-${index}`}
+              d={`M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${path.endX} ${medicalEndY}`}
+              stroke="url(#rootGradient)"
+              strokeWidth="4"
+              fill="none"
+              filter="url(#rootGlow)"
+              style={{ pathLength: path.pathLength }}
+              strokeLinecap="round"
+            />
+          );
+        })}
+        
+        {/* Exam Apps Branch Lines (Bottom Section) */}
+        {examPaths.map((path, index) => {
+          const controlX = 600 + (path.endX - 600) * 0.2;
+          const controlY = 200;
+          const control2X = 600 + (path.endX - 600) * 0.6;
+          const control2Y = 450;
+          
+          return (
+            <motion.path
+              key={`exam-${index}`}
+              d={`M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${path.endX} ${examEndY}`}
+              stroke="url(#rootGradient)"
+              strokeWidth="4"
+              fill="none"
+              filter="url(#rootGlow)"
+              style={{ pathLength: path.pathLength }}
+              strokeLinecap="round"
+            />
+          );
+        })}
+        
+        {/* Connection nodes at medical app endpoints */}
+        <motion.g style={{ opacity: nodeOpacity }}>
+          {medicalEndX.map((x, i) => (
+            <ConnectionNode key={`med-node-${i}`} x={x} y={medicalEndY} delay={i * 0.1} />
+          ))}
+          {/* Connection nodes at exam app endpoints */}
+          {examEndX.map((x, i) => (
+            <ConnectionNode key={`exam-node-${i}`} x={x} y={examEndY} delay={0.6 + i * 0.1} />
+          ))}
+        </motion.g>
+      </svg>
+
+      {/* Mobile SVG - Simplified vertical design */}
+      <svg
+        className="absolute left-1/2 top-[280px] -translate-x-1/2 w-full pointer-events-none z-0 md:hidden"
+        style={{ height: "900px" }}
+        viewBox="0 0 400 900"
         fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength7 }}
-        strokeLinecap="round"
-      />
-      {/* JEE Essentials */}
-      <motion.path
-        d="M500 50 Q500 220 350 450 Q300 500 300 550"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength8 }}
-        strokeLinecap="round"
-      />
-      {/* CAT Essentials - center */}
-      <motion.path
-        d="M500 50 Q500 250 500 450 Q500 500 500 550"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength9 }}
-        strokeLinecap="round"
-      />
-      {/* SSC Essentials */}
-      <motion.path
-        d="M500 50 Q500 220 650 450 Q700 500 700 550"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength10 }}
-        strokeLinecap="round"
-      />
-      {/* UPSC Essentials */}
-      <motion.path
-        d="M500 50 Q500 200 800 450 Q880 500 900 550"
-        stroke="url(#rootGradient)"
-        strokeWidth="3"
-        fill="none"
-        filter="url(#glow)"
-        style={{ pathLength: pathLength11 }}
-        strokeLinecap="round"
-      />
-    </svg>
+        preserveAspectRatio="xMidYMin slice"
+      >
+        <defs>
+          <linearGradient id="rootGradientMobile" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stopColor="hsl(270, 70%, 70%)" stopOpacity="1" />
+            <stop offset="50%" stopColor="hsl(250, 80%, 65%)" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="hsl(210, 100%, 60%)" stopOpacity="0.5" />
+          </linearGradient>
+          <radialGradient id="nodeFillMobile" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(270, 80%, 75%)" />
+            <stop offset="100%" stopColor="hsl(250, 70%, 60%)" />
+          </radialGradient>
+          <filter id="rootGlowMobile" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Central vertical trunk */}
+        <motion.path
+          d="M200 0 L200 850"
+          stroke="url(#rootGradientMobile)"
+          strokeWidth="5"
+          fill="none"
+          filter="url(#rootGlowMobile)"
+          strokeLinecap="round"
+          style={{ pathLength: useTransform(scrollProgress, [0.1, 0.6], [0, 1]) }}
+        />
+        
+        {/* Branch lines to left cards */}
+        {[150, 350, 550, 750].map((y, i) => (
+          <motion.path
+            key={`left-${i}`}
+            d={`M200 ${y} Q150 ${y} 80 ${y + 30}`}
+            stroke="url(#rootGradientMobile)"
+            strokeWidth="3"
+            fill="none"
+            filter="url(#rootGlowMobile)"
+            strokeLinecap="round"
+            style={{ pathLength: useTransform(scrollProgress, [0.15 + i * 0.08, 0.4 + i * 0.08], [0, 1]) }}
+          />
+        ))}
+        
+        {/* Branch lines to right cards */}
+        {[220, 420, 620, 820].map((y, i) => (
+          <motion.path
+            key={`right-${i}`}
+            d={`M200 ${y} Q250 ${y} 320 ${y + 30}`}
+            stroke="url(#rootGradientMobile)"
+            strokeWidth="3"
+            fill="none"
+            filter="url(#rootGlowMobile)"
+            strokeLinecap="round"
+            style={{ pathLength: useTransform(scrollProgress, [0.18 + i * 0.08, 0.43 + i * 0.08], [0, 1]) }}
+          />
+        ))}
+
+        {/* Mobile connection nodes */}
+        <motion.g style={{ opacity: nodeOpacity }}>
+          {[150, 350, 550, 750].map((y, i) => (
+            <motion.circle
+              key={`left-node-${i}`}
+              cx={80}
+              cy={y + 30}
+              r="5"
+              fill="url(#nodeFillMobile)"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.5 + i * 0.1 }}
+            />
+          ))}
+          {[220, 420, 620, 820].map((y, i) => (
+            <motion.circle
+              key={`right-node-${i}`}
+              cx={320}
+              cy={y + 30}
+              r="5"
+              fill="url(#nodeFillMobile)"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.6 + i * 0.1 }}
+            />
+          ))}
+        </motion.g>
+      </svg>
+    </>
   );
 };
 
