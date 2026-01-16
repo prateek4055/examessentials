@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState, createContext, useContext } from "react";
 
 // Import app logos
 import examEssentialsLogo from "@/assets/exam-essentials-logo.png";
@@ -15,6 +15,25 @@ import medpharmaLogo from "@/assets/apps/medpharma.png";
 import medphysioLogo from "@/assets/apps/medphysio.png";
 import medradioLogo from "@/assets/apps/medradio.png";
 import medorthoLogo from "@/assets/apps/medortho.png";
+
+// Context for hover/click state
+interface RootInteractionContextType {
+  hoveredAppIndex: number | null;
+  hoveredAppType: "medical" | "exam" | null;
+  selectedAppIndex: number | null;
+  selectedAppType: "medical" | "exam" | null;
+  setHoveredApp: (index: number | null, type: "medical" | "exam" | null) => void;
+  setSelectedApp: (index: number | null, type: "medical" | "exam" | null) => void;
+}
+
+const RootInteractionContext = createContext<RootInteractionContextType>({
+  hoveredAppIndex: null,
+  hoveredAppType: null,
+  selectedAppIndex: null,
+  selectedAppType: null,
+  setHoveredApp: () => {},
+  setSelectedApp: () => {},
+});
 
 interface AppCard {
   name: string;
@@ -204,6 +223,8 @@ const ConnectionNode = ({
 
 // Tree Root SVG Component
 const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
+  const { hoveredAppIndex, hoveredAppType, selectedAppIndex, selectedAppType } = useContext(RootInteractionContext);
+  
   // Staggered path animations for organic growth effect
   const pathLength1 = useTransform(scrollProgress, [0.1, 0.4], [0, 1]);
   const pathLength2 = useTransform(scrollProgress, [0.12, 0.42], [0, 1]);
@@ -264,6 +285,36 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
     return `M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${endX} ${examEndY}`;
   };
 
+  // Check if a path should be highlighted
+  const isPathHighlighted = (index: number, type: "medical" | "exam") => {
+    if (selectedAppIndex !== null && selectedAppType === type && selectedAppIndex === index) {
+      return "selected";
+    }
+    if (hoveredAppIndex !== null && hoveredAppType === type && hoveredAppIndex === index) {
+      return "hovered";
+    }
+    return null;
+  };
+
+  // Get stroke width based on highlight state
+  const getStrokeWidth = (index: number, type: "medical" | "exam") => {
+    const state = isPathHighlighted(index, type);
+    if (state === "selected") return 10;
+    if (state === "hovered") return 8;
+    return 5;
+  };
+
+  // Get opacity based on highlight state
+  const getPathOpacity = (index: number, type: "medical" | "exam") => {
+    const anySelected = selectedAppIndex !== null;
+    const anyHovered = hoveredAppIndex !== null;
+    const state = isPathHighlighted(index, type);
+    
+    if (state === "selected" || state === "hovered") return 1;
+    if (anySelected || anyHovered) return 0.3;
+    return 1;
+  };
+
   return (
     <>
       {/* Desktop/Tablet SVG */}
@@ -283,12 +334,28 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
             <stop offset="100%" stopColor="hsl(220, 85%, 55%)" stopOpacity="0.6" />
           </linearGradient>
           
+          {/* Medical gradient highlighted */}
+          <linearGradient id="medicalGradientHighlight" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stopColor="hsl(280, 100%, 80%)" stopOpacity="1" />
+            <stop offset="40%" stopColor="hsl(260, 100%, 75%)" stopOpacity="1" />
+            <stop offset="70%" stopColor="hsl(240, 100%, 70%)" stopOpacity="1" />
+            <stop offset="100%" stopColor="hsl(220, 100%, 65%)" stopOpacity="1" />
+          </linearGradient>
+          
           {/* Exam gradient - Orange/Gold */}
           <linearGradient id="examGradient" x1="50%" y1="0%" x2="50%" y2="100%">
             <stop offset="0%" stopColor="hsl(35, 95%, 65%)" stopOpacity="1" />
             <stop offset="40%" stopColor="hsl(25, 90%, 60%)" stopOpacity="0.9" />
             <stop offset="70%" stopColor="hsl(15, 85%, 55%)" stopOpacity="0.8" />
             <stop offset="100%" stopColor="hsl(350, 80%, 55%)" stopOpacity="0.6" />
+          </linearGradient>
+          
+          {/* Exam gradient highlighted */}
+          <linearGradient id="examGradientHighlight" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stopColor="hsl(35, 100%, 75%)" stopOpacity="1" />
+            <stop offset="40%" stopColor="hsl(25, 100%, 70%)" stopOpacity="1" />
+            <stop offset="70%" stopColor="hsl(15, 100%, 65%)" stopOpacity="1" />
+            <stop offset="100%" stopColor="hsl(350, 100%, 65%)" stopOpacity="1" />
           </linearGradient>
 
           {/* Central trunk gradient */}
@@ -307,6 +374,12 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
             <stop offset="100%" stopColor="hsl(240, 100%, 65%)" stopOpacity="0" />
           </radialGradient>
           
+          {/* Medical node highlighted */}
+          <radialGradient id="nodeFillMedicalHighlight" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(280, 100%, 90%)" />
+            <stop offset="100%" stopColor="hsl(260, 100%, 75%)" />
+          </radialGradient>
+          
           {/* Exam node gradients */}
           <radialGradient id="nodeFillExam" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="hsl(40, 95%, 70%)" />
@@ -317,11 +390,30 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
             <stop offset="100%" stopColor="hsl(15, 90%, 55%)" stopOpacity="0" />
           </radialGradient>
           
+          {/* Exam node highlighted */}
+          <radialGradient id="nodeFillExamHighlight" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(40, 100%, 85%)" />
+            <stop offset="100%" stopColor="hsl(25, 100%, 70%)" />
+          </radialGradient>
+          
           {/* Enhanced glow filters */}
           <filter id="medicalGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" result="blur1" />
             <feGaussianBlur stdDeviation="10" result="blur2" />
             <feMerge>
+              <feMergeNode in="blur2" />
+              <feMergeNode in="blur1" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          
+          {/* Strong glow for highlighted paths */}
+          <filter id="highlightGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="6" result="blur1" />
+            <feGaussianBlur stdDeviation="15" result="blur2" />
+            <feGaussianBlur stdDeviation="25" result="blur3" />
+            <feMerge>
+              <feMergeNode in="blur3" />
               <feMergeNode in="blur2" />
               <feMergeNode in="blur1" />
               <feMergeNode in="SourceGraphic" />
@@ -362,32 +454,48 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
         />
         
         {/* Medical Apps Branch Lines (Purple/Blue) */}
-        {medicalPaths.map((path, index) => (
-          <motion.path
-            key={`medical-${index}`}
-            d={getMedicalPath(path.endX)}
-            stroke="url(#medicalGradient)"
-            strokeWidth="5"
-            fill="none"
-            filter="url(#medicalGlow)"
-            style={{ pathLength: path.pathLength }}
-            strokeLinecap="round"
-          />
-        ))}
+        {medicalPaths.map((path, index) => {
+          const highlightState = isPathHighlighted(index, "medical");
+          return (
+            <motion.path
+              key={`medical-${index}`}
+              d={getMedicalPath(path.endX)}
+              stroke={highlightState ? "url(#medicalGradientHighlight)" : "url(#medicalGradient)"}
+              strokeWidth={getStrokeWidth(index, "medical")}
+              fill="none"
+              filter={highlightState ? "url(#highlightGlow)" : "url(#medicalGlow)"}
+              style={{ pathLength: path.pathLength }}
+              strokeLinecap="round"
+              animate={{
+                opacity: getPathOpacity(index, "medical"),
+                strokeWidth: getStrokeWidth(index, "medical"),
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          );
+        })}
         
         {/* Exam Apps Branch Lines (Orange/Gold) */}
-        {examPaths.map((path, index) => (
-          <motion.path
-            key={`exam-${index}`}
-            d={getExamPath(path.endX)}
-            stroke="url(#examGradient)"
-            strokeWidth="5"
-            fill="none"
-            filter="url(#examGlow)"
-            style={{ pathLength: path.pathLength }}
-            strokeLinecap="round"
-          />
-        ))}
+        {examPaths.map((path, index) => {
+          const highlightState = isPathHighlighted(index, "exam");
+          return (
+            <motion.path
+              key={`exam-${index}`}
+              d={getExamPath(path.endX)}
+              stroke={highlightState ? "url(#examGradientHighlight)" : "url(#examGradient)"}
+              strokeWidth={getStrokeWidth(index, "exam")}
+              fill="none"
+              filter={highlightState ? "url(#highlightGlow)" : "url(#examGlow)"}
+              style={{ pathLength: path.pathLength }}
+              strokeLinecap="round"
+              animate={{
+                opacity: getPathOpacity(index, "exam"),
+                strokeWidth: getStrokeWidth(index, "exam"),
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          );
+        })}
 
         {/* Energy particles for medical paths */}
         <g filter="url(#particleGlow)">
@@ -451,13 +559,83 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
         
         {/* Connection nodes at medical app endpoints */}
         <motion.g style={{ opacity: nodeOpacity }}>
-          {medicalEndX.map((x, i) => (
-            <ConnectionNode key={`med-node-${i}`} x={x} y={medicalEndY} delay={i * 0.1} color="medical" />
-          ))}
+          {medicalEndX.map((x, i) => {
+            const highlightState = isPathHighlighted(i, "medical");
+            return (
+              <motion.g key={`med-node-${i}`}>
+                {/* Outer glow ring */}
+                <motion.circle
+                  cx={x}
+                  cy={medicalEndY}
+                  r={highlightState ? 18 : 14}
+                  fill="none"
+                  stroke={`url(#nodeGlowMedical)`}
+                  strokeWidth={highlightState ? 3 : 2}
+                  animate={{ 
+                    scale: [1, 1.6, 1], 
+                    opacity: highlightState ? [0.9, 0.4, 0.9] : [0.7, 0.2, 0.7],
+                    r: highlightState ? 18 : 14,
+                  }}
+                  transition={{ 
+                    duration: 2.5, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: i * 0.1 
+                  }}
+                />
+                {/* Inner solid node */}
+                <motion.circle
+                  cx={x}
+                  cy={medicalEndY}
+                  r={highlightState ? 10 : 7}
+                  fill={highlightState ? `url(#nodeFillMedicalHighlight)` : `url(#nodeFillMedical)`}
+                  animate={{
+                    r: highlightState ? 10 : 7,
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.g>
+            );
+          })}
           {/* Connection nodes at exam app endpoints */}
-          {examEndX.map((x, i) => (
-            <ConnectionNode key={`exam-node-${i}`} x={x} y={examEndY} delay={0.6 + i * 0.1} color="exam" />
-          ))}
+          {examEndX.map((x, i) => {
+            const highlightState = isPathHighlighted(i, "exam");
+            return (
+              <motion.g key={`exam-node-${i}`}>
+                {/* Outer glow ring */}
+                <motion.circle
+                  cx={x}
+                  cy={examEndY}
+                  r={highlightState ? 18 : 14}
+                  fill="none"
+                  stroke={`url(#nodeGlowExam)`}
+                  strokeWidth={highlightState ? 3 : 2}
+                  animate={{ 
+                    scale: [1, 1.6, 1], 
+                    opacity: highlightState ? [0.9, 0.4, 0.9] : [0.7, 0.2, 0.7],
+                    r: highlightState ? 18 : 14,
+                  }}
+                  transition={{ 
+                    duration: 2.5, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: 0.6 + i * 0.1 
+                  }}
+                />
+                {/* Inner solid node */}
+                <motion.circle
+                  cx={x}
+                  cy={examEndY}
+                  r={highlightState ? 10 : 7}
+                  fill={highlightState ? `url(#nodeFillExamHighlight)` : `url(#nodeFillExam)`}
+                  animate={{
+                    r: highlightState ? 10 : 7,
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.g>
+            );
+          })}
         </motion.g>
       </svg>
 
@@ -706,11 +884,41 @@ const EcosystemSection = () => {
     offset: ["start end", "end start"]
   });
 
+  // State for hover and click interactions
+  const [hoveredAppIndex, setHoveredAppIndex] = useState<number | null>(null);
+  const [hoveredAppType, setHoveredAppType] = useState<"medical" | "exam" | null>(null);
+  const [selectedAppIndex, setSelectedAppIndex] = useState<number | null>(null);
+  const [selectedAppType, setSelectedAppType] = useState<"medical" | "exam" | null>(null);
+
+  const setHoveredApp = (index: number | null, type: "medical" | "exam" | null) => {
+    setHoveredAppIndex(index);
+    setHoveredAppType(type);
+  };
+
+  const setSelectedApp = (index: number | null, type: "medical" | "exam" | null) => {
+    // Toggle off if clicking the same app
+    if (selectedAppIndex === index && selectedAppType === type) {
+      setSelectedAppIndex(null);
+      setSelectedAppType(null);
+    } else {
+      setSelectedAppIndex(index);
+      setSelectedAppType(type);
+    }
+  };
+
   const parentApp = apps.find((app) => app.category === "parent");
   const medicalApps = apps.filter((app) => app.category === "medical");
   const examApps = apps.filter((app) => app.category === "exam");
 
   return (
+    <RootInteractionContext.Provider value={{
+      hoveredAppIndex,
+      hoveredAppType,
+      selectedAppIndex,
+      selectedAppType,
+      setHoveredApp,
+      setSelectedApp,
+    }}>
     <section ref={sectionRef} className="py-24 bg-background relative overflow-hidden" style={{ perspective: "1200px" }}>
       {/* Animated gradient background */}
       <div className="absolute inset-0">
@@ -890,10 +1098,17 @@ const EcosystemSection = () => {
                   scale: 1.05,
                   rotateY: 5,
                 }}
+                onHoverStart={() => setHoveredApp(index, "medical")}
+                onHoverEnd={() => setHoveredApp(null, null)}
+                onClick={() => setSelectedApp(index, "medical")}
                 viewport={{ once: true, margin: "-50px" }}
-                style={{ transformStyle: "preserve-3d" }}
+                style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
               >
-                <div className="ecosystem-card group relative overflow-hidden">
+                <div className={`ecosystem-card group relative overflow-hidden transition-all duration-300 ${
+                  selectedAppIndex === index && selectedAppType === "medical" 
+                    ? "ring-2 ring-purple-500 ring-offset-2 ring-offset-background" 
+                    : ""
+                }`}>
                   {/* 3D depth shadow */}
                   <div 
                     className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -1010,10 +1225,17 @@ const EcosystemSection = () => {
                   scale: 1.05,
                   rotateY: 5,
                 }}
+                onHoverStart={() => setHoveredApp(index, "exam")}
+                onHoverEnd={() => setHoveredApp(null, null)}
+                onClick={() => setSelectedApp(index, "exam")}
                 viewport={{ once: true, margin: "-50px" }}
-                style={{ transformStyle: "preserve-3d" }}
+                style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
               >
-                <div className="ecosystem-card group relative overflow-hidden">
+                <div className={`ecosystem-card group relative overflow-hidden transition-all duration-300 ${
+                  selectedAppIndex === index && selectedAppType === "exam" 
+                    ? "ring-2 ring-orange-500 ring-offset-2 ring-offset-background" 
+                    : ""
+                }`}>
                   {/* 3D depth shadow */}
                   <div 
                     className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -1090,6 +1312,7 @@ const EcosystemSection = () => {
         </div>
       </div>
     </section>
+    </RootInteractionContext.Provider>
   );
 };
 
