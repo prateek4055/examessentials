@@ -111,96 +111,41 @@ const apps: AppCard[] = [
   },
 ];
 
-// Energy Particle Component - flows along paths
-const EnergyParticle = ({ 
-  pathId, 
-  delay = 0, 
-  duration = 3, 
-  color = "medical" 
-}: { 
-  pathId: string; 
-  delay?: number; 
-  duration?: number; 
-  color?: "medical" | "exam";
-}) => {
-  const fillColor = color === "medical" 
-    ? "hsl(270, 80%, 75%)" 
-    : "hsl(30, 90%, 65%)";
-  const glowColor = color === "medical"
-    ? "hsl(250, 100%, 70%)"
-    : "hsl(25, 100%, 60%)";
-
-  return (
+// Connection Node Component - animated pulse at connection points
+const ConnectionNode = ({ x, y, delay = 0 }: { x: number; y: number; delay?: number }) => (
+  <motion.g>
+    {/* Outer glow ring */}
     <motion.circle
-      r="6"
-      fill={fillColor}
-      filter={`drop-shadow(0 0 8px ${glowColor}) drop-shadow(0 0 15px ${glowColor})`}
-      initial={{ offsetDistance: "0%" }}
-      animate={{ offsetDistance: "100%" }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "linear",
+      cx={x}
+      cy={y}
+      r="12"
+      fill="none"
+      stroke="url(#nodeGlow)"
+      strokeWidth="2"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ 
+        scale: [1, 1.5, 1], 
+        opacity: [0.6, 0.2, 0.6] 
       }}
-      style={{
-        offsetPath: `path('${pathId}')`,
-        offsetRotate: "0deg",
+      transition={{ 
+        duration: 2, 
+        repeat: Infinity, 
+        ease: "easeInOut",
+        delay 
       }}
     />
-  );
-};
-
-// Connection Node Component - animated pulse at connection points
-const ConnectionNode = ({ 
-  x, 
-  y, 
-  delay = 0, 
-  color = "medical" 
-}: { 
-  x: number; 
-  y: number; 
-  delay?: number; 
-  color?: "medical" | "exam";
-}) => {
-  const gradientId = color === "medical" ? "nodeFillMedical" : "nodeFillExam";
-  const glowId = color === "medical" ? "nodeGlowMedical" : "nodeGlowExam";
-  
-  return (
-    <motion.g>
-      {/* Outer glow ring */}
-      <motion.circle
-        cx={x}
-        cy={y}
-        r="14"
-        fill="none"
-        stroke={`url(#${glowId})`}
-        strokeWidth="2"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ 
-          scale: [1, 1.6, 1], 
-          opacity: [0.7, 0.2, 0.7] 
-        }}
-        transition={{ 
-          duration: 2.5, 
-          repeat: Infinity, 
-          ease: "easeInOut",
-          delay 
-        }}
-      />
-      {/* Inner solid node */}
-      <motion.circle
-        cx={x}
-        cy={y}
-        r="7"
-        fill={`url(#${gradientId})`}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: delay + 0.3, type: "spring", stiffness: 200 }}
-      />
-    </motion.g>
-  );
-};
+    {/* Inner solid node */}
+    <motion.circle
+      cx={x}
+      cy={y}
+      r="6"
+      fill="url(#nodeFill)"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: delay + 0.3, type: "spring", stiffness: 200 }}
+    />
+  </motion.g>
+);
 
 // Tree Root SVG Component
 const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
@@ -247,23 +192,6 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
     { pathLength: pathLength11, endX: examEndX[4] },
   ];
 
-  // Generate path strings for particles
-  const getMedicalPath = (endX: number) => {
-    const controlX = 600 + (endX - 600) * 0.3;
-    const controlY = 120 + Math.abs(endX - 600) * 0.15;
-    const control2X = endX;
-    const control2Y = 250;
-    return `M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${endX} ${medicalEndY}`;
-  };
-
-  const getExamPath = (endX: number) => {
-    const controlX = 600 + (endX - 600) * 0.2;
-    const controlY = 200;
-    const control2X = 600 + (endX - 600) * 0.6;
-    const control2Y = 450;
-    return `M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${endX} ${examEndY}`;
-  };
-
   return (
     <>
       {/* Desktop/Tablet SVG */}
@@ -275,52 +203,28 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
         preserveAspectRatio="xMidYMin slice"
       >
         <defs>
-          {/* Medical gradient - Purple/Blue */}
-          <linearGradient id="medicalGradient" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="hsl(280, 80%, 70%)" stopOpacity="1" />
-            <stop offset="40%" stopColor="hsl(260, 85%, 65%)" stopOpacity="0.9" />
-            <stop offset="70%" stopColor="hsl(240, 90%, 60%)" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="hsl(220, 85%, 55%)" stopOpacity="0.6" />
-          </linearGradient>
-          
-          {/* Exam gradient - Orange/Gold */}
-          <linearGradient id="examGradient" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="hsl(35, 95%, 65%)" stopOpacity="1" />
-            <stop offset="40%" stopColor="hsl(25, 90%, 60%)" stopOpacity="0.9" />
-            <stop offset="70%" stopColor="hsl(15, 85%, 55%)" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="hsl(350, 80%, 55%)" stopOpacity="0.6" />
-          </linearGradient>
-
-          {/* Central trunk gradient */}
-          <linearGradient id="trunkGradient" x1="50%" y1="0%" x2="50%" y2="100%">
+          {/* Premium gradient for roots */}
+          <linearGradient id="rootGradient" x1="50%" y1="0%" x2="50%" y2="100%">
             <stop offset="0%" stopColor="hsl(270, 70%, 70%)" stopOpacity="1" />
-            <stop offset="100%" stopColor="hsl(30, 80%, 60%)" stopOpacity="0.8" />
+            <stop offset="40%" stopColor="hsl(250, 80%, 65%)" stopOpacity="0.9" />
+            <stop offset="70%" stopColor="hsl(210, 100%, 60%)" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="hsl(180, 70%, 55%)" stopOpacity="0.5" />
           </linearGradient>
           
-          {/* Medical node gradients */}
-          <radialGradient id="nodeFillMedical" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(280, 90%, 80%)" />
-            <stop offset="100%" stopColor="hsl(260, 80%, 60%)" />
+          {/* Node gradients */}
+          <radialGradient id="nodeFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(270, 80%, 75%)" />
+            <stop offset="100%" stopColor="hsl(250, 70%, 60%)" />
           </radialGradient>
-          <radialGradient id="nodeGlowMedical" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(270, 90%, 75%)" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="hsl(240, 100%, 65%)" stopOpacity="0" />
-          </radialGradient>
-          
-          {/* Exam node gradients */}
-          <radialGradient id="nodeFillExam" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(40, 95%, 70%)" />
-            <stop offset="100%" stopColor="hsl(25, 90%, 55%)" />
-          </radialGradient>
-          <radialGradient id="nodeGlowExam" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(35, 95%, 65%)" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="hsl(15, 90%, 55%)" stopOpacity="0" />
+          <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(270, 80%, 70%)" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="hsl(210, 100%, 65%)" stopOpacity="0" />
           </radialGradient>
           
-          {/* Enhanced glow filters */}
-          <filter id="medicalGlow" x="-50%" y="-50%" width="200%" height="200%">
+          {/* Enhanced glow filter */}
+          <filter id="rootGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" result="blur1" />
-            <feGaussianBlur stdDeviation="10" result="blur2" />
+            <feGaussianBlur stdDeviation="8" result="blur2" />
             <feMerge>
               <feMergeNode in="blur2" />
               <feMergeNode in="blur1" />
@@ -328,179 +232,99 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
             </feMerge>
           </filter>
           
-          <filter id="examGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="4" result="blur1" />
-            <feGaussianBlur stdDeviation="10" result="blur2" />
-            <feMerge>
-              <feMergeNode in="blur2" />
-              <feMergeNode in="blur1" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          <filter id="particleGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+          {/* Soft shadow for depth */}
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="hsl(270, 70%, 50%)" floodOpacity="0.3" />
           </filter>
         </defs>
 
         {/* Central trunk from logo */}
         <motion.path
           d="M600 0 L600 80"
-          stroke="url(#trunkGradient)"
-          strokeWidth="10"
+          stroke="url(#rootGradient)"
+          strokeWidth="8"
           fill="none"
-          filter="url(#medicalGlow)"
+          filter="url(#rootGlow)"
           strokeLinecap="round"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
         />
         
-        {/* Medical Apps Branch Lines (Purple/Blue) */}
-        {medicalPaths.map((path, index) => (
-          <motion.path
-            key={`medical-${index}`}
-            d={getMedicalPath(path.endX)}
-            stroke="url(#medicalGradient)"
-            strokeWidth="5"
-            fill="none"
-            filter="url(#medicalGlow)"
-            style={{ pathLength: path.pathLength }}
-            strokeLinecap="round"
-          />
-        ))}
+        {/* Medical Apps Branch Lines (Top Section) */}
+        {medicalPaths.map((path, index) => {
+          const controlX = 600 + (path.endX - 600) * 0.3;
+          const controlY = 120 + Math.abs(path.endX - 600) * 0.15;
+          const control2X = path.endX;
+          const control2Y = 250;
+          
+          return (
+            <motion.path
+              key={`medical-${index}`}
+              d={`M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${path.endX} ${medicalEndY}`}
+              stroke="url(#rootGradient)"
+              strokeWidth="4"
+              fill="none"
+              filter="url(#rootGlow)"
+              style={{ pathLength: path.pathLength }}
+              strokeLinecap="round"
+            />
+          );
+        })}
         
-        {/* Exam Apps Branch Lines (Orange/Gold) */}
-        {examPaths.map((path, index) => (
-          <motion.path
-            key={`exam-${index}`}
-            d={getExamPath(path.endX)}
-            stroke="url(#examGradient)"
-            strokeWidth="5"
-            fill="none"
-            filter="url(#examGlow)"
-            style={{ pathLength: path.pathLength }}
-            strokeLinecap="round"
-          />
-        ))}
-
-        {/* Energy particles for medical paths */}
-        <g filter="url(#particleGlow)">
-          {medicalPaths.map((path, index) => (
-            <g key={`particles-medical-${index}`}>
-              {[0, 1, 2].map((particleIndex) => (
-                <motion.circle
-                  key={`particle-med-${index}-${particleIndex}`}
-                  r="5"
-                  fill="hsl(270, 90%, 80%)"
-                  initial={{ offsetDistance: "0%", opacity: 0 }}
-                  animate={{ 
-                    offsetDistance: "100%",
-                    opacity: [0, 1, 1, 0]
-                  }}
-                  transition={{
-                    duration: 2.5,
-                    delay: index * 0.2 + particleIndex * 0.8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  style={{
-                    offsetPath: `path('${getMedicalPath(path.endX)}')`,
-                    offsetRotate: "0deg",
-                  }}
-                />
-              ))}
-            </g>
-          ))}
-        </g>
-
-        {/* Energy particles for exam paths */}
-        <g filter="url(#particleGlow)">
-          {examPaths.map((path, index) => (
-            <g key={`particles-exam-${index}`}>
-              {[0, 1, 2].map((particleIndex) => (
-                <motion.circle
-                  key={`particle-exam-${index}-${particleIndex}`}
-                  r="5"
-                  fill="hsl(35, 95%, 70%)"
-                  initial={{ offsetDistance: "0%", opacity: 0 }}
-                  animate={{ 
-                    offsetDistance: "100%",
-                    opacity: [0, 1, 1, 0]
-                  }}
-                  transition={{
-                    duration: 3,
-                    delay: 0.5 + index * 0.25 + particleIndex * 0.9,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  style={{
-                    offsetPath: `path('${getExamPath(path.endX)}')`,
-                    offsetRotate: "0deg",
-                  }}
-                />
-              ))}
-            </g>
-          ))}
-        </g>
+        {/* Exam Apps Branch Lines (Bottom Section) */}
+        {examPaths.map((path, index) => {
+          const controlX = 600 + (path.endX - 600) * 0.2;
+          const controlY = 200;
+          const control2X = 600 + (path.endX - 600) * 0.6;
+          const control2Y = 450;
+          
+          return (
+            <motion.path
+              key={`exam-${index}`}
+              d={`M600 80 C${controlX} ${controlY}, ${control2X} ${control2Y}, ${path.endX} ${examEndY}`}
+              stroke="url(#rootGradient)"
+              strokeWidth="4"
+              fill="none"
+              filter="url(#rootGlow)"
+              style={{ pathLength: path.pathLength }}
+              strokeLinecap="round"
+            />
+          );
+        })}
         
         {/* Connection nodes at medical app endpoints */}
         <motion.g style={{ opacity: nodeOpacity }}>
           {medicalEndX.map((x, i) => (
-            <ConnectionNode key={`med-node-${i}`} x={x} y={medicalEndY} delay={i * 0.1} color="medical" />
+            <ConnectionNode key={`med-node-${i}`} x={x} y={medicalEndY} delay={i * 0.1} />
           ))}
           {/* Connection nodes at exam app endpoints */}
           {examEndX.map((x, i) => (
-            <ConnectionNode key={`exam-node-${i}`} x={x} y={examEndY} delay={0.6 + i * 0.1} color="exam" />
+            <ConnectionNode key={`exam-node-${i}`} x={x} y={examEndY} delay={0.6 + i * 0.1} />
           ))}
         </motion.g>
       </svg>
 
-      {/* Mobile SVG - Simplified vertical design with different colors */}
+      {/* Mobile SVG - Simplified vertical design */}
       <svg
         className="absolute left-1/2 top-[280px] -translate-x-1/2 w-full pointer-events-none z-0 md:hidden"
-        style={{ height: "1100px" }}
-        viewBox="0 0 400 1100"
+        style={{ height: "900px" }}
+        viewBox="0 0 400 900"
         fill="none"
         preserveAspectRatio="xMidYMin slice"
       >
         <defs>
-          {/* Medical gradient mobile */}
-          <linearGradient id="medicalGradientMobile" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="hsl(280, 80%, 70%)" stopOpacity="1" />
-            <stop offset="100%" stopColor="hsl(240, 85%, 60%)" stopOpacity="0.7" />
-          </linearGradient>
-          
-          {/* Exam gradient mobile */}
-          <linearGradient id="examGradientMobile" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="hsl(35, 95%, 65%)" stopOpacity="1" />
-            <stop offset="100%" stopColor="hsl(15, 85%, 55%)" stopOpacity="0.7" />
-          </linearGradient>
-
-          {/* Trunk gradient mobile */}
-          <linearGradient id="trunkGradientMobile" x1="50%" y1="0%" x2="50%" y2="100%">
+          <linearGradient id="rootGradientMobile" x1="50%" y1="0%" x2="50%" y2="100%">
             <stop offset="0%" stopColor="hsl(270, 70%, 70%)" stopOpacity="1" />
-            <stop offset="50%" stopColor="hsl(300, 60%, 60%)" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="hsl(30, 80%, 60%)" stopOpacity="0.8" />
+            <stop offset="50%" stopColor="hsl(250, 80%, 65%)" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="hsl(210, 100%, 60%)" stopOpacity="0.5" />
           </linearGradient>
-
-          <radialGradient id="nodeFillMedicalMobile" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(280, 90%, 80%)" />
-            <stop offset="100%" stopColor="hsl(260, 80%, 60%)" />
+          <radialGradient id="nodeFillMobile" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(270, 80%, 75%)" />
+            <stop offset="100%" stopColor="hsl(250, 70%, 60%)" />
           </radialGradient>
-          
-          <radialGradient id="nodeFillExamMobile" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(40, 95%, 70%)" />
-            <stop offset="100%" stopColor="hsl(25, 90%, 55%)" />
-          </radialGradient>
-
-          <filter id="mobileGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
+          <filter id="rootGlowMobile" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -510,187 +334,67 @@ const TreeRoots = ({ scrollProgress }: { scrollProgress: any }) => {
 
         {/* Central vertical trunk */}
         <motion.path
-          d="M200 0 L200 1050"
-          stroke="url(#trunkGradientMobile)"
-          strokeWidth="6"
+          d="M200 0 L200 850"
+          stroke="url(#rootGradientMobile)"
+          strokeWidth="5"
           fill="none"
-          filter="url(#mobileGlow)"
+          filter="url(#rootGlowMobile)"
           strokeLinecap="round"
           style={{ pathLength: useTransform(scrollProgress, [0.1, 0.6], [0, 1]) }}
         />
         
-        {/* Medical branch lines (left - purple) - first 3 rows */}
-        {[120, 280, 440].map((y, i) => (
+        {/* Branch lines to left cards */}
+        {[150, 350, 550, 750].map((y, i) => (
           <motion.path
-            key={`left-med-${i}`}
-            d={`M200 ${y} Q140 ${y} 60 ${y + 40}`}
-            stroke="url(#medicalGradientMobile)"
-            strokeWidth="4"
+            key={`left-${i}`}
+            d={`M200 ${y} Q150 ${y} 80 ${y + 30}`}
+            stroke="url(#rootGradientMobile)"
+            strokeWidth="3"
             fill="none"
-            filter="url(#mobileGlow)"
+            filter="url(#rootGlowMobile)"
             strokeLinecap="round"
-            style={{ pathLength: useTransform(scrollProgress, [0.12 + i * 0.06, 0.35 + i * 0.06], [0, 1]) }}
+            style={{ pathLength: useTransform(scrollProgress, [0.15 + i * 0.08, 0.4 + i * 0.08], [0, 1]) }}
           />
         ))}
         
-        {/* Medical branch lines (right - purple) - first 3 rows */}
-        {[200, 360, 520].map((y, i) => (
+        {/* Branch lines to right cards */}
+        {[220, 420, 620, 820].map((y, i) => (
           <motion.path
-            key={`right-med-${i}`}
-            d={`M200 ${y} Q260 ${y} 340 ${y + 40}`}
-            stroke="url(#medicalGradientMobile)"
-            strokeWidth="4"
+            key={`right-${i}`}
+            d={`M200 ${y} Q250 ${y} 320 ${y + 30}`}
+            stroke="url(#rootGradientMobile)"
+            strokeWidth="3"
             fill="none"
-            filter="url(#mobileGlow)"
+            filter="url(#rootGlowMobile)"
             strokeLinecap="round"
-            style={{ pathLength: useTransform(scrollProgress, [0.15 + i * 0.06, 0.38 + i * 0.06], [0, 1]) }}
-          />
-        ))}
-
-        {/* Exam branch lines (left - orange) - bottom rows */}
-        {[620, 780, 940].map((y, i) => (
-          <motion.path
-            key={`left-exam-${i}`}
-            d={`M200 ${y} Q140 ${y} 60 ${y + 40}`}
-            stroke="url(#examGradientMobile)"
-            strokeWidth="4"
-            fill="none"
-            filter="url(#mobileGlow)"
-            strokeLinecap="round"
-            style={{ pathLength: useTransform(scrollProgress, [0.3 + i * 0.06, 0.53 + i * 0.06], [0, 1]) }}
-          />
-        ))}
-        
-        {/* Exam branch lines (right - orange) - bottom rows */}
-        {[700, 860].map((y, i) => (
-          <motion.path
-            key={`right-exam-${i}`}
-            d={`M200 ${y} Q260 ${y} 340 ${y + 40}`}
-            stroke="url(#examGradientMobile)"
-            strokeWidth="4"
-            fill="none"
-            filter="url(#mobileGlow)"
-            strokeLinecap="round"
-            style={{ pathLength: useTransform(scrollProgress, [0.35 + i * 0.06, 0.58 + i * 0.06], [0, 1]) }}
-          />
-        ))}
-
-        {/* Mobile energy particles - Medical */}
-        {[120, 280, 440].map((y, i) => (
-          <motion.circle
-            key={`mobile-particle-left-${i}`}
-            r="4"
-            fill="hsl(270, 90%, 80%)"
-            filter="url(#mobileGlow)"
-            initial={{ offsetDistance: "0%", opacity: 0 }}
-            animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 2, delay: i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              offsetPath: `path('M200 ${y} Q140 ${y} 60 ${y + 40}')`,
-              offsetRotate: "0deg",
-            }}
-          />
-        ))}
-        
-        {[200, 360, 520].map((y, i) => (
-          <motion.circle
-            key={`mobile-particle-right-${i}`}
-            r="4"
-            fill="hsl(270, 90%, 80%)"
-            filter="url(#mobileGlow)"
-            initial={{ offsetDistance: "0%", opacity: 0 }}
-            animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 2, delay: 0.3 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              offsetPath: `path('M200 ${y} Q260 ${y} 340 ${y + 40}')`,
-              offsetRotate: "0deg",
-            }}
-          />
-        ))}
-
-        {/* Mobile energy particles - Exam */}
-        {[620, 780, 940].map((y, i) => (
-          <motion.circle
-            key={`mobile-particle-exam-left-${i}`}
-            r="4"
-            fill="hsl(35, 95%, 70%)"
-            filter="url(#mobileGlow)"
-            initial={{ offsetDistance: "0%", opacity: 0 }}
-            animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 2.5, delay: 1 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              offsetPath: `path('M200 ${y} Q140 ${y} 60 ${y + 40}')`,
-              offsetRotate: "0deg",
-            }}
-          />
-        ))}
-        
-        {[700, 860].map((y, i) => (
-          <motion.circle
-            key={`mobile-particle-exam-right-${i}`}
-            r="4"
-            fill="hsl(35, 95%, 70%)"
-            filter="url(#mobileGlow)"
-            initial={{ offsetDistance: "0%", opacity: 0 }}
-            animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 2.5, delay: 1.3 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              offsetPath: `path('M200 ${y} Q260 ${y} 340 ${y + 40}')`,
-              offsetRotate: "0deg",
-            }}
+            style={{ pathLength: useTransform(scrollProgress, [0.18 + i * 0.08, 0.43 + i * 0.08], [0, 1]) }}
           />
         ))}
 
         {/* Mobile connection nodes */}
         <motion.g style={{ opacity: nodeOpacity }}>
-          {/* Medical nodes - purple */}
-          {[120, 280, 440].map((y, i) => (
+          {[150, 350, 550, 750].map((y, i) => (
             <motion.circle
-              key={`left-node-med-${i}`}
-              cx={60}
-              cy={y + 40}
-              r="6"
-              fill="url(#nodeFillMedicalMobile)"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.4 + i * 0.1 }}
-            />
-          ))}
-          {[200, 360, 520].map((y, i) => (
-            <motion.circle
-              key={`right-node-med-${i}`}
-              cx={340}
-              cy={y + 40}
-              r="6"
-              fill="url(#nodeFillMedicalMobile)"
+              key={`left-node-${i}`}
+              cx={80}
+              cy={y + 30}
+              r="5"
+              fill="url(#nodeFillMobile)"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.5 + i * 0.1 }}
             />
           ))}
-          {/* Exam nodes - orange */}
-          {[620, 780, 940].map((y, i) => (
+          {[220, 420, 620, 820].map((y, i) => (
             <motion.circle
-              key={`left-node-exam-${i}`}
-              cx={60}
-              cy={y + 40}
-              r="6"
-              fill="url(#nodeFillExamMobile)"
+              key={`right-node-${i}`}
+              cx={320}
+              cy={y + 30}
+              r="5"
+              fill="url(#nodeFillMobile)"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.8 + i * 0.1 }}
-            />
-          ))}
-          {[700, 860].map((y, i) => (
-            <motion.circle
-              key={`right-node-exam-${i}`}
-              cx={340}
-              cy={y + 40}
-              r="6"
-              fill="url(#nodeFillExamMobile)"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.9 + i * 0.1 }}
+              transition={{ delay: 0.6 + i * 0.1 }}
             />
           ))}
         </motion.g>
