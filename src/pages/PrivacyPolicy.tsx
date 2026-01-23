@@ -39,9 +39,9 @@ const PrivacyPolicy = () => {
             <h2 className="text-xl font-semibold text-foreground">2. Information We Collect</h2>
             <p>We collect the following types of information:</p>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Personal Information:</strong> Name, email address, phone number, and class/grade level when you make a purchase or create an account.</li>
+              <li><strong>Personal Information:</strong> We may collect name and email, and any additional details you voluntarily provide when you make a purchase or create an account.</li>
               <li><strong>Authentication Data:</strong> When using our apps, we may collect your name, email, and profile photo (optional) through Google Sign-In or other authentication methods.</li>
-              <li><strong>Payment Information:</strong> Payment details are processed securely through Razorpay and are not stored on our servers.</li>
+              <li><strong>Payment Information:</strong> Payment details are processed securely through Razorpay and are not stored on our servers. Note: MedOrtho currently does not process payments inside the app. Payments (if any) are handled via Exam Essentials using Razorpay.</li>
               <li><strong>Usage Data:</strong> Information about how you use our website and apps, including pages visited, features used, and time spent.</li>
               <li><strong>Device Information:</strong> Device type, operating system, and unique device identifiers when using our mobile applications.</li>
             </ul>
@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
               <li><strong>File Storage:</strong> Supabase storage is used to store notes images, chapter pages, and other educational content</li>
               <li><strong>Session Management:</strong> User login sessions and access are managed securely via Supabase authentication</li>
             </ul>
-            <p className="mt-4">All data is encrypted in transit and at rest to ensure your information remains secure.</p>
+            <p className="mt-4">We use secure methods including encryption in transit (HTTPS) to protect data.</p>
           </section>
 
           <section className="space-y-4">
@@ -160,7 +160,13 @@ const PrivacyPolicy = () => {
                 </ul>
               </div>
 
-              <p className="text-sm text-muted-foreground">
+              <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200 dark:border-amber-800 mt-4">
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  <strong>Disclaimer:</strong> MedOrtho is for educational purposes only and does not provide medical diagnosis or treatment.
+                </p>
+              </div>
+
+              <p className="text-sm text-muted-foreground mt-4">
                 MedOrtho is part of the Exam Essentials family of educational apps. 
                 The same privacy standards apply to all our applications.
               </p>
