@@ -68,7 +68,7 @@ const Footer = () => {
             <ul className="space-y-3 font-body text-sm">
               <li>
                 <Link
-                  to="/products?class=11"
+                  to="/class-11-notes"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Class 11 Notes
@@ -76,7 +76,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/products?class=12"
+                  to="/class-12-notes"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Class 12 Notes
@@ -84,29 +84,37 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/products?category=handwritten-notes"
+                  to="/neet-notes"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Handwritten Notes
+                  NEET Notes
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/products?category=mindmaps"
+                  to="/products"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Mind Maps
+                  All Products
                 </Link>
               </li>
             </ul>
           </nav>
 
-          {/* Subjects */}
-          <nav aria-label="Notes by subject">
+          {/* Resources */}
+          <nav aria-label="Resources">
             <h4 className="font-body text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
-              Subjects
+              Resources
             </h4>
             <ul className="space-y-3 font-body text-sm">
+              <li>
+                <Link
+                  to="/blog"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/products?search=physics"
@@ -121,14 +129,6 @@ const Footer = () => {
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Chemistry Notes
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/products?search=maths"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Maths Notes
                 </Link>
               </li>
               <li>

@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import MindMapsComboSection from "@/components/MindMapsComboSection";
+import ProductFAQ from "@/components/ProductFAQ";
 import { Button } from "@/components/ui/button";
 import { fetchProductById, fetchPublishedProducts, Product } from "@/lib/api";
 import { addToCart, addMultipleToCart, getComboSubjects, comboConfigs, clearCart } from "@/lib/cartUtils";
@@ -565,6 +566,9 @@ const ProductDetail = () => {
               onSelectCombo={handleMindMapsComboSelect}
             />
           )}
+
+          {/* Product FAQ Section for SEO */}
+          <ProductFAQ product={product} />
         </div>
       </main>
       <Footer />

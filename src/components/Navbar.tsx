@@ -33,14 +33,18 @@ const Navbar = () => {
 
   const mainLinks = [
     { name: "Home", path: "/" },
-    { name: "Shop", path: "/products", hasDropdown: true },
-    { name: "About Us", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { name: "Shop", path: "/products" },
+    { name: "Class 11", path: "/class-11-notes" },
+    { name: "Class 12", path: "/class-12-notes" },
+    { name: "NEET", path: "/neet-notes" },
+    { name: "Blog", path: "/blog" },
+    { name: "About", path: "/about" },
   ];
 
   const categoryTabs = [
-    { name: "Class 11", path: "/products?class=11" },
-    { name: "Class 12", path: "/products?class=12" },
+    { name: "Class 11", path: "/class-11-notes" },
+    { name: "Class 12", path: "/class-12-notes" },
+    { name: "NEET Notes", path: "/neet-notes" },
     { name: "All Notes", path: "/products" },
   ];
 
