@@ -12,6 +12,7 @@ import {
   Package,
   ShoppingCart,
   LayoutDashboard,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,14 +26,16 @@ import {
   Product,
   Order,
 } from "@/lib/api";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.jpeg";
 
-type Tab = "products" | "orders";
+type Tab = "products" | "orders" | "blogs";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState<Tab>("products");
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
@@ -64,12 +67,14 @@ const Admin = () => {
   const loadData = async () => {
     setIsLoading(true);
     try {
-      const [productsData, ordersData] = await Promise.all([
+      const [productsData, ordersData, blogsData] = await Promise.all([
         fetchAllProducts(),
         fetchAllOrders(),
+        supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
       ]);
       setProducts(productsData);
       setOrders(ordersData);
+      setBlogs(blogsData.data || []);
     } catch (error) {
       console.error("Error loading data:", error);
       toast({
@@ -79,6 +84,49 @@ const Admin = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeleteBlog = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this blog post?")) return;
+
+    try {
+      await supabase.from("blog_posts").delete().eq("id", id);
+      setBlogs(blogs.filter((b) => b.id !== id));
+      toast({
+        title: "Success",
+        description: "Blog post deleted successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete blog post.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleToggleBlogPublished = async (blog: any) => {
+    try {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .update({ published: !blog.published })
+        .eq("id", blog.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      setBlogs(blogs.map((b) => (b.id === blog.id ? data : b)));
+      toast({
+        title: "Success",
+        description: `Blog post ${data.published ? "published" : "unpublished"}.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update blog post.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -288,6 +336,13 @@ const Admin = () => {
             >
               <ShoppingCart className="w-4 h-4 mr-2" />
               Orders
+            </Button>
+            <Button
+              variant={activeTab === "blogs" ? "gradient" : "secondary"}
+              onClick={() => setActiveTab("blogs")}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Blogs
             </Button>
           </div>
 
@@ -520,6 +575,138 @@ const Admin = () => {
                             className="px-4 py-8 text-center text-muted-foreground"
                           >
                             No orders yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Blogs Tab */}
+          {activeTab === "blogs" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-xl font-bold text-foreground">
+                  Blog Posts
+                </h2>
+                <Button asChild variant="gradient">
+                  <Link to="/admin/blog/new">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Blog Post
+                  </Link>
+                </Button>
+              </div>
+
+              <div className="bg-card border border-border rounded-xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-secondary">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Title
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Category
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th className="px-4 py-3 text-right text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {blogs.map((blog) => (
+                        <tr key={blog.id} className="hover:bg-secondary/50">
+                          <td className="px-4 py-4">
+                            <div>
+                              <p className="font-body font-medium text-foreground">
+                                {blog.title}
+                              </p>
+                              <p className="text-sm text-muted-foreground truncate max-w-xs">
+                                {blog.excerpt}
+                              </p>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4">
+                            <span className="px-2 py-1 text-xs bg-secondary rounded-full">
+                              {blog.category}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            <span
+                              className={`px-2 py-1 text-xs rounded-full ${
+                                blog.published
+                                  ? "bg-green-500/20 text-green-400"
+                                  : "bg-yellow-500/20 text-yellow-400"
+                              }`}
+                            >
+                              {blog.published ? "Published" : "Draft"}
+                            </span>
+                            {blog.featured && (
+                              <span className="ml-2 px-2 py-1 text-xs bg-accent/20 text-accent rounded-full">
+                                Featured
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-4 py-4 text-sm text-muted-foreground font-body">
+                            {new Date(blog.created_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleToggleBlogPublished(blog)}
+                                title={
+                                  blog.published ? "Unpublish" : "Publish"
+                                }
+                              >
+                                {blog.published ? (
+                                  <EyeOff className="w-4 h-4" />
+                                ) : (
+                                  <Eye className="w-4 h-4" />
+                                )}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                asChild
+                              >
+                                <Link to={`/admin/blog/${blog.id}`}>
+                                  <Edit className="w-4 h-4" />
+                                </Link>
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleDeleteBlog(blog.id)}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                      {blogs.length === 0 && (
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className="px-4 py-8 text-center text-muted-foreground"
+                          >
+                            No blog posts yet. Add your first blog post!
                           </td>
                         </tr>
                       )}
