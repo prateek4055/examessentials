@@ -24,6 +24,10 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import NotFound from "./pages/NotFound";
+import Class11Notes from "./pages/Class11Notes";
+import Class12Notes from "./pages/Class12Notes";
+import NeetNotes from "./pages/NeetNotes";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +57,11 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/product/:id" element={<AdminProductForm />} />
+              {/* SEO Category Pages */}
+              <Route path="/class-11-notes" element={<Class11Notes />} />
+              <Route path="/class-12-notes" element={<Class12Notes />} />
+              <Route path="/neet-notes" element={<NeetNotes />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <WhatsAppButton />
