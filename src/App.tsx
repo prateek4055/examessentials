@@ -28,6 +28,7 @@ import Class11Notes from "./pages/Class11Notes";
 import Class12Notes from "./pages/Class12Notes";
 import NeetNotes from "./pages/NeetNotes";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="/class-12-notes" element={<Class12Notes />} />
               <Route path="/neet-notes" element={<NeetNotes />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <WhatsAppButton />
