@@ -17,6 +17,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import AdminProductForm from "./pages/AdminProductForm";
+import AdminBlogForm from "./pages/AdminBlogForm";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -58,6 +59,7 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/product/:id" element={<AdminProductForm />} />
+              <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
               {/* SEO Category Pages */}
               <Route path="/class-11-notes" element={<Class11Notes />} />
               <Route path="/class-12-notes" element={<Class12Notes />} />

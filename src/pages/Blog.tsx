@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
@@ -10,14 +10,59 @@ import BlogHero from "@/components/blog/BlogHero";
 import BlogCategories from "@/components/blog/BlogCategories";
 import BlogPostCard from "@/components/blog/BlogPostCard";
 import BlogNewsletter from "@/components/blog/BlogNewsletter";
-import { blogPosts } from "@/lib/blogData";
+import { blogPosts as staticBlogPosts, BlogPost, categories } from "@/lib/blogData";
+import { supabase } from "@/integrations/supabase/client";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [posts, setPosts] = useState<BlogPost[]>(staticBlogPosts);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        // Map database posts to BlogPost format
+        const dbPosts: BlogPost[] = data.map((post) => ({
+          id: post.slug,
+          title: post.title,
+          excerpt: post.excerpt,
+          category: post.category,
+          date: post.created_at.split("T")[0],
+          readTime: post.read_time,
+          author: post.author,
+          image: post.image_url || "/og-image.png",
+          featured: post.featured,
+          content: post.content,
+        }));
+        // Combine database posts with static posts (DB posts first)
+        const combinedPosts = [...dbPosts, ...staticBlogPosts.filter(
+          (sp) => !dbPosts.some((dp) => dp.id === sp.id)
+        )];
+        setPosts(combinedPosts);
+      }
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+      // Keep static posts as fallback
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredPosts = selectedCategory === "All" 
-    ? blogPosts 
-    : blogPosts.filter(post => post.category === selectedCategory);
+    ? posts 
+    : posts.filter(post => post.category === selectedCategory);
 
   const featuredPosts = filteredPosts.filter(post => post.featured);
   const regularPosts = filteredPosts.filter(post => !post.featured);
@@ -68,26 +113,34 @@ const Blog = () => {
           <BlogHero />
           <BlogCategories selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
 
-          {/* Featured Posts */}
-          {featuredPosts.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-              {featuredPosts.slice(0, 2).map((post, index) => (
-                <BlogPostCard key={post.id} post={post} index={index} featured />
-              ))}
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent" />
             </div>
-          )}
+          ) : (
+            <>
+              {/* Featured Posts */}
+              {featuredPosts.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                  {featuredPosts.slice(0, 2).map((post, index) => (
+                    <BlogPostCard key={post.id} post={post} index={index} featured />
+                  ))}
+                </div>
+              )}
 
-          {/* Regular Posts Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-          >
-            {regularPosts.map((post, index) => (
-              <BlogPostCard key={post.id} post={post} index={index} />
-            ))}
-          </motion.div>
+              {/* Regular Posts Grid */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+              >
+                {regularPosts.map((post, index) => (
+                  <BlogPostCard key={post.id} post={post} index={index} />
+                ))}
+              </motion.div>
+            </>
+          )}
 
           <BlogNewsletter />
 

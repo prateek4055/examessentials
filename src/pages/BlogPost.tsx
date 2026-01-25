@@ -1,37 +1,112 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, Calendar, Clock, User, ArrowLeft, Share2, BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/lib/blogData";
+import { blogPosts as staticBlogPosts, BlogPost } from "@/lib/blogData";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-const BlogPost = () => {
+const BlogPostPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const post = blogPosts.find(p => p.id === id);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!post) {
-    return (
-      <>
-        <Navbar />
-        <main className="min-h-screen pt-28 pb-16 bg-background">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Article Not Found</h1>
-            <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist.</p>
-            <Button asChild>
-              <Link to="/blog">Back to Blog</Link>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
+  useEffect(() => {
+    if (id) {
+      fetchPost(id);
+    }
+  }, [id]);
+
+  const fetchPost = async (slug: string) => {
+    setLoading(true);
+    try {
+      // First try to fetch from database
+      const { data: dbPost, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+
+      if (dbPost) {
+        const mappedPost: BlogPost = {
+          id: dbPost.slug,
+          title: dbPost.title,
+          excerpt: dbPost.excerpt,
+          category: dbPost.category,
+          date: dbPost.created_at.split("T")[0],
+          readTime: dbPost.read_time,
+          author: dbPost.author,
+          image: dbPost.image_url || "/og-image.png",
+          featured: dbPost.featured,
+          content: dbPost.content,
+        };
+        setPost(mappedPost);
+
+        // Fetch related posts from database
+        const { data: relatedData } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .eq("category", dbPost.category)
+          .eq("published", true)
+          .neq("slug", slug)
+          .limit(3);
+
+        if (relatedData && relatedData.length > 0) {
+          setRelatedPosts(relatedData.map((p) => ({
+            id: p.slug,
+            title: p.title,
+            excerpt: p.excerpt,
+            category: p.category,
+            date: p.created_at.split("T")[0],
+            readTime: p.read_time,
+            author: p.author,
+            image: p.image_url || "/og-image.png",
+            featured: p.featured,
+            content: p.content,
+          })));
+        } else {
+          // Fall back to static related posts
+          const staticRelated = staticBlogPosts
+            .filter(p => p.category === dbPost.category && p.id !== slug)
+            .slice(0, 3);
+          setRelatedPosts(staticRelated);
+        }
+      } else {
+        // Fall back to static posts
+        const staticPost = staticBlogPosts.find(p => p.id === slug);
+        if (staticPost) {
+          setPost(staticPost);
+          const staticRelated = staticBlogPosts
+            .filter(p => p.category === staticPost.category && p.id !== slug)
+            .slice(0, 3);
+          setRelatedPosts(staticRelated);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching blog post:", error);
+      // Fall back to static posts
+      const staticPost = staticBlogPosts.find(p => p.id === id);
+      if (staticPost) {
+        setPost(staticPost);
+        const staticRelated = staticBlogPosts
+          .filter(p => p.category === staticPost.category && p.id !== id)
+          .slice(0, 3);
+        setRelatedPosts(staticRelated);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleShare = async () => {
+    if (!post) return;
     const shareData = {
       title: post.title,
       text: post.excerpt,
@@ -50,10 +125,35 @@ const BlogPost = () => {
     }
   };
 
-  // Get related posts (same category, excluding current)
-  const relatedPosts = blogPosts
-    .filter(p => p.category === post.category && p.id !== post.id)
-    .slice(0, 3);
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-28 pb-16 bg-background flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent" />
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!post) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-28 pb-16 bg-background">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-4">Article Not Found</h1>
+            <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist.</p>
+            <Button asChild>
+              <Link to="/blog">Back to Blog</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   const structuredData = [
     {
@@ -87,6 +187,41 @@ const BlogPost = () => {
       ]
     }
   ];
+
+  // Convert markdown-like content to HTML
+  const renderContent = (content: string) => {
+    return content
+      .split('\n')
+      .map((line) => {
+        // Headers
+        if (line.startsWith('## ')) return `<h2>${line.slice(3)}</h2>`;
+        if (line.startsWith('### ')) return `<h3>${line.slice(4)}</h3>`;
+        // Horizontal rule
+        if (line.trim() === '---') return '<hr/>';
+        // Bold
+        let processed = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Italic
+        processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        // Links
+        processed = processed.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-accent hover:underline">$1</a>');
+        // List items
+        if (processed.trim().startsWith('- ')) {
+          return `<li>${processed.trim().slice(2)}</li>`;
+        }
+        if (/^\d+\.\s/.test(processed.trim())) {
+          return `<li>${processed.trim().replace(/^\d+\.\s/, '')}</li>`;
+        }
+        // Tables (basic support)
+        if (processed.includes('|')) {
+          return ''; // Skip table syntax for now
+        }
+        // Empty line
+        if (processed.trim() === '') return '<br/>';
+        // Regular paragraph
+        return `<p>${processed}</p>`;
+      })
+      .join('\n');
+  };
 
   return (
     <>
@@ -140,6 +275,17 @@ const BlogPost = () => {
               {post.excerpt}
             </p>
 
+            {/* Featured Image */}
+            {post.image && post.image !== "/og-image.png" && (
+              <div className="aspect-video rounded-xl overflow-hidden bg-secondary mb-8">
+                <img 
+                  src={post.image} 
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
             <div className="flex flex-wrap items-center justify-between gap-4 py-6 border-t border-b border-border">
               <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
@@ -178,14 +324,10 @@ const BlogPost = () => {
                 prose-strong:text-foreground prose-strong:font-semibold
                 prose-a:text-accent prose-a:no-underline hover:prose-a:underline
                 prose-ul:text-muted-foreground prose-ol:text-muted-foreground
-                prose-li:marker:text-accent
+                prose-li:marker:text-accent prose-li:my-1
                 prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground prose-blockquote:italic
-                prose-table:border-border
-                prose-th:bg-secondary prose-th:text-foreground prose-th:p-3 prose-th:border prose-th:border-border
-                prose-td:p-3 prose-td:border prose-td:border-border prose-td:text-muted-foreground
-                prose-code:text-accent prose-code:bg-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
-                prose-hr:border-border"
-              dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br>').replace(/##\s/g, '</p><h2>').replace(/###\s/g, '</p><h3>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>').replace(/---/g, '<hr>') }}
+                prose-hr:border-border prose-hr:my-8"
+              dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
             />
           </motion.div>
 
@@ -260,4 +402,4 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost;
+export default BlogPostPage;
