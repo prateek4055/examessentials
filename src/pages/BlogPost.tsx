@@ -155,27 +155,64 @@ const BlogPostPage = () => {
     );
   }
 
+  // Generate keyword-rich description for SEO
+  const generateKeywords = (post: BlogPost) => {
+    const baseKeywords = [
+      post.category.toLowerCase(),
+      "study tips",
+      "exam preparation",
+      "NEET preparation",
+      "CBSE notes",
+      "class 11 notes",
+      "class 12 notes",
+      "handwritten notes",
+      "board exam tips"
+    ];
+    
+    // Extract keywords from title
+    const titleKeywords = post.title.toLowerCase()
+      .split(/[\s-]+/)
+      .filter(word => word.length > 3 && !["with", "from", "that", "this", "your", "what", "best"].includes(word));
+    
+    return [...new Set([...titleKeywords, ...baseKeywords])].join(", ");
+  };
+
   const structuredData = [
     {
       "@context": "https://schema.org",
       "@type": "Article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://examessentials.in/blog/${post.id}`
+      },
       "headline": post.title,
       "description": post.excerpt,
-      "image": `https://examessentials.in${post.image}`,
+      "image": {
+        "@type": "ImageObject",
+        "url": post.image.startsWith("http") ? post.image : `https://examessentials.in${post.image}`,
+        "width": 1200,
+        "height": 630
+      },
       "author": {
         "@type": "Organization",
-        "name": post.author
+        "name": post.author,
+        "url": "https://examessentials.in/about"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Exam Essentials",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://examessentials.in/logo.png"
+          "url": "https://examessentials.in/logo.png",
+          "width": 200,
+          "height": 200
         }
       },
       "datePublished": post.date,
-      "dateModified": post.date
+      "dateModified": post.date,
+      "articleSection": post.category,
+      "wordCount": post.content.split(/\s+/).length,
+      "keywords": generateKeywords(post)
     },
     {
       "@context": "https://schema.org",
@@ -183,8 +220,20 @@ const BlogPostPage = () => {
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://examessentials.in/" },
         { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://examessentials.in/blog" },
-        { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://examessentials.in/blog/${post.id}` }
+        { "@type": "ListItem", "position": 3, "name": post.category, "item": `https://examessentials.in/blog?category=${encodeURIComponent(post.category)}` },
+        { "@type": "ListItem", "position": 4, "name": post.title, "item": `https://examessentials.in/blog/${post.id}` }
       ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://examessentials.in",
+      "name": "Exam Essentials",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://examessentials.in/blog?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
   ];
 
@@ -223,14 +272,23 @@ const BlogPostPage = () => {
       .join('\n');
   };
 
+  // Generate SEO-optimized title under 60 chars
+  const seoTitle = post.title.length > 50 
+    ? `${post.title.slice(0, 47)}...` 
+    : post.title;
+
+  // Generate rich keywords
+  const seoKeywords = generateKeywords(post);
+
   return (
     <>
       <SEOHead
-        title={`${post.title} | Exam Essentials Blog`}
-        description={post.excerpt}
+        title={`${seoTitle} | Exam Essentials`}
+        description={post.excerpt.length > 155 ? `${post.excerpt.slice(0, 152)}...` : post.excerpt}
         canonical={`/blog/${post.id}`}
         ogType="article"
-        keywords={`${post.category}, study tips, exam preparation, NEET tips, CBSE notes`}
+        ogImage={post.image.startsWith("http") ? post.image : `https://examessentials.in${post.image}`}
+        keywords={seoKeywords}
         structuredData={structuredData}
       />
 
