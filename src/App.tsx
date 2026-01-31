@@ -25,6 +25,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import NotFound from "./pages/NotFound";
+import TermsRedirect from "./pages/TermsRedirect";
 import Class11Notes from "./pages/Class11Notes";
 import Class12Notes from "./pages/Class12Notes";
 import NeetNotes from "./pages/NeetNotes";
@@ -48,7 +49,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/terms" element={<TermsAndConditions />} />
+              <Route path="/terms" element={<TermsRedirect />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/shipping-policy" element={<ShippingPolicy />} />
               <Route path="/products" element={<Products />} />

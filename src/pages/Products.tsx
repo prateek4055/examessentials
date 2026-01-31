@@ -92,13 +92,8 @@ const Products = () => {
     ? `Premium handwritten notes for Class ${classFilter} CBSE students. Physics, Chemistry, Maths, Biology notes for boards, NEET & JEE. Buy now with instant delivery.`
     : "India's best handwritten notes for Class 11 & 12 students. Premium Physics, Chemistry, Maths, Biology notes by toppers. Perfect for CBSE Boards, NEET, JEE preparation.";
 
-  const canonicalPath = categoryFilter && classFilter
-    ? `/products?class=${classFilter}&category=${categoryFilter}`
-    : categoryFilter
-    ? `/products?category=${categoryFilter}`
-    : classFilter
-    ? `/products?class=${classFilter}`
-    : "/products";
+  // Use clean canonical URL without query params to avoid duplicate content issues
+  const canonicalPath = "/products";
 
   const structuredData = [
     {

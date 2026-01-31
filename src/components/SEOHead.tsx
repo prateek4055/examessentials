@@ -26,8 +26,17 @@ const SEOHead = ({
   productAvailability = "InStock",
 }: SEOHeadProps) => {
   const baseUrl = "https://examessentials.in";
-  const fullCanonical = canonical ? `${baseUrl}${canonical}` : undefined;
-  const fullTitle = title.includes("Exam Essentials") ? title : `${title} | Exam Essentials`;
+  
+  // Clean canonical URL - remove query parameters for cleaner indexing
+  const cleanCanonical = canonical ? canonical.split('?')[0] : undefined;
+  const fullCanonical = cleanCanonical ? `${baseUrl}${cleanCanonical}` : undefined;
+  
+  // Ensure title is under 60 chars for optimal SEO
+  const baseTitleWithSuffix = title.includes("Exam Essentials") ? title : `${title} | Exam Essentials`;
+  const fullTitle = baseTitleWithSuffix.length > 60 ? title : baseTitleWithSuffix;
+  
+  // Ensure description is under 160 chars
+  const truncatedDescription = description.length > 160 ? description.slice(0, 157) + "..." : description;
   
   // Default keywords for all pages
   const defaultKeywords = "handwritten notes, class 11 notes, class 12 notes, CBSE notes, board exam notes, physics notes, chemistry notes, maths notes, biology notes, NEET preparation, JEE preparation, study material India";
@@ -38,7 +47,7 @@ const SEOHead = ({
       {/* Primary Meta Tags */}
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
-      <meta name="description" content={description} />
+      <meta name="description" content={truncatedDescription} />
       <meta name="keywords" content={finalKeywords} />
       
       {/* Robots */}
@@ -54,7 +63,7 @@ const SEOHead = ({
       {/* Open Graph */}
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={truncatedDescription} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -77,7 +86,7 @@ const SEOHead = ({
       <meta name="twitter:site" content="@ExamEssentials" />
       <meta name="twitter:creator" content="@ExamEssentials" />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={truncatedDescription} />
       <meta name="twitter:image" content={ogImage} />
       
       {/* Structured Data */}
