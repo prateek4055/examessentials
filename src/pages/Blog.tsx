@@ -77,8 +77,24 @@ const Blog = () => {
       "publisher": {
         "@type": "Organization",
         "name": "Exam Essentials",
-        "logo": "https://examessentials.in/logo.png"
-      }
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://examessentials.in/logo.png",
+          "width": 200,
+          "height": 200
+        }
+      },
+      "blogPost": posts.slice(0, 10).map(post => ({
+        "@type": "BlogPosting",
+        "headline": post.title,
+        "description": post.excerpt,
+        "url": `https://examessentials.in/blog/${post.id}`,
+        "datePublished": post.date,
+        "author": {
+          "@type": "Organization",
+          "name": post.author
+        }
+      }))
     },
     {
       "@context": "https://schema.org",
@@ -87,16 +103,57 @@ const Blog = () => {
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://examessentials.in/" },
         { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://examessentials.in/blog" }
       ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are the best study tips for NEET preparation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Focus on NCERT textbooks, practice previous year questions, create handwritten notes for revision, and maintain a consistent study schedule. Biology should be your strongest subject as it carries 360 marks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can handwritten notes help in exam preparation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Handwritten notes improve memory retention by 40% compared to typed notes. They engage motor memory, encourage active processing of information, and serve as excellent revision material before exams."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best strategy for Class 12 board exams?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Start with NCERT textbooks, solve previous year papers, create subject-wise notes, practice sample papers under timed conditions, and revise regularly. Focus on high-weightage chapters first."
+          }
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://examessentials.in",
+      "name": "Exam Essentials",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://examessentials.in/blog?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
   ];
 
   return (
     <>
       <SEOHead
-        title="Blog - Study Tips, NEET & JEE Preparation Strategies | Exam Essentials"
-        description="Expert study tips, exam preparation strategies, and educational content for CBSE Class 11 & 12, NEET, and JEE students. Learn from toppers and score better."
+        title="Study Tips & Exam Preparation Blog | NEET, JEE, CBSE"
+        description="Expert study tips, NEET & JEE preparation strategies, and CBSE board exam guides. Learn from toppers with proven methods to score 95%+ in exams."
         canonical="/blog"
-        keywords="study tips, NEET preparation tips, JEE preparation strategy, class 12 study tips, how to study for boards, CBSE exam tips, handwritten notes benefits, topper study schedule"
+        keywords="NEET study tips, JEE preparation strategy, CBSE board exam tips, class 12 study tips, how to score 95 in boards, NEET biology strategy, handwritten notes benefits, topper study schedule, exam preparation guide 2025"
         structuredData={structuredData}
       />
 
