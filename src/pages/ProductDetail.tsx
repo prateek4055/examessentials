@@ -160,13 +160,16 @@ const ProductDetail = () => {
     );
   }
 
+  // Default fallback image for products without images
+  const productImage = product.images?.[0] || "https://examessentials.in/og-image.png";
+
   const productStructuredData = [
     {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": product.title,
-      "description": product.description,
-      "image": product.images?.[0] || "https://examessentials.in/og-image.png",
+      "description": product.description.slice(0, 200),
+      "image": productImage,
       "sku": product.id,
       "brand": {
         "@type": "Brand",
@@ -182,6 +185,39 @@ const ProductDetail = () => {
         "seller": {
           "@type": "Organization",
           "name": "Exam Essentials"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "INR"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "IN"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "h"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "h"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "IN",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+          "merchantReturnDays": 0
         }
       },
       "category": `Class ${product.class} ${product.subject} Notes`,
