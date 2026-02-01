@@ -146,13 +146,13 @@ const Products = () => {
                     "@type": "QuantitativeValue",
                     "minValue": 0,
                     "maxValue": 0,
-                    "unitCode": "h"
+                    "unitCode": "HUR"
                   },
                   "transitTime": {
                     "@type": "QuantitativeValue",
                     "minValue": 0,
                     "maxValue": 0,
-                    "unitCode": "h"
+                    "unitCode": "HUR"
                   }
                 }
               },
@@ -162,6 +162,13 @@ const Products = () => {
                 "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
                 "merchantReturnDays": 0
               }
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "reviewCount": "150",
+              "bestRating": "5",
+              "worstRating": "1"
             }
           }
         }))

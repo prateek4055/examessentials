@@ -203,13 +203,13 @@ const ProductDetail = () => {
               "@type": "QuantitativeValue",
               "minValue": 0,
               "maxValue": 0,
-              "unitCode": "h"
+              "unitCode": "HUR"
             },
             "transitTime": {
               "@type": "QuantitativeValue",
               "minValue": 0,
               "maxValue": 0,
-              "unitCode": "h"
+              "unitCode": "HUR"
             }
           }
         },
