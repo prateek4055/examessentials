@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, Calendar, Clock, User, ArrowLeft, Share2, BookOpen } from "lucide-react";
+import DOMPurify from "dompurify";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -237,9 +238,9 @@ const BlogPostPage = () => {
     }
   ];
 
-  // Convert markdown-like content to HTML
+  // Convert markdown-like content to HTML with XSS sanitization
   const renderContent = (content: string) => {
-    return content
+    const rawHtml = content
       .split('\n')
       .map((line) => {
         // Headers
@@ -251,8 +252,17 @@ const BlogPostPage = () => {
         let processed = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         // Italic
         processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        // Links
-        processed = processed.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-accent hover:underline">$1</a>');
+        // Links - sanitize href to prevent javascript: URLs
+        processed = processed.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+          // Only allow http, https, mailto, and relative URLs
+          const sanitizedUrl = url.trim();
+          if (sanitizedUrl.startsWith('javascript:') || 
+              sanitizedUrl.startsWith('data:') || 
+              sanitizedUrl.startsWith('vbscript:')) {
+            return text; // Return just the text without the link
+          }
+          return `<a href="${sanitizedUrl}" class="text-accent hover:underline">${text}</a>`;
+        });
         // List items
         if (processed.trim().startsWith('- ')) {
           return `<li>${processed.trim().slice(2)}</li>`;
@@ -270,6 +280,13 @@ const BlogPostPage = () => {
         return `<p>${processed}</p>`;
       })
       .join('\n');
+
+    // Sanitize the HTML output to prevent XSS attacks
+    return DOMPurify.sanitize(rawHtml, {
+      ALLOWED_TAGS: ['h2', 'h3', 'p', 'strong', 'em', 'a', 'ul', 'ol', 'li', 'br', 'hr'],
+      ALLOWED_ATTR: ['href', 'class'],
+      ALLOW_DATA_ATTR: false
+    });
   };
 
   // Generate SEO-optimized title under 60 chars
