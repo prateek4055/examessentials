@@ -10,7 +10,7 @@ Disallow: /auth/
 Disallow: /profile/
 Disallow: /purchase/
 Disallow: /cart/
-Disallow: /terms
+# /terms redirects to /terms-and-conditions (don't block the canonical page)
 
 # Block query parameters on products page to prevent duplicate content
 Disallow: /products?*
