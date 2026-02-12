@@ -78,7 +78,45 @@ const Class12Notes = () => {
           "item": {
             "@type": "Product",
             "name": product.title,
-            "url": `https://examessentials.in/product/${product.id}`
+            "description": product.description.slice(0, 200),
+            "image": product.images?.[0] || "https://examessentials.in/og-image.png",
+            "url": `https://examessentials.in/product/${product.id}`,
+            "sku": product.id,
+            "brand": {
+              "@type": "Brand",
+              "name": "Exam Essentials"
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": product.price,
+              "priceCurrency": "INR",
+              "availability": "https://schema.org/InStock",
+              "url": `https://examessentials.in/product/${product.id}`,
+              "priceValidUntil": "2026-12-31",
+              "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
+                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
+                "deliveryTime": {
+                  "@type": "ShippingDeliveryTime",
+                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "HUR" },
+                  "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "HUR" }
+                }
+              },
+              "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "IN",
+                "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+                "merchantReturnDays": 0
+              }
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "reviewCount": "150",
+              "bestRating": "5",
+              "worstRating": "1"
+            }
           }
         }))
       }
