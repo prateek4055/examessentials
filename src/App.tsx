@@ -31,6 +31,7 @@ import Class12Notes from "./pages/Class12Notes";
 import NeetNotes from "./pages/NeetNotes";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import MedPosterHubIndex from "./apps/medposterhub/pages/MedPosterHubIndex";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,8 @@ const App = () => (
               <Route path="/neet-notes" element={<NeetNotes />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<BlogPost />} />
+              {/* Sub-Apps */}
+              <Route path="/medposterhub" element={<MedPosterHubIndex />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <WhatsAppButton />
