@@ -38,6 +38,7 @@ const Navbar = () => {
     { name: "Class 12", path: "/class-12-notes" },
     { name: "NEET", path: "/neet-notes" },
     { name: "Blog", path: "/blog" },
+    { name: "Posters", path: "/medposterhub" },
     { name: "About", path: "/about" },
   ];
 
