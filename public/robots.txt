@@ -1,0 +1,30 @@
+# Robots.txt for examessentials.in
+# SEO optimized - Clean and simple
+
+User-agent: *
+Allow: /
+
+# Block private/dynamic routes
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /profile/
+Disallow: /purchase/
+Disallow: /cart/
+# /terms redirects to /terms-and-conditions (don't block the canonical page)
+
+# Block query parameters on products page to prevent duplicate content
+Disallow: /products?*
+
+# Allow specific important paths
+Allow: /products
+Allow: /product/
+Allow: /blog/
+Allow: /class-11-notes
+Allow: /class-12-notes
+Allow: /neet-notes
+
+# Crawl delay to be respectful
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://examessentials.in/sitemap.xml
