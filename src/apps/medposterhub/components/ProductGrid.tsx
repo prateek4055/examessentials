@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Poster } from "../../data/posters";
+import { Poster } from "../data/posters";
 import { ProductCard } from "./ProductCard";
 
 interface ProductGridProps {

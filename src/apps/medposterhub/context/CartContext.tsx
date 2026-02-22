@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { toast } from "sonner";
-import { Poster } from "../../data/posters";
+import { Poster } from "../data/posters";
 
 export interface CartItem extends Poster {
   selectedSize: string;
