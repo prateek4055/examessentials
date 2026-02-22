@@ -45,7 +45,7 @@ export const faqStructuredData = {
 
 const FAQSection = () => {
   return (
-    <section className="py-20 bg-secondary/30" aria-labelledby="faq-heading">
+    <section className="py-20 bg-background" aria-labelledby="faq-heading">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -74,7 +74,7 @@ const FAQSection = () => {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-card border border-border rounded-xl px-6 overflow-hidden"
+                className="glass-card shadow-clay-sm rounded-3xl px-6 overflow-hidden border-0"
               >
                 <AccordionTrigger className="text-left font-display text-lg font-semibold text-foreground hover:no-underline py-5">
                   {faq.question}

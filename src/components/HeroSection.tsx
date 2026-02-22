@@ -24,8 +24,8 @@ const doodleElements = [
 const HeroSection = () => {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-24 pb-16">
-      {/* Gradient background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card/30" />
+      {/* Soft gradient orbs for depth */}
+      <div className="absolute inset-0 bg-background" />
       
       {/* Floating 3D Doodles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ perspective: "1000px" }}>
@@ -106,9 +106,10 @@ const HeroSection = () => {
           </motion.div>
         ))}
         
-        {/* Glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-32 md:w-64 h-32 md:h-64 bg-gradient-purple/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 md:w-96 h-48 md:h-96 bg-gradient-blue/10 rounded-full blur-3xl" />
+        {/* Soft glow orbs */}
+        <div className="absolute top-1/4 left-1/4 w-32 md:w-64 h-32 md:h-64 rounded-full blur-3xl" style={{ background: 'hsl(260 65% 60% / 0.12)' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full blur-3xl" style={{ background: 'hsl(220 85% 58% / 0.1)' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl" style={{ background: 'hsl(340 75% 60% / 0.06)' }} />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

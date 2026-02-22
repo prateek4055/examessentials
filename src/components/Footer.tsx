@@ -4,7 +4,7 @@ import logo from "@/assets/logo.jpeg";
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border py-16" role="contentinfo" aria-label="Site footer">
+    <footer className="glass-panel py-16 rounded-none" style={{ borderTop: '1px solid hsl(0 0% 100% / 0.5)' }} role="contentinfo" aria-label="Site footer">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand */}

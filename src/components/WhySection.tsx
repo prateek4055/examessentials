@@ -30,7 +30,7 @@ const features = [
 
 const WhySection = () => {
   return (
-    <section className="py-24 bg-card/30">
+    <section className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -56,10 +56,10 @@ const WhySection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group p-6 rounded-2xl bg-card border border-border hover:border-muted-foreground/30 transition-all duration-300"
+              className="group p-6 rounded-3xl glass-card glass-card-hover transition-all duration-300 shadow-clay-sm hover:shadow-clay-md"
             >
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-gradient-purple/20 to-gradient-blue/20 border border-border">
+                <div className="p-3 rounded-2xl clay-inner">
                   <feature.icon className="w-6 h-6 text-gold" />
                 </div>
                 <div>

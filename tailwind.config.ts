@@ -14,11 +14,14 @@ export default {
     },
     extend: {
       boxShadow: {
-        "clay-sm": "4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff",
-        "clay-md": "8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff",
-        "clay-lg": "12px 12px 24px #d1d9e6, -12px -12px 24px #ffffff",
-        "clay-inner": "inset 6px 6px 12px #b8b9be, inset -6px -6px 12px #ffffff",
-        "clay-btn": "6px 6px 12px #b8b9be, -6px -6px 12px #ffffff",
+        "clay-sm": "4px 4px 8px #c8ccd4, -4px -4px 8px #ffffff",
+        "clay-md": "8px 8px 16px #c8ccd4, -8px -8px 16px #ffffff",
+        "clay-lg": "12px 12px 24px #c8ccd4, -12px -12px 24px #ffffff",
+        "clay-inner": "inset 4px 4px 8px #c8ccd4, inset -4px -4px 8px #ffffff",
+        "clay-btn": "6px 6px 12px #c8ccd4, -6px -6px 12px #ffffff",
+        "glass-sm": "0 4px 16px rgba(100, 120, 180, 0.08), inset 0 1px 0 rgba(255,255,255,0.7)",
+        "glass-md": "0 8px 32px rgba(100, 120, 180, 0.1), inset 0 1px 0 rgba(255,255,255,0.7)",
+        "glass-lg": "0 16px 48px rgba(100, 120, 180, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -129,7 +132,6 @@ export default {
           "50%": { transform: "translateY(-10px)" },
         },
       },
-
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
