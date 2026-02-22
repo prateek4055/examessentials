@@ -58,7 +58,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 glass-panel rounded-none border-b-0" style={{ borderBottom: '1px solid hsl(0 0% 100% / 0.5)' }}>
       {/* Main Navbar */}
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
@@ -149,7 +149,7 @@ const Navbar = () => {
       </nav>
 
       {/* Category Tabs - Desktop */}
-      <div className="hidden md:block bg-secondary border-t border-border">
+      <div className="hidden md:block glass-panel rounded-none border-t-0" style={{ borderTop: '1px solid hsl(0 0% 100% / 0.4)' }}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center gap-8">
             {categoryTabs.map((tab) => (
@@ -167,7 +167,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-background border-t border-border animate-fade-in">
+        <div className="md:hidden glass-panel rounded-none border-t-0 animate-fade-in" style={{ borderTop: '1px solid hsl(0 0% 100% / 0.4)' }}>
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col gap-2">
               {mainLinks.map((link) => (

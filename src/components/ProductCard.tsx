@@ -50,7 +50,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     >
       <Link
         to={`/product/${product.id}`}
-        className="group block bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+        className="group block rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 glass-card glass-card-hover shadow-clay-sm hover:shadow-clay-md"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
