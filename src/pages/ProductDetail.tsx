@@ -549,7 +549,7 @@ const ProductDetail = () => {
 
                 {/* WhatsApp Button */}
                 <a
-                  href="https://api.whatsapp.com/send?phone=919876543210&text=Hi!%20I'm%20interested%20in%20Exam%20Essentials%20notes."
+                  href="https://api.whatsapp.com/send?phone=919460970342&text=Hi!%20I'm%20interested%20in%20Exam%20Essentials%20notes."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-secondary border border-border rounded-xl text-foreground font-body font-medium hover:bg-secondary/80 transition-colors"
