@@ -20,6 +20,7 @@ interface AppCard {
   image?: string;
   category: "medical" | "exam" | "parent";
   comingSoon?: boolean;
+  link?: string;
 }
 
 const apps: AppCard[] = [
@@ -34,7 +35,7 @@ const apps: AppCard[] = [
     description: "Orthopedic tests & notes",
     image: medorthoLogo,
     category: "medical",
-    comingSoon: true,
+    link: "https://play.google.com/store/apps/details?id=com.prateek.orthoexam",
   },
   {
     name: "MedCardio",
@@ -267,6 +268,39 @@ const EcosystemSection = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 style={{ transformStyle: "preserve-3d" }}
               >
+                {app.link ? (
+                  <a href={app.link} target="_blank" rel="noopener noreferrer" className="ecosystem-card group relative overflow-hidden block no-underline">
+                    <div 
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background: "linear-gradient(145deg, hsl(var(--gradient-purple) / 0.1), transparent)",
+                        transform: "translateZ(-10px)"
+                      }}
+                    />
+                    <motion.div 
+                      className="mb-4 flex justify-center"
+                      whileHover={{ scale: 1.1, rotateY: 10 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      {app.image && (
+                        <div className="relative">
+                          <motion.div
+                            className="absolute inset-0 rounded-xl"
+                            style={{
+                              background: "radial-gradient(circle, hsl(var(--gradient-purple) / 0.3) 0%, transparent 70%)",
+                              filter: "blur(15px)"
+                            }}
+                            animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          />
+                          <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl relative z-10 drop-shadow-2xl" />
+                        </div>
+                      )}
+                    </motion.div>
+                    <h4 className="font-display text-base font-semibold text-foreground mb-1">{app.name}</h4>
+                    <p className="font-body text-xs text-muted-foreground">{app.description}</p>
+                  </a>
+                ) : (
                 <div className="ecosystem-card group relative overflow-hidden">
                   {/* 3D depth shadow */}
                   <div 
@@ -288,7 +322,6 @@ const EcosystemSection = () => {
                     </motion.span>
                   )}
                   
-                  {/* App Logo with 3D effect */}
                   <motion.div 
                     className="mb-4 flex justify-center"
                     whileHover={{ scale: 1.1, rotateY: 10 }}
@@ -302,17 +335,10 @@ const EcosystemSection = () => {
                             background: "radial-gradient(circle, hsl(var(--gradient-purple) / 0.3) 0%, transparent 70%)",
                             filter: "blur(15px)"
                           }}
-                          animate={{
-                            opacity: [0.3, 0.6, 0.3],
-                            scale: [0.9, 1.1, 0.9]
-                          }}
+                          animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
                           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         />
-                        <img 
-                          src={app.image} 
-                          alt={app.name}
-                          className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl relative z-10 drop-shadow-2xl"
-                        />
+                        <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl relative z-10 drop-shadow-2xl" />
                       </div>
                     ) : (
                       <div className="p-3 rounded-xl bg-gradient-to-br from-brand-blue/20 to-gradient-purple/20">
@@ -321,23 +347,10 @@ const EcosystemSection = () => {
                     )}
                   </motion.div>
                   
-                  <h4 className="font-display text-base font-semibold text-foreground mb-1">
-                    {app.name}
-                  </h4>
-                  <p className="font-body text-xs text-muted-foreground">
-                    {app.description}
-                  </p>
-                  
-                  {/* Hover glow effect */}
-                  <motion.div 
-                    className="absolute inset-0 rounded-2xl pointer-events-none"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(var(--gradient-purple) / 0.05), hsl(var(--gradient-blue) / 0.05))",
-                      opacity: 0
-                    }}
-                    whileHover={{ opacity: 1 }}
-                  />
+                  <h4 className="font-display text-base font-semibold text-foreground mb-1">{app.name}</h4>
+                  <p className="font-body text-xs text-muted-foreground">{app.description}</p>
                 </div>
+                )}
               </motion.div>
             ))}
           </div>
