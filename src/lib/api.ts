@@ -44,18 +44,46 @@ export interface Order {
 
 // Fetch all published products (public)
 export const fetchPublishedProducts = async (): Promise<Product[]> => {
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("published", true)
-    .order("created_at", { ascending: false });
+  const query = () =>
+    supabase
+      .from("products")
+      .select("*")
+      .eq("published", true)
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Error fetching products:", error);
+  try {
+    const { data, error } = await query();
+
+    if (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+
+    return (data || []) as Product[];
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const isNetworkLikeError = message.toLowerCase().includes("failed to fetch");
+
+    // Recovery path for stale local auth session causing request failures.
+    if (isNetworkLikeError) {
+      try {
+        await supabase.auth.signOut({ scope: "local" });
+      } catch (signOutError) {
+        console.warn("Local auth reset failed during products retry:", signOutError);
+      }
+
+      const { data, error: retryError } = await query();
+
+      if (retryError) {
+        console.error("Error fetching products after retry:", retryError);
+        throw retryError;
+      }
+
+      return (data || []) as Product[];
+    }
+
     throw error;
   }
-
-  return (data || []) as Product[];
 };
 
 // Fetch all products (admin only)
