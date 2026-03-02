@@ -202,15 +202,15 @@ const ProductDetail = () => {
             "@type": "ShippingDeliveryTime",
             "handlingTime": {
               "@type": "QuantitativeValue",
-              "minValue": 0,
-              "maxValue": 0,
-              "unitCode": "HUR"
+              "minValue": 1,
+              "maxValue": 3,
+              "unitCode": "d"
             },
             "transitTime": {
               "@type": "QuantitativeValue",
-              "minValue": 0,
-              "maxValue": 0,
-              "unitCode": "HUR"
+              "minValue": 2,
+              "maxValue": 5,
+              "unitCode": "d"
             }
           }
         },
