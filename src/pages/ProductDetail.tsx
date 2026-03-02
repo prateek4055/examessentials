@@ -310,7 +310,7 @@ const ProductDetail = () => {
                     <AnimatePresence mode="wait">
                       <motion.img
                         key={currentImageIndex}
-                        src={product.images[currentImageIndex]}
+                        src={getProxiedImageUrl(product.images[currentImageIndex]) || ""}
                         alt={`${product.title} - Image ${currentImageIndex + 1}`}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -358,12 +358,12 @@ const ProductDetail = () => {
                           key={img}
                           onClick={() => setCurrentImageIndex(index)}
                           className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index
-                              ? "border-gold"
-                              : "border-border hover:border-muted-foreground"
+                            ? "border-gold"
+                            : "border-border hover:border-muted-foreground"
                             }`}
                         >
                           <img
-                            src={img}
+                            src={getProxiedImageUrl(img) || ""}
                             alt={`Thumbnail ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
@@ -457,8 +457,8 @@ const ProductDetail = () => {
                         key={option.id}
                         onClick={() => setSelectedCombo(option.id)}
                         className={`px-4 py-2 rounded-lg border text-sm font-body font-medium transition-all ${selectedCombo === option.id
-                            ? "border-accent bg-accent text-accent-foreground"
-                            : "border-border bg-card text-foreground hover:border-accent/50"
+                          ? "border-accent bg-accent text-accent-foreground"
+                          : "border-border bg-card text-foreground hover:border-accent/50"
                           }`}
                       >
                         {option.label}
