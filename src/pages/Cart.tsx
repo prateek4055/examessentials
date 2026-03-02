@@ -9,14 +9,16 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { 
-  getCartItems, 
-  removeFromCart as removeCartItem, 
+import {
+  getCartItems,
+  removeFromCart as removeCartItem,
   clearCart,
   calculateCartTotal,
   CartCalculation,
   CartItem
 } from "@/lib/cartUtils";
+
+import { getProxiedImageUrl } from "@/lib/utils";
 
 interface CartProduct {
   id: string;
@@ -37,7 +39,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCartProducts();
-    
+
     const handleCartUpdate = () => fetchCartProducts();
     window.addEventListener("cartUpdated", handleCartUpdate);
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);
@@ -56,7 +58,7 @@ const Cart = () => {
       }
 
       const productIds = items.map(item => item.productId);
-      
+
       const { data, error } = await supabase
         .from("products")
         .select("id, title, subject, class, price, images, category")
@@ -70,7 +72,7 @@ const Cart = () => {
 
       const fetchedProducts = (data || []) as CartProduct[];
       setProducts(fetchedProducts);
-      
+
       // Calculate totals with auto-discount (pass category for correct pricing)
       const calc = calculateCartTotal(
         fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category }))
@@ -95,7 +97,7 @@ const Cart = () => {
 
   const handleCheckout = () => {
     if (products.length === 0) return;
-    
+
     // Navigate to purchase with cart data
     const productIds = products.map(p => p.id).join(",");
     const total = calculation?.total || 0;
@@ -104,7 +106,7 @@ const Cart = () => {
   };
 
   const getProductImage = (product: CartProduct) => {
-    return product.images?.[0] || null;
+    return getProxiedImageUrl(product.images?.[0]) || null;
   };
 
   return (
@@ -215,7 +217,7 @@ const Cart = () => {
                 {products.map((product) => {
                   const itemCalc = calculation?.items.find(i => i.productId === product.id);
                   const isInCombo = itemCalc?.inCombo || false;
-                  
+
                   return (
                     <Card key={product.id} className={`overflow-hidden ${isInCombo ? "border-accent/30" : ""}`}>
                       <CardContent className="p-4 md:p-6">
@@ -270,7 +272,7 @@ const Cart = () => {
                                   </p>
                                 )}
                               </div>
-                              
+
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -296,7 +298,7 @@ const Cart = () => {
                           <span>Subtotal ({products.length} items)</span>
                           <span>₹{calculation.subtotal}</span>
                         </div>
-                        
+
                         {calculation.appliedCombos && calculation.appliedCombos.length > 0 && calculation.appliedCombos.map((combo) => {
                           const comboSavings = combo.originalPrice - combo.price;
                           return (
@@ -309,7 +311,7 @@ const Cart = () => {
                             </div>
                           );
                         })}
-                        
+
                         <div className="border-t border-border pt-3 flex items-center justify-between">
                           <span className="font-display font-semibold text-foreground">Total</span>
                           <span className="font-display text-2xl font-bold text-foreground">
@@ -318,13 +320,13 @@ const Cart = () => {
                         </div>
                       </div>
                     )}
-                    
+
                     <p className="text-sm text-muted-foreground mb-4">
                       {calculation?.appliedCombos && calculation.appliedCombos.length > 0
                         ? `Great choice! You're getting the best deal with ${calculation.appliedCombos.map(c => c.label).join(" & ")}.`
                         : "Add more subjects to unlock combo discounts!"}
                     </p>
-                    
+
                     <div className="flex gap-3">
                       <Button variant="outline" className="flex-1" asChild>
                         <Link to="/products">Add More</Link>

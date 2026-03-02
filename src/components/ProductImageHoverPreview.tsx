@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getProxiedImageUrl } from "@/lib/utils";
 
 interface ProductImageHoverPreviewProps {
   images: string[];
@@ -49,7 +50,7 @@ const ProductImageHoverPreview = ({
             <AnimatePresence mode="wait">
               <motion.img
                 key={currentIndex}
-                src={displayImages[currentIndex]}
+                src={getProxiedImageUrl(displayImages[currentIndex]) || ""}
                 alt={`${productTitle} - Preview ${currentIndex + 1}`}
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -66,11 +67,10 @@ const ProductImageHoverPreview = ({
               {displayImages.map((_, index) => (
                 <div
                   key={index}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    currentIndex === index
-                      ? "bg-accent w-4"
-                      : "bg-muted-foreground/30 w-1.5"
-                  }`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === index
+                    ? "bg-accent w-4"
+                    : "bg-muted-foreground/30 w-1.5"
+                    }`}
                 />
               ))}
             </div>

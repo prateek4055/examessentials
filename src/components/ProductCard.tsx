@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { Product } from "@/lib/api";
 import ProductImageHoverPreview from "./ProductImageHoverPreview";
+import { getProxiedImageUrl } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -54,14 +55,14 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div 
+        <div
           className="relative bg-secondary overflow-hidden"
           onTouchStart={handleMobileTouch}
         >
           {hasImages ? (
             <>
               <img
-                src={product.images![0]}
+                src={getProxiedImageUrl(product.images![0]) || ""}
                 alt={product.title}
                 className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
               />

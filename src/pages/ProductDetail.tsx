@@ -11,6 +11,7 @@ import ProductFAQ from "@/components/ProductFAQ";
 import { Button } from "@/components/ui/button";
 import { fetchProductById, fetchPublishedProducts, Product } from "@/lib/api";
 import { addToCart, addMultipleToCart, getComboSubjects, comboConfigs, clearCart } from "@/lib/cartUtils";
+import { getProxiedImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 // Combo pricing options - ONLY for non-mindmaps products
@@ -62,7 +63,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = async () => {
     if (!product) return;
-    
+
     setIsAddingToCart(true);
     try {
       if (selectedCombo === "single") {
@@ -82,7 +83,7 @@ const ProductDetail = () => {
         const comboProductIds = sameClassProducts
           .filter(p => comboSubjects.map(s => s.toLowerCase()).includes(p.subject.toLowerCase()))
           .map(p => p.id);
-        
+
         if (comboProductIds.length > 0) {
           addMultipleToCart(comboProductIds);
           const comboLabel = comboConfigs.find(c => c.id === selectedCombo)?.label || "Combo";
@@ -161,7 +162,7 @@ const ProductDetail = () => {
   }
 
   // Default fallback image for products without images
-  const productImage = product.images?.[0] || "https://examessentials.in/og-image.png";
+  const productImage = getProxiedImageUrl(product.images?.[0]) || "https://examessentials.in/og-image.png";
 
   const productStructuredData = [
     {
@@ -267,7 +268,7 @@ const ProductDetail = () => {
         title={`${product.title} - Class ${product.class} ${product.subject} Notes | Buy Now`}
         description={`${product.title} - ${product.description.slice(0, 140)}. Premium handwritten ${product.subject} notes for Class ${product.class}. Best for CBSE, NEET, JEE. Instant PDF delivery. ₹${product.price} only.`}
         canonical={`/product/${product.id}`}
-        ogImage={product.images?.[0] || "https://examessentials.in/og-image.png"}
+        ogImage={productImage}
         ogType="product"
         keywords={`${product.subject} notes class ${product.class}, ${product.title}, CBSE ${product.subject} notes class ${product.class}, handwritten ${product.subject} notes, best ${product.subject} notes, topper notes ${product.subject}, ${product.subject} PDF notes, NEET ${product.subject} notes, JEE ${product.subject} notes`}
         structuredData={productStructuredData}
@@ -318,12 +319,12 @@ const ProductDetail = () => {
                         className="w-full h-auto max-h-[70vh] object-contain"
                       />
                     </AnimatePresence>
-                    
+
                     {/* Navigation Arrows */}
                     {product.images.length > 1 && (
                       <>
                         <button
-                          onClick={() => setCurrentImageIndex((prev) => 
+                          onClick={() => setCurrentImageIndex((prev) =>
                             prev === 0 ? product.images!.length - 1 : prev - 1
                           )}
                           className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-background/80 hover:bg-background rounded-full transition-colors"
@@ -331,7 +332,7 @@ const ProductDetail = () => {
                           <ChevronLeft className="w-5 h-5 text-foreground" />
                         </button>
                         <button
-                          onClick={() => setCurrentImageIndex((prev) => 
+                          onClick={() => setCurrentImageIndex((prev) =>
                             prev === product.images!.length - 1 ? 0 : prev + 1
                           )}
                           className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-background/80 hover:bg-background rounded-full transition-colors"
@@ -356,11 +357,10 @@ const ProductDetail = () => {
                         <button
                           key={img}
                           onClick={() => setCurrentImageIndex(index)}
-                          className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                            currentImageIndex === index
+                          className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index
                               ? "border-gold"
                               : "border-border hover:border-muted-foreground"
-                          }`}
+                            }`}
                         >
                           <img
                             src={img}
@@ -456,11 +456,10 @@ const ProductDetail = () => {
                       <button
                         key={option.id}
                         onClick={() => setSelectedCombo(option.id)}
-                        className={`px-4 py-2 rounded-lg border text-sm font-body font-medium transition-all ${
-                          selectedCombo === option.id
+                        className={`px-4 py-2 rounded-lg border text-sm font-body font-medium transition-all ${selectedCombo === option.id
                             ? "border-accent bg-accent text-accent-foreground"
                             : "border-border bg-card text-foreground hover:border-accent/50"
-                        }`}
+                          }`}
                       >
                         {option.label}
                         {option.price !== null && (
@@ -485,18 +484,18 @@ const ProductDetail = () => {
                       </p>
                       {!isMindMap && selectedCombo !== "single" && (
                         <span className="text-sm text-muted-foreground line-through">
-                          ₹{selectedCombo === "pcmb" ? 259 : 
-                             selectedCombo === "pcb" ? 209 : 
-                             selectedCombo === "pcm" ? 199 : 149}
+                          ₹{selectedCombo === "pcmb" ? 259 :
+                            selectedCombo === "pcb" ? 209 :
+                              selectedCombo === "pcm" ? 199 : 149}
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
 
-                <Button 
-                  variant="gradient" 
-                  size="xl" 
+                <Button
+                  variant="gradient"
+                  size="xl"
                   className="w-full"
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
