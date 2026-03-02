@@ -2,16 +2,54 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+// Direct Supabase URL for edge cases, but we prioritize the proxied URL to bypass JIO blocking
+const _SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+// Route requests through the proxy to bypass ISP-level DNS blocking of supabase.co domains (e.g., JIO networks in India)
+const PROXIED_SUPABASE_URL = typeof window !== 'undefined'
+  ? `${window.location.origin}/supabase-api`
+  : _SUPABASE_URL;
+
+// Custom fetch implementation to safely transparently fallback if proxy is omitted/unsupported on host (e.g. Lovable)
+const customFetch = async (
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Promise<Response> => {
+  const urlStr = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+
+  if (urlStr.startsWith(PROXIED_SUPABASE_URL)) {
+    try {
+      const response = await fetch(input, init);
+      const contentType = response.headers.get('content-type');
+
+      // Lovable static hosting falls back to returning index.html (200 OK) for unknown proxy routes
+      if (response.ok && contentType && contentType.includes('text/html')) {
+        console.warn('Supabase proxy returned HTML. Falling back to direct URL.');
+        const directUrl = urlStr.replace(PROXIED_SUPABASE_URL, _SUPABASE_URL);
+        return fetch(typeof input === 'string' ? directUrl : new Request(directUrl, input as Request), init);
+      }
+      return response;
+    } catch (error) {
+      console.warn('Supabase proxy failed. Falling back to direct URL.', error);
+      const directUrl = urlStr.replace(PROXIED_SUPABASE_URL, _SUPABASE_URL);
+      return fetch(typeof input === 'string' ? directUrl : new Request(directUrl, input as Request), init);
+    }
+  }
+
+  return fetch(input, init);
+};
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+export const supabase = createClient<Database>(PROXIED_SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+  },
+  global: {
+    fetch: customFetch
   }
 });
