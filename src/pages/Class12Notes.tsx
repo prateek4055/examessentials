@@ -29,7 +29,7 @@ const Class12Notes = () => {
   };
 
   const subjects = ["Physics", "Chemistry", "Maths", "Biology"];
-  
+
   const benefits = [
     "Complete CBSE Class 12 board syllabus coverage",
     "Handwritten by toppers who scored 95%+",
@@ -99,8 +99,8 @@ const Class12Notes = () => {
                 "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
                 "deliveryTime": {
                   "@type": "ShippingDeliveryTime",
-                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "HUR" },
-                  "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "HUR" }
+                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "d" },
+                  "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 5, "unitCode": "d" }
                 }
               },
               "hasMerchantReturnPolicy": {
@@ -226,7 +226,7 @@ const Class12Notes = () => {
               <BookOpen className="w-5 h-5 inline-block mr-2" />
               All Class 12 Notes
             </h2>
-            
+
             {isLoading ? (
               <div className="flex items-center justify-center py-16">
                 <div className="animate-pulse text-muted-foreground">Loading products...</div>

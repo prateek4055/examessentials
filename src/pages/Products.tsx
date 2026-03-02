@@ -56,7 +56,7 @@ const Products = () => {
 
   // Filter products
   let filteredProducts = products;
-  
+
   if (classFilter) {
     filteredProducts = filteredProducts.filter((p) => p.class === classFilter);
   }
@@ -64,7 +64,7 @@ const Products = () => {
   if (categoryFilter) {
     filteredProducts = filteredProducts.filter((p) => p.category === categoryFilter);
   }
-  
+
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
     filteredProducts = filteredProducts.filter(
@@ -81,16 +81,16 @@ const Products = () => {
   const pageTitle = categoryFilter
     ? `${categoryLabels[categoryFilter] || categoryFilter} for Class ${classFilter || "11 & 12"} | Best Study Notes`
     : classFilter
-    ? `Class ${classFilter} Handwritten Notes | Physics, Chemistry, Maths, Biology`
-    : searchQuery
-    ? `Search: ${searchQuery} | Study Notes`
-    : "All Premium Handwritten Notes | Class 11 & 12 | CBSE, NEET, JEE";
+      ? `Class ${classFilter} Handwritten Notes | Physics, Chemistry, Maths, Biology`
+      : searchQuery
+        ? `Search: ${searchQuery} | Study Notes`
+        : "All Premium Handwritten Notes | Class 11 & 12 | CBSE, NEET, JEE";
 
   const pageDescription = categoryFilter
     ? `Buy premium ${categoryLabels[categoryFilter] || categoryFilter} for Class ${classFilter || "11 & 12"}. Best handwritten Physics, Chemistry, Maths, Biology notes by toppers. Instant PDF delivery.`
     : classFilter
-    ? `Premium handwritten notes for Class ${classFilter} CBSE students. Physics, Chemistry, Maths, Biology notes for boards, NEET & JEE. Buy now with instant delivery.`
-    : "India's best handwritten notes for Class 11 & 12 students. Premium Physics, Chemistry, Maths, Biology notes by toppers. Perfect for CBSE Boards, NEET, JEE preparation.";
+      ? `Premium handwritten notes for Class ${classFilter} CBSE students. Physics, Chemistry, Maths, Biology notes for boards, NEET & JEE. Buy now with instant delivery.`
+      : "India's best handwritten notes for Class 11 & 12 students. Premium Physics, Chemistry, Maths, Biology notes by toppers. Perfect for CBSE Boards, NEET, JEE preparation.";
 
   // Use clean canonical URL without query params to avoid duplicate content issues
   const canonicalPath = "/products";
@@ -144,15 +144,15 @@ const Products = () => {
                   "@type": "ShippingDeliveryTime",
                   "handlingTime": {
                     "@type": "QuantitativeValue",
-                    "minValue": 0,
-                    "maxValue": 0,
-                    "unitCode": "HUR"
+                    "minValue": 1,
+                    "maxValue": 3,
+                    "unitCode": "d"
                   },
                   "transitTime": {
                     "@type": "QuantitativeValue",
-                    "minValue": 0,
-                    "maxValue": 0,
-                    "unitCode": "HUR"
+                    "minValue": 2,
+                    "maxValue": 5,
+                    "unitCode": "d"
                   }
                 }
               },
@@ -362,7 +362,7 @@ const Products = () => {
                 <>
                   {(classFilter || categoryFilter) && (
                     <h2 className="section-header rounded-lg mb-6">
-                      {categoryFilter ? categoryLabels[categoryFilter] : ""} 
+                      {categoryFilter ? categoryLabels[categoryFilter] : ""}
                       {categoryFilter && classFilter ? " - " : ""}
                       {classFilter ? `Class ${classFilter}` : ""}
                     </h2>

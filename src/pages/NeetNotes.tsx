@@ -22,7 +22,7 @@ const NeetNotes = () => {
       const data = await fetchPublishedProducts();
       // Filter products relevant to NEET (Biology, Physics, Chemistry)
       const neetSubjects = ["biology", "physics", "chemistry", "zoology", "botany"];
-      setProducts(data.filter((p) => 
+      setProducts(data.filter((p) =>
         neetSubjects.includes(p.subject.toLowerCase())
       ));
     } catch (error) {
@@ -37,7 +37,7 @@ const NeetNotes = () => {
     { name: "Physics", icon: Target },
     { name: "Chemistry", icon: Brain },
   ];
-  
+
   const benefits = [
     "Complete NEET syllabus coverage (Class 11 + 12)",
     "NCERT-based content - the gold standard for NEET",
@@ -114,8 +114,8 @@ const NeetNotes = () => {
                 "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
                 "deliveryTime": {
                   "@type": "ShippingDeliveryTime",
-                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "HUR" },
-                  "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "HUR" }
+                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "d" },
+                  "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 5, "unitCode": "d" }
                 }
               },
               "hasMerchantReturnPolicy": {
@@ -264,7 +264,7 @@ const NeetNotes = () => {
               <BookOpen className="w-5 h-5 inline-block mr-2" />
               NEET Study Materials
             </h2>
-            
+
             {isLoading ? (
               <div className="flex items-center justify-center py-16">
                 <div className="animate-pulse text-muted-foreground">Loading products...</div>
