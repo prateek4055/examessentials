@@ -27,17 +27,17 @@ function getClientIP(req: Request): string {
 function isRateLimited(clientIP: string): boolean {
   const now = Date.now();
   const record = rateLimitMap.get(clientIP);
-  
+
   if (!record || now > record.resetTime) {
     // Reset or create new record
     rateLimitMap.set(clientIP, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
     return false;
   }
-  
+
   if (record.count >= MAX_REQUESTS_PER_WINDOW) {
     return true;
   }
-  
+
   record.count++;
   return false;
 }
@@ -55,8 +55,8 @@ const ALLOWED_ORIGINS = [
 function isAllowedOrigin(origin: string | null): boolean {
   // Allow null origin for server-to-server calls (like supabase.functions.invoke)
   if (!origin) return true;
-  return ALLOWED_ORIGINS.some(allowed => 
-    origin === allowed || 
+  return ALLOWED_ORIGINS.some(allowed =>
+    origin === allowed ||
     origin.startsWith(allowed.replace(/\/$/, '')) ||
     origin.includes("lovable.app") ||
     origin.includes("lovableproject.com") ||
@@ -103,22 +103,22 @@ interface VerifyPaymentRequest {
 // Detect best combo for given subjects (server-side validation)
 function detectBestCombo(subjects: string[]): { id: string; price: number } | null {
   const uniqueSubjects = [...new Set(subjects.map(s => s.toLowerCase()))];
-  
-  const sortedCombos = [...comboConfigs].sort((a, b) => 
+
+  const sortedCombos = [...comboConfigs].sort((a, b) =>
     (b.price) - (a.price)
   ).reverse();
-  
+
   for (const combo of sortedCombos) {
     const comboSubjectsLower = combo.subjects.map(s => s.toLowerCase());
-    const hasAllSubjects = comboSubjectsLower.every(sub => 
+    const hasAllSubjects = comboSubjectsLower.every(sub =>
       uniqueSubjects.includes(sub)
     );
-    
+
     if (hasAllSubjects) {
       return { id: combo.id, price: combo.price };
     }
   }
-  
+
   return null;
 }
 
@@ -126,26 +126,26 @@ function detectBestCombo(subjects: string[]): { id: string; price: number } | nu
 function calculateExpectedCartTotal(products: { price: number; subject: string }[], comboId?: string): number {
   const subjects = products.map(p => p.subject);
   const bestCombo = detectBestCombo(subjects);
-  
+
   if (bestCombo && (!comboId || comboId === bestCombo.id)) {
     const comboConfig = comboConfigs.find(c => c.id === bestCombo.id);
     if (comboConfig) {
       const comboSubjectsLower = comboConfig.subjects.map(s => s.toLowerCase());
-      const nonComboProducts = products.filter(p => 
+      const nonComboProducts = products.filter(p =>
         !comboSubjectsLower.includes(p.subject.toLowerCase())
       );
       const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
       return comboConfig.price + nonComboTotal;
     }
   }
-  
+
   return products.reduce((sum, p) => sum + p.price, 0);
 }
 
 serve(async (req) => {
   const origin = req.headers.get("origin");
   const corsHeaders = getCorsHeaders(origin);
-  
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -192,10 +192,10 @@ serve(async (req) => {
     }
 
     const requestData: VerifyPaymentRequest = await req.json();
-    const { 
-      razorpay_order_id, 
-      razorpay_payment_id, 
-      razorpay_signature, 
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
       orderData,
       isCartCheckout,
       productIds,
@@ -360,11 +360,33 @@ serve(async (req) => {
 
     console.log("Order created successfully:", data.id);
 
+    // Trigger PDF delivery directly (don't wait for database webhook)
+    try {
+      const webhookSecretValue = Deno.env.get("WEBHOOK_SECRET") || "";
+
+      await fetch(`${SUPABASE_URL}/functions/v1/process-pdf-delivery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-webhook-secret": webhookSecretValue,
+        },
+        body: JSON.stringify({
+          type: "INSERT",
+          table: "orders",
+          record: data,
+        }),
+      });
+      console.log("PDF delivery triggered successfully");
+    } catch (pdfError) {
+      console.error("PDF delivery trigger failed (non-blocking):", pdfError);
+      // Don't fail the payment verification if PDF delivery fails
+    }
+
     return new Response(
-      JSON.stringify({ 
-        success: true, 
+      JSON.stringify({
+        success: true,
         verified: true,
-        order: data 
+        order: data
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
