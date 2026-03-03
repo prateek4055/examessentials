@@ -368,6 +368,8 @@ serve(async (req) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          "apikey": SUPABASE_SERVICE_ROLE_KEY,
           "x-webhook-secret": webhookSecretValue,
         },
         body: JSON.stringify({
