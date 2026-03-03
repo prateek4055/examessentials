@@ -181,24 +181,33 @@ async function generateInvoicePdf(
 
 serve(async (req) => {
     try {
+        console.log("[DEBUG] Edge Function invoked!");
+
         // ── Auth ──
         const webhookSecret = Deno.env.get("WEBHOOK_SECRET");
         const reqSecret = req.headers.get("x-webhook-secret");
+        console.log(`[DEBUG] Webhook secret check - has env secret: ${!!webhookSecret}, has req secret: ${!!reqSecret}, match: ${reqSecret === webhookSecret}`);
         if (webhookSecret && reqSecret !== webhookSecret) {
+            console.log("[DEBUG] REJECTED: webhook secret mismatch");
             return new Response("Unauthorized", { status: 401 });
         }
 
         const payload = await req.json();
+        console.log(`[DEBUG] Payload type: ${payload.type}, table: ${payload.table}`);
 
         if (payload.type !== "INSERT" || payload.table !== "orders") {
+            console.log("[DEBUG] SKIPPED: not an INSERT on orders");
             return new Response("Not an INSERT on orders", { status: 200 });
         }
 
         const order = payload.record;
 
+        console.log(`[DEBUG] Order id: ${order.id}, payment_status: ${order.payment_status}, product_id: ${order.product_id}`);
         if (order.payment_status !== "completed") {
+            console.log("[DEBUG] SKIPPED: payment not completed");
             return new Response("Order not completed, skipping", { status: 200 });
         }
+        console.log("[DEBUG] All checks passed, starting PDF processing...");
 
         // ── Env ──
         const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -449,7 +458,8 @@ serve(async (req) => {
 
         return new Response(JSON.stringify({ success: true }), { headers: { "Content-Type": "application/json" } });
     } catch (error) {
-        console.error("Delivery error:", error);
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        const errMsg = error instanceof Error ? error.message : String(error);
+        console.error("[DEBUG] Delivery error:", errMsg);
+        return new Response(JSON.stringify({ error: errMsg }), { status: 500 });
     }
 });
