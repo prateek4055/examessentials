@@ -183,18 +183,12 @@ serve(async (req) => {
     try {
         console.log("[DEBUG] Edge Function invoked!");
 
-        // ── Auth: accept webhook secret OR service-role-key Authorization ──
+        // ── Auth ──
         const webhookSecret = Deno.env.get("WEBHOOK_SECRET");
-        const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
         const reqSecret = req.headers.get("x-webhook-secret");
-        const authHeader = req.headers.get("authorization");
-
-        const isWebhookAuth = webhookSecret && reqSecret === webhookSecret;
-        const isServiceRoleAuth = serviceRoleKey && authHeader === `Bearer ${serviceRoleKey}`;
-
-        console.log(`[DEBUG] Auth check - webhook: ${!!isWebhookAuth}, serviceRole: ${!!isServiceRoleAuth}`);
-        if (!isWebhookAuth && !isServiceRoleAuth) {
-            console.log("[DEBUG] REJECTED: no valid auth");
+        console.log(`[DEBUG] Webhook secret check - has env secret: ${!!webhookSecret}, has req secret: ${!!reqSecret}, match: ${reqSecret === webhookSecret}`);
+        if (webhookSecret && reqSecret !== webhookSecret) {
+            console.log("[DEBUG] REJECTED: webhook secret mismatch");
             return new Response("Unauthorized", { status: 401 });
         }
 
