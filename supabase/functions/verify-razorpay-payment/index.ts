@@ -97,6 +97,7 @@ interface VerifyPaymentRequest {
   isCartCheckout?: boolean;
   productIds?: string[];
   comboId?: string;
+  promoCode?: string;
   totalAmount?: number;
 }
 
@@ -123,9 +124,12 @@ function detectBestCombo(subjects: string[]): { id: string; price: number } | nu
 }
 
 // Calculate expected price for cart
-function calculateExpectedCartTotal(products: { price: number; subject: string }[], comboId?: string): number {
+function calculateExpectedCartTotal(products: { price: number; subject: string }[], comboId?: string, promoCode?: string): number {
   const subjects = products.map(p => p.subject);
   const bestCombo = detectBestCombo(subjects);
+
+  let total = products.reduce((sum, p) => sum + p.price, 0);
+  let subtotal = total;
 
   if (bestCombo && (!comboId || comboId === bestCombo.id)) {
     const comboConfig = comboConfigs.find(c => c.id === bestCombo.id);
@@ -135,11 +139,20 @@ function calculateExpectedCartTotal(products: { price: number; subject: string }
         !comboSubjectsLower.includes(p.subject.toLowerCase())
       );
       const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
-      return comboConfig.price + nonComboTotal;
+      total = comboConfig.price + nonComboTotal;
     }
   }
 
-  return products.reduce((sum, p) => sum + p.price, 0);
+  // Apply 30% discount if >= 3 items or Promo Code
+  if (products.length >= 3 || promoCode?.trim().toUpperCase() === "WELCOME30") {
+    const percentageDiscount = Math.round(subtotal * 0.30);
+    const comboDiscount = subtotal - total;
+    if (percentageDiscount > comboDiscount) {
+      total = subtotal - percentageDiscount;
+    }
+  }
+
+  return total;
 }
 
 serve(async (req) => {
@@ -200,6 +213,7 @@ serve(async (req) => {
       isCartCheckout,
       productIds,
       comboId,
+      promoCode,
       totalAmount
     } = requestData;
 
@@ -278,7 +292,7 @@ serve(async (req) => {
         throw new Error("Invalid products in cart");
       }
 
-      const expectedTotal = calculateExpectedCartTotal(products, comboId);
+      const expectedTotal = calculateExpectedCartTotal(products, comboId, promoCode);
       const providedTotal = totalAmount || orderData.amount;
 
       console.log(`Cart validation - Expected: ${expectedTotal}, Provided: ${providedTotal}`);

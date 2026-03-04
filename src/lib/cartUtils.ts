@@ -51,14 +51,14 @@ export const addToCart = (productId: string): void => {
 export const addMultipleToCart = (productIds: string[]): void => {
   const items = getCartItems();
   let added = false;
-  
+
   productIds.forEach(productId => {
     if (!items.some(item => item.productId === productId)) {
       items.push({ productId, addedAt: new Date().toISOString() });
       added = true;
     }
   });
-  
+
   if (added) {
     localStorage.setItem("cart_items", JSON.stringify(items));
     window.dispatchEvent(new Event("cartUpdated"));
@@ -86,7 +86,7 @@ export const getCartCount = (): number => {
 // Detect best combo for given subjects and category
 export const detectBestCombo = (subjects: string[], category?: string): ComboConfig | null => {
   const uniqueSubjects = [...new Set(subjects.map(s => s.toLowerCase()))];
-  
+
   // Choose the right combo configs based on category
   let applicableCombos: ComboConfig[];
   if (category === "mindmaps") {
@@ -94,23 +94,23 @@ export const detectBestCombo = (subjects: string[], category?: string): ComboCon
   } else {
     applicableCombos = formulaSheetComboConfigs;
   }
-  
+
   // Sort combos by savings (most savings first)
-  const sortedCombos = [...applicableCombos].sort((a, b) => 
+  const sortedCombos = [...applicableCombos].sort((a, b) =>
     (b.originalPrice - b.price) - (a.originalPrice - a.price)
   );
-  
+
   for (const combo of sortedCombos) {
     const comboSubjectsLower = combo.subjects.map(s => s.toLowerCase());
-    const hasAllSubjects = comboSubjectsLower.every(sub => 
+    const hasAllSubjects = comboSubjectsLower.every(sub =>
       uniqueSubjects.includes(sub)
     );
-    
+
     if (hasAllSubjects) {
       return combo;
     }
   }
-  
+
   return null;
 };
 
@@ -137,34 +137,34 @@ const calculateCategoryCombo = (
 ): { items: CartCalculation['items']; combo: ComboConfig | null; comboTotal: number; originalTotal: number } => {
   const subjects = products.map(p => p.subject);
   const bestCombo = detectBestCombo(subjects, category);
-  
+
   if (bestCombo) {
     const comboSubjectsLower = bestCombo.subjects.map(s => s.toLowerCase());
-    const comboProducts = products.filter(p => 
+    const comboProducts = products.filter(p =>
       comboSubjectsLower.includes(p.subject.toLowerCase())
     );
-    const nonComboProducts = products.filter(p => 
+    const nonComboProducts = products.filter(p =>
       !comboSubjectsLower.includes(p.subject.toLowerCase())
     );
-    
+
     const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
     const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
     const comboTotal = bestCombo.price + nonComboTotal;
-    
+
     const items = products.map(p => ({
       productId: p.id,
       subject: p.subject,
       originalPrice: p.price,
-      finalPrice: comboSubjectsLower.includes(p.subject.toLowerCase()) 
-        ? Math.round(bestCombo.price / comboProducts.length) 
+      finalPrice: comboSubjectsLower.includes(p.subject.toLowerCase())
+        ? Math.round(bestCombo.price / comboProducts.length)
         : p.price,
       inCombo: comboSubjectsLower.includes(p.subject.toLowerCase()),
       comboCategory: comboSubjectsLower.includes(p.subject.toLowerCase()) ? category : undefined,
     }));
-    
+
     return { items, combo: bestCombo, comboTotal, originalTotal };
   }
-  
+
   // No combo applicable for this category
   const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
   const items = products.map(p => ({
@@ -175,27 +175,28 @@ const calculateCategoryCombo = (
     inCombo: false,
     comboCategory: undefined,
   }));
-  
+
   return { items, combo: null, comboTotal: originalTotal, originalTotal };
 };
 
 export const calculateCartTotal = (
-  products: ProductForCalculation[]
+  products: ProductForCalculation[],
+  promoCode?: string
 ): CartCalculation => {
   // Group products by category
   const mindmapProducts = products.filter(p => p.category === "mindmaps");
   const formulaSheetProducts = products.filter(p => p.category === "formula-sheet");
   const otherProducts = products.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet");
-  
+
   // Calculate combos for each category separately
-  const mindmapResult = mindmapProducts.length > 0 
+  const mindmapResult = mindmapProducts.length > 0
     ? calculateCategoryCombo(mindmapProducts, "mindmaps")
     : { items: [], combo: null, comboTotal: 0, originalTotal: 0 };
-    
-  const formulaResult = formulaSheetProducts.length > 0 
+
+  const formulaResult = formulaSheetProducts.length > 0
     ? calculateCategoryCombo(formulaSheetProducts, "formula-sheet")
     : { items: [], combo: null, comboTotal: 0, originalTotal: 0 };
-  
+
   // Other products have no combos
   const otherItems = otherProducts.map(p => ({
     productId: p.id,
@@ -206,23 +207,53 @@ export const calculateCartTotal = (
     comboCategory: undefined,
   }));
   const otherTotal = otherProducts.reduce((sum, p) => sum + p.price, 0);
-  
+
   // Combine all results
   const allItems = [...mindmapResult.items, ...formulaResult.items, ...otherItems];
   const appliedCombos: ComboConfig[] = [];
   if (mindmapResult.combo) appliedCombos.push(mindmapResult.combo);
   if (formulaResult.combo) appliedCombos.push(formulaResult.combo);
-  
-  const subtotal = mindmapResult.originalTotal + formulaResult.originalTotal + otherTotal;
-  const total = mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
-  const discount = subtotal - total;
-  
-  return { 
-    items: allItems, 
-    appliedCombos, 
-    subtotal, 
-    discount, 
-    total 
+
+  let subtotal = mindmapResult.originalTotal + formulaResult.originalTotal + otherTotal;
+  let total = mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
+  let discount = subtotal - total;
+
+  // Auto-apply discount or Promo Code
+  const has3PlusProducts = products.length >= 3;
+  const isPromoValid = promoCode?.trim().toUpperCase() === "WELCOME30";
+
+  if (has3PlusProducts || isPromoValid) {
+    const percentageDiscount = Math.round(subtotal * 0.30);
+    // If 30% off is better than the subject-matched combo discount
+    if (percentageDiscount > discount) {
+      discount = percentageDiscount;
+      total = subtotal - discount;
+
+      // Replace appliedCombos with our automatic/promo discount text
+      const label = has3PlusProducts ? "3+ Products Combo (30% OFF)" : "WELCOME30 Promo (30% OFF)";
+      appliedCombos.length = 0; // Clear existing combos
+      appliedCombos.push({
+        id: "auto-30-off",
+        label: label,
+        subjects: [],
+        price: total,
+        originalPrice: subtotal,
+      });
+
+      // Update individual item final prices proportionally
+      allItems.forEach(item => {
+        item.finalPrice = Math.round(item.originalPrice * 0.70);
+        item.inCombo = true;
+      });
+    }
+  }
+
+  return {
+    items: allItems,
+    appliedCombos,
+    subtotal,
+    discount,
+    total
   };
 };
 

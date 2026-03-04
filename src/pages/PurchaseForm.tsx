@@ -95,6 +95,7 @@ const PurchaseForm = () => {
   const cartProductIds = searchParams.get("products")?.split(",") || [];
   const cartTotal = parseInt(searchParams.get("total") || "0");
   const appliedComboId = searchParams.get("combo") || "";
+  const appliedPromo = searchParams.get("promo") || "";
   const appliedCombo = comboConfigs.find(c => c.id === appliedComboId);
 
   // Legacy single product combo support
@@ -141,7 +142,7 @@ const PurchaseForm = () => {
       setIsLoading(false);
       return;
     }
-    
+
     try {
       const { data, error } = await supabase
         .from("products")
@@ -149,7 +150,7 @@ const PurchaseForm = () => {
         .in("id", cartProductIds);
 
       if (error) throw error;
-      
+
       setCartProducts((data || []) as CartProduct[]);
       if (data && data.length > 0) {
         setValue("studentClass", data[0].class);
@@ -279,7 +280,7 @@ const PurchaseForm = () => {
               customer_email: data.email,
               customer_phone: data.phone,
               customer_class: data.studentClass,
-              products: isCartCheckout 
+              products: isCartCheckout
                 ? cartProducts.map(p => p.title).join(", ")
                 : product?.title || "",
             },
@@ -305,49 +306,50 @@ const PurchaseForm = () => {
         amount: orderData.amount,
         currency: orderData.currency,
         name: "Exam Essentials",
-        description: isCartCheckout 
+        description: isCartCheckout
           ? `${cartProducts.length} Notes Bundle`
           : product?.title || "Premium Notes",
         order_id: orderData.orderId,
         handler: async (response: RazorpayResponse) => {
           console.log("Payment received, verifying signature...");
-          
+
           try {
             // Verify payment and create orders via edge function
             if (isCartCheckout) {
-              // For cart checkout, verify and create each order with full validation data
+              console.log("Verifying and creating order for cart checkout with multiple products");
               const finalPrice = getFinalPrice();
-              for (const cartProduct of cartProducts) {
-                console.log("Verifying and creating order for cart product:", cartProduct.id);
-                const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
-                  "verify-razorpay-payment",
-                  {
-                    body: {
-                      razorpay_order_id: response.razorpay_order_id,
-                      razorpay_payment_id: response.razorpay_payment_id,
-                      razorpay_signature: response.razorpay_signature,
-                      orderData: {
-                        product_id: cartProduct.id,
-                        student_name: data.fullName,
-                        email: data.email,
-                        phone: data.phone,
-                        class: data.studentClass,
-                        amount: Math.round(finalPrice / cartProducts.length),
-                      },
-                      // Additional fields for server-side price validation
-                      isCartCheckout: true,
-                      productIds: cartProducts.map(p => p.id),
-                      comboId: appliedComboId || undefined,
-                      totalAmount: finalPrice,
-                    },
-                  }
-                );
+              const combinedProductIds = cartProducts.map(p => p.id).join(",");
 
-                if (verifyError || !verifyData?.verified) {
-                  console.error("Payment verification failed:", verifyError);
-                  throw new Error(verifyData?.error || "Payment verification failed");
+              const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+                "verify-razorpay-payment",
+                {
+                  body: {
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                    orderData: {
+                      product_id: combinedProductIds,
+                      student_name: data.fullName,
+                      email: data.email,
+                      phone: data.phone,
+                      class: data.studentClass,
+                      amount: finalPrice,
+                    },
+                    // Additional fields for server-side price validation
+                    isCartCheckout: true,
+                    productIds: cartProducts.map(p => p.id),
+                    comboId: appliedComboId || undefined,
+                    promoCode: appliedPromo || undefined,
+                    totalAmount: finalPrice,
+                  },
                 }
+              );
+
+              if (verifyError || !verifyData?.verified) {
+                console.error("Payment verification failed:", verifyError);
+                throw new Error(verifyData?.error || "Payment verification failed");
               }
+
               clearCart();
             } else if (product) {
               console.log("Verifying and creating order for single product:", product.id);
@@ -383,13 +385,13 @@ const PurchaseForm = () => {
 
             // Fire GA4 purchase event on successful payment
             if (typeof window !== 'undefined' && (window as any).gtag) {
-              const itemName = isCartCheckout 
+              const itemName = isCartCheckout
                 ? cartProducts.map(p => p.title).join(", ")
                 : product?.title || "Unknown Product";
-              const itemId = isCartCheckout 
+              const itemId = isCartCheckout
                 ? cartProducts.map(p => p.id).join(",")
                 : product?.id || "unknown";
-              
+
               (window as any).gtag('event', 'purchase', {
                 value: getFinalPrice(),
                 currency: 'INR',
@@ -439,8 +441,8 @@ const PurchaseForm = () => {
     }
   };
 
-  const pageTitle = isCartCheckout 
-    ? "Checkout" 
+  const pageTitle = isCartCheckout
+    ? "Checkout"
     : `Purchase ${product?.title}`;
 
   return (
@@ -449,7 +451,7 @@ const PurchaseForm = () => {
         <title>{pageTitle} | Exam Essentials</title>
         <meta
           name="description"
-          content={isCartCheckout 
+          content={isCartCheckout
             ? "Complete your purchase of study notes with combo discounts applied."
             : `Complete your purchase of ${product?.title} - Premium handwritten notes.`}
         />

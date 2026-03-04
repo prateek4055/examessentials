@@ -35,6 +35,8 @@ const Cart = () => {
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [calculation, setCalculation] = useState<CartCalculation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [promoCode, setPromoCode] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,13 +77,35 @@ const Cart = () => {
 
       // Calculate totals with auto-discount (pass category for correct pricing)
       const calc = calculateCartTotal(
-        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category }))
+        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category })),
+        appliedPromo
       );
       setCalculation(calc);
     } catch (error) {
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (products.length > 0) {
+      const calc = calculateCartTotal(
+        products.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category })),
+        appliedPromo
+      );
+      setCalculation(calc);
+    }
+  }, [appliedPromo, products]);
+
+  const handleApplyPromo = () => {
+    if (!promoCode.trim()) return;
+    if (promoCode.trim().toUpperCase() === "WELCOME30") {
+      setAppliedPromo("WELCOME30");
+      toast.success("Promo code applied!");
+    } else {
+      toast.error("Invalid promo code");
+      setAppliedPromo("");
     }
   };
 
@@ -102,7 +126,7 @@ const Cart = () => {
     const productIds = products.map(p => p.id).join(",");
     const total = calculation?.total || 0;
     const comboIds = calculation?.appliedCombos?.map(c => c.id).join(",") || "";
-    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${comboIds}`);
+    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${comboIds}&promo=${appliedPromo}`);
   };
 
   const getProductImage = (product: CartProduct) => {
@@ -292,6 +316,20 @@ const Cart = () => {
                 {/* Cart Summary */}
                 <Card className="bg-secondary/50">
                   <CardContent className="p-6">
+                    {/* Promo Code Section */}
+                    <div className="flex items-center gap-2 mb-6">
+                      <input
+                        type="text"
+                        placeholder="Enter Promo Code"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        className="flex-1 px-4 py-2 rounded-lg bg-background border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500 uppercase"
+                      />
+                      <Button variant="secondary" onClick={handleApplyPromo}>
+                        Apply
+                      </Button>
+                    </div>
+
                     {calculation && (
                       <div className="space-y-3 mb-4">
                         <div className="flex items-center justify-between text-muted-foreground">
