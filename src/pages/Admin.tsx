@@ -238,17 +238,27 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Invoke Edge Function
-      const { data: fnData, error: fnError } = await supabase.functions.invoke("process-pdf-delivery", {
-        body: {
+      // Step 2: Call Edge Function directly with webhook secret
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      const response = await fetch(`${supabaseUrl}/functions/v1/process-pdf-delivery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${supabaseKey}`,
+          "apikey": supabaseKey,
+          "x-webhook-secret": "ExamNotes@2026",
+        },
+        body: JSON.stringify({
           type: "INSERT",
           table: "orders",
           record: orderData,
-        },
+        }),
       });
 
-      if (fnError) {
-        toast({ title: "Step 2 Failed: Edge Function", description: fnError.message, variant: "destructive" });
+      if (!response.ok) {
+        const errText = await response.text();
+        toast({ title: "Step 2 Failed: Edge Function", description: `Status ${response.status}: ${errText}`, variant: "destructive" });
         return;
       }
 
