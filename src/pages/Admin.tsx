@@ -211,11 +211,17 @@ const Admin = () => {
   const handleDeleteOrder = async (id: string) => {
     if (!confirm("Are you sure you want to delete this order?")) return;
     try {
-      await supabase.from("orders").delete().eq("id", id);
+      const { error } = await supabase.from("orders").delete().eq("id", id);
+
+      if (error) {
+        toast({ title: "Error", description: `Failed: ${error.message}`, variant: "destructive" });
+        return;
+      }
+
       setOrders(orders.filter((o) => o.id !== id));
       toast({ title: "Success", description: "Order deleted." });
-    } catch (error) {
-      toast({ title: "Error", description: "Failed to delete order.", variant: "destructive" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error?.message || "Failed to delete order.", variant: "destructive" });
     }
   };
 
