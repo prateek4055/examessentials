@@ -186,9 +186,12 @@ serve(async (req) => {
         // ── Auth ──
         const webhookSecret = Deno.env.get("WEBHOOK_SECRET");
         const reqSecret = req.headers.get("x-webhook-secret");
-        console.log(`[DEBUG] Webhook secret check - has env secret: ${!!webhookSecret}, has req secret: ${!!reqSecret}, match: ${reqSecret === webhookSecret}`);
-        if (webhookSecret && reqSecret !== webhookSecret) {
-            console.log("[DEBUG] REJECTED: webhook secret mismatch");
+        const authHeader = req.headers.get("authorization");
+        const hasWebhookSecret = reqSecret && reqSecret === webhookSecret;
+        const hasBearerToken = authHeader && authHeader.startsWith("Bearer ");
+        console.log(`[DEBUG] Auth check - webhook match: ${hasWebhookSecret}, has bearer: ${!!hasBearerToken}`);
+        if (!hasWebhookSecret && !hasBearerToken) {
+            console.log("[DEBUG] REJECTED: no valid auth");
             return new Response("Unauthorized", { status: 401 });
         }
 
