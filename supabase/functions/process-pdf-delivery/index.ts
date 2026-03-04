@@ -310,6 +310,10 @@ serve(async (req) => {
                     if (!pdfcoData.error && pdfcoData.url) {
                         finalUrl = pdfcoData.url;
                         console.log(`Encrypted ${product.title} via PDF.co`);
+
+                        // Auto-cleanup: delete temp watermarked file since PDF.co has its own URL
+                        await supabase.storage.from("purchased_pdfs").remove([fileName]);
+                        console.log(`Auto-deleted temp file: ${fileName}`);
                     }
                 } catch (e) { console.error("PDF.co call failed:", e); }
             }
