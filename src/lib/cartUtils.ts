@@ -218,34 +218,29 @@ export const calculateCartTotal = (
   let total = mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
   let discount = subtotal - total;
 
-  // Auto-apply discount or Promo Code
-  const has3PlusProducts = products.length >= 3;
+  // Apply Promo Code discount AFTER combo discount
   const isPromoValid = promoCode?.trim().toUpperCase() === "WELCOME30";
 
-  if (has3PlusProducts || isPromoValid) {
-    const percentageDiscount = Math.round(subtotal * 0.30);
-    // If 30% off is better than the subject-matched combo discount
-    if (percentageDiscount > discount) {
-      discount = percentageDiscount;
-      total = subtotal - discount;
+  if (isPromoValid) {
+    const promoDiscount = Math.round(total * 0.30);
+    const priceAfterPromo = total - promoDiscount;
 
-      // Replace appliedCombos with our automatic/promo discount text
-      const label = has3PlusProducts ? "3+ Products Combo (30% OFF)" : "WELCOME30 Promo (30% OFF)";
-      appliedCombos.length = 0; // Clear existing combos
-      appliedCombos.push({
-        id: "auto-30-off",
-        label: label,
-        subjects: [],
-        price: total,
-        originalPrice: subtotal,
-      });
+    // Add promo as an additional stacked discount
+    appliedCombos.push({
+      id: "promo-welcome30",
+      label: "WELCOME30 Promo (30% OFF)",
+      subjects: [],
+      price: priceAfterPromo,
+      originalPrice: total,
+    });
 
-      // Update individual item final prices proportionally
-      allItems.forEach(item => {
-        item.finalPrice = Math.round(item.originalPrice * 0.70);
-        item.inCombo = true;
-      });
-    }
+    discount += promoDiscount;
+    total = priceAfterPromo;
+
+    // Update individual item final prices proportionally
+    allItems.forEach(item => {
+      item.finalPrice = Math.round(item.finalPrice * 0.70);
+    });
   }
 
   return {

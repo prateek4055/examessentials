@@ -143,13 +143,10 @@ function calculateExpectedCartTotal(products: { price: number; subject: string }
     }
   }
 
-  // Apply 30% discount if >= 3 items or Promo Code
-  if (products.length >= 3 || promoCode?.trim().toUpperCase() === "WELCOME30") {
-    const percentageDiscount = Math.round(subtotal * 0.30);
-    const comboDiscount = subtotal - total;
-    if (percentageDiscount > comboDiscount) {
-      total = subtotal - percentageDiscount;
-    }
+  // Apply Promo Code discount AFTER combo discount
+  if (promoCode?.trim().toUpperCase() === "WELCOME30") {
+    const promoDiscount = Math.round(total * 0.30);
+    total = total - promoDiscount;
   }
 
   return total;
