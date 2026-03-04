@@ -216,7 +216,7 @@ const Admin = () => {
     try {
       const selectedProduct = products.find((p) => p.id === mailForm.productId);
 
-      // Create admin order
+      // Step 1: Create admin order
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
@@ -233,10 +233,13 @@ const Admin = () => {
         .select()
         .single();
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        toast({ title: "Step 1 Failed: Order Creation", description: orderError.message, variant: "destructive" });
+        return;
+      }
 
-      // Invoke Edge Function
-      const { error: fnError } = await supabase.functions.invoke("process-pdf-delivery", {
+      // Step 2: Invoke Edge Function
+      const { data: fnData, error: fnError } = await supabase.functions.invoke("process-pdf-delivery", {
         body: {
           type: "INSERT",
           table: "orders",
@@ -244,7 +247,10 @@ const Admin = () => {
         },
       });
 
-      if (fnError) throw fnError;
+      if (fnError) {
+        toast({ title: "Step 2 Failed: Edge Function", description: fnError.message, variant: "destructive" });
+        return;
+      }
 
       toast({
         title: "Email Sent! ✉️",
@@ -253,9 +259,9 @@ const Admin = () => {
 
       // Clear form
       setMailForm({ studentName: "", email: "", phone: "", class: "12", productId: "" });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Send mail error:", error);
-      toast({ title: "Error", description: "Failed to send email. Check logs.", variant: "destructive" });
+      toast({ title: "Error", description: error?.message || "Unknown error occurred.", variant: "destructive" });
     } finally {
       setIsSendingMail(false);
     }
@@ -488,8 +494,8 @@ const Admin = () => {
                           <td className="px-4 py-4">
                             <span
                               className={`px-2 py-1 text-xs rounded-full ${product.published
-                                  ? "bg-green-500/20 text-green-400"
-                                  : "bg-yellow-500/20 text-yellow-400"
+                                ? "bg-green-500/20 text-green-400"
+                                : "bg-yellow-500/20 text-yellow-400"
                                 }`}
                             >
                               {product.published ? "Published" : "Draft"}
@@ -614,10 +620,10 @@ const Admin = () => {
                           <td className="px-4 py-4">
                             <span
                               className={`px-2 py-1 text-xs rounded-full ${order.payment_status === "completed"
-                                  ? "bg-green-500/20 text-green-400"
-                                  : order.payment_status === "failed"
-                                    ? "bg-red-500/20 text-red-400"
-                                    : "bg-yellow-500/20 text-yellow-400"
+                                ? "bg-green-500/20 text-green-400"
+                                : order.payment_status === "failed"
+                                  ? "bg-red-500/20 text-red-400"
+                                  : "bg-yellow-500/20 text-yellow-400"
                                 }`}
                             >
                               {order.payment_status}
@@ -722,8 +728,8 @@ const Admin = () => {
                           <td className="px-4 py-4">
                             <span
                               className={`px-2 py-1 text-xs rounded-full ${blog.published
-                                  ? "bg-green-500/20 text-green-400"
-                                  : "bg-yellow-500/20 text-yellow-400"
+                                ? "bg-green-500/20 text-green-400"
+                                : "bg-yellow-500/20 text-yellow-400"
                                 }`}
                             >
                               {blog.published ? "Published" : "Draft"}
