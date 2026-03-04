@@ -50,7 +50,7 @@ const Admin = () => {
     email: "",
     phone: "",
     class: "12",
-    productId: "",
+    productIds: [] as string[],
   });
   const [isSendingMail, setIsSendingMail] = useState(false);
 
@@ -206,26 +206,41 @@ const Admin = () => {
     navigate("/");
   };
 
+  // Delete order handler
+  const handleDeleteOrder = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this order?")) return;
+    try {
+      await supabase.from("orders").delete().eq("id", id);
+      setOrders(orders.filter((o) => o.id !== id));
+      toast({ title: "Success", description: "Order deleted." });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete order.", variant: "destructive" });
+    }
+  };
+
   // Send Mail handler
   const handleSendMail = async () => {
-    if (!mailForm.studentName || !mailForm.email || !mailForm.phone || !mailForm.productId) {
-      toast({ title: "Error", description: "Please fill all fields.", variant: "destructive" });
+    if (!mailForm.studentName || !mailForm.email || !mailForm.phone || mailForm.productIds.length === 0) {
+      toast({ title: "Error", description: "Please fill all fields and select at least one product.", variant: "destructive" });
       return;
     }
     setIsSendingMail(true);
     try {
-      const selectedProduct = products.find((p) => p.id === mailForm.productId);
+      const selectedProducts = products.filter((p) => mailForm.productIds.includes(p.id));
+      const totalPrice = selectedProducts.reduce((sum, p) => sum + (p.price || 0), 0);
+      const productIdStr = mailForm.productIds.join(",");
+      const productNames = selectedProducts.map((p) => p.title).join(", ");
 
-      // Step 1: Create admin order
+      // Step 1: Create admin order with auto-fetched price
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
-          product_id: mailForm.productId,
+          product_id: productIdStr,
           student_name: mailForm.studentName.trim(),
           email: mailForm.email.trim().toLowerCase(),
           phone: mailForm.phone.trim(),
           class: mailForm.class,
-          amount: 0,
+          amount: totalPrice,
           payment_status: "completed",
           razorpay_payment_id: "admin_" + crypto.randomUUID(),
           razorpay_order_id: "admin_order_" + crypto.randomUUID(),
@@ -239,7 +254,6 @@ const Admin = () => {
       }
 
       // Step 2: Call Edge Function directly with webhook secret
-      // Use proxied URL to bypass JIO DNS blocking of supabase.co
       const supabaseUrl = typeof window !== 'undefined'
         ? `${window.location.origin}/supabase-api`
         : import.meta.env.VITE_SUPABASE_URL;
@@ -267,11 +281,12 @@ const Admin = () => {
 
       toast({
         title: "Email Sent! ✉️",
-        description: `Download link sent to ${mailForm.email} for ${selectedProduct?.title || "the product"}.`,
+        description: `Download link sent to ${mailForm.email} for ${productNames}.`,
       });
 
-      // Clear form
-      setMailForm({ studentName: "", email: "", phone: "", class: "12", productId: "" });
+      // Clear form & refresh orders
+      setMailForm({ studentName: "", email: "", phone: "", class: "12", productIds: [] });
+      loadData();
     } catch (error: any) {
       console.error("Send mail error:", error);
       toast({ title: "Error", description: error?.message || "Unknown error occurred.", variant: "destructive" });
@@ -281,6 +296,15 @@ const Admin = () => {
   };
 
   const productsWithPdf = products.filter((p) => p.pdf_url && p.pdf_url.length > 0);
+
+  const toggleProductSelection = (productId: string) => {
+    setMailForm((prev) => ({
+      ...prev,
+      productIds: prev.productIds.includes(productId)
+        ? prev.productIds.filter((id) => id !== productId)
+        : [...prev.productIds, productId],
+    }));
+  };
 
   // Show loading state until auth completes and we confirm admin status
   if (authLoading) {
@@ -658,6 +682,14 @@ const Admin = () => {
                                   Mark Completed
                                 </Button>
                               )}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleDeleteOrder(order.id)}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
                             </div>
                           </td>
                         </tr>
@@ -868,19 +900,22 @@ const Admin = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-body text-muted-foreground mb-1">Product *</label>
-                  <select
-                    value={mailForm.productId}
-                    onChange={(e) => setMailForm({ ...mailForm, productId: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  >
-                    <option value="">Select a product...</option>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">Products * <span className="text-xs text-purple-400">({mailForm.productIds.length} selected — ₹{products.filter((p) => mailForm.productIds.includes(p.id)).reduce((s, p) => s + (p.price || 0), 0)})</span></label>
+                  <div className="max-h-48 overflow-y-auto rounded-lg bg-secondary border border-border p-2 space-y-1">
                     {productsWithPdf.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.title} — Class {p.class} — ₹{p.price}
-                      </option>
+                      <label key={p.id} className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-purple-500/10 transition ${mailForm.productIds.includes(p.id) ? "bg-purple-500/20 border border-purple-500/40" : ""}`}>
+                        <input
+                          type="checkbox"
+                          checked={mailForm.productIds.includes(p.id)}
+                          onChange={() => toggleProductSelection(p.id)}
+                          className="accent-purple-500"
+                        />
+                        <span className="text-sm text-foreground font-body flex-1">{p.title}</span>
+                        <span className="text-xs text-muted-foreground">Class {p.class}</span>
+                        <span className="text-xs text-purple-400 font-medium">₹{p.price}</span>
+                      </label>
                     ))}
-                  </select>
+                  </div>
                   {productsWithPdf.length === 0 && (
                     <p className="text-xs text-yellow-400 mt-1">No products with PDF files found. Upload PDFs first.</p>
                   )}
