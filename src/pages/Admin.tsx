@@ -29,6 +29,7 @@ import {
   Product,
   Order,
 } from "@/lib/api";
+import { calculateCartTotal } from "@/lib/cartUtils";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.jpeg";
 
@@ -227,7 +228,8 @@ const Admin = () => {
     setIsSendingMail(true);
     try {
       const selectedProducts = products.filter((p) => mailForm.productIds.includes(p.id));
-      const totalPrice = selectedProducts.reduce((sum, p) => sum + (p.price || 0), 0);
+      const calculation = calculateCartTotal(selectedProducts);
+      const totalPrice = calculation.total;
       const productIdStr = mailForm.productIds.join(",");
       const productNames = selectedProducts.map((p) => p.title).join(", ");
 
@@ -900,7 +902,24 @@ const Admin = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-body text-muted-foreground mb-1">Products * <span className="text-xs text-purple-400">({mailForm.productIds.length} selected — ₹{products.filter((p) => mailForm.productIds.includes(p.id)).reduce((s, p) => s + (p.price || 0), 0)})</span></label>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">
+                    Products *{" "}
+                    {mailForm.productIds.length > 0 && (
+                      <span className="text-xs">
+                        ({mailForm.productIds.length} selected —{" "}
+                        <span className={calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).discount > 0 ? "line-through text-muted-foreground" : "text-purple-400 font-medium"}>
+                          ₹{calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).subtotal}
+                        </span>
+                        {calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).discount > 0 && (
+                          <span className="text-green-400 font-bold ml-1">
+                            ₹{calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).total}
+                            {" "}(Saved ₹{calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).discount})
+                          </span>
+                        )}
+                        )
+                      </span>
+                    )}
+                  </label>
                   <div className="max-h-48 overflow-y-auto rounded-lg bg-secondary border border-border p-2 space-y-1">
                     {productsWithPdf.map((p) => (
                       <label key={p.id} className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-purple-500/10 transition ${mailForm.productIds.includes(p.id) ? "bg-purple-500/20 border border-purple-500/40" : ""}`}>
