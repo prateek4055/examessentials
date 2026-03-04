@@ -13,6 +13,9 @@ import {
   ShoppingCart,
   LayoutDashboard,
   FileText,
+  Mail,
+  Send,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,7 +32,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.jpeg";
 
-type Tab = "products" | "orders" | "blogs";
+type Tab = "products" | "orders" | "blogs" | "sendmail";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState<Tab>("products");
@@ -40,6 +43,16 @@ const Admin = () => {
   const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Send Mail state
+  const [mailForm, setMailForm] = useState({
+    studentName: "",
+    email: "",
+    phone: "",
+    class: "12",
+    productId: "",
+  });
+  const [isSendingMail, setIsSendingMail] = useState(false);
 
   useEffect(() => {
     // Wait for auth loading to complete before checking permissions
@@ -193,6 +206,63 @@ const Admin = () => {
     navigate("/");
   };
 
+  // Send Mail handler
+  const handleSendMail = async () => {
+    if (!mailForm.studentName || !mailForm.email || !mailForm.phone || !mailForm.productId) {
+      toast({ title: "Error", description: "Please fill all fields.", variant: "destructive" });
+      return;
+    }
+    setIsSendingMail(true);
+    try {
+      const selectedProduct = products.find((p) => p.id === mailForm.productId);
+
+      // Create admin order
+      const { data: orderData, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          product_id: mailForm.productId,
+          student_name: mailForm.studentName.trim(),
+          email: mailForm.email.trim().toLowerCase(),
+          phone: mailForm.phone.trim(),
+          class: mailForm.class,
+          amount: 0,
+          payment_status: "completed",
+          razorpay_payment_id: "admin_" + crypto.randomUUID(),
+          razorpay_order_id: "admin_order_" + crypto.randomUUID(),
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // Invoke Edge Function
+      const { error: fnError } = await supabase.functions.invoke("process-pdf-delivery", {
+        body: {
+          type: "INSERT",
+          table: "orders",
+          record: orderData,
+        },
+      });
+
+      if (fnError) throw fnError;
+
+      toast({
+        title: "Email Sent! ✉️",
+        description: `Download link sent to ${mailForm.email} for ${selectedProduct?.title || "the product"}.`,
+      });
+
+      // Clear form
+      setMailForm({ studentName: "", email: "", phone: "", class: "12", productId: "" });
+    } catch (error) {
+      console.error("Send mail error:", error);
+      toast({ title: "Error", description: "Failed to send email. Check logs.", variant: "destructive" });
+    } finally {
+      setIsSendingMail(false);
+    }
+  };
+
+  const productsWithPdf = products.filter((p) => p.pdf_url && p.pdf_url.length > 0);
+
   // Show loading state until auth completes and we confirm admin status
   if (authLoading) {
     return (
@@ -344,6 +414,13 @@ const Admin = () => {
               <FileText className="w-4 h-4 mr-2" />
               Blogs
             </Button>
+            <Button
+              variant={activeTab === "sendmail" ? "gradient" : "secondary"}
+              onClick={() => setActiveTab("sendmail")}
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              Send Mail
+            </Button>
           </div>
 
           {/* Products Tab */}
@@ -410,11 +487,10 @@ const Admin = () => {
                           </td>
                           <td className="px-4 py-4">
                             <span
-                              className={`px-2 py-1 text-xs rounded-full ${
-                                product.published
+                              className={`px-2 py-1 text-xs rounded-full ${product.published
                                   ? "bg-green-500/20 text-green-400"
                                   : "bg-yellow-500/20 text-yellow-400"
-                              }`}
+                                }`}
                             >
                               {product.published ? "Published" : "Draft"}
                             </span>
@@ -537,13 +613,12 @@ const Admin = () => {
                           </td>
                           <td className="px-4 py-4">
                             <span
-                              className={`px-2 py-1 text-xs rounded-full ${
-                                order.payment_status === "completed"
+                              className={`px-2 py-1 text-xs rounded-full ${order.payment_status === "completed"
                                   ? "bg-green-500/20 text-green-400"
                                   : order.payment_status === "failed"
-                                  ? "bg-red-500/20 text-red-400"
-                                  : "bg-yellow-500/20 text-yellow-400"
-                              }`}
+                                    ? "bg-red-500/20 text-red-400"
+                                    : "bg-yellow-500/20 text-yellow-400"
+                                }`}
                             >
                               {order.payment_status}
                             </span>
@@ -646,11 +721,10 @@ const Admin = () => {
                           </td>
                           <td className="px-4 py-4">
                             <span
-                              className={`px-2 py-1 text-xs rounded-full ${
-                                blog.published
+                              className={`px-2 py-1 text-xs rounded-full ${blog.published
                                   ? "bg-green-500/20 text-green-400"
                                   : "bg-yellow-500/20 text-yellow-400"
-                              }`}
+                                }`}
                             >
                               {blog.published ? "Published" : "Draft"}
                             </span>
@@ -713,6 +787,105 @@ const Admin = () => {
                     </tbody>
                   </table>
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Send Mail Tab */}
+          {activeTab === "sendmail" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="max-w-lg mx-auto space-y-6"
+            >
+              <h2 className="font-display text-xl font-bold text-foreground">
+                Send Download Email
+              </h2>
+
+              <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">Student Name *</label>
+                  <input
+                    type="text"
+                    value={mailForm.studentName}
+                    onChange={(e) => setMailForm({ ...mailForm, studentName: e.target.value })}
+                    placeholder="Enter student name"
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">Email *</label>
+                  <input
+                    type="email"
+                    value={mailForm.email}
+                    onChange={(e) => setMailForm({ ...mailForm, email: e.target.value })}
+                    placeholder="student@email.com"
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">Phone Number * <span className="text-xs text-purple-400">(= PDF Password)</span></label>
+                  <input
+                    type="tel"
+                    value={mailForm.phone}
+                    onChange={(e) => setMailForm({ ...mailForm, phone: e.target.value })}
+                    placeholder="9876543210"
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">Class</label>
+                  <select
+                    value={mailForm.class}
+                    onChange={(e) => setMailForm({ ...mailForm, class: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">Product *</label>
+                  <select
+                    value={mailForm.productId}
+                    onChange={(e) => setMailForm({ ...mailForm, productId: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="">Select a product...</option>
+                    {productsWithPdf.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.title} — Class {p.class} — ₹{p.price}
+                      </option>
+                    ))}
+                  </select>
+                  {productsWithPdf.length === 0 && (
+                    <p className="text-xs text-yellow-400 mt-1">No products with PDF files found. Upload PDFs first.</p>
+                  )}
+                </div>
+
+                <Button
+                  variant="gradient"
+                  className="w-full mt-2"
+                  onClick={handleSendMail}
+                  disabled={isSendingMail}
+                >
+                  {isSendingMail ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</>
+                  ) : (
+                    <><Send className="w-4 h-4 mr-2" /> Send Download Email</>
+                  )}
+                </Button>
+              </div>
+
+              <div className="bg-card border border-border rounded-xl p-4">
+                <p className="text-xs text-muted-foreground font-body">
+                  <strong className="text-purple-400">How it works:</strong> This creates an admin order and triggers the PDF delivery system.
+                  The student will receive a watermarked, password-protected PDF with their phone number as the password.
+                </p>
               </div>
             </motion.div>
           )}
