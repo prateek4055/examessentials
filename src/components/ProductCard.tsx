@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { Product } from "@/lib/api";
 import ProductImageHoverPreview from "./ProductImageHoverPreview";
@@ -44,11 +43,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-    >
+    <div>
       <Link
         to={`/product/${product.id}`}
         className="group block rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 glass-card glass-card-hover shadow-clay-sm hover:shadow-clay-md"
@@ -64,6 +59,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
               <img
                 src={getProxiedImageUrl(product.images![0]) || ""}
                 alt={product.title}
+                loading="lazy"
                 className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
               />
               {/* Auto-scroll preview overlay */}
@@ -96,7 +92,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
           </div>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 };
 

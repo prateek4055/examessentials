@@ -88,8 +88,34 @@ const Index = () => {
     }
   ];
 
-  // Combine all structured data including FAQ
-  const allStructuredData = [...structuredData, faqStructuredData];
+  // Combine all structured data including FAQ and HowTo
+  const howToStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Get Exam Essentials Handwritten Notes",
+    "description": "Get premium handwritten notes for Class 11 & 12 in 3 simple steps.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Browse Notes",
+        "text": "Explore our collection of handwritten notes for your class and subjects."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Quick Purchase",
+        "text": "Fill a simple form and complete secure payment via Razorpay."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Receive PDF",
+        "text": "Get your notes delivered to your email instantly after payment."
+      }
+    ]
+  };
+  const allStructuredData = [...structuredData, faqStructuredData, howToStructuredData];
 
   return (
     <>

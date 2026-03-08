@@ -21,7 +21,7 @@ const ProductImageHoverPreview = ({
     if (isVisible && displayImages.length > 1) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % displayImages.length);
-      }, 1200);
+      }, 2000);
     } else {
       setCurrentIndex(0);
     }
@@ -52,6 +52,7 @@ const ProductImageHoverPreview = ({
                 key={currentIndex}
                 src={getProxiedImageUrl(displayImages[currentIndex]) || ""}
                 alt={`${productTitle} - Preview ${currentIndex + 1}`}
+                loading="lazy"
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}

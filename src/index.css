@@ -206,6 +206,7 @@
     );
     background-size: 200% auto;
     animation: gradient-shift 4s ease-in-out infinite;
+    will-change: background-position;
   }
 
   .text-gradient-purple {
@@ -422,6 +423,7 @@
       -8px -8px 16px var(--clay-light),
       inset 0 1px 0 hsl(0 0% 100% / 0.7);
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
   }
 
   .floating-card-alt {
@@ -434,6 +436,7 @@
       -8px -8px 16px var(--clay-light),
       0 0 40px hsl(var(--gradient-purple) / 0.08);
     animation: float 6s ease-in-out infinite 1s;
+    will-change: transform;
   }
 
   @keyframes float {
@@ -464,4 +467,36 @@
 
 .animate-scroll {
   animation: scroll 30s linear infinite;
+}
+
+/* Lightweight doodle float — runs on compositor thread */
+.doodle-float {
+  animation: doodle-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes doodle-float {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotation, 0deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(var(--rotation, 0deg));
+  }
+}
+
+/* Accessibility: respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .doodle-float,
+  .floating-card,
+  .floating-card-alt,
+  .animate-scroll,
+  .gradient-text {
+    animation: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
