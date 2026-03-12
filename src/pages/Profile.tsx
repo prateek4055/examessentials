@@ -104,22 +104,28 @@ const Profile = () => {
         if (user.email) {
           const { data: ordersData, error: ordersError } = await supabase
             .from("orders")
-            .select(`
-              id,
-              student_name,
-              amount,
-              payment_status,
-              created_at,
-              phone,
-              product:products(id, title, subject, class, images)
-            `)
+            .select("id, student_name, amount, payment_status, created_at, phone, product_id")
             .eq("email", user.email)
             .order("created_at", { ascending: false });
 
           if (ordersError) {
             console.error("Error fetching orders:", ordersError);
           } else {
-            setOrders(ordersData || []);
+            // Fetch product details separately for each order
+            const ordersWithProducts = await Promise.all(
+              (ordersData || []).map(async (order) => {
+                if (order.product_id) {
+                  const { data: product } = await supabase
+                    .from("products")
+                    .select("id, title, subject, class, images")
+                    .eq("id", order.product_id)
+                    .single();
+                  return { ...order, product: product || null };
+                }
+                return { ...order, product: null };
+              })
+            );
+            setOrders(ordersWithProducts as any);
             // Get phone from most recent order if available
             if (ordersData && ordersData.length > 0 && ordersData[0].phone) {
               setProfileData(prev => prev ? { ...prev, phone: ordersData[0].phone } : null);
