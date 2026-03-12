@@ -15,7 +15,7 @@ const ProductImageHoverPreview = ({
 }: ProductImageHoverPreviewProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const displayImages = images.slice(0, 4);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (isVisible && displayImages.length > 1) {
