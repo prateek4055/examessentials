@@ -1,12 +1,9 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { PDFDocument, rgb, degrees, StandardFonts, PDFPage } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 // ─── HELPERS ────────────────────────────────────────────────────────────────
 
-/**
- * Send an email via Resend with optional file attachments.
- */
 async function sendResendEmail(
     apiKey: string,
     to: string,
@@ -20,11 +17,9 @@ async function sendResendEmail(
         subject,
         html,
     };
-
     if (attachments && attachments.length > 0) {
-        body.attachments = attachments; // Resend accepts base64 content
+        body.attachments = attachments;
     }
-
     const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -33,16 +28,12 @@ async function sendResendEmail(
         },
         body: JSON.stringify(body),
     });
-
     if (!res.ok) {
         throw new Error(`Resend Error: ${res.status} ${await res.text()}`);
     }
     return await res.json();
 }
 
-/**
- * Encode a Uint8Array to a base64 string (for email attachments).
- */
 function uint8ToBase64(bytes: Uint8Array): string {
     let binary = "";
     for (let i = 0; i < bytes.length; i++) {
@@ -51,7 +42,7 @@ function uint8ToBase64(bytes: Uint8Array): string {
     return btoa(binary);
 }
 
-// ─── INVOICE PDF GENERATOR ─────────────────────────────────────────────────
+// ─── INVOICE PDF GENERATOR (lightweight, ~50KB) ────────────────────────────
 
 interface InvoiceProduct {
     title: string;
@@ -64,7 +55,7 @@ async function generateInvoicePdf(
     totalPaid: number
 ): Promise<Uint8Array> {
     const doc = await PDFDocument.create();
-    const page = doc.addPage([595, 842]); // A4
+    const page = doc.addPage([595, 842]);
     const { width, height } = page.getSize();
 
     const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
@@ -78,21 +69,14 @@ async function generateInvoicePdf(
 
     let y = height - 50;
 
-    // ── Header Band ──
+    // Header
     page.drawRectangle({ x: 0, y: y - 10, width, height: 60, color: purple });
-    page.drawText("INVOICE", {
-        x: 40, y: y + 5, size: 28, font: fontBold, color: white,
-    });
-    page.drawText("Exam Essentials", {
-        x: width - 180, y: y + 10, size: 14, font: fontBold, color: white,
-    });
-    page.drawText("examessentials.in", {
-        x: width - 180, y: y - 6, size: 10, font: fontRegular, color: rgb(0.85, 0.78, 1),
-    });
+    page.drawText("INVOICE", { x: 40, y: y + 5, size: 28, font: fontBold, color: white });
+    page.drawText("Exam Essentials", { x: width - 180, y: y + 10, size: 14, font: fontBold, color: white });
+    page.drawText("examessentials.in", { x: width - 180, y: y - 6, size: 10, font: fontRegular, color: rgb(0.85, 0.78, 1) });
 
     y -= 80;
 
-    // ── Order Meta ──
     const shortOrderId = order.id ? order.id.split("-")[0].toUpperCase() : "N/A";
     const orderDate = order.created_at
         ? new Date(order.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
@@ -104,7 +88,6 @@ async function generateInvoicePdf(
     page.drawText(`Razorpay ID: ${order.razorpay_payment_id || "N/A"}`, { x: 40, y, size: 9, font: fontRegular, color: gray });
     y -= 30;
 
-    // ── Bill To ──
     page.drawText("Bill To:", { x: 40, y, size: 11, font: fontBold, color: black });
     y -= 16;
     page.drawText(order.student_name || "Student", { x: 40, y, size: 10, font: fontRegular, color: black });
@@ -114,12 +97,11 @@ async function generateInvoicePdf(
     page.drawText(order.phone || "", { x: 40, y, size: 10, font: fontRegular, color: gray });
     y -= 30;
 
-    // ── Seller Info ──
     page.drawText("From:", { x: width - 200, y: y + 60, size: 11, font: fontBold, color: black });
     page.drawText("Exam Essentials", { x: width - 200, y: y + 46, size: 10, font: fontRegular, color: black });
     page.drawText("GSTIN: Applied For", { x: width - 200, y: y + 32, size: 9, font: fontRegular, color: gray });
 
-    // ── Items Table Header ──
+    // Table header
     page.drawRectangle({ x: 40, y: y - 4, width: width - 80, height: 22, color: purple });
     page.drawText("Product", { x: 50, y: y + 2, size: 10, font: fontBold, color: white });
     page.drawText("Qty", { x: 370, y: y + 2, size: 10, font: fontBold, color: white });
@@ -127,15 +109,12 @@ async function generateInvoicePdf(
     page.drawText("Amount", { x: 490, y: y + 2, size: 10, font: fontBold, color: white });
     y -= 28;
 
-    // ── Items Rows ──
     for (let i = 0; i < products.length; i++) {
         const p = products[i];
         const rowColor = i % 2 === 0 ? lightGray : white;
         page.drawRectangle({ x: 40, y: y - 4, width: width - 80, height: 22, color: rowColor });
-
         let title = p.title;
         if (title.length > 40) title = title.substring(0, 37) + "...";
-
         page.drawText(title, { x: 50, y: y + 2, size: 9, font: fontRegular, color: black });
         page.drawText("1", { x: 378, y: y + 2, size: 9, font: fontRegular, color: black });
         page.drawText(`Rs.${p.price.toFixed(2)}`, { x: 425, y: y + 2, size: 9, font: fontRegular, color: black });
@@ -145,29 +124,23 @@ async function generateInvoicePdf(
 
     y -= 10;
 
-    // ── Totals ──
     const gstRate = 0.05;
     const subtotalExclTax = totalPaid / (1 + gstRate);
     const gstAmount = totalPaid - subtotalExclTax;
 
     page.drawLine({ start: { x: 380, y: y + 6 }, end: { x: width - 40, y: y + 6 }, thickness: 1, color: gray });
     y -= 6;
-
     page.drawText("Subtotal (Excl. Tax):", { x: 380, y, size: 10, font: fontRegular, color: black });
     page.drawText(`Rs.${subtotalExclTax.toFixed(2)}`, { x: 490, y, size: 10, font: fontRegular, color: black });
     y -= 18;
-
     page.drawText("IGST (5%):", { x: 380, y, size: 10, font: fontRegular, color: black });
     page.drawText(`Rs.${gstAmount.toFixed(2)}`, { x: 490, y, size: 10, font: fontRegular, color: black });
     y -= 22;
-
     page.drawRectangle({ x: 370, y: y - 6, width: width - 410, height: 24, color: purple });
     page.drawText("Total Paid:", { x: 380, y: y + 2, size: 11, font: fontBold, color: white });
     page.drawText(`Rs.${totalPaid.toFixed(2)}`, { x: 490, y: y + 2, size: 11, font: fontBold, color: white });
-
     y -= 50;
 
-    // ── Footer ──
     page.drawLine({ start: { x: 40, y }, end: { x: width - 40, y }, thickness: 0.5, color: gray });
     y -= 16;
     page.drawText("This is a computer-generated invoice and does not require a signature.", { x: 40, y, size: 8, font: fontRegular, color: gray });
@@ -183,15 +156,14 @@ serve(async (req) => {
     try {
         console.log("[DEBUG] Edge Function invoked!");
 
-        // ── Auth ──
+        // Auth
         const webhookSecret = Deno.env.get("WEBHOOK_SECRET");
         const reqSecret = req.headers.get("x-webhook-secret");
         const authHeader = req.headers.get("authorization");
         const hasWebhookSecret = reqSecret && reqSecret === webhookSecret;
         const hasBearerToken = authHeader && authHeader.startsWith("Bearer ");
-        console.log(`[DEBUG] Auth check - webhook match: ${hasWebhookSecret}, has bearer: ${!!hasBearerToken}`);
+        console.log(`[DEBUG] Auth check - webhook: ${hasWebhookSecret}, serviceRole: ${!!hasBearerToken}`);
         if (!hasWebhookSecret && !hasBearerToken) {
-            console.log("[DEBUG] REJECTED: no valid auth");
             return new Response("Unauthorized", { status: 401 });
         }
 
@@ -199,20 +171,18 @@ serve(async (req) => {
         console.log(`[DEBUG] Payload type: ${payload.type}, table: ${payload.table}`);
 
         if (payload.type !== "INSERT" || payload.table !== "orders") {
-            console.log("[DEBUG] SKIPPED: not an INSERT on orders");
             return new Response("Not an INSERT on orders", { status: 200 });
         }
 
         const order = payload.record;
-
         console.log(`[DEBUG] Order id: ${order.id}, payment_status: ${order.payment_status}, product_id: ${order.product_id}`);
+
         if (order.payment_status !== "completed") {
-            console.log("[DEBUG] SKIPPED: payment not completed");
             return new Response("Order not completed, skipping", { status: 200 });
         }
+
         console.log("[DEBUG] All checks passed, starting PDF processing...");
 
-        // ── Env ──
         const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
         const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
         const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
@@ -224,19 +194,17 @@ serve(async (req) => {
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-        // ── Resolve Product IDs ──
+        // Resolve product IDs
         let productIds: string[] = [];
         if (order.product_id) {
             productIds = order.product_id.split(",").map((id: string) => id.trim()).filter((id: string) => id.length > 0);
         }
-
         if (productIds.length === 0) {
             throw new Error("No product IDs found in order");
         }
 
         console.log(`Processing ${productIds.length} product(s) for order ${order.id}`);
 
-        // ── Fetch All Products ──
         const { data: products, error: productsError } = await supabase
             .from("products")
             .select("*")
@@ -246,7 +214,7 @@ serve(async (req) => {
             throw new Error(`Failed to fetch products: ${productsError?.message}`);
         }
 
-        // ── Process Each PDF ──
+        // ── Process each PDF via URL-based APIs (NO in-memory loading) ──
         const downloadEntries: { title: string; imageUrl: string | null; downloadUrl: string; price: number }[] = [];
 
         for (const product of products) {
@@ -255,6 +223,7 @@ serve(async (req) => {
                 continue;
             }
 
+            // Get the storage file path
             let filePath = product.pdf_url;
             if (filePath.startsWith("http")) {
                 const urlParts = new URL(filePath).pathname.split("/");
@@ -264,61 +233,83 @@ serve(async (req) => {
                 }
             }
 
-            const { data: pdfData, error: downloadError } = await supabase.storage.from("original_pdfs").download(filePath);
-            if (downloadError || !pdfData) {
-                console.error(`Failed to download ${filePath}: ${downloadError?.message}`);
+            // Get a signed URL (valid 1 hour) — no download into memory!
+            const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+                .from("original_pdfs")
+                .createSignedUrl(filePath, 60 * 60);
+
+            if (signedUrlError || !signedUrlData?.signedUrl) {
+                console.error(`Failed to get signed URL for ${filePath}: ${signedUrlError?.message}`);
                 continue;
             }
 
-            // Watermark
-            const originalBytes = await pdfData.arrayBuffer();
-            const pdfDoc = await PDFDocument.load(originalBytes);
-            const pages = pdfDoc.getPages();
-            const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-            const watermarkText = `Licensed to ${order.student_name} - ${order.phone}`;
+            const originalSignedUrl = signedUrlData.signedUrl;
+            console.log(`Got signed URL for ${product.title}`);
 
-            pages.forEach((page: any) => {
-                const { width, height } = page.getSize();
-                page.drawText(watermarkText, { x: width / 2 - 200, y: height / 2, size: 24, font, color: rgb(0.7, 0.7, 0.7), rotate: degrees(45), opacity: 0.5 });
-                page.drawText(watermarkText, { x: 50, y: 30, size: 10, font, color: rgb(0.5, 0.5, 0.5), opacity: 0.8 });
-            });
+            let finalUrl = originalSignedUrl;
 
-            const watermarkedBytes = await pdfDoc.save();
-
-            // Upload
-            const fileName = `${order.id}/${product.id}_${Date.now()}.pdf`;
-            const { error: uploadError } = await supabase.storage.from("purchased_pdfs").upload(fileName, watermarkedBytes, { contentType: "application/pdf" });
-            if (uploadError) { console.error(`Upload error:`, uploadError); continue; }
-
-            // Signed URL (7 days)
-            const { data: signedUrlData } = await supabase.storage.from("purchased_pdfs").createSignedUrl(fileName, 60 * 60 * 24 * 7);
-            if (!signedUrlData) { console.error(`Signed URL error for ${product.id}`); continue; }
-
-            let finalUrl = signedUrlData.signedUrl;
-
-            // Encrypt via PDF.co
+            // Use PDF.co for watermark + encryption (all via URL, zero memory usage)
             if (PDFCO_API_KEY) {
                 try {
-                    const pdfcoRes = await fetch("https://api.pdf.co/v1/pdf/security/add", {
+                    // Step 1: Add text watermark via PDF.co
+                    const watermarkText = `Licensed to ${order.student_name} - ${order.phone}`;
+                    console.log(`[PDF.co] Adding watermark to ${product.title}...`);
+
+                    const watermarkRes = await fetch("https://api.pdf.co/v1/pdf/edit/add", {
                         method: "POST",
                         headers: { "x-api-key": PDFCO_API_KEY, "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            url: signedUrlData.signedUrl,
-                            userPassword: order.phone,
-                            ownerPassword: Math.random().toString(36).substring(2, 15),
-                            allowPrint: true, allowCopyDocument: false, allowModifyDocument: false,
+                            url: originalSignedUrl,
+                            annotations: [{
+                                text: watermarkText,
+                                x: 50,
+                                y: 30,
+                                size: 10,
+                                color: "808080",
+                                pages: "0-",
+                            }],
                         }),
                     });
-                    const pdfcoData = await pdfcoRes.json();
-                    if (!pdfcoData.error && pdfcoData.url) {
-                        finalUrl = pdfcoData.url;
-                        console.log(`Encrypted ${product.title} via PDF.co`);
 
-                        // Auto-cleanup: delete temp watermarked file since PDF.co has its own URL
-                        await supabase.storage.from("purchased_pdfs").remove([fileName]);
-                        console.log(`Auto-deleted temp file: ${fileName}`);
+                    const watermarkData = await watermarkRes.json();
+                    let urlForEncryption = originalSignedUrl;
+
+                    if (!watermarkData.error && watermarkData.url) {
+                        urlForEncryption = watermarkData.url;
+                        console.log(`[PDF.co] Watermark added successfully`);
+                    } else {
+                        console.log(`[PDF.co] Watermark failed, proceeding without: ${watermarkData.message || 'unknown error'}`);
                     }
-                } catch (e) { console.error("PDF.co call failed:", e); }
+
+                    // Step 2: Encrypt with password
+                    console.log(`[PDF.co] Encrypting ${product.title}...`);
+                    const encryptRes = await fetch("https://api.pdf.co/v1/pdf/security/add", {
+                        method: "POST",
+                        headers: { "x-api-key": PDFCO_API_KEY, "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            url: urlForEncryption,
+                            userPassword: order.phone,
+                            ownerPassword: Math.random().toString(36).substring(2, 15),
+                            allowPrint: true,
+                            allowCopyDocument: false,
+                            allowModifyDocument: false,
+                        }),
+                    });
+
+                    const encryptData = await encryptRes.json();
+                    if (!encryptData.error && encryptData.url) {
+                        finalUrl = encryptData.url;
+                        console.log(`[PDF.co] Encrypted ${product.title} successfully`);
+                    } else {
+                        console.log(`[PDF.co] Encryption failed: ${encryptData.message || 'unknown error'}, using watermarked URL`);
+                        finalUrl = urlForEncryption;
+                    }
+                } catch (e) {
+                    console.error("[PDF.co] API call failed:", e);
+                    // Fall back to the original signed URL
+                }
+            } else {
+                console.log("No PDFCO_API_KEY, sending original PDF without watermark/encryption");
             }
 
             const coverImage = product.images && product.images.length > 0 ? product.images[0] : null;
@@ -329,9 +320,9 @@ serve(async (req) => {
             throw new Error("No PDFs were successfully processed");
         }
 
-        // ── Generate Invoice PDF ──
+        // ── Generate Invoice (tiny PDF, no memory issues) ──
         const invoiceProducts: InvoiceProduct[] = downloadEntries.map((e) => ({ title: e.title, price: e.price }));
-        const totalPaid = order.amount || downloadEntries.reduce((sum, e) => sum + e.price, 0);
+        const totalPaid = order.amount || downloadEntries.reduce((sum: number, e: any) => sum + e.price, 0);
         const invoicePdfBytes = await generateInvoicePdf(order, invoiceProducts, totalPaid);
         const invoiceBase64 = uint8ToBase64(invoicePdfBytes);
 
@@ -364,7 +355,6 @@ serve(async (req) => {
                 </td>
             </tr>`).join("");
 
-        // Build invoice item rows
         const invoiceItemRows = downloadEntries.map((entry) => `
             <tr>
                 <td style="border: 1px solid #e0e0e0; padding: 10px; font-size: 12px; color: #333;">${entry.title}</td>
@@ -451,7 +441,7 @@ serve(async (req) => {
             </div>
         </div>`;
 
-        // ── Send Email with Invoice Attachment ──
+        // Send email with invoice attachment
         if (RESEND_API_KEY) {
             await sendResendEmail(
                 RESEND_API_KEY,
