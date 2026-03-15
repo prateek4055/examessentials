@@ -7,10 +7,11 @@ interface SEOHeadProps {
   ogImage?: string;
   ogType?: "website" | "product" | "article";
   noIndex?: boolean;
-  structuredData?: object;
+  structuredData?: object | object[];
   keywords?: string;
   productPrice?: number;
   productAvailability?: string;
+  skipDefaultKeywords?: boolean;
 }
 
 const SEOHead = ({
@@ -24,6 +25,7 @@ const SEOHead = ({
   keywords,
   productPrice,
   productAvailability = "InStock",
+  skipDefaultKeywords = false,
 }: SEOHeadProps) => {
   const baseUrl = "https://examessentials.in";
   
@@ -38,9 +40,21 @@ const SEOHead = ({
   // Ensure description is under 160 chars
   const truncatedDescription = description.length > 160 ? description.slice(0, 157) + "..." : description;
   
-  // Default keywords for all pages
+  // Default keywords for all pages (skip for medical app pages that have their own domain-specific keywords)
   const defaultKeywords = "handwritten notes, class 11 notes, class 12 notes, CBSE notes, board exam notes, physics notes, chemistry notes, maths notes, biology notes, NEET preparation, JEE preparation, study material India";
-  const finalKeywords = keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords;
+  let finalKeywords: string;
+  if (skipDefaultKeywords) {
+    finalKeywords = keywords || "";
+  } else {
+    finalKeywords = keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords;
+  }
+
+  // Normalize structured data to array for multi-schema support
+  const structuredDataArray = structuredData
+    ? Array.isArray(structuredData)
+      ? structuredData
+      : [structuredData]
+    : [];
 
   return (
     <Helmet>
@@ -48,7 +62,7 @@ const SEOHead = ({
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
       <meta name="description" content={truncatedDescription} />
-      <meta name="keywords" content={finalKeywords} />
+      {finalKeywords && <meta name="keywords" content={finalKeywords} />}
       
       {/* Robots */}
       {noIndex ? (
@@ -89,14 +103,15 @@ const SEOHead = ({
       <meta name="twitter:description" content={truncatedDescription} />
       <meta name="twitter:image" content={ogImage} />
       
-      {/* Structured Data */}
-      {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
+      {/* Structured Data — supports multiple schemas */}
+      {structuredDataArray.map((data, i) => (
+        <script key={i} type="application/ld+json">
+          {JSON.stringify(data)}
         </script>
-      )}
+      ))}
     </Helmet>
   );
 };
 
 export default SEOHead;
+

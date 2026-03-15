@@ -485,6 +485,65 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
         </section>
       )}
 
+      {/* ─── FAQ SECTION ─── */}
+      {app.faqs && app.faqs.length > 0 && (
+        <section className="py-24 relative">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                <span className="text-white">Frequently Asked </span>
+                <span style={{ color: app.theme.accent }}>Questions</span>
+              </h2>
+              <p className="text-white/40 text-lg">
+                Everything you need to know about {app.name}
+              </p>
+            </motion.div>
+
+            <div className="max-w-3xl mx-auto space-y-4">
+              {app.faqs.map((faq, index) => (
+                <motion.details
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08, duration: 0.4 }}
+                  className="group rounded-2xl border overflow-hidden"
+                  style={{
+                    background: app.theme.cardBg,
+                    borderColor: `${app.theme.accent}15`,
+                  }}
+                >
+                  <summary
+                    className="flex items-center justify-between cursor-pointer p-6 text-white font-semibold text-lg select-none list-none"
+                    style={{ WebkitAppearance: "none" } as React.CSSProperties}
+                  >
+                    <span>{faq.question}</span>
+                    <span
+                      className="ml-4 flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-open:rotate-45"
+                      style={{
+                        background: `${app.theme.accent}20`,
+                        color: app.theme.accent,
+                      }}
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <div className="px-6 pb-6 text-white/50 leading-relaxed">
+                    {faq.answer}
+                  </div>
+                </motion.details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ─── EXPLORE MORE APPS ─── */}
       <section className="py-24 border-t border-white/5">
         <div className="container mx-auto px-4">

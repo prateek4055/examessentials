@@ -11,6 +11,11 @@ export interface MedAppFeature {
   description: string;
 }
 
+export interface MedAppFAQ {
+  question: string;
+  answer: string;
+}
+
 export interface MedAppTheme {
   primary: string;
   primaryLight: string;
@@ -40,10 +45,12 @@ export interface MedAppData {
   published: boolean;
   playStoreLink?: string;
   appStoreLink?: string;
+  faqs: MedAppFAQ[];
   seo: {
     title: string;
     description: string;
     keywords: string;
+    ogImageUrl?: string;
   };
 }
 
@@ -79,10 +86,16 @@ export const medicalApps: MedAppData[] = [
     highlights: ["200+ Special Tests", "HD Illustrations", "Offline Access", "Regular Updates"],
     published: true,
     playStoreLink: "https://play.google.com/store/apps/details?id=com.prateek.orthoexam",
+    faqs: [
+      { question: "What is MedOrtho?", answer: "MedOrtho is a comprehensive orthopedic education app that helps physiotherapy and medical students master 200+ special tests, surgical instruments, and clinical notes with step-by-step instructions and HD illustrations." },
+      { question: "Is MedOrtho free to download?", answer: "Yes, MedOrtho is free to download on Google Play Store. Some premium content may require a subscription for full access." },
+      { question: "Who is MedOrtho designed for?", answer: "MedOrtho is designed for physiotherapy students (BPT/MPT), medical interns, orthopedic residents, and sports medicine professionals who need a quick-reference guide for clinical examinations." },
+      { question: "Can I use MedOrtho offline?", answer: "Yes! MedOrtho supports offline access so you can study special tests, view instruments, and read clinical notes without an internet connection — perfect for clinical rotations." },
+    ],
     seo: {
       title: "MedOrtho – Orthopedic Special Tests & Clinical Education App",
       description: "Master 200+ orthopedic special tests, surgical instruments & clinical notes. The #1 orthopedic education app for physiotherapy & medical students in India.",
-      keywords: "orthopedic special tests app, physiotherapy app, orthopedic exam preparation, special tests orthopedics, medical education app, bone and joint tests, clinical orthopedics",
+      keywords: "orthopedic special tests app, physiotherapy app, orthopedic exam preparation, special tests orthopedics, medical education app, bone and joint tests, clinical orthopedics, Lachman test, McMurray test, orthopedic viva questions, BPT exam app",
     },
   },
   {
@@ -115,10 +128,16 @@ export const medicalApps: MedAppData[] = [
     targetAudience: ["Medical Students", "Cardiology Residents", "Nursing Students", "Emergency Medicine Professionals"],
     highlights: ["ECG Library", "Heart Sounds Audio", "Clinical Cases", "Exam Questions"],
     published: false,
+    faqs: [
+      { question: "What is MedCardio?", answer: "MedCardio is an upcoming cardiology education app that teaches ECG interpretation, heart sounds auscultation, and cardiac pathology through interactive visuals and clinical case studies." },
+      { question: "When will MedCardio be available?", answer: "MedCardio is currently under development and will be launched soon. Follow us on WhatsApp or Instagram to be notified when it launches." },
+      { question: "Will MedCardio help with ECG interpretation?", answer: "Absolutely! MedCardio features an interactive ECG library with tracing guides, arrhythmia recognition tools, and clinical correlations to help you master ECG reading." },
+      { question: "Is MedCardio suitable for MBBS students?", answer: "Yes, MedCardio is designed for MBBS students, cardiology residents, nursing students, and emergency medicine professionals who want to strengthen their cardiology knowledge." },
+    ],
     seo: {
       title: "MedCardio – Cardiology Education & ECG Interpretation App",
       description: "Master ECG interpretation, heart sounds & cardiac pathology. The ultimate cardiology learning app for medical students, coming soon from Exam Essentials.",
-      keywords: "cardiology app, ECG interpretation, heart sounds app, cardiac education, medical student cardiology, ECG learning, heart disease study",
+      keywords: "cardiology app, ECG interpretation, heart sounds app, cardiac education, medical student cardiology, ECG learning, heart disease study, arrhythmia app, cardiac auscultation, MBBS cardiology",
     },
   },
   {
@@ -151,10 +170,16 @@ export const medicalApps: MedAppData[] = [
     targetAudience: ["Medical Students", "Neurology Residents", "Physiotherapy Students", "Occupational Therapists"],
     highlights: ["Interactive Atlas", "Cranial Nerve Guide", "Reflex Grading", "Case Studies"],
     published: false,
+    faqs: [
+      { question: "What is MedNeuro?", answer: "MedNeuro is an upcoming neuroscience education app that covers neuroanatomy, cranial nerve examination, reflex testing, and neurological case studies with interactive visual guides." },
+      { question: "When will MedNeuro launch?", answer: "MedNeuro is in active development and will launch soon. Stay tuned by following Exam Essentials on social media for launch updates." },
+      { question: "Does MedNeuro cover cranial nerve examination?", answer: "Yes! MedNeuro includes a complete guide to all 12 cranial nerves with examination techniques, common lesion patterns, and bedside testing methods." },
+      { question: "Who can benefit from MedNeuro?", answer: "MedNeuro is built for medical students, neurology residents, physiotherapy students, and occupational therapists who need a reliable reference for neurological examination." },
+    ],
     seo: {
       title: "MedNeuro – Neuroscience & Neurological Examination App",
       description: "Master neuroanatomy, cranial nerve exams & neurological conditions. The comprehensive neuro education app for medical students, coming soon.",
-      keywords: "neurology app, neuroanatomy, cranial nerve examination, neurological tests, brain anatomy app, neuro education, medical student neurology",
+      keywords: "neurology app, neuroanatomy, cranial nerve examination, neurological tests, brain anatomy app, neuro education, medical student neurology, reflex testing app, stroke localization, neuro exam",
     },
   },
   {
@@ -187,10 +212,16 @@ export const medicalApps: MedAppData[] = [
     targetAudience: ["Physiotherapy Students", "BPT Interns", "Sports Physiotherapists", "Rehabilitation Specialists"],
     highlights: ["500+ Exercises", "Technique Videos", "Rehab Protocols", "Clinical Tools"],
     published: false,
+    faqs: [
+      { question: "What is MedPhysio?", answer: "MedPhysio is an upcoming physiotherapy education app featuring 500+ therapeutic exercises, manual therapy techniques, electrotherapy guides, and evidence-based rehabilitation protocols." },
+      { question: "Is MedPhysio useful for BPT students?", answer: "Absolutely! MedPhysio is specifically designed for BPT students, interns, sports physiotherapists, and rehabilitation specialists with content aligned to university curricula." },
+      { question: "Does MedPhysio include electrotherapy content?", answer: "Yes, MedPhysio covers IFT, TENS, ultrasound therapy, shortwave diathermy (SWD), and other electrotherapy modalities with dosage guidelines and clinical indications." },
+      { question: "When will MedPhysio be available?", answer: "MedPhysio is under development and will be released soon. Follow us on WhatsApp to get notified as soon as it launches." },
+    ],
     seo: {
       title: "MedPhysio – Physiotherapy Techniques & Rehabilitation App",
       description: "Master physiotherapy exercises, manual therapy & rehab protocols. The #1 physiotherapy education app for BPT students, coming soon.",
-      keywords: "physiotherapy app, BPT study app, exercise prescription, manual therapy techniques, rehabilitation protocols, physiotherapy education, electrotherapy guide",
+      keywords: "physiotherapy app, BPT study app, exercise prescription, manual therapy techniques, rehabilitation protocols, physiotherapy education, electrotherapy guide, TENS app, therapeutic exercises, sports physiotherapy",
     },
   },
   {
@@ -223,10 +254,16 @@ export const medicalApps: MedAppData[] = [
     targetAudience: ["Radiology Residents", "Medical Students", "Emergency Medicine", "Orthopedic Surgeons"],
     highlights: ["Annotated Images", "Systematic Approach", "Report Templates", "Quiz Mode"],
     published: false,
+    faqs: [
+      { question: "What is MedRadio?", answer: "MedRadio is an upcoming radiology education app that teaches systematic X-ray, CT, and MRI interpretation with annotated images, report templates, and a quiz mode for practice." },
+      { question: "Does MedRadio cover X-ray interpretation?", answer: "Yes! MedRadio includes a systematic approach to reading chest X-rays, skeletal X-rays, and abdominal X-rays with annotated examples and normal vs abnormal comparisons." },
+      { question: "Can MedRadio help with CT and MRI reading?", answer: "Absolutely. MedRadio covers cross-sectional anatomy and common pathology findings on both CT and MRI, helping you build confidence in interpreting advanced imaging." },
+      { question: "When will MedRadio launch?", answer: "MedRadio is currently in development. Follow Exam Essentials on social media or WhatsApp to be the first to know about the launch." },
+    ],
     seo: {
       title: "MedRadio – Radiology Learning & Medical Imaging App",
       description: "Learn X-ray, CT & MRI interpretation with annotated images. The comprehensive radiology education app for medical students, coming soon.",
-      keywords: "radiology app, X-ray interpretation, CT scan learning, MRI reading, medical imaging app, radiology education, diagnostic imaging",
+      keywords: "radiology app, X-ray interpretation, CT scan learning, MRI reading, medical imaging app, radiology education, diagnostic imaging, chest X-ray app, radiology quiz, MBBS radiology",
     },
   },
   {
@@ -259,10 +296,16 @@ export const medicalApps: MedAppData[] = [
     targetAudience: ["Medical Students", "Pharmacy Students", "Nursing Students", "NEET PG Aspirants"],
     highlights: ["Drug Database", "Visual Mnemonics", "Comparison Tables", "MCQ Bank"],
     published: false,
+    faqs: [
+      { question: "What is MedPharma?", answer: "MedPharma is an upcoming pharmacology app that simplifies drug learning with organized classifications, visual mechanism maps, comparison tables, and mnemonics for easy memorization." },
+      { question: "Does MedPharma include drug mnemonics?", answer: "Yes! MedPharma features visual mnemonics and memory aids for drug names, side effects, drug interactions, and pharmacological classifications — making revision quick and effective." },
+      { question: "Is MedPharma useful for NEET PG preparation?", answer: "Absolutely. MedPharma includes exam-focused MCQs and drug comparison tables aligned with NEET PG, USMLE, and university exam patterns." },
+      { question: "When will MedPharma be released?", answer: "MedPharma is under active development and will be launched soon. Follow us on WhatsApp or Instagram to get early access." },
+    ],
     seo: {
       title: "MedPharma – Pharmacology Education & Drug Reference App",
       description: "Master pharmacology with organized drug data, visual mnemonics & mechanism maps. The easy pharmacology app for medical & pharmacy students, coming soon.",
-      keywords: "pharmacology app, drug reference app, pharmacology mnemonics, drug mechanism of action, medical pharmacology, pharmacy student app, drug classification",
+      keywords: "pharmacology app, drug reference app, pharmacology mnemonics, drug mechanism of action, medical pharmacology, pharmacy student app, drug classification, NEET PG pharmacology, drug interactions, pharmacology MCQ",
     },
   },
 ];

@@ -1,8 +1,10 @@
 import SEOHead from "@/components/SEOHead";
 import MedAppPage from "../components/MedAppPage";
 import { medicalApps } from "../data/medicalAppsData";
+import { buildAppStructuredData } from "../data/seoHelpers";
 
 const app = medicalApps.find((a) => a.slug === "medphysio")!;
+const structuredData = buildAppStructuredData(app);
 
 const MedPhysioPage = () => (
   <>
@@ -11,14 +13,8 @@ const MedPhysioPage = () => (
       description={app.seo.description}
       canonical={`/${app.slug}`}
       keywords={app.seo.keywords}
-      structuredData={{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        name: app.name,
-        description: app.seo.description,
-        applicationCategory: "HealthApplication",
-        author: { "@type": "Organization", name: "Exam Essentials" },
-      }}
+      skipDefaultKeywords
+      structuredData={structuredData}
     />
     <MedAppPage app={app} />
   </>
