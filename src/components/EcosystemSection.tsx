@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Import app logos
 import neetLogo from "@/assets/apps/neet.png";
@@ -21,6 +22,7 @@ interface AppCard {
   category: "medical" | "exam" | "parent";
   comingSoon?: boolean;
   link?: string;
+  internalLink?: string;
 }
 
 const apps: AppCard[] = [
@@ -36,6 +38,7 @@ const apps: AppCard[] = [
     image: medorthoLogo,
     category: "medical",
     link: "https://play.google.com/store/apps/details?id=com.prateek.orthoexam",
+    internalLink: "/medortho",
   },
   {
     name: "MedCardio",
@@ -43,6 +46,7 @@ const apps: AppCard[] = [
     image: medcardioLogo,
     category: "medical",
     comingSoon: true,
+    internalLink: "/medcardio",
   },
   {
     name: "MedNeuro",
@@ -50,6 +54,7 @@ const apps: AppCard[] = [
     image: medneuroLogo,
     category: "medical",
     comingSoon: true,
+    internalLink: "/medneuro",
   },
   {
     name: "MedPhysio",
@@ -57,6 +62,7 @@ const apps: AppCard[] = [
     image: medphysioLogo,
     category: "medical",
     comingSoon: true,
+    internalLink: "/medphysio",
   },
   {
     name: "MedRadio",
@@ -64,6 +70,7 @@ const apps: AppCard[] = [
     image: medradioLogo,
     category: "medical",
     comingSoon: true,
+    internalLink: "/medradio",
   },
   {
     name: "MedPharma",
@@ -71,6 +78,7 @@ const apps: AppCard[] = [
     image: medpharmaLogo,
     category: "medical",
     comingSoon: true,
+    internalLink: "/medpharma",
   },
   // Exam Apps
   {
@@ -214,7 +222,22 @@ const EcosystemSection = () => {
                 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
-                {app.link ? (
+                {app.internalLink ? (
+                  <Link to={app.internalLink} className="ecosystem-card group relative overflow-hidden block no-underline">
+                    {app.comingSoon && (
+                      <span className="coming-soon-badge">
+                        Coming Soon
+                      </span>
+                    )}
+                    <div className="mb-4 flex justify-center">
+                      {app.image && (
+                        <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
+                      )}
+                    </div>
+                    <h4 className="font-display text-base font-semibold text-foreground mb-1">{app.name}</h4>
+                    <p className="font-body text-xs text-muted-foreground">{app.description}</p>
+                  </Link>
+                ) : app.link ? (
                   <a href={app.link} target="_blank" rel="noopener noreferrer" className="ecosystem-card group relative overflow-hidden block no-underline">
                     <div className="mb-4 flex justify-center">
                       {app.image && (

@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="glass-panel py-16 rounded-none" style={{ borderTop: '1px solid hsl(0 0% 100% / 0.5)' }} role="contentinfo" aria-label="Site footer">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4" aria-label="Exam Essentials - Go to homepage">
@@ -96,6 +96,63 @@ const Footer = () => {
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   All Products
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* Our Apps */}
+          <nav aria-label="Our Apps">
+            <h4 className="font-body text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
+              Our Apps
+            </h4>
+            <ul className="space-y-3 font-body text-sm">
+              <li>
+                <Link
+                  to="/medortho"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  MedOrtho
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/medcardio"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  MedCardio
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/medneuro"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  MedNeuro
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/medphysio"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  MedPhysio
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/medradio"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  MedRadio
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/medpharma"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  MedPharma
                 </Link>
               </li>
             </ul>

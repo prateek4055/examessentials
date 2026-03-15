@@ -32,6 +32,12 @@ import NeetNotes from "./pages/NeetNotes";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import MedPosterHubIndex from "./apps/medposterhub/pages/MedPosterHubIndex";
+import MedOrthoPage from "./apps/medical/pages/MedOrthoPage";
+import MedCardioPage from "./apps/medical/pages/MedCardioPage";
+import MedNeuroPage from "./apps/medical/pages/MedNeuroPage";
+import MedPhysioPage from "./apps/medical/pages/MedPhysioPage";
+import MedRadioPage from "./apps/medical/pages/MedRadioPage";
+import MedPharmaPage from "./apps/medical/pages/MedPharmaPage";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +76,12 @@ const App = () => (
               <Route path="/blog/:id" element={<BlogPost />} />
               {/* Sub-Apps */}
               <Route path="/medposterhub" element={<MedPosterHubIndex />} />
+              <Route path="/medortho" element={<MedOrthoPage />} />
+              <Route path="/medcardio" element={<MedCardioPage />} />
+              <Route path="/medneuro" element={<MedNeuroPage />} />
+              <Route path="/medphysio" element={<MedPhysioPage />} />
+              <Route path="/medradio" element={<MedRadioPage />} />
+              <Route path="/medpharma" element={<MedPharmaPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <WhatsAppButton />

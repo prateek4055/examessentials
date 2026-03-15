@@ -23,19 +23,47 @@ export const apps: AppInfo[] = [
     basePath: "/medposterhub",
     active: true,
   },
-  // Future apps — uncomment when ready
-  // {
-  //   id: "medortho",
-  //   name: "MedOrtho",
-  //   description: "Orthopedic education and clinical tools",
-  //   basePath: "/medortho",
-  //   active: false,
-  // },
-  // {
-  //   id: "mednotes",
-  //   name: "MedNotes",
-  //   description: "Medical study notes and revision material",
-  //   basePath: "/mednotes",
-  //   active: false,
-  // },
+  // Medical Education Apps
+  {
+    id: "medortho",
+    name: "MedOrtho",
+    description: "Orthopedic special tests, surgical instruments & clinical education",
+    basePath: "/medortho",
+    active: true,
+  },
+  {
+    id: "medcardio",
+    name: "MedCardio",
+    description: "Cardiology education & ECG interpretation",
+    basePath: "/medcardio",
+    active: false,
+  },
+  {
+    id: "medneuro",
+    name: "MedNeuro",
+    description: "Neuroscience & neurological examination",
+    basePath: "/medneuro",
+    active: false,
+  },
+  {
+    id: "medphysio",
+    name: "MedPhysio",
+    description: "Physiotherapy techniques & rehabilitation",
+    basePath: "/medphysio",
+    active: false,
+  },
+  {
+    id: "medradio",
+    name: "MedRadio",
+    description: "Radiology learning & medical imaging",
+    basePath: "/medradio",
+    active: false,
+  },
+  {
+    id: "medpharma",
+    name: "MedPharma",
+    description: "Pharmacology made easy — drugs, mechanisms & clinical use",
+    basePath: "/medpharma",
+    active: false,
+  },
 ];
