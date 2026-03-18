@@ -295,9 +295,9 @@ serve(async (req) => {
                             url: originalSignedUrl,
                             annotations: [{
                                 text: watermarkText,
-                                x: 50,
-                                y: 30,
-                                size: 10,
+                                x: 150,
+                                y: 400,
+                                size: 16,
                                 color: "808080",
                                 pages: "0-",
                             }],
