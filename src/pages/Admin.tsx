@@ -236,12 +236,30 @@ const Admin = () => {
     setIsSendingMail(true);
     try {
       const selectedProducts = products.filter((p) => mailForm.productIds.includes(p.id));
-      const calculation = calculateCartTotal(selectedProducts);
-      const totalPrice = calculation.total;
       const productIdStr = mailForm.productIds.join(",");
       const productNames = selectedProducts.map((p) => p.title).join(", ");
 
-      // Step 1: Create admin order with auto-fetched price
+      let orderAmount: number;
+      let paymentId: string;
+
+      if (isFreeDelivery) {
+        orderAmount = 0;
+        paymentId = "admin_free_" + crypto.randomUUID();
+      } else {
+        // Calculate total from custom prices
+        orderAmount = mailForm.productIds.reduce((sum, id) => {
+          const price = parseFloat(customPrices[id] || "0");
+          return sum + (isNaN(price) ? 0 : price);
+        }, 0);
+        // Serialize custom prices into razorpay_payment_id
+        const customPricesPayload: Record<string, number> = {};
+        mailForm.productIds.forEach((id) => {
+          customPricesPayload[id] = parseFloat(customPrices[id] || "0") || 0;
+        });
+        paymentId = "admin_custom_" + JSON.stringify(customPricesPayload);
+      }
+
+      // Step 1: Create admin order
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
@@ -250,9 +268,9 @@ const Admin = () => {
           email: mailForm.email.trim().toLowerCase(),
           phone: mailForm.phone.trim(),
           class: mailForm.class,
-          amount: totalPrice,
+          amount: orderAmount,
           payment_status: "completed",
-          razorpay_payment_id: "admin_" + crypto.randomUUID(),
+          razorpay_payment_id: paymentId,
           razorpay_order_id: "admin_order_" + crypto.randomUUID(),
         })
         .select()
@@ -296,6 +314,8 @@ const Admin = () => {
 
       // Clear form & refresh orders
       setMailForm({ studentName: "", email: "", phone: "", class: "12", productIds: [] });
+      setIsFreeDelivery(true);
+      setCustomPrices({});
       loadData();
     } catch (error: any) {
       console.error("Send mail error:", error);
