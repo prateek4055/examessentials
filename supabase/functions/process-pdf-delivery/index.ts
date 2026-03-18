@@ -69,11 +69,29 @@ async function generateInvoicePdf(
 
     let y = height - 50;
 
-    // Header
+    // Header bar
     page.drawRectangle({ x: 0, y: y - 10, width, height: 60, color: purple });
     page.drawText("INVOICE", { x: 40, y: y + 5, size: 28, font: fontBold, color: white });
-    page.drawText("Exam Essentials", { x: width - 180, y: y + 10, size: 14, font: fontBold, color: white });
-    page.drawText("examessentials.in", { x: width - 180, y: y - 6, size: 10, font: fontRegular, color: rgb(0.85, 0.78, 1) });
+
+    // Embed logo in header (top right)
+    try {
+        const logoRes = await fetch("https://examessentials.in/logo.jpeg");
+        if (logoRes.ok) {
+            const logoBytes = new Uint8Array(await logoRes.arrayBuffer());
+            const logoImage = await doc.embedJpg(logoBytes);
+            page.drawImage(logoImage, {
+                x: width - 90,
+                y: y - 5,
+                width: 40,
+                height: 40,
+            });
+        }
+    } catch (e) {
+        console.log("Logo embed failed, skipping:", e);
+    }
+
+    page.drawText("Exam Essentials", { x: width - 230, y: y + 10, size: 14, font: fontBold, color: white });
+    page.drawText("examessentials.in", { x: width - 230, y: y - 6, size: 10, font: fontRegular, color: rgb(0.85, 0.78, 1) });
 
     y -= 80;
 
@@ -99,7 +117,7 @@ async function generateInvoicePdf(
 
     page.drawText("From:", { x: width - 200, y: y + 60, size: 11, font: fontBold, color: black });
     page.drawText("Exam Essentials", { x: width - 200, y: y + 46, size: 10, font: fontRegular, color: black });
-    page.drawText("GSTIN: Applied For", { x: width - 200, y: y + 32, size: 9, font: fontRegular, color: gray });
+    page.drawText("GSTIN: 08EFMPG9686D1ZV", { x: width - 200, y: y + 32, size: 9, font: fontRegular, color: gray });
 
     // Table header
     page.drawRectangle({ x: 40, y: y - 4, width: width - 80, height: 22, color: purple });
@@ -193,6 +211,21 @@ serve(async (req) => {
         }
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+        // Parse custom prices from razorpay_payment_id if present
+        let customPriceMap: Record<string, number> | null = null;
+        const paymentId = order.razorpay_payment_id || "";
+        if (paymentId.startsWith("admin_custom_")) {
+            try {
+                customPriceMap = JSON.parse(paymentId.replace("admin_custom_", ""));
+                console.log("[DEBUG] Custom price map parsed:", customPriceMap);
+            } catch (e) {
+                console.error("Failed to parse custom prices:", e);
+            }
+        }
+
+        const isFreeDelivery = !order.amount || order.amount === 0;
+        console.log(`[DEBUG] isFreeDelivery: ${isFreeDelivery}`);
 
         // Resolve product IDs
         let productIds: string[] = [];
@@ -312,25 +345,34 @@ serve(async (req) => {
                 console.log("No PDFCO_API_KEY, sending original PDF without watermark/encryption");
             }
 
+            // Use custom price if available, otherwise default product price
+            const entryPrice = customPriceMap && customPriceMap[product.id] !== undefined
+                ? customPriceMap[product.id]
+                : product.price;
+
             const coverImage = product.images && product.images.length > 0 ? product.images[0] : null;
-            downloadEntries.push({ title: product.title, imageUrl: coverImage, downloadUrl: finalUrl, price: product.price });
+            downloadEntries.push({ title: product.title, imageUrl: coverImage, downloadUrl: finalUrl, price: entryPrice });
         }
 
         if (downloadEntries.length === 0) {
             throw new Error("No PDFs were successfully processed");
         }
 
-        // ── Generate Invoice (tiny PDF, no memory issues) ──
-        const invoiceProducts: InvoiceProduct[] = downloadEntries.map((e) => ({ title: e.title, price: e.price }));
-        const totalPaid = order.amount || downloadEntries.reduce((sum: number, e: any) => sum + e.price, 0);
-        const invoicePdfBytes = await generateInvoicePdf(order, invoiceProducts, totalPaid);
-        const invoiceBase64 = uint8ToBase64(invoicePdfBytes);
-
-        const shortOrderId = order.id ? order.id.split("-")[0].toUpperCase() : "N/A";
-        const orderDate = order.created_at
+        // ── Conditionally generate Invoice ──
+        let invoiceBase64: string | null = null;
+        let shortOrderId = order.id ? order.id.split("-")[0].toUpperCase() : "N/A";
+        let orderDate = order.created_at
             ? new Date(order.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
             : "Today";
 
+        if (!isFreeDelivery) {
+            const invoiceProducts: InvoiceProduct[] = downloadEntries.map((e) => ({ title: e.title, price: e.price }));
+            const totalPaid = order.amount || downloadEntries.reduce((sum: number, e: any) => sum + e.price, 0);
+            const invoicePdfBytes = await generateInvoicePdf(order, invoiceProducts, totalPaid);
+            invoiceBase64 = uint8ToBase64(invoicePdfBytes);
+        }
+
+        const totalPaid = order.amount || downloadEntries.reduce((sum: number, e: any) => sum + e.price, 0);
         const gstRate = 0.05;
         const subtotalExclTax = totalPaid / (1 + gstRate);
         const gstAmount = totalPaid - subtotalExclTax;
@@ -355,12 +397,51 @@ serve(async (req) => {
                 </td>
             </tr>`).join("");
 
-        const invoiceItemRows = downloadEntries.map((entry) => `
-            <tr>
-                <td style="border: 1px solid #e0e0e0; padding: 10px; font-size: 12px; color: #333;">${entry.title}</td>
-                <td style="border: 1px solid #e0e0e0; padding: 10px; text-align: center; font-size: 12px;">1</td>
-                <td style="border: 1px solid #e0e0e0; padding: 10px; text-align: right; font-size: 12px;">Rs.${entry.price.toFixed(2)}</td>
-            </tr>`).join("");
+        // Build order summary section (or free delivery note)
+        let orderSummaryHtml = "";
+        if (isFreeDelivery) {
+            orderSummaryHtml = `
+            <div style="padding: 0 20px;">
+                <p style="font-size: 13px; color: #888; font-style: italic; text-align: center; margin: 20px 0;">(Free Replacement / Direct Delivery)</p>
+            </div>`;
+        } else {
+            const invoiceItemRows = downloadEntries.map((entry) => `
+                <tr>
+                    <td style="border: 1px solid #e0e0e0; padding: 10px; font-size: 12px; color: #333;">${entry.title}</td>
+                    <td style="border: 1px solid #e0e0e0; padding: 10px; text-align: center; font-size: 12px;">1</td>
+                    <td style="border: 1px solid #e0e0e0; padding: 10px; text-align: right; font-size: 12px;">Rs.${entry.price.toFixed(2)}</td>
+                </tr>`).join("");
+
+            orderSummaryHtml = `
+            <div style="padding: 0 20px;">
+                <h3 style="color: #6D28D9; font-size: 16px; margin-bottom: 10px;">Order Summary</h3>
+                <p style="font-size: 11px; color: #888; margin-bottom: 8px;">[Order #EE-${shortOrderId}] | ${orderDate}</p>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #e0e0e0; padding: 10px; background: #fafafa; text-align: left; font-size: 11px;">Product</th>
+                            <th style="border: 1px solid #e0e0e0; padding: 10px; background: #fafafa; text-align: center; font-size: 11px; width: 50px;">Qty</th>
+                            <th style="border: 1px solid #e0e0e0; padding: 10px; background: #fafafa; text-align: right; font-size: 11px; width: 80px;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${invoiceItemRows}
+                        <tr>
+                            <td colspan="2" style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px; color: #666;">Subtotal (Excl. Tax):</td>
+                            <td style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px;">Rs.${subtotalExclTax.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px; color: #666;">IGST (5%):</td>
+                            <td style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px;">Rs.${gstAmount.toFixed(2)}</td>
+                        </tr>
+                        <tr style="background: #f3e8ff;">
+                            <td colspan="2" style="border: 1px solid #e0e0e0; padding: 10px; text-align: right; font-weight: bold; font-size: 13px; color: #6D28D9;">Total Paid:</td>
+                            <td style="border: 1px solid #e0e0e0; padding: 10px; text-align: right; font-weight: bold; font-size: 13px; color: #6D28D9;">Rs.${totalPaid.toFixed(2)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`;
+        }
 
         const emailHtml = `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 650px; margin: 0 auto; border: 1px solid #e0e0e0; background-color: #ffffff; border-radius: 8px; overflow: hidden;">
@@ -398,34 +479,7 @@ serve(async (req) => {
                 <p style="margin: 8px 0 0 0; font-size: 10px; color: #b45309;">*Applicable on Combo packs only</p>
             </div>
 
-            <div style="padding: 0 20px;">
-                <h3 style="color: #6D28D9; font-size: 16px; margin-bottom: 10px;">Order Summary</h3>
-                <p style="font-size: 11px; color: #888; margin-bottom: 8px;">[Order #EE-${shortOrderId}] | ${orderDate}</p>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th style="border: 1px solid #e0e0e0; padding: 10px; background: #fafafa; text-align: left; font-size: 11px;">Product</th>
-                            <th style="border: 1px solid #e0e0e0; padding: 10px; background: #fafafa; text-align: center; font-size: 11px; width: 50px;">Qty</th>
-                            <th style="border: 1px solid #e0e0e0; padding: 10px; background: #fafafa; text-align: right; font-size: 11px; width: 80px;">Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${invoiceItemRows}
-                        <tr>
-                            <td colspan="2" style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px; color: #666;">Subtotal (Excl. Tax):</td>
-                            <td style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px;">Rs.${subtotalExclTax.toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px; color: #666;">IGST (5%):</td>
-                            <td style="border: 1px solid #e0e0e0; padding: 8px 10px; text-align: right; font-size: 11px;">Rs.${gstAmount.toFixed(2)}</td>
-                        </tr>
-                        <tr style="background: #f3e8ff;">
-                            <td colspan="2" style="border: 1px solid #e0e0e0; padding: 10px; text-align: right; font-weight: bold; font-size: 13px; color: #6D28D9;">Total Paid:</td>
-                            <td style="border: 1px solid #e0e0e0; padding: 10px; text-align: right; font-weight: bold; font-size: 13px; color: #6D28D9;">Rs.${totalPaid.toFixed(2)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            ${orderSummaryHtml}
 
             <div style="padding: 20px;">
                 <h3 style="color: #6D28D9; font-size: 14px; margin-bottom: 8px;">Billing Address</h3>
@@ -441,16 +495,20 @@ serve(async (req) => {
             </div>
         </div>`;
 
-        // Send email with invoice attachment
+        // Send email — attach invoice only if not free
         if (RESEND_API_KEY) {
+            const attachments = invoiceBase64
+                ? [{ filename: `Invoice-EE-${shortOrderId}.pdf`, content: invoiceBase64 }]
+                : undefined;
+
             await sendResendEmail(
                 RESEND_API_KEY,
                 order.email,
                 `Your Exam Essentials order is now complete - ${order.student_name}`,
                 emailHtml,
-                [{ filename: `Invoice-EE-${shortOrderId}.pdf`, content: invoiceBase64 }]
+                attachments
             );
-            console.log(`Email sent to ${order.email} with invoice attachment!`);
+            console.log(`Email sent to ${order.email}${invoiceBase64 ? ' with invoice' : ' (no invoice - free delivery)'}!`);
         }
 
         return new Response(JSON.stringify({ success: true }), { headers: { "Content-Type": "application/json" } });

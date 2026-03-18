@@ -54,6 +54,8 @@ const Admin = () => {
     productIds: [] as string[],
   });
   const [isSendingMail, setIsSendingMail] = useState(false);
+  const [isFreeDelivery, setIsFreeDelivery] = useState(true);
+  const [customPrices, setCustomPrices] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Wait for auth loading to complete before checking permissions
@@ -234,12 +236,30 @@ const Admin = () => {
     setIsSendingMail(true);
     try {
       const selectedProducts = products.filter((p) => mailForm.productIds.includes(p.id));
-      const calculation = calculateCartTotal(selectedProducts);
-      const totalPrice = calculation.total;
       const productIdStr = mailForm.productIds.join(",");
       const productNames = selectedProducts.map((p) => p.title).join(", ");
 
-      // Step 1: Create admin order with auto-fetched price
+      let orderAmount: number;
+      let paymentId: string;
+
+      if (isFreeDelivery) {
+        orderAmount = 0;
+        paymentId = "admin_free_" + crypto.randomUUID();
+      } else {
+        // Calculate total from custom prices
+        orderAmount = mailForm.productIds.reduce((sum, id) => {
+          const price = parseFloat(customPrices[id] || "0");
+          return sum + (isNaN(price) ? 0 : price);
+        }, 0);
+        // Serialize custom prices into razorpay_payment_id
+        const customPricesPayload: Record<string, number> = {};
+        mailForm.productIds.forEach((id) => {
+          customPricesPayload[id] = parseFloat(customPrices[id] || "0") || 0;
+        });
+        paymentId = "admin_custom_" + JSON.stringify(customPricesPayload);
+      }
+
+      // Step 1: Create admin order
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
@@ -248,9 +268,9 @@ const Admin = () => {
           email: mailForm.email.trim().toLowerCase(),
           phone: mailForm.phone.trim(),
           class: mailForm.class,
-          amount: totalPrice,
+          amount: orderAmount,
           payment_status: "completed",
-          razorpay_payment_id: "admin_" + crypto.randomUUID(),
+          razorpay_payment_id: paymentId,
           razorpay_order_id: "admin_order_" + crypto.randomUUID(),
         })
         .select()
@@ -294,6 +314,8 @@ const Admin = () => {
 
       // Clear form & refresh orders
       setMailForm({ studentName: "", email: "", phone: "", class: "12", productIds: [] });
+      setIsFreeDelivery(true);
+      setCustomPrices({});
       loadData();
     } catch (error: any) {
       console.error("Send mail error:", error);
@@ -912,17 +934,7 @@ const Admin = () => {
                     Products *{" "}
                     {mailForm.productIds.length > 0 && (
                       <span className="text-xs">
-                        ({mailForm.productIds.length} selected —{" "}
-                        <span className={calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).discount > 0 ? "line-through text-muted-foreground" : "text-purple-400 font-medium"}>
-                          ₹{calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).subtotal}
-                        </span>
-                        {calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).discount > 0 && (
-                          <span className="text-green-400 font-bold ml-1">
-                            ₹{calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).total}
-                            {" "}(Saved ₹{calculateCartTotal(products.filter(p => mailForm.productIds.includes(p.id))).discount})
-                          </span>
-                        )}
-                        )
+                        ({mailForm.productIds.length} selected)
                       </span>
                     )}
                   </label>
@@ -937,7 +949,23 @@ const Admin = () => {
                         />
                         <span className="text-sm text-foreground font-body flex-1">{p.title}</span>
                         <span className="text-xs text-muted-foreground">Class {p.class}</span>
-                        <span className="text-xs text-purple-400 font-medium">₹{p.price}</span>
+                        {isFreeDelivery ? (
+                          <span className="text-xs text-muted-foreground">₹{p.price}</span>
+                        ) : (
+                          mailForm.productIds.includes(p.id) && (
+                            <input
+                              type="number"
+                              min="0"
+                              value={customPrices[p.id] ?? String(p.price)}
+                              onChange={(e) => {
+                                setCustomPrices((prev) => ({ ...prev, [p.id]: e.target.value }));
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-20 px-2 py-1 text-xs rounded bg-background border border-border text-foreground text-right"
+                              placeholder="Price"
+                            />
+                          )
+                        )}
                       </label>
                     ))}
                   </div>
@@ -945,6 +973,45 @@ const Admin = () => {
                     <p className="text-xs text-yellow-400 mt-1">No products with PDF files found. Upload PDFs first.</p>
                   )}
                 </div>
+
+                {/* Free Delivery Toggle */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-secondary border border-border">
+                  <label className="text-sm font-body text-foreground cursor-pointer">
+                    Free Replacement (No Invoice)
+                  </label>
+                  <input
+                    type="checkbox"
+                    checked={isFreeDelivery}
+                    onChange={(e) => {
+                      setIsFreeDelivery(e.target.checked);
+                      if (!e.target.checked) {
+                        // Initialize custom prices from product defaults
+                        const defaults: Record<string, string> = {};
+                        mailForm.productIds.forEach((id) => {
+                          const prod = products.find((p) => p.id === id);
+                          if (prod) defaults[id] = String(prod.price);
+                        });
+                        setCustomPrices(defaults);
+                      }
+                    }}
+                    className="accent-purple-500 w-5 h-5"
+                  />
+                </div>
+
+                {/* Total Charge display when not free */}
+                {!isFreeDelivery && mailForm.productIds.length > 0 && (
+                  <div className="p-3 rounded-lg bg-secondary border border-border">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-body text-muted-foreground">Total Charge:</span>
+                      <span className="text-lg font-display font-bold text-foreground">
+                        ₹{mailForm.productIds.reduce((sum, id) => {
+                          const price = parseFloat(customPrices[id] || "0");
+                          return sum + (isNaN(price) ? 0 : price);
+                        }, 0).toFixed(0)}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 <Button
                   variant="gradient"
@@ -955,7 +1022,7 @@ const Admin = () => {
                   {isSendingMail ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</>
                   ) : (
-                    <><Send className="w-4 h-4 mr-2" /> Send Download Email</>
+                    <><Send className="w-4 h-4 mr-2" /> {isFreeDelivery ? "Send Free Download Email" : "Send Paid Download Email"}</>
                   )}
                 </Button>
               </div>
@@ -964,6 +1031,7 @@ const Admin = () => {
                 <p className="text-xs text-muted-foreground font-body">
                   <strong className="text-purple-400">How it works:</strong> This creates an admin order and triggers the PDF delivery system.
                   The student will receive a watermarked, password-protected PDF with their phone number as the password.
+                  {!isFreeDelivery && " A GST invoice will be attached to the email."}
                 </p>
               </div>
             </motion.div>
