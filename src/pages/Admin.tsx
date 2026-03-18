@@ -54,6 +54,8 @@ const Admin = () => {
     productIds: [] as string[],
   });
   const [isSendingMail, setIsSendingMail] = useState(false);
+  const [isFreeDelivery, setIsFreeDelivery] = useState(true);
+  const [customPrices, setCustomPrices] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Wait for auth loading to complete before checking permissions
