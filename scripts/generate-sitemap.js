@@ -168,6 +168,21 @@ async function generateSitemaps() {
       { path: '/shipping-policy', priority: '0.3', changefreq: 'monthly' },
     ];
 
+    // Read poster slugs from posters.ts and add individual poster pages
+    try {
+      const postersDataPath = path.resolve(process.cwd(), 'src/apps/medposterhub/data/posters.ts');
+      if (fs.existsSync(postersDataPath)) {
+        const postersContent = fs.readFileSync(postersDataPath, 'utf8');
+        const slugMatches = [...postersContent.matchAll(/slug:\s*["']([^"']+)["']/g)];
+        slugMatches.forEach(match => {
+          staticPages.push({ path: `/medposterhub/${match[1]}`, priority: '0.7', changefreq: 'monthly' });
+        });
+        console.log(`✅ Added ${slugMatches.length} poster detail pages to sitemap.`);
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not read poster slugs:', e.message);
+    }
+
     let pagesSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 

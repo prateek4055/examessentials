@@ -1,5 +1,6 @@
 export interface Poster {
   id: string;
+  slug: string;
   title: string;
   description: string;
   image: string;
@@ -23,6 +24,7 @@ export const posters: Poster[] = [
   // ===================== ANATOMY =====================
   {
     id: "1",
+    slug: "muscular-system-full-body-anatomy",
     title: "Muscular System – Full Body Anatomy",
     description: "High-resolution poster of the complete muscular system, showing major superficial muscles with clear labeling. Ideal for physiotherapy clinics, gyms and medical students.",
     image: `${POSTER_BASE}/muscular-system.jpg`,
@@ -37,6 +39,7 @@ export const posters: Poster[] = [
   },
   {
     id: "2",
+    slug: "skeletal-system-bones-human-body",
     title: "Skeletal System – Bones of the Human Body",
     description: "Complete skeletal reference featuring labelled bones and structural relationships. Perfect visual aid for clinics and classrooms.",
     image: `${POSTER_BASE}/skeletal-system.jpg`,
@@ -51,6 +54,7 @@ export const posters: Poster[] = [
   },
   {
     id: "3",
+    slug: "nervous-system-central-peripheral",
     title: "Nervous System – Central & Peripheral",
     description: "CNS + PNS overview including brain, spinal cord and major nerve pathways. Excellent educational tool for neuro departments.",
     image: `${POSTER_BASE}/nervous-system.jpg`,
@@ -64,6 +68,7 @@ export const posters: Poster[] = [
   },
   {
     id: "4",
+    slug: "circulatory-system-arteries-veins",
     title: "Circulatory System – Arteries & Veins",
     description: "Clean anatomical diagram of major arterial and venous pathways with detailed systemic circulation.",
     image: `${POSTER_BASE}/circulatory-system.jpg`,
@@ -77,6 +82,7 @@ export const posters: Poster[] = [
   },
   {
     id: "5",
+    slug: "digestive-system-gi-tract-anatomy",
     title: "Digestive System – GI Tract Anatomy",
     description: "Comprehensive illustration of the digestive system showing major organs like stomach, intestines, liver and pancreas.",
     image: `${POSTER_BASE}/digestive-system.jpg`,
@@ -90,6 +96,7 @@ export const posters: Poster[] = [
   },
   {
     id: "6",
+    slug: "endocrine-system-hormone-glands",
     title: "Endocrine System – Hormone Glands",
     description: "Detailed endocrine system showing pituitary, thyroid, adrenal glands, pancreas and reproductive glands.",
     image: `${POSTER_BASE}/endocrine-system.jpg`,
@@ -103,6 +110,7 @@ export const posters: Poster[] = [
   },
   {
     id: "7",
+    slug: "respiratory-system-lungs-airways",
     title: "Respiratory System – Lungs & Airways",
     description: "Educational poster showing lungs, trachea, alveoli and bronchial tree. Great visual for cardio-pulmonary rehab.",
     image: `${POSTER_BASE}/respiratory-system.jpg`,
@@ -116,6 +124,7 @@ export const posters: Poster[] = [
   },
   {
     id: "8",
+    slug: "lymphatic-system-vessels-nodes",
     title: "Lymphatic System – Vessels & Nodes",
     description: "Lymph nodes, drainage pathways and immune route mapping. Useful for oncology rehab and edema management.",
     image: `${POSTER_BASE}/lymphatic-system.jpg`,
@@ -129,6 +138,7 @@ export const posters: Poster[] = [
   },
   {
     id: "9",
+    slug: "male-reproductive-system-anatomical-chart",
     title: "Male Reproductive System – Anatomical Chart",
     description: "Detailed illustration of male reproductive organs including prostate, testes, vas deferens and glands.",
     image: `${POSTER_BASE}/male-reproductive-system.jpg`,
@@ -142,6 +152,7 @@ export const posters: Poster[] = [
   },
   {
     id: "10",
+    slug: "female-reproductive-system-anatomical-chart",
     title: "Female Reproductive System – Anatomical Chart",
     description: "Poster showing uterus, ovaries, ligaments and pelvic relations. Ideal for OBG and women's health physio.",
     image: `${POSTER_BASE}/female-reproductive-system.jpg`,
@@ -156,6 +167,7 @@ export const posters: Poster[] = [
   },
   {
     id: "11",
+    slug: "pregnancy-and-birth-obstetrics-reference",
     title: "Pregnancy and Birth – Obstetrics Reference",
     description: "Stages of pregnancy, fetal development and anatomical changes during childbirth. Excellent for maternity OPDs.",
     image: `${POSTER_BASE}/pregnancy-and-birth.jpg`,
@@ -170,6 +182,7 @@ export const posters: Poster[] = [
   // ===================== NEUROLOGY =====================
   {
     id: "12",
+    slug: "spinal-cranial-nerves-neuro-map",
     title: "Spinal and Cranial Nerves – Neuro Map",
     description: "Detailed chart of cranial nerves & spinal nerve roots. Includes exit locations and functional areas.",
     image: `${POSTER_BASE}/spinal-and-cranial-nerve.jpg`,
@@ -184,6 +197,7 @@ export const posters: Poster[] = [
   },
   {
     id: "13",
+    slug: "dermatomes-sensory-nerve-supply",
     title: "Dermatomes – Sensory Nerve Supply",
     description: "Dermatomal distribution map showing sensory innervation by spinal segments. Required for neuro exams.",
     image: `${POSTER_BASE}/dermatomes.jpg`,
@@ -197,6 +211,7 @@ export const posters: Poster[] = [
   },
   {
     id: "14",
+    slug: "anatomy-of-the-brain-neuro-physio",
     title: "Anatomy of the Brain – Neuro Physio Edition",
     description: "Labelled diagram showing brain lobes, cortical areas and vital neuro structures.",
     image: `${POSTER_BASE}/anatomy-of-the-brain.jpg`,
@@ -211,6 +226,7 @@ export const posters: Poster[] = [
   // ===================== ORTHOPEDICS =====================
   {
     id: "15",
+    slug: "ligaments-of-the-joints-ortho-reference",
     title: "Ligaments of the Joints – Ortho Reference",
     description: "Poster showing ligaments of major joints including knee, shoulder, hip and ankle.",
     image: `${POSTER_BASE}/ligaments-of-the-joints.jpg`,
@@ -224,6 +240,7 @@ export const posters: Poster[] = [
   },
   {
     id: "16",
+    slug: "disorders-of-the-spine-clinical-conditions",
     title: "Disorders of the Spine – Clinical Conditions",
     description: "Depicts disc prolapse, stenosis, scoliosis and posture faults with clear visuals.",
     image: `${POSTER_BASE}/disorders-of-the-spine.jpg`,
@@ -238,6 +255,7 @@ export const posters: Poster[] = [
   },
   {
     id: "17",
+    slug: "anatomy-of-the-spine-vertebral-column",
     title: "Anatomy of the Spine – Vertebral Column",
     description: "Spinal regions C1–L5 with discs, vertebrae and clinical landmarks.",
     image: `${POSTER_BASE}/anatomy-of-the-spine.jpg`,
@@ -252,6 +270,7 @@ export const posters: Poster[] = [
   },
   {
     id: "18",
+    slug: "anatomy-injuries-of-the-shoulder",
     title: "Anatomy and Injuries of the Shoulder",
     description: "Shoulder joint with rotator cuff, ligaments and common injury types like impingement and tears.",
     image: `${POSTER_BASE}/shoulder-anatomy-injuries.jpg`,
@@ -265,6 +284,7 @@ export const posters: Poster[] = [
   },
   {
     id: "19",
+    slug: "anatomy-injuries-of-the-knee",
     title: "Anatomy and Injuries of the Knee",
     description: "ACL, PCL, MCL, LCL and meniscus injuries with anatomical references. A must for ortho centres.",
     image: `${POSTER_BASE}/knee-anatomy-injuries.jpg`,
@@ -279,6 +299,7 @@ export const posters: Poster[] = [
   },
   {
     id: "20",
+    slug: "anatomy-injuries-of-the-hip",
     title: "Anatomy and Injuries of the Hip",
     description: "Hip joint anatomy showing labrum, capsule and common injuries like impingement and bursitis.",
     image: `${POSTER_BASE}/hip-anatomy-injuries.jpg`,

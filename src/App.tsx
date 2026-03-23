@@ -32,6 +32,7 @@ import NeetNotes from "./pages/NeetNotes";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import MedPosterHubIndex from "./apps/medposterhub/pages/MedPosterHubIndex";
+import MedPosterDetailPage from "./apps/medposterhub/pages/MedPosterDetailPage";
 import MedOrthoPage from "./apps/medical/pages/MedOrthoPage";
 import MedCardioPage from "./apps/medical/pages/MedCardioPage";
 import MedNeuroPage from "./apps/medical/pages/MedNeuroPage";
@@ -76,6 +77,7 @@ const App = () => (
               <Route path="/blog/:id" element={<BlogPost />} />
               {/* Sub-Apps */}
               <Route path="/medposterhub" element={<MedPosterHubIndex />} />
+              <Route path="/medposterhub/:slug" element={<MedPosterDetailPage />} />
               <Route path="/medortho" element={<MedOrthoPage />} />
               <Route path="/medcardio" element={<MedCardioPage />} />
               <Route path="/medneuro" element={<MedNeuroPage />} />

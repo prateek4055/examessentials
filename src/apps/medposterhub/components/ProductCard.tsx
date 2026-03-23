@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, ShoppingCart, Eye } from "lucide-react";
 import { Poster } from "../data/posters";
@@ -34,9 +35,9 @@ export const ProductCard = ({ poster, onViewDetails }: ProductCardProps) => {
             )}
 
             {/* Image Container with Inner Shadow */}
-            <div
-                className="relative bg-[#F4F7FB] rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-clay-inner mb-4 p-3"
-                onClick={() => onViewDetails(poster)}
+            <Link
+                to={`/medposterhub/${poster.slug}`}
+                className="relative bg-[#F4F7FB] rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-clay-inner mb-4 p-3 block"
             >
                 <div className="w-full h-full rounded-xl overflow-hidden relative">
                     <img
@@ -57,7 +58,7 @@ export const ProductCard = ({ poster, onViewDetails }: ProductCardProps) => {
                         </ClayButton>
                     </div>
                 </div>
-            </div>
+            </Link>
 
             {/* Content */}
             <div className="flex flex-col flex-1 px-1">
@@ -72,13 +73,13 @@ export const ProductCard = ({ poster, onViewDetails }: ProductCardProps) => {
                     </div>
                 </div>
 
-                <h3
-                    className="font-handwritten font-bold text-slate-900 mb-1 line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors text-xl leading-tight tracking-wide"
-                    onClick={() => onViewDetails(poster)}
+                <Link
+                    to={`/medposterhub/${poster.slug}`}
+                    className="font-handwritten font-bold text-slate-900 mb-1 line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors text-xl leading-tight tracking-wide block"
                     title={poster.title}
                 >
                     {poster.title}
-                </h3>
+                </Link>
 
                 {/* Price & Size Selector */}
                 <div className="mt-auto pt-3">
