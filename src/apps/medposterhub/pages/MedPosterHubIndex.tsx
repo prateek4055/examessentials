@@ -31,12 +31,142 @@ const MedPosterHubContent = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Build structured data from actual poster products
+  const posterStructuredData = [
+    // 1. CollectionPage with product offers
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "MedPosterHub – Premium Medical Posters",
+      "description": "Shop 20+ premium medical anatomy posters for clinics, hospitals, and medical students. High-resolution, medically accurate charts covering Anatomy, Orthopedics, and Neurology.",
+      "url": "https://examessentials.in/medposterhub",
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": posters.length,
+        "itemListElement": posters.map((poster, idx) => ({
+          "@type": "ListItem",
+          "position": idx + 1,
+          "item": {
+            "@type": "Product",
+            "name": poster.title,
+            "description": poster.description,
+            "image": `https://examessentials.in${poster.image}`,
+            "sku": `MEDPOSTER-${poster.id}`,
+            "brand": {
+              "@type": "Brand",
+              "name": "MedPosterHub by Exam Essentials"
+            },
+            "category": `Medical Posters > ${poster.category}`,
+            "offers": {
+              "@type": "AggregateOffer",
+              "priceCurrency": "INR",
+              "lowPrice": poster.price.small,
+              "highPrice": poster.price.large,
+              "offerCount": 3,
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Organization",
+                "name": "MedPosterHub"
+              }
+            },
+            ...(poster.rating ? {
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": poster.rating.toString(),
+                "reviewCount": (poster.reviewCount || 50).toString(),
+                "bestRating": "5",
+                "worstRating": "1"
+              }
+            } : {})
+          }
+        }))
+      }
+    },
+    // 2. BreadcrumbList
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://examessentials.in/" },
+        { "@type": "ListItem", "position": 2, "name": "MedPosterHub", "item": "https://examessentials.in/medposterhub" }
+      ]
+    },
+    // 3. FAQPage for rich snippets
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What sizes are the medical posters available in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "All MedPosterHub posters are available in three standard sizes: A3 (₹299), A2 (₹399), and A1 (₹499). Each is printed on premium 250gsm matte paper with UV-resistant inks for long-lasting display."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are MedPosterHub posters suitable for clinics and hospitals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Our posters are specifically designed for medical professionals. They are used in physiotherapy clinics, ortho OPDs, neuro rehab centres, gyms, and medical colleges across India. Each poster is medically accurate and professionally illustrated."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What categories of medical posters do you offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer posters across three main categories: Anatomy (Muscular System, Skeletal System, Nervous System, Circulatory, Digestive, Endocrine, Respiratory, Lymphatic, Reproductive Systems), Neurology (Cranial Nerves, Dermatomes, Brain Anatomy), and Orthopedics (Joint Ligaments, Spine Disorders, Shoulder/Knee/Hip Anatomy & Injuries)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I order medical posters in bulk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For bulk orders of 10+ posters, contact us on WhatsApp at +91 94609 70342 for special pricing and combo discounts. We offer custom packages for clinics setting up new practices."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the print quality of MedPosterHub posters?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "All posters are printed on premium 250gsm matte paper using UV-resistant inks. This ensures vibrant colours that last for years without fading, even in well-lit clinic environments."
+          }
+        }
+      ]
+    },
+    // 4. Organization
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "MedPosterHub by Exam Essentials",
+      "url": "https://examessentials.in/medposterhub",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Exam Essentials",
+        "url": "https://examessentials.in"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-94609-70342",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Hindi"]
+      }
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
       <SEOHead
-        title="MedPosterHub – Premium Medical Posters for Professionals"
-        description="Elevate your clinic with high-resolution, medically accurate posters. Order Anatomy, Ortho, and Neuro charts online."
+        title="MedPosterHub – Buy Medical Anatomy Posters Online | Clinic & Hospital Charts India"
+        description="Shop 20+ premium medical anatomy posters for hospitals, clinics & students. High-resolution Anatomy, Orthopedics & Neurology charts on 250gsm matte paper. Sizes A3, A2, A1 starting ₹299. Trusted by 100+ clinics across India."
         canonical="/medposterhub"
+        keywords="medical posters, anatomy posters for clinic, buy medical charts online India, anatomy chart A1 A2 A3, ortho clinic posters, neuro anatomy poster, muscular system poster, skeletal system chart, physiotherapy clinic posters, hospital wall charts, medical education posters, dermatomes poster, spine anatomy chart, knee anatomy poster, shoulder anatomy poster, medical posters for students, clinic decoration, OPD posters India, MedPosterHub"
+        structuredData={posterStructuredData}
+        ogType="website"
       />
 
       <MedPosterHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
