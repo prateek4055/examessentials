@@ -22,6 +22,8 @@ Allow: /blog/
 Allow: /class-11-notes
 Allow: /class-12-notes
 Allow: /neet-notes
+Allow: /medposterhub
+Allow: /medposterhub/
 
 # Crawl delay to be respectful
 Crawl-delay: 1
