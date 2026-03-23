@@ -1031,10 +1031,12 @@ const Admin = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-body text-muted-foreground">Total Charge:</span>
                       <span className="text-lg font-display font-bold text-foreground">
-                        ₹{mailForm.productIds.reduce((sum, id) => {
+                        ₹{detectedCombos.length > 0 ? cartCalc.total : mailForm.productIds.reduce((sum, id) => {
                           const price = parseFloat(customPrices[id] || "0");
                           return sum + (isNaN(price) ? 0 : price);
-                        }, 0).toFixed(0)}
+                        }, 0)}{detectedCombos.length > 0 && cartCalc.discount > 0 && (
+                          <span className="text-sm text-emerald-500 ml-2 font-normal">saved ₹{cartCalc.discount}</span>
+                        )}
                       </span>
                     </div>
                   </div>
