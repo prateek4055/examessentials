@@ -281,10 +281,8 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Call Edge Function directly with webhook secret
-      const supabaseUrl = typeof window !== 'undefined'
-        ? `${window.location.origin}/supabase-api`
-        : import.meta.env.VITE_SUPABASE_URL;
+      // Step 2: Call Edge Function directly
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
       const response = await fetch(`${supabaseUrl}/functions/v1/process-pdf-delivery`, {
         method: "POST",
@@ -335,6 +333,13 @@ const Admin = () => {
         : [...prev.productIds, productId],
     }));
   };
+
+  // Calculate combo pricing for selected products
+  const selectedProductsForCalc = products
+    .filter((p) => mailForm.productIds.includes(p.id))
+    .map((p) => ({ id: p.id, subject: p.subject, price: p.price, category: p.category }));
+  const cartCalc = calculateCartTotal(selectedProductsForCalc);
+  const detectedCombos = cartCalc.appliedCombos;
 
   // Show loading state until auth completes and we confirm admin status
   if (authLoading) {
@@ -997,6 +1002,28 @@ const Admin = () => {
                     className="accent-purple-500 w-5 h-5"
                   />
                 </div>
+
+                {/* Detected Combos */}
+                {detectedCombos.length > 0 && mailForm.productIds.length > 1 && (
+                  <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                    <p className="text-sm font-semibold text-emerald-500 mb-1">🎉 Combo Detected!</p>
+                    {detectedCombos.map((combo) => (
+                      <div key={combo.id} className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{combo.label}</span>
+                        <span>
+                          <span className="line-through mr-1">₹{combo.originalPrice}</span>
+                          <span className="text-emerald-500 font-bold">₹{combo.price}</span>
+                        </span>
+                      </div>
+                    ))}
+                    {!isFreeDelivery && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Combo total: <span className="font-bold text-foreground">₹{cartCalc.total}</span>
+                        {cartCalc.discount > 0 && <span className="text-emerald-500 ml-1">(Save ₹{cartCalc.discount})</span>}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 {/* Total Charge display when not free */}
                 {!isFreeDelivery && mailForm.productIds.length > 0 && (
