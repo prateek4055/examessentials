@@ -246,17 +246,26 @@ const Admin = () => {
         orderAmount = 0;
         paymentId = "admin_free_" + crypto.randomUUID();
       } else {
-        // Calculate total from custom prices
-        orderAmount = mailForm.productIds.reduce((sum, id) => {
-          const price = parseFloat(customPrices[id] || "0");
-          return sum + (isNaN(price) ? 0 : price);
-        }, 0);
-        // Serialize custom prices into razorpay_payment_id
-        const customPricesPayload: Record<string, number> = {};
-        mailForm.productIds.forEach((id) => {
-          customPricesPayload[id] = parseFloat(customPrices[id] || "0") || 0;
-        });
-        paymentId = "admin_custom_" + JSON.stringify(customPricesPayload);
+        // Use combo total if combos detected, otherwise sum custom prices
+        if (detectedCombos.length > 0) {
+          orderAmount = cartCalc.total;
+          // Use combo-calculated per-item prices
+          const customPricesPayload: Record<string, number> = {};
+          cartCalc.items.forEach((item) => {
+            customPricesPayload[item.productId] = item.finalPrice;
+          });
+          paymentId = "admin_custom_" + JSON.stringify(customPricesPayload);
+        } else {
+          orderAmount = mailForm.productIds.reduce((sum, id) => {
+            const price = parseFloat(customPrices[id] || "0");
+            return sum + (isNaN(price) ? 0 : price);
+          }, 0);
+          const customPricesPayload: Record<string, number> = {};
+          mailForm.productIds.forEach((id) => {
+            customPricesPayload[id] = parseFloat(customPrices[id] || "0") || 0;
+          });
+          paymentId = "admin_custom_" + JSON.stringify(customPricesPayload);
+        }
       }
 
       // Step 1: Create admin order
@@ -1031,10 +1040,12 @@ const Admin = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-body text-muted-foreground">Total Charge:</span>
                       <span className="text-lg font-display font-bold text-foreground">
-                        ₹{mailForm.productIds.reduce((sum, id) => {
+                        ₹{detectedCombos.length > 0 ? cartCalc.total : mailForm.productIds.reduce((sum, id) => {
                           const price = parseFloat(customPrices[id] || "0");
                           return sum + (isNaN(price) ? 0 : price);
-                        }, 0).toFixed(0)}
+                        }, 0)}{detectedCombos.length > 0 && cartCalc.discount > 0 && (
+                          <span className="text-sm text-emerald-500 ml-2 font-normal">saved ₹{cartCalc.discount}</span>
+                        )}
                       </span>
                     </div>
                   </div>
