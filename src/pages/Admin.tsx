@@ -1003,6 +1003,28 @@ const Admin = () => {
                   />
                 </div>
 
+                {/* Detected Combos */}
+                {detectedCombos.length > 0 && mailForm.productIds.length > 1 && (
+                  <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                    <p className="text-sm font-semibold text-emerald-500 mb-1">🎉 Combo Detected!</p>
+                    {detectedCombos.map((combo) => (
+                      <div key={combo.id} className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{combo.label}</span>
+                        <span>
+                          <span className="line-through mr-1">₹{combo.originalPrice}</span>
+                          <span className="text-emerald-500 font-bold">₹{combo.price}</span>
+                        </span>
+                      </div>
+                    ))}
+                    {!isFreeDelivery && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Combo total: <span className="font-bold text-foreground">₹{cartCalc.total}</span>
+                        {cartCalc.discount > 0 && <span className="text-emerald-500 ml-1">(Save ₹{cartCalc.discount})</span>}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {/* Total Charge display when not free */}
                 {!isFreeDelivery && mailForm.productIds.length > 0 && (
                   <div className="p-3 rounded-lg bg-secondary border border-border">
