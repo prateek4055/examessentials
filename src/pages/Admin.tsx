@@ -281,10 +281,8 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Call Edge Function directly with webhook secret
-      const supabaseUrl = typeof window !== 'undefined'
-        ? `${window.location.origin}/supabase-api`
-        : import.meta.env.VITE_SUPABASE_URL;
+      // Step 2: Call Edge Function directly
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
       const response = await fetch(`${supabaseUrl}/functions/v1/process-pdf-delivery`, {
         method: "POST",
