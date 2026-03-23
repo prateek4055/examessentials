@@ -33,34 +33,60 @@ async function generateSitemaps() {
   console.log('🔄 Starting dynamic sitemap generation...');
 
   try {
+    // 0. Fetch static blog posts from source code to ensure they are in the sitemap
+    console.log('Reading static blog posts from blogData.ts...');
+    let staticBlogSlugs = [];
+    try {
+      const blogDataPath = path.resolve(process.cwd(), 'src/lib/blogData.ts');
+      if (fs.existsSync(blogDataPath)) {
+        const blogDataContent = fs.readFileSync(blogDataPath, 'utf8');
+        // Extract IDs using regex to avoid complex parsing of TS in JS
+        const matches = [...blogDataContent.matchAll(/id:\s*["']([^"']+)["']/g)];
+        staticBlogSlugs = matches.map(m => m[1]);
+        console.log(`✅ Found ${staticBlogSlugs.length} static blog posts.`);
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not read static blog posts:', e.message);
+    }
+
     // 1. Fetch all published products
     console.log('Fetching products from Supabase...');
-    const { data: products, error } = await supabase
+    const { data: products, error: productError } = await supabase
       .from('products')
       .select('id, updated_at')
       .eq('published', true);
 
-    if (error) {
-      throw error;
+    if (productError) {
+      throw productError;
     }
 
     console.log(`✅ Found ${products?.length || 0} published products.`);
 
+    // 2. Fetch all published blog posts
+    console.log('Fetching blog posts from Supabase...');
+    const { data: dbBlogPosts, error: blogError } = await supabase
+      .from('blog_posts')
+      .select('slug, updated_at')
+      .eq('published', true);
+
+    if (blogError) {
+      console.warn('⚠️ Could not fetch blog posts from Supabase (this is okay if table doesn\'t exist yet):', blogError.message);
+    }
+
     const today = new Date().toISOString().split('T')[0];
 
-    // 2. Generate Product Sitemap (sitemap-products.xml)
+    // 3. Generate Product Sitemap (sitemap-products.xml)
     let productSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${DOMAIN}/products</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>`;
 
     if (products && products.length > 0) {
       products.forEach((product) => {
-        // Use updated_at if available, otherwise fallback to today
         const lastmod = product.updated_at
           ? new Date(product.updated_at).toISOString().split('T')[0]
           : today;
@@ -77,73 +103,87 @@ async function generateSitemaps() {
 
     productSitemap += `\n</urlset>`;
 
-    // 3. Generate Static Pages Sitemap (sitemap-pages.xml)
-    // Note: blog sitemap is already handling the dynamic blog posts if any
-    const pagesSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    // 4. Generate Blog Sitemap (sitemap-blog.xml)
+    let blogSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${DOMAIN}/</loc>
+    <loc>${DOMAIN}/blog</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/about</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/contact</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/posters</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/medortho</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/medcardio</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/medneuro</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/medphysio</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/medradio</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${DOMAIN}/medpharma</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-</urlset>`;
+    <priority>0.9</priority>
+  </url>`;
 
-    // 4. Generate Main Sitemap Index (sitemap.xml)
+    // Add static blog posts
+    staticBlogSlugs.forEach(slug => {
+      blogSitemap += `
+  <url>
+    <loc>${DOMAIN}/blog/${slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
+    // Add DB blog posts (avoid duplicates if slug matches static ID)
+    if (dbBlogPosts && dbBlogPosts.length > 0) {
+      dbBlogPosts.forEach(post => {
+        if (!staticBlogSlugs.includes(post.slug)) {
+          const lastmod = post.updated_at
+            ? new Date(post.updated_at).toISOString().split('T')[0]
+            : today;
+          
+          blogSitemap += `
+  <url>
+    <loc>${DOMAIN}/blog/${post.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+        }
+      });
+    }
+
+    blogSitemap += `\n</urlset>`;
+
+    // 5. Generate Static Pages Sitemap (sitemap-pages.xml)
+    const staticPages = [
+      { path: '/', priority: '1.0', changefreq: 'daily' },
+      { path: '/about', priority: '0.7', changefreq: 'monthly' },
+      { path: '/contact', priority: '0.7', changefreq: 'monthly' },
+      { path: '/class-11-notes', priority: '0.9', changefreq: 'weekly' },
+      { path: '/class-12-notes', priority: '0.9', changefreq: 'weekly' },
+      { path: '/neet-notes', priority: '0.9', changefreq: 'weekly' },
+      // Sub-Apps
+      { path: '/medposterhub', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medcardio', priority: '0.6', changefreq: 'monthly' },
+      { path: '/medneuro', priority: '0.6', changefreq: 'monthly' },
+      { path: '/medphysio', priority: '0.6', changefreq: 'monthly' },
+      { path: '/medradio', priority: '0.6', changefreq: 'monthly' },
+      { path: '/medpharma', priority: '0.6', changefreq: 'monthly' },
+      // Legal
+      { path: '/privacy-policy', priority: '0.3', changefreq: 'monthly' },
+      { path: '/terms-and-conditions', priority: '0.3', changefreq: 'monthly' },
+      { path: '/refund-policy', priority: '0.3', changefreq: 'monthly' },
+      { path: '/shipping-policy', priority: '0.3', changefreq: 'monthly' },
+    ];
+
+    let pagesSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+    staticPages.forEach(page => {
+      pagesSitemap += `
+  <url>
+    <loc>${DOMAIN}${page.path}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`;
+    });
+
+    pagesSitemap += `\n</urlset>`;
+
+    // 6. Generate Main Sitemap Index (sitemap.xml)
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
@@ -160,7 +200,7 @@ async function generateSitemaps() {
   </sitemap>
 </sitemapindex>`;
 
-    // 5. Write files to the public directory
+    // 7. Write files to the public directory
     const publicDir = path.resolve(process.cwd(), 'public');
 
     // Ensure public directory exists
@@ -170,6 +210,9 @@ async function generateSitemaps() {
 
     fs.writeFileSync(path.join(publicDir, 'sitemap-products.xml'), productSitemap);
     console.log('✅ Generated public/sitemap-products.xml');
+
+    fs.writeFileSync(path.join(publicDir, 'sitemap-blog.xml'), blogSitemap);
+    console.log('✅ Generated public/sitemap-blog.xml');
 
     fs.writeFileSync(path.join(publicDir, 'sitemap-pages.xml'), pagesSitemap);
     console.log('✅ Generated public/sitemap-pages.xml');

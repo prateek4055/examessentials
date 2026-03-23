@@ -30,8 +30,10 @@ const SEOHead = ({
   const baseUrl = "https://examessentials.in";
   
   // Clean canonical URL - remove query parameters for cleaner indexing
-  const cleanCanonical = canonical ? canonical.split('?')[0] : undefined;
-  const fullCanonical = cleanCanonical ? `${baseUrl}${cleanCanonical}` : undefined;
+  // Default to current pathname if no canonical is provided
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const cleanCanonical = (canonical || currentPath).split('?')[0];
+  const fullCanonical = `${baseUrl}${cleanCanonical === '/' ? '' : cleanCanonical}`;
   
   // Ensure title is under 60 chars for optimal SEO
   const baseTitleWithSuffix = title.includes("Exam Essentials") ? title : `${title} | Exam Essentials`;

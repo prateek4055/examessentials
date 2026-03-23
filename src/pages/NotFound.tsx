@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -15,9 +16,11 @@ const NotFound = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Page Not Found | Exam Essentials</title>
-      </Helmet>
+      <SEOHead 
+        title="Page Not Found | Exam Essentials" 
+        description="The page you're looking for doesn't exist or has been moved."
+        noIndex={true}
+      />
       
       <Navbar />
       <main className="min-h-screen pt-24 flex items-center justify-center">
