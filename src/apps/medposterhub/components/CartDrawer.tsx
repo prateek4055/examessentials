@@ -19,7 +19,11 @@ export const CartDrawer = () => {
         // Generate WhatsApp message
         let message = "Hi, I would like to order the following posters:\n\n";
         cart.forEach((item) => {
-            message += `• ${item.title} (${item.selectedSize}) x ${item.quantity}\n`;
+            message += `• ${item.title} (${item.selectedSize})`;
+            if (item.isDoubleSided) {
+                message += ` [${item.backPosterTitle ? `Double Sided: Back is ${item.backPosterTitle}` : 'Double Sided'}] (+₹200)`;
+            }
+            message += ` x ${item.quantity}\n`;
         });
         message += `\nTotal: ₹${totalPrice}`;
 
@@ -49,7 +53,7 @@ export const CartDrawer = () => {
                     ) : (
                         <div className="space-y-6 py-4">
                             {cart.map((item) => (
-                                <ClayCard key={`${item.id}-${item.selectedSize}`} variant="flat" className="flex gap-4 p-3 bg-white/50">
+                                <ClayCard key={`${item.id}-${item.selectedSize}-${item.isDoubleSided}`} variant="flat" className="flex gap-4 p-3 bg-white/50">
                                     <div className="w-20 h-24 rounded-lg overflow-hidden flex-shrink-0 shadow-clay-inner bg-white">
                                         <img
                                             src={item.image}
@@ -61,14 +65,24 @@ export const CartDrawer = () => {
                                         <h4 className="font-semibold text-slate-900 text-sm line-clamp-2 leading-tight">
                                             {item.title}
                                         </h4>
-                                        <span className="text-xs text-slate-500 mt-1 font-medium bg-blue-50 px-2 py-0.5 rounded w-fit text-blue-600">
-                                            Size: {item.selectedSize}
-                                        </span>
-                                        <div className="mt-auto flex items-center justify-between">
+                                        <div className="flex flex-wrap gap-2 mt-1">
+                                            <span className="text-xs text-slate-500 font-medium bg-blue-50 px-2 py-0.5 rounded w-fit text-blue-600">
+                                                Size: {item.selectedSize}
+                                            </span>
+                                            {item.isDoubleSided && (
+                                                <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded w-fit border border-green-200">
+                                                    + Double Sided (₹200)
+                                                </span>
+                                            )}
+                                        </div>
+                                        {item.backPosterTitle && (
+                                            <span className="text-[10px] text-slate-400 mt-1 line-clamp-1">Back: {item.backPosterTitle}</span>
+                                        )}
+                                        <div className="mt-auto pt-2 flex items-center justify-between">
                                             <div className="flex items-center gap-3 bg-[#F4F7FB] rounded-lg shadow-clay-inner p-1">
                                                 <button
                                                     className="p-1 hover:text-blue-600 disabled:opacity-30 transition-colors"
-                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1, item.isDoubleSided)}
                                                     disabled={item.quantity <= 1}
                                                 >
                                                     <Minus className="w-3 h-3" />
@@ -76,7 +90,7 @@ export const CartDrawer = () => {
                                                 <span className="text-sm font-bold w-4 text-center text-slate-700">{item.quantity}</span>
                                                 <button
                                                     className="p-1 hover:text-blue-600 transition-colors"
-                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1, item.isDoubleSided)}
                                                 >
                                                     <Plus className="w-3 h-3" />
                                                 </button>
@@ -84,7 +98,7 @@ export const CartDrawer = () => {
                                             <ClayButton
                                                 variant="icon"
                                                 className="h-8 w-8 text-red-400 hover:text-red-500 bg-transparent shadow-none hover:bg-red-50"
-                                                onClick={() => removeFromCart(item.id, item.selectedSize)}
+                                                onClick={() => removeFromCart(item.id, item.selectedSize, item.isDoubleSided)}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </ClayButton>

@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export const MedFooter = () => {
     return (
@@ -7,8 +8,8 @@ export const MedFooter = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
                     {/* Brand Column */}
                     <div className="lg:col-span-2">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="bg-blue-600 text-white p-2 rounded-lg font-bold text-xl">EE</div>
+                        <div className="flex items-center gap-3 mb-6">
+                            <img src={logo} alt="Exam Essentials" className="h-12 w-12 rounded-xl object-cover bg-white p-1.5" />
                             <span className="text-2xl font-bold text-white tracking-tight">MedPosterHub</span>
                         </div>
                         <p className="text-slate-400 mb-6 leading-relaxed max-w-sm">
@@ -37,10 +38,10 @@ export const MedFooter = () => {
                         <h4 className="text-white font-bold mb-6">Support</h4>
                         <ul className="space-y-3">
                             <li><a href="#" className="hover:text-white transition-colors">Track Order</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Shipping Policy</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Returns & Refunds</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Bulk Orders</a></li>
-                            <li><a href="#contact" className="hover:text-white transition-colors">Contact Us</a></li>
+                            <li><a href="/medposterhub/shipping" className="hover:text-white transition-colors">Shipping Policy</a></li>
+                            <li><a href="/medposterhub/returns" className="hover:text-white transition-colors">Returns & Refunds</a></li>
+                            <li><a href="/medposterhub/bulk-orders" className="hover:text-white transition-colors">Bulk Orders</a></li>
+                            <li><a href="/medposterhub/contact" className="hover:text-white transition-colors">Contact Us</a></li>
                         </ul>
                     </div>
 
@@ -49,7 +50,7 @@ export const MedFooter = () => {
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 text-blue-500 shrink-0" />
-                                <span>Jaipur, Rajasthan, India</span>
+                                <span>Deewan complex, Deewan Mohalla, Behror, Rajasthan, 301701</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="w-5 h-5 text-blue-500 shrink-0" />
@@ -66,8 +67,8 @@ export const MedFooter = () => {
                 <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
                     <p>© {new Date().getFullYear()} Exam Essentials. All rights reserved.</p>
                     <div className="flex gap-6">
-                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                        <a href="/medposterhub/privacy-terms" className="hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="/medposterhub/privacy-terms" className="hover:text-white transition-colors">Terms of Service</a>
                     </div>
                 </div>
             </div>

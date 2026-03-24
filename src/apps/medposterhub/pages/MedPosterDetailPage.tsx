@@ -1,11 +1,13 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { posters } from "../data/posters";
+import { Poster, posters } from "../data/posters";
 import { CartProvider, useCart } from "../context/CartContext";
 import { MedPosterHeader } from "../components/MedPosterHeader";
 import { MedFooter } from "../components/MedFooter";
 import { CartDrawer } from "../components/CartDrawer";
 import { StickyCartBar } from "../components/StickyCartBar";
+import { PosterFlipViewer } from "../components/PosterFlipViewer";
+import { ProductReviews } from "../components/ProductReviews";
 import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +31,9 @@ const MedPosterDetailContent = () => {
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState("A2");
   const [quantity, setQuantity] = useState(1);
+  const [backPoster, setBackPoster] = useState<Poster | null>(null);
+
+  const DOUBLE_SIDED_SURCHARGE = 200;
 
   const poster = posters.find((p) => p.slug === slug);
 
@@ -57,13 +62,23 @@ const MedPosterDetailContent = () => {
     return poster.price.medium;
   };
 
+  const getUnitPrice = (size: string) => {
+    const basePrice = getPrice(size);
+    return backPoster ? basePrice + DOUBLE_SIDED_SURCHARGE : basePrice;
+  };
+
   const handleWhatsAppOrder = () => {
+    const unitPrice = getUnitPrice(selectedSize);
+    const backLine = backPoster
+      ? `🔄 Back Side: ${backPoster.title} (+₹${DOUBLE_SIDED_SURCHARGE} double-sided)\n`
+      : "";
     const message = encodeURIComponent(
       `Hi! I want to order this poster:\n\n` +
         `📋 Product: ${poster.title}\n` +
         `📐 Size: ${selectedSize}\n` +
+        backLine +
         `📦 Quantity: ${quantity}\n` +
-        `💰 Total: ₹${getPrice(selectedSize) * quantity}\n\n` +
+        `💰 Total: ₹${unitPrice * quantity}\n\n` +
         `Please share payment details and delivery options.`
     );
     window.open(`https://wa.me/919460970342?text=${message}`, "_blank");
@@ -185,45 +200,21 @@ const MedPosterDetailContent = () => {
           </Button>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Image */}
-            <div className="relative rounded-2xl border border-slate-200 overflow-hidden bg-slate-50">
-              <img
-                src={poster.image}
-                alt={`${poster.title} – Premium Medical ${poster.category} Poster`}
-                className="w-full h-auto object-contain"
-              />
-              {poster.bestseller && (
-                <Badge className="absolute top-4 left-4 bg-amber-500 text-white hover:bg-amber-500">
-                  ⭐ Bestseller
-                </Badge>
-              )}
-              <Badge className="absolute top-4 right-4 bg-white text-slate-900 hover:bg-white shadow-sm">
-                {poster.category}
-              </Badge>
-            </div>
+            {/* 3D Flip Viewer */}
+            <PosterFlipViewer
+              frontPoster={poster}
+              allPosters={posters}
+              backPoster={backPoster}
+              onBackPosterChange={setBackPoster}
+            />
 
             {/* Details */}
             <div className="flex flex-col">
-              {/* Rating */}
-              {poster.rating && (
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="flex gap-0.5">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i <= Math.floor(poster.rating!)
-                            ? "fill-amber-400 text-amber-400"
-                            : "fill-slate-200 text-slate-200"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm text-slate-500">
-                    {poster.rating} ({poster.reviewCount} reviews)
-                  </span>
-                </div>
-              )}
+              <div className="mb-4">
+                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-100">
+                  {poster.category}
+                </Badge>
+              </div>
 
               <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-tight">
                 {poster.title}
@@ -261,7 +252,7 @@ const MedPosterDetailContent = () => {
                       }`}
                     >
                       <div>{size}</div>
-                      <div className="text-xs mt-1 font-normal">₹{getPrice(size)}</div>
+                      <div className="text-xs mt-1 font-normal">₹{backPoster ? getPrice(size) + DOUBLE_SIDED_SURCHARGE : getPrice(size)}</div>
                     </button>
                   ))}
                 </div>
@@ -292,11 +283,19 @@ const MedPosterDetailContent = () => {
 
               {/* Price & Actions */}
               <div className="mt-auto pt-6 border-t border-slate-100">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-4xl font-bold text-slate-900">
-                    ₹{getPrice(selectedSize) * quantity}
-                  </span>
-                  <span className="text-sm text-slate-400">Total</span>
+                <div className="flex flex-col gap-1 mb-6">
+                  <div className="flex items-center gap-3">
+                    <span className="text-4xl font-bold text-slate-900">
+                      ₹{getUnitPrice(selectedSize) * quantity}
+                    </span>
+                    <span className="text-sm text-slate-400">Total</span>
+                  </div>
+                  {backPoster && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-slate-500">₹{getPrice(selectedSize)} × {quantity}</span>
+                      <span className="text-blue-600 font-semibold">+ ₹{DOUBLE_SIDED_SURCHARGE * quantity} double-sided</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -304,7 +303,7 @@ const MedPosterDetailContent = () => {
                     size="lg"
                     className="flex-1 rounded-xl bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 h-14 text-lg"
                     onClick={() => {
-                      addToCart(poster, selectedSize, quantity);
+                      addToCart(poster, selectedSize, quantity, !!backPoster, backPoster?.title);
                     }}
                   >
                     <ShoppingCart className="w-5 h-5 mr-2" />
@@ -324,6 +323,9 @@ const MedPosterDetailContent = () => {
               </div>
             </div>
           </div>
+
+          {/* Product Reviews */}
+          <ProductReviews />
 
           {/* Related Posters */}
           {suggestedPosters.length > 0 && (

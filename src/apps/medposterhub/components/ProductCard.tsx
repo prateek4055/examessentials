@@ -69,7 +69,6 @@ export const ProductCard = ({ poster, onViewDetails }: ProductCardProps) => {
                     <div className="flex items-center gap-1.5">
                         <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                         <span className="text-xs font-bold text-slate-700">{poster.rating || 4.8}</span>
-                        <span className="text-[10px] text-slate-400">({poster.reviewCount || 120})</span>
                     </div>
                 </div>
 
@@ -106,10 +105,7 @@ export const ProductCard = ({ poster, onViewDetails }: ProductCardProps) => {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[10px] text-green-600 font-medium mb-3">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                        Ships in 2–4 days
-                    </div>
+
 
                     {/* Mobile Add to Cart (Change from hidden/block logic if needed, keeping visible for now) */}
                     <ClayButton

@@ -7,21 +7,21 @@ const testimonials = [
         role: "Orthopedic Surgeon",
         credibility: "12 yrs experience",
         quote: "The anatomical accuracy is impressive. Most posters I've seen are generic, but these highlight the clinical relevance perfectly.",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DrRajesh&backgroundColor=b6e3f4",
+        avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&h=200&fit=crop&crop=faces",
     },
     {
         name: "Dr. Priya Sharma",
         role: "Physiotherapist",
         credibility: "Sports Rehab Specialist",
         quote: "My patients love these! Having visual aids on the wall makes explaining injuries so much easier. The print quality is top-notch.",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DrPriya&backgroundColor=ffdfbf",
+        avatar: "https://images.unsplash.com/photo-1594824413326-07331823952f?w=200&h=200&fit=crop&crop=faces",
     },
     {
         name: "Arjun Mehta",
         role: "MBBS Student",
         credibility: "Final Year",
         quote: "A huge help for my revision. The charts are detailed and clear. Way better than scrolling through PDFs on a phone.",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun&backgroundColor=c0ebd7",
+        avatar: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=150&h=150&fit=crop&crop=faces",
     },
 ];
 

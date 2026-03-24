@@ -55,13 +55,10 @@ export const ProductDetailModal = ({ poster, isOpen, onClose }: ProductDetailMod
                     {/* Content Side */}
                     <div className="p-8 flex flex-col h-full bg-white">
                         <div className="mb-auto">
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="flex gap-0.5">
-                                    {[1, 2, 3, 4, 5].map(i => (
-                                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                                    ))}
-                                </div>
-                                <span className="text-sm text-slate-500">(24 Reviews)</span>
+                            <div className="mb-4">
+                                <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-50 shadow-none border border-blue-100">
+                                    {poster.category}
+                                </Badge>
                             </div>
 
                             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 leading-tight">

@@ -11,6 +11,7 @@ import { CartDrawer } from "../components/CartDrawer";
 import { ProductDetailModal } from "../components/ProductDetailModal";
 import { MedFooter } from "../components/MedFooter";
 import { BuyerPersonas } from "../components/BuyerPersonas";
+
 import { StickyCartBar } from "../components/StickyCartBar";
 import SEOHead from "@/components/SEOHead";
 import { MessageCircle } from "lucide-react";
@@ -246,6 +247,8 @@ const MedPosterHubContent = () => {
         </section>
 
         <TestimonialsSection />
+
+
 
         <FeaturesSection />
 

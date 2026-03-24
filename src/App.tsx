@@ -33,6 +33,11 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import MedPosterHubIndex from "./apps/medposterhub/pages/MedPosterHubIndex";
 import MedPosterDetailPage from "./apps/medposterhub/pages/MedPosterDetailPage";
+import MedShippingPolicy from "./apps/medposterhub/pages/ShippingPolicy";
+import ReturnRefund from "./apps/medposterhub/pages/ReturnRefund";
+import BulkOrders from "./apps/medposterhub/pages/BulkOrders";
+import ContactUs from "./apps/medposterhub/pages/ContactUs";
+import PrivacyTerms from "./apps/medposterhub/pages/PrivacyTerms";
 import MedOrthoPage from "./apps/medical/pages/MedOrthoPage";
 import MedCardioPage from "./apps/medical/pages/MedCardioPage";
 import MedNeuroPage from "./apps/medical/pages/MedNeuroPage";
@@ -78,6 +83,11 @@ const App = () => (
               {/* Sub-Apps */}
               <Route path="/medposterhub" element={<MedPosterHubIndex />} />
               <Route path="/medposterhub/:slug" element={<MedPosterDetailPage />} />
+              <Route path="/medposterhub/shipping" element={<MedShippingPolicy />} />
+              <Route path="/medposterhub/returns" element={<ReturnRefund />} />
+              <Route path="/medposterhub/bulk-orders" element={<BulkOrders />} />
+              <Route path="/medposterhub/contact" element={<ContactUs />} />
+              <Route path="/medposterhub/privacy-terms" element={<PrivacyTerms />} />
               <Route path="/medortho" element={<MedOrthoPage />} />
               <Route path="/medcardio" element={<MedCardioPage />} />
               <Route path="/medneuro" element={<MedNeuroPage />} />
