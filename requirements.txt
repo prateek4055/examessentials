@@ -3,4 +3,5 @@ uvicorn
 pypdf
 reportlab
 requests
+resend
 python-multipart

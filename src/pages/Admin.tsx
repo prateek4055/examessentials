@@ -297,23 +297,25 @@ const Admin = () => {
 
       // Step 2: Call Edge Function via direct fetch to bypass proxy/CORS issues
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://ckltitakyizupmsuddwc.supabase.co";
-      const res = await fetch(`${supabaseUrl}/functions/v1/process-pdf-delivery`, {
+      // Step 2: Call Render Worker directly to bypass proxy/CORS/Supabase issues
+      const res = await fetch("https://pdf-workerdf-workerpdf.onrender.com/process-pdf", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token || ''}`,
-          'x-webhook-secret': 'ExamNotes@2026',
+          'x-worker-secret': 'ExamNotes@2026',
         },
         body: JSON.stringify({
-          type: "INSERT",
-          table: "orders",
-          record: orderData,
+          pdf_url: (products.find(p => p.id === mailForm.productIds[0]))?.pdf_url,
+          student_name: mailForm.studentName,
+          phone: mailForm.phone,
+          email: mailForm.email,
+          order_id: orderData.id,
         }),
       });
 
       if (!res.ok) {
         const errorText = await res.text();
-        toast({ title: "Step 2 Failed: Edge Function", description: errorText || "Unknown error calling function", variant: "destructive" });
+        toast({ title: "Email Delivery Failed", description: errorText || "Unknown error calling worker", variant: "destructive" });
         return;
       }
 
