@@ -44,7 +44,7 @@ const Admin = () => {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
+  const { user, session, isAdmin, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -295,20 +295,25 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Call Edge Function via Supabase SDK
-      const { data: fnData, error: fnError } = await supabase.functions.invoke("process-pdf-delivery", {
-        body: {
+      // Step 2: Call Edge Function via direct fetch to bypass proxy/CORS issues
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://ckltitakyizupmsuddwc.supabase.co";
+      const res = await fetch(`${supabaseUrl}/functions/v1/process-pdf-delivery`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+          'x-webhook-secret': 'ExamNotes@2026',
+        },
+        body: JSON.stringify({
           type: "INSERT",
           table: "orders",
           record: orderData,
-        },
-        headers: {
-          "x-webhook-secret": "ExamNotes@2026",
-        },
+        }),
       });
 
-      if (fnError) {
-        toast({ title: "Step 2 Failed: Edge Function", description: fnError.message, variant: "destructive" });
+      if (!res.ok) {
+        const errorText = await res.text();
+        toast({ title: "Step 2 Failed: Edge Function", description: errorText || "Unknown error calling function", variant: "destructive" });
         return;
       }
 
