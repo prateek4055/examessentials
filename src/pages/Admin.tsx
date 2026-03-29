@@ -32,14 +32,17 @@ import {
 import { calculateCartTotal } from "@/lib/cartUtils";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.jpeg";
+import { medicalApps } from "@/apps/medical/data/medicalAppsData";
 
-type Tab = "products" | "orders" | "blogs" | "sendmail";
+
+type Tab = "products" | "orders" | "blogs" | "wiki" | "sendmail";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState<Tab>("products");
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user, isAdmin, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
@@ -83,14 +86,16 @@ const Admin = () => {
   const loadData = async () => {
     setIsLoading(true);
     try {
-      const [productsData, ordersData, blogsData] = await Promise.all([
+      const [productsData, ordersData, blogsData, articlesData] = await Promise.all([
         fetchAllProducts(),
         fetchAllOrders(),
         supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
+        (supabase as any).from("articles").select("*").order("created_at", { ascending: false }),
       ]);
       setProducts(productsData);
       setOrders(ordersData);
       setBlogs(blogsData.data || []);
+      setArticles(articlesData.data || []);
     } catch (error) {
       console.error("Error loading data:", error);
       toast({
@@ -493,6 +498,13 @@ const Admin = () => {
             >
               <FileText className="w-4 h-4 mr-2" />
               Blogs
+            </Button>
+            <Button
+              variant={activeTab === "wiki" ? "gradient" : "secondary"}
+              onClick={() => setActiveTab("wiki")}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Wiki
             </Button>
             <Button
               variant={activeTab === "sendmail" ? "gradient" : "secondary"}
@@ -1064,6 +1076,133 @@ const Admin = () => {
                   The student will receive a watermarked, password-protected PDF with their phone number as the password.
                   {!isFreeDelivery && " A GST invoice will be attached to the email."}
                 </p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Wiki Tab */}
+          {activeTab === "wiki" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-xl font-bold text-foreground">
+                  Medical Wiki Articles
+                </h2>
+                <Button asChild variant="gradient">
+                  <Link to="/admin/wiki-editor/new">
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Wiki Article
+                  </Link>
+                </Button>
+              </div>
+
+              <div className="bg-card border border-border rounded-xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-secondary">
+                      <tr>
+                         <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Article
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          App
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Category
+                        </th>
+
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th className="px-4 py-3 text-right text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {articles.map((article) => (
+                        <tr key={article.id} className="hover:bg-secondary/50">
+                          <td className="px-4 py-4">
+                            <div>
+                              <p className="font-body font-medium text-foreground">
+                                {article.title}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                /{article.slug}
+                              </p>
+                            </div>
+                          </td>
+                           <td className="px-4 py-4">
+                            <span className="px-2 py-1 text-xs bg-primary/20 text-primary-foreground rounded-full border border-primary/30">
+                              {medicalApps.find(a => a.id === article.app_id)?.name || article.app_id || "MedOrtho"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            <span className="px-2 py-1 text-xs bg-secondary rounded-full">
+                              {article.category}
+                            </span>
+                          </td>
+
+                          <td className="px-4 py-4">
+                            <span
+                              className={`px-2 py-1 text-xs rounded-full ${article.published
+                                  ? "bg-green-500/20 text-green-400"
+                                  : "bg-yellow-500/20 text-yellow-400"
+                                }`}
+                            >
+                              {article.published ? "Published" : "Draft"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-sm text-muted-foreground font-body">
+                            {new Date(article.created_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                asChild
+                              >
+                                <Link to={`/admin/wiki-editor/${article.id}`}>
+                                  <Edit className="w-4 h-4" />
+                                </Link>
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={async () => {
+                                  if (confirm("Delete this wiki article?")) {
+                                    await (supabase as any).from("articles").delete().eq("id", article.id);
+                                    loadData();
+                                  }
+                                }}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                      {articles.length === 0 && (
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className="px-4 py-8 text-center text-muted-foreground"
+                          >
+                            No wiki articles yet. Click 'New Wiki Article' to begin.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </motion.div>
           )}

@@ -1,230 +1,169 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, Calendar, Clock, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
-import { Button } from "@/components/ui/button";
-import BlogHero from "@/components/blog/BlogHero";
-import BlogCategories from "@/components/blog/BlogCategories";
-import BlogPostCard from "@/components/blog/BlogPostCard";
-import BlogNewsletter from "@/components/blog/BlogNewsletter";
-import { blogPosts as staticBlogPosts, BlogPost, categories } from "@/lib/blogData";
-import { supabase } from "@/integrations/supabase/client";
+import { blogPosts, categories, getCategoryColor } from "@/lib/blogData";
 
 const Blog = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [posts, setPosts] = useState<BlogPost[]>(staticBlogPosts);
-  const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category") || "All";
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("published", true)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-
-      if (data && data.length > 0) {
-        // Map database posts to BlogPost format
-        const dbPosts: BlogPost[] = data.map((post) => ({
-          id: post.slug,
-          title: post.title,
-          excerpt: post.excerpt,
-          category: post.category,
-          date: post.created_at.split("T")[0],
-          readTime: post.read_time,
-          author: post.author,
-          image: post.image_url || "/og-image.png",
-          featured: post.featured,
-          content: post.content,
-        }));
-        // Combine database posts with static posts (DB posts first)
-        const combinedPosts = [...dbPosts, ...staticBlogPosts.filter(
-          (sp) => !dbPosts.some((dp) => dp.id === sp.id)
-        )];
-        setPosts(combinedPosts);
-      }
-    } catch (error) {
-      console.error("Error fetching blog posts:", error);
-      // Keep static posts as fallback
-    } finally {
-      setLoading(false);
+    if (initialCategory !== selectedCategory) {
+      setSelectedCategory(initialCategory);
     }
+  }, [initialCategory]);
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setSearchParams({ category });
   };
 
-  const filteredPosts = selectedCategory === "All" 
-    ? posts 
-    : posts.filter(post => post.category === selectedCategory);
-
-  const featuredPosts = filteredPosts.filter(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured);
-
-  const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "Exam Essentials Blog",
-      "description": "Study tips, preparation strategies, and educational content for CBSE, NEET, and JEE students",
-      "url": "https://examessentials.in/blog",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Exam Essentials",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://examessentials.in/logo.png",
-          "width": 200,
-          "height": 200
-        }
-      },
-      "blogPost": posts.slice(0, 10).map(post => ({
-        "@type": "BlogPosting",
-        "headline": post.title,
-        "description": post.excerpt,
-        "url": `https://examessentials.in/blog/${post.id}`,
-        "datePublished": post.date,
-        "author": {
-          "@type": "Organization",
-          "name": post.author
-        }
-      }))
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://examessentials.in/" },
-        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://examessentials.in/blog" }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are the best study tips for NEET preparation?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Focus on NCERT textbooks, practice previous year questions, create handwritten notes for revision, and maintain a consistent study schedule. Biology should be your strongest subject as it carries 360 marks."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How can handwritten notes help in exam preparation?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Handwritten notes improve memory retention by 40% compared to typed notes. They engage motor memory, encourage active processing of information, and serve as excellent revision material before exams."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the best strategy for Class 12 board exams?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Start with NCERT textbooks, solve previous year papers, create subject-wise notes, practice sample papers under timed conditions, and revise regularly. Focus on high-weightage chapters first."
-          }
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "url": "https://examessentials.in",
-      "name": "Exam Essentials",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://examessentials.in/blog?search={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-  ];
+  const filteredPosts = selectedCategory === "All"
+    ? blogPosts
+    : blogPosts.filter(post => post.category === selectedCategory);
 
   return (
-    <>
+    <div className="min-h-screen bg-[#0A0F1C] flex flex-col font-sans">
       <SEOHead
-        title="Study Tips & Exam Preparation Blog | NEET, JEE, CBSE"
-        description="Expert study tips, NEET & JEE preparation strategies, and CBSE board exam guides. Learn from toppers with proven methods to score 95%+ in exams."
+        title="Medical Resources & Articles Blog"
+        description="Premium educational articles for medical students and professionals. Read about orthopedic tests, neurology exams, and more."
         canonical="/blog"
-        keywords="NEET study tips, JEE preparation strategy, CBSE board exam tips, class 12 study tips, how to score 95 in boards, NEET biology strategy, handwritten notes benefits, topper study schedule, exam preparation guide 2025"
-        structuredData={structuredData}
+        keywords="medical blog, orthopedic test, neurology exam, medical students"
       />
-
       <Navbar />
-      <main className="min-h-screen pt-28 pb-16 bg-background">
-        <div className="container mx-auto px-4">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground">Blog</span>
-          </nav>
 
-          <BlogHero />
-          <BlogCategories selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
+      <main className="flex-1 container mx-auto px-4 pt-32 pb-24">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm text-[#CBD5E1] mb-12">
+          <Link to="/" className="hover:text-white transition-colors">Home</Link>
+          <ChevronRight className="w-4 h-4 text-[#4DA6FF]" />
+          <span className="text-white">Articles</span>
+        </nav>
 
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent" />
-            </div>
-          ) : (
-            <>
-              {/* Featured Posts */}
-              {featuredPosts.length > 0 && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-                  {featuredPosts.slice(0, 2).map((post, index) => (
-                    <BlogPostCard key={post.id} post={post} index={index} featured />
-                  ))}
-                </div>
-              )}
-
-              {/* Regular Posts Grid */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-              >
-                {regularPosts.map((post, index) => (
-                  <BlogPostCard key={post.id} post={post} index={index} />
-                ))}
-              </motion.div>
-            </>
-          )}
-
-          <BlogNewsletter />
-
-          {/* Internal Links */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-center"
-          >
-            <h2 className="text-xl font-semibold text-foreground mb-6">Explore Our Notes</h2>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild variant="outline">
-                <Link to="/class-11-notes">Class 11 Notes</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/class-12-notes">Class 12 Notes</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/neet-notes">NEET Notes</Link>
-              </Button>
-            </div>
-          </motion.section>
+        {/* Hero Section */}
+        <div className="max-w-3xl mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+            Latest <span style={{ color: getCategoryColor(selectedCategory) }}>Articles</span>
+          </h1>
+          <p className="text-lg text-[#CBD5E1] leading-relaxed">
+            Demystifying complex medical concepts. Discover simplified clinical explanations, premium study guides, and actionable techniques for students.
+          </p>
         </div>
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap items-center gap-3 mb-12">
+          {["All", ...categories].map((category) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                selectedCategory === category
+                  ? "shadow-lg bg-opacity-20 translate-y-[-2px]"
+                  : "bg-[#121826] text-[#CBD5E1] hover:bg-[#1A2333] hover:text-white border-white/5"
+              }`}
+              style={selectedCategory === category ? { 
+                backgroundColor: `${getCategoryColor(category)}26`,
+                color: getCategoryColor(category),
+                borderColor: `${getCategoryColor(category)}80`,
+                boxShadow: `0 8px 24px -8px ${getCategoryColor(category)}55`
+              } : {}}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Blog Post Grid */}
+        {filteredPosts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-12">
+            {filteredPosts.map((post) => (
+              <div
+                key={post.id}
+                className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#121826] border border-white/5 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-1"
+                style={{ 
+                  ["--hover-shadow" as any]: `0 8px 32px -8px ${getCategoryColor(post.category)}33`,
+                  ["--hover-border" as any]: `${getCategoryColor(post.category)}4d`
+                } as any}
+              >
+                {/* Image Section */}
+                <div className="relative h-56 overflow-hidden bg-[#0A0F1C]">
+                  <div className="absolute inset-0 bg-[#0A0F1C]/20 z-10 transition-opacity group-hover:opacity-0" />
+                  <img 
+                    src={post.image} 
+                    alt={post.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1559757175-9e351c9a1301?w=800&q=80";
+                    }}
+                  />
+                  {/* Category Tag */}
+                  <div className="absolute top-4 left-4 z-20">
+                    <span 
+                      className="px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border shadow-lg"
+                      style={{ 
+                        backgroundColor: `${getCategoryColor(post.category)}26`,
+                        color: getCategoryColor(post.category),
+                        borderColor: `${getCategoryColor(post.category)}40`
+                      }}
+                    >
+                      {post.category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="flex flex-col flex-1 p-6">
+                  <div className="flex items-center gap-4 text-xs text-[#CBD5E1] mb-4">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5" /> {post.date}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5" /> {post.readTime}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white leading-tight mb-3 group-hover:text-[#4DA6FF] transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+                  
+                  <p className="text-[#CBD5E1] text-sm leading-relaxed mb-6 line-clamp-3 flex-1">
+                    {post.excerpt}
+                  </p>
+
+                  <Link 
+                    to={`/blog/${post.id}`}
+                    className="mt-auto inline-flex items-center gap-2 text-sm font-semibold group/btn transition-colors hover:text-white"
+                    style={{ color: getCategoryColor(post.category) }}
+                  >
+                    Read Article 
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-24 text-[#CBD5E1] bg-[#121826]/50 rounded-3xl border border-white/5 max-w-2xl mx-auto mb-12">
+            <p className="text-xl font-medium mb-2">No articles found in this category yet.</p>
+            <p className="text-[#94A3B8]">We are strictly adding verified medical articles. Stay tuned!</p>
+            <button 
+              onClick={() => handleCategoryChange("All")}
+              className="mt-6 text-[#4DA6FF] hover:underline transition-all"
+            >
+              View All Articles
+            </button>
+          </div>
+        )}
       </main>
+
       <Footer />
-    </>
+    </div>
   );
 };
 

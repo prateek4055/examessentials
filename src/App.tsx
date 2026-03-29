@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminBlogForm from "./pages/AdminBlogForm";
+import AdminWikiEditor from "./pages/AdminWikiEditor";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -39,6 +40,8 @@ import BulkOrders from "./apps/medposterhub/pages/BulkOrders";
 import ContactUs from "./apps/medposterhub/pages/ContactUs";
 import PrivacyTerms from "./apps/medposterhub/pages/PrivacyTerms";
 import MedOrthoPage from "./apps/medical/pages/MedOrthoPage";
+import MedWikiArticlePage from "./apps/medical/pages/MedWikiArticlePage";
+
 import MedCardioPage from "./apps/medical/pages/MedCardioPage";
 import MedNeuroPage from "./apps/medical/pages/MedNeuroPage";
 import MedPhysioPage from "./apps/medical/pages/MedPhysioPage";
@@ -74,6 +77,8 @@ const App = () => (
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/product/:id" element={<AdminProductForm />} />
               <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
+              <Route path="/admin/wiki-editor" element={<AdminWikiEditor />} />
+              <Route path="/admin/wiki-editor/:id" element={<AdminWikiEditor />} />
               {/* SEO Category Pages */}
               <Route path="/class-11-notes" element={<Class11Notes />} />
               <Route path="/class-12-notes" element={<Class12Notes />} />
@@ -89,11 +94,18 @@ const App = () => (
               <Route path="/medposterhub/contact" element={<ContactUs />} />
               <Route path="/medposterhub/privacy-terms" element={<PrivacyTerms />} />
               <Route path="/medortho" element={<MedOrthoPage />} />
+              <Route path="/medortho/*" element={<MedWikiArticlePage />} />
               <Route path="/medcardio" element={<MedCardioPage />} />
+              <Route path="/medcardio/*" element={<MedWikiArticlePage />} />
               <Route path="/medneuro" element={<MedNeuroPage />} />
+              <Route path="/medneuro/*" element={<MedWikiArticlePage />} />
               <Route path="/medphysio" element={<MedPhysioPage />} />
+              <Route path="/medphysio/*" element={<MedWikiArticlePage />} />
               <Route path="/medradio" element={<MedRadioPage />} />
+              <Route path="/medradio/*" element={<MedWikiArticlePage />} />
               <Route path="/medpharma" element={<MedPharmaPage />} />
+              <Route path="/medpharma/*" element={<MedWikiArticlePage />} />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
             <WhatsAppButton />

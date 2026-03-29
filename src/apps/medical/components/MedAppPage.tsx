@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -5,10 +6,15 @@ import {
   Activity, Stethoscope, Dumbbell, Hand, Waves, ClipboardList,
   Scan, Layers, FileImage, PenTool, Pill, GitBranch, Table, Lightbulb,
   ArrowRight, Download, Bell, ChevronRight, Sparkles, Star, Users, Shield,
+  Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { MedAppData, MedAppFeature } from "../data/medicalAppsData";
 import { getOtherApps } from "../data/medicalAppsData";
+import { blogPosts } from "@/lib/blogData";
+import MedOrthoSearch from "../../medortho/components/MedOrthoSearch";
+import MedOrthoSearchResults from "../../medortho/components/MedOrthoSearchResults";
+import { supabase } from "@/integrations/supabase/client";
 
 // Icon mapping from string names to components
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -29,6 +35,77 @@ interface MedAppPageProps {
 
 const MedAppPage = ({ app }: MedAppPageProps) => {
   const otherApps = getOtherApps(app.slug);
+  const appArticles = blogPosts.filter(post => post.category === app.name);
+  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      if (searchQuery.trim() === "") {
+        setResults([]);
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        // Query both tables in parallel
+        const [blogReq, wikiReq] = await Promise.all([
+          supabase
+            .from("blog_posts")
+            .select("id, title, category, excerpt, slug")
+            .eq("published", true)
+            .eq("category", app.name)
+            .or(`title.ilike.%${searchQuery}%,category.ilike.%${searchQuery}%,excerpt.ilike.%${searchQuery}%`)
+            .limit(15),
+          (supabase as any)
+            .from("articles")
+            .select("id, title, category, content, slug, keywords")
+            .eq("published", true)
+            // Removed app.name filter for articles as they use sub-categories like "Anatomy"
+            .or(`title.ilike.%${searchQuery}%,category.ilike.%${searchQuery}%,content.ilike.%${searchQuery}%,keywords.ilike.%${searchQuery}%`)
+            .limit(15)
+        ]);
+
+        const blogResults = blogReq.data || [];
+        const wikiResults = (wikiReq.data || []).map((art: any) => ({
+          id: art.id,
+          title: art.title,
+          category: art.category,
+          // Generate an excerpt from content if not present
+          excerpt: art.content 
+            ? art.content.replace(/[#*`]/g, "").substring(0, 160).trim() + "..." 
+            : (art.keywords || ""),
+          slug: art.slug
+        }));
+
+        // Combine and deduplicate by slug
+        const combined = [...blogResults, ...wikiResults];
+        const unique = combined.reduce((acc: any[], curr) => {
+          if (!acc.find(item => item.slug === curr.slug)) {
+            acc.push(curr);
+          }
+          return acc;
+        }, []);
+
+        setResults(unique.slice(0, 20)); // Final limit
+      } catch (err) {
+        console.error("Search error:", err);
+        setResults([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (app.hasWiki) {
+      const timer = setTimeout(() => {
+        fetchResults();
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery, app.hasWiki]);
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white overflow-hidden">
@@ -246,6 +323,291 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
         {/* Bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0F] to-transparent" />
       </section>
+
+      {/* ─── WIKI / KNOWLEDGE BASE SECTION ─── */}
+      {app.hasWiki && (
+        <section className="py-24 relative overflow-hidden bg-[#0A0A0F]">
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                <span className="text-white">📖 {app.name} </span>
+                <span style={{ color: app.theme.accent }}>Knowledge Base</span>
+              </h2>
+              <p className="text-white/50 text-lg max-w-2xl mx-auto">
+                Search through our comprehensive orthopedic encyclopedia. 
+                From anatomy to surgical procedures — everything in one place.
+              </p>
+            </motion.div>
+
+            <div className="max-w-4xl mx-auto mb-20">
+              <MedOrthoSearch 
+                value={searchQuery} 
+                onChange={setSearchQuery} 
+                placeholder="Search for conditions, tests, or anatomy..."
+              />
+              
+              {searchQuery !== "" ? (
+                <div className="mt-8">
+                  <MedOrthoSearchResults 
+                    query={searchQuery} 
+                    results={results} 
+                    isLoading={isLoading} 
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+                  <button 
+                    onClick={() => {
+                      setSearchQuery("Anatomy");
+                      const el = document.getElementById('wiki-search-input');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }} 
+                    className="group p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-blue-500/50 hover:bg-white/[0.07] transition-all duration-300 text-left w-full"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <BookOpen className="w-6 h-6 text-blue-400" />
+                    </div>
+                    <h3 className="font-bold text-xl mb-2 text-white">Anatomy</h3>
+                    <p className="text-white/40 text-sm leading-relaxed text-balance">Explore Bones, Joints, Muscles & Ligaments.</p>
+                  </button>
+
+                  <button 
+                    onClick={() => {
+                      setSearchQuery("Pathology");
+                      const el = document.getElementById('wiki-search-input');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }} 
+                    className="group p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-red-500/50 hover:bg-white/[0.07] transition-all duration-300 text-left w-full"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <Activity className="w-6 h-6 text-red-400" />
+                    </div>
+                    <h3 className="font-bold text-xl mb-2 text-white">Pathologies</h3>
+                    <p className="text-white/40 text-sm leading-relaxed text-balance">Learn about common orthopedic injuries.</p>
+                  </button>
+
+                  <button 
+                    onClick={() => {
+                      setSearchQuery("Special Tests");
+                      const el = document.getElementById('wiki-search-input');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }} 
+                    className="group p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-emerald-500/50 hover:bg-white/[0.07] transition-all duration-300 text-left w-full"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <Stethoscope className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <h3 className="font-bold text-xl mb-2 text-white">Assessments</h3>
+                    <p className="text-white/40 text-sm leading-relaxed text-balance">Master clinical orthopaedic special tests.</p>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ─── ARTICLES / BLOG SECTION ─── */}
+      {appArticles.length > 0 && (
+        <section className="py-24 relative bg-[#0A0A0F] overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-[#1A1A24] to-transparent opacity-30 pointer-events-none" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="max-w-2xl"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                  <span className="text-white">📚 Latest </span>
+                  <span style={{ color: app.theme.accent }}>{app.name === 'MedOrtho' ? 'Orthopedic Articles' : 'Articles'}</span>
+                </h2>
+                <p className="text-white/50 text-lg">
+                  Learn faster with simplified clinical explanations and evidence-based insights.
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <Link to={`/blog?category=${app.name}`}>
+                  <Button variant="ghost" className="text-white/70 hover:text-white group gap-2 px-0 hover:bg-transparent">
+                    View All Articles <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* Featured Article */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="mb-12"
+            >
+              <Link to={`/blog/${appArticles[0].id}`} className="group block">
+                <div 
+                  className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:shadow-black/50"
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-2">
+                    <div className="relative h-64 lg:h-[400px] overflow-hidden">
+                      <img 
+                        src={appArticles[0].image} 
+                        alt={appArticles[0].title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden" />
+                      <div className="absolute top-6 left-6">
+                        <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md bg-white/10 border border-white/20 text-white shadow-lg">
+                          Featured
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-8 lg:p-12 flex flex-col justify-center">
+                      <span className="text-sm font-bold uppercase tracking-widest mb-4 block" style={{ color: app.theme.accent }}>
+                        {appArticles[0].category} • {appArticles[0].readTime}
+                      </span>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight group-hover:text-white/90 transition-colors">
+                        {appArticles[0].title}
+                      </h3>
+                      <p className="text-white/60 text-lg leading-relaxed mb-8 line-clamp-3">
+                        {appArticles[0].excerpt}
+                      </p>
+                      <div className="flex items-center gap-2 font-bold text-lg" style={{ color: app.theme.accent }}>
+                        Read Article <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Grid of Other Articles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+              {appArticles.slice(1).map((article, index) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
+                  <Link to={`/blog/${article.id}`} className="group block h-full">
+                    <div className="h-full flex flex-col rounded-2xl overflow-hidden border border-white/10 bg-white/5 transition-all duration-500 hover:border-white/20 hover:shadow-xl">
+                      <div className="relative h-56 overflow-hidden">
+                        <img 
+                          src={article.image} 
+                          alt={article.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute top-4 left-4">
+                          <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest backdrop-blur-md bg-black/40 border border-white/10 text-white">
+                            {article.category}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-6 flex flex-col flex-grow">
+                        <span className="text-white/40 text-xs font-medium mb-3 block">
+                          {article.readTime}
+                        </span>
+                        <h4 className="text-xl font-bold text-white mb-4 line-clamp-2 leading-snug transition-colors group-hover:text-white/80">
+                          {article.title}
+                        </h4>
+                        <p className="text-white/50 text-sm leading-relaxed mb-6 line-clamp-2">
+                          {article.excerpt}
+                        </p>
+                        <div className="mt-auto pt-4 flex items-center gap-2 text-sm font-bold" style={{ color: app.theme.accent }}>
+                          Read More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Premium CTA for App Download */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative rounded-[2.5rem] p-8 md:p-16 overflow-hidden border border-white/10 shadow-3xl text-center"
+              style={{ background: app.theme.cardBg }}
+            >
+              {/* Animated glow effects */}
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+              <div 
+                className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-[100px] opacity-20"
+                style={{ background: app.theme.accent }}
+              />
+              <div 
+                className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full blur-[100px] opacity-20"
+                style={{ background: app.theme.primary }}
+              />
+
+              <div className="relative z-10 max-w-2xl mx-auto">
+                <div 
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl"
+                  style={{ background: `linear-gradient(135deg, ${app.theme.accent}30, ${app.theme.primary}20)` }}
+                >
+                  <Heart className="w-10 h-10" style={{ color: app.theme.accent }} />
+                </div>
+                <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
+                  {app.name === 'MedOrtho' 
+                    ? "Practice 200+ Orthopedic Tests inside MedOrtho App" 
+                    : `Level up your learning with ${app.name}`}
+                </h3>
+                <p className="text-white/60 text-lg mb-10">
+                  Join thousands of medical students using {app.name} to master clinical skills and ace their exams.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  {app.playStoreLink && (
+                    <a href={app.playStoreLink} target="_blank" rel="noopener noreferrer">
+                      <Button
+                        size="lg"
+                        className="rounded-full h-14 px-10 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
+                        style={{
+                          background: `linear-gradient(135deg, ${app.theme.accent}, ${app.theme.primary})`,
+                          color: "#FFF",
+                          boxShadow: `0 8px 30px ${app.theme.accent}40`,
+                        }}
+                      >
+                        <Download className="w-5 h-5 mr-3" />
+                        Download Now
+                      </Button>
+                    </a>
+                  )}
+                  <Link to={`/blog?category=${app.name}`}>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="rounded-full h-14 px-10 text-lg font-medium border-white/20 text-white hover:bg-white/10"
+                    >
+                      Browse Articles
+                      <ArrowRight className="w-5 h-5 ml-3" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* ─── FEATURES ─── */}
       <section className="py-24 relative">

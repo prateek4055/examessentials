@@ -46,6 +46,7 @@ export interface MedAppData {
   playStoreLink?: string;
   appStoreLink?: string;
   faqs: MedAppFAQ[];
+  hasWiki?: boolean;
   seo: {
     title: string;
     description: string;
@@ -92,6 +93,7 @@ export const medicalApps: MedAppData[] = [
       { question: "Who is MedOrtho designed for?", answer: "MedOrtho is designed for physiotherapy students (BPT/MPT), medical interns, orthopedic residents, and sports medicine professionals who need a quick-reference guide for clinical examinations." },
       { question: "Can I use MedOrtho offline?", answer: "Yes! MedOrtho supports offline access so you can study special tests, view instruments, and read clinical notes without an internet connection — perfect for clinical rotations." },
     ],
+    hasWiki: true,
     seo: {
       title: "MedOrtho – Orthopedic Special Tests & Clinical Education App",
       description: "Master 200+ orthopedic special tests, surgical instruments & clinical notes. The #1 orthopedic education app for physiotherapy & medical students in India.",
