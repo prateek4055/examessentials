@@ -4,6 +4,11 @@ import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 // ─── HELPERS ────────────────────────────────────────────────────────────────
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-webhook-secret",
+};
+
 async function sendResendEmail(
     apiKey: string,
     to: string,
@@ -171,6 +176,11 @@ async function generateInvoicePdf(
 // ─── MAIN HANDLER ───────────────────────────────────────────────────────────
 
 serve(async (req) => {
+    // Handle CORS preflight
+    if (req.method === "OPTIONS") {
+        return new Response("ok", { headers: corsHeaders });
+    }
+
     try {
         console.log("[DEBUG] Edge Function invoked!");
 
@@ -182,21 +192,21 @@ serve(async (req) => {
         const hasBearerToken = authHeader && authHeader.startsWith("Bearer ");
         console.log(`[DEBUG] Auth check - webhook: ${hasWebhookSecret}, serviceRole: ${!!hasBearerToken}`);
         if (!hasWebhookSecret && !hasBearerToken) {
-            return new Response("Unauthorized", { status: 401 });
+            return new Response("Unauthorized", { status: 401, headers: corsHeaders });
         }
 
         const payload = await req.json();
         console.log(`[DEBUG] Payload type: ${payload.type}, table: ${payload.table}`);
 
         if (payload.type !== "INSERT" || payload.table !== "orders") {
-            return new Response("Not an INSERT on orders", { status: 200 });
+            return new Response("Not an INSERT on orders", { status: 200, headers: corsHeaders });
         }
 
         const order = payload.record;
         console.log(`[DEBUG] Order id: ${order.id}, payment_status: ${order.payment_status}, product_id: ${order.product_id}`);
 
         if (order.payment_status !== "completed") {
-            return new Response("Order not completed, skipping", { status: 200 });
+            return new Response("Order not completed, skipping", { status: 200, headers: corsHeaders });
         }
 
         console.log("[DEBUG] All checks passed, starting PDF processing...");
@@ -248,7 +258,8 @@ serve(async (req) => {
         }
 
         // ── Process each PDF via URL-based APIs (NO in-memory loading) ──
-        const downloadEntries: { title: string; imageUrl: string | null; downloadUrl: string; price: number }[] = [];
+        const downloadEntries: { title: string; imageUrl: string | null; downloadUrl: string; price: number; content?: string }[] = [];
+
 
         for (const product of products) {
             if (!product.pdf_url) {
@@ -281,68 +292,49 @@ serve(async (req) => {
 
             let finalUrl = originalSignedUrl;
 
-            // Use PDF.co for watermark + encryption (all via URL, zero memory usage)
-            if (PDFCO_API_KEY) {
+
+            // Use Free Python Worker for watermark + encryption
+            const PDF_WORKER_URL = Deno.env.get("PDF_WORKER_URL");
+            const PDF_WORKER_SECRET = Deno.env.get("PDF_WORKER_SECRET");
+
+            if (PDF_WORKER_URL) {
                 try {
-                    // Step 1: Add text watermark via PDF.co
-                    const watermarkText = `Licensed to ${order.student_name} - ${order.phone}`;
-                    console.log(`[PDF.co] Adding watermark to ${product.title}...`);
-
-                    const watermarkRes = await fetch("https://api.pdf.co/v1/pdf/edit/add", {
+                    console.log(`[Worker] Processing ${product.title} via ${PDF_WORKER_URL}...`);
+                    
+                    const workerRes = await fetch(`${PDF_WORKER_URL.replace(/\/$/, "")}/process-pdf`, {
                         method: "POST",
-                        headers: { "x-api-key": PDFCO_API_KEY, "Content-Type": "application/json" },
+                        headers: { 
+                            "Content-Type": "application/json",
+                            "x-worker-secret": PDF_WORKER_SECRET || "ExamNotes@2026"
+                        },
                         body: JSON.stringify({
-                            url: originalSignedUrl,
-                            annotations: [{
-                                text: watermarkText,
-                                x: 150,
-                                y: 400,
-                                size: 16,
-                                color: "808080",
-                                pages: "0-",
-                            }],
+                            pdf_url: originalSignedUrl,
+                            student_name: order.student_name,
+                            phone: order.phone
                         }),
                     });
 
-                    const watermarkData = await watermarkRes.json();
-                    let urlForEncryption = originalSignedUrl;
-
-                    if (!watermarkData.error && watermarkData.url) {
-                        urlForEncryption = watermarkData.url;
-                        console.log(`[PDF.co] Watermark added successfully`);
+                    if (workerRes.ok) {
+                        const arrayBuffer = await workerRes.arrayBuffer();
+                        const uint8Array = new Uint8Array(arrayBuffer);
+                        const processedBase64 = uint8ToBase64(uint8Array);
+                        
+                        downloadEntries.push({ 
+                            title: product.title, 
+                            imageUrl: product.images?.[0] || null, 
+                            downloadUrl: "#", 
+                            price: customPriceMap?.[product.id] ?? product.price,
+                            content: processedBase64
+                        });
+                        continue; 
                     } else {
-                        console.log(`[PDF.co] Watermark failed, proceeding without: ${watermarkData.message || 'unknown error'}`);
-                    }
-
-                    // Step 2: Encrypt with password
-                    console.log(`[PDF.co] Encrypting ${product.title}...`);
-                    const encryptRes = await fetch("https://api.pdf.co/v1/pdf/security/add", {
-                        method: "POST",
-                        headers: { "x-api-key": PDFCO_API_KEY, "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            url: urlForEncryption,
-                            userPassword: order.phone,
-                            ownerPassword: Math.random().toString(36).substring(2, 15),
-                            allowPrint: true,
-                            allowCopyDocument: false,
-                            allowModifyDocument: false,
-                        }),
-                    });
-
-                    const encryptData = await encryptRes.json();
-                    if (!encryptData.error && encryptData.url) {
-                        finalUrl = encryptData.url;
-                        console.log(`[PDF.co] Encrypted ${product.title} successfully`);
-                    } else {
-                        console.log(`[PDF.co] Encryption failed: ${encryptData.message || 'unknown error'}, using watermarked URL`);
-                        finalUrl = urlForEncryption;
+                        console.error(`[Worker] Failed: ${workerRes.status} ${await workerRes.text()}`);
                     }
                 } catch (e) {
-                    console.error("[PDF.co] API call failed:", e);
-                    // Fall back to the original signed URL
+                    console.error("[Worker] Call failed:", e);
                 }
             } else {
-                console.log("No PDFCO_API_KEY, sending original PDF without watermark/encryption");
+                console.log("No PDF_WORKER_URL, sending original PDF");
             }
 
             // Use custom price if available, otherwise default product price
@@ -511,10 +503,15 @@ serve(async (req) => {
             console.log(`Email sent to ${order.email}${invoiceBase64 ? ' with invoice' : ' (no invoice - free delivery)'}!`);
         }
 
-        return new Response(JSON.stringify({ success: true }), { headers: { "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ success: true }), { 
+            headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        });
     } catch (error) {
         const errMsg = error instanceof Error ? error.message : String(error);
         console.error("[DEBUG] Delivery error:", errMsg);
-        return new Response(JSON.stringify({ error: errMsg }), { status: 500 });
+        return new Response(JSON.stringify({ error: errMsg }), { 
+            status: 500, 
+            headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        });
     }
 });
