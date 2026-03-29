@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: pdf-worker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: WORKER_SECRET
+        sync: false # Set this in the Render dashboard manually or via CLI
