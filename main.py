@@ -6,8 +6,9 @@ import base64
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader, PdfWriter
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 from supabase import create_client, Client
 
 app = FastAPI()
@@ -38,40 +39,92 @@ def create_diagonal_watermark_buffer(text: str):
     packet.seek(0)
     return packet
 
+
 def create_invoice_pdf(order_id, student_name, email, phone, product_name, price):
     packet = io.BytesIO()
-    c = canvas.Canvas(packet, pagesize=letter)
+    doc = SimpleDocTemplate(packet, pagesize=letter, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
+    elements = []
     
-    c.setFont("Helvetica-Bold", 20)
-    c.drawString(50, 750, "Exam Essentials, India")
+    styles = getSampleStyleSheet()
     
-    c.setFont("Helvetica", 12)
-    c.drawString(50, 720, f"Invoice Number: INV-{order_id}")
-    c.drawString(50, 705, f"Billed To: {student_name}")
-    c.drawString(50, 690, f"Email: {email}")
-    c.drawString(50, 675, f"Phone: {phone}")
+    # 1. Header (Logo / Title)
+    logo_path = "public/logo.png"
+    if not os.path.exists(logo_path):
+        logo_path = "src/assets/logo.png" # Fallback if running from src
+        
+    logo_element = None
+    if os.path.exists(logo_path):
+        # Determine aspect ratio roughly
+        try:
+            from PIL import Image as PILImage
+            with PILImage.open(logo_path) as im:
+                w, h = im.size
+                asp = w / h
+                logo_element = Image(logo_path, width=50 * asp, height=50)
+                logo_element.hAlign = 'LEFT'
+        except Exception:
+            logo_element = Image(logo_path, width=150, height=40)
+            logo_element.hAlign = 'LEFT'
+
+    header_table_data = [
+        [logo_element if logo_element else Paragraph("<b>Exam Essentials</b>", styles['Heading1']), 
+         Paragraph(f"<font size=14><b>INVOICE</b></font><br/><br/>Order ID: #{order_id}", styles['Normal'])]
+    ]
+    t = Table(header_table_data, colWidths=[300, 200])
+    t.setStyle(TableStyle([
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP')
+    ]))
+    elements.append(t)
+    elements.append(Spacer(1, 30))
     
-    c.line(50, 650, 550, 650)
+    # 2. Billing details
+    elements.append(Paragraph("<b>Billed To:</b>", styles['Heading3']))
+    billing_info = f"{student_name}<br/>{phone}<br/>{email}"
+    elements.append(Paragraph(billing_info, styles['Normal']))
+    elements.append(Spacer(1, 20))
     
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(50, 630, "Description")
-    c.drawString(450, 630, "Amount")
+    # 3. Items Table
+    data = [
+        ["Product", "Qty", "Price", "Total"],
+        [Paragraph(product_name, styles['Normal']), "1", f"Rs. {price}", f"Rs. {price}"]
+    ]
     
-    c.line(50, 620, 550, 620)
+    table = Table(data, colWidths=[280, 50, 100, 100])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f7f7f7')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('TOPPADDING', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 10),
+        ('LINEBELOW', (0, 0), (-1, 0), 1, colors.HexColor('#dddddd')),
+        ('LINEBELOW', (0, -1), (-1, -1), 1, colors.HexColor('#dddddd')),
+    ]))
+    elements.append(table)
+    elements.append(Spacer(1, 20))
     
-    c.setFont("Helvetica", 12)
-    c.drawString(50, 600, product_name)
-    c.drawString(450, 600, f"Rs. {price}")
+    # 4. Total Table
+    total_data = [
+        ["Subtotal:", f"Rs. {price}"],
+        ["Total Paid:", f"Rs. {price}"]
+    ]
+    total_table = Table(total_data, colWidths=[430, 100])
+    total_table.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
+        ('FONTNAME', (0, 1), (-1, 1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 1), (-1, 1), 12),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+    ]))
+    elements.append(total_table)
     
-    c.line(50, 580, 550, 580)
+    # 5. Build
+    doc.build(elements)
     
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(350, 550, "Total Paid:")
-    c.drawString(450, 550, f"Rs. {price}")
-    
-    c.save()
-    packet.seek(0)
     return packet.getvalue()
+
 
 def get_html_template(student_name, phone, product_name, secure_download_url, price, email):
     return f"""
@@ -110,6 +163,7 @@ def get_html_template(student_name, phone, product_name, secure_download_url, pr
     <body>
         <div class="container">
             <div class="header">
+                <img src="https://examessentials.in/logo.png" alt="Exam Essentials" style="max-height: 40px; margin-bottom: 20px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.2));" />
                 <h1>Thanks, Action Taker!</h1>
                 <p>Your notes are ready to download</p>
             </div>
