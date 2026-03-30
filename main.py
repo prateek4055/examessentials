@@ -103,12 +103,16 @@ async def process_pdf(request: Request):
 
         # 5. Send Email if requested
         if email:
-            # Refresh key in case Render loaded it late
-            active_key = os.getenv("RESEND_API_KEY") or os.getenv("RESEND_APT_KEYS") or os.getenv("RESEND_APT_KEY")
+            # Aggressively hunt for the Resend API Key in case of spelling typos or invisible trailing whitespaces in Render UI
+            active_key = None
+            for key, val in os.environ.items():
+                if "RESEND" in key.upper().strip():
+                    active_key = val.strip()
+                    break
             
             if not active_key:
-                found_keys = [k for k in os.environ.keys() if "RES" in k or "KEY" in k]
-                raise Exception(f"Missing API Key in environment. Keys found by Render: {found_keys}")
+                found_keys = [k for k in os.environ.keys() if "RESEND" in k.upper()]
+                raise Exception(f"Missing API Key in environment. Render UI typo? Keys it sees: {found_keys}")
                 
             resend.api_key = active_key
             
