@@ -22,7 +22,7 @@ app.add_middleware(
 
 # Access secrets from environment variables
 WORKER_SECRET = os.getenv("WORKER_SECRET", "ExamNotes@2026")
-resend.api_key = os.getenv("RESEND_API_KEY")
+resend.api_key = os.getenv("RESEND_API_KEY") or os.getenv("RESEND_APT_KEYS") or os.getenv("RESEND_APT_KEY")
 
 def create_diagonal_watermark_buffer(text: str):
     packet = io.BytesIO()
