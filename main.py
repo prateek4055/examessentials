@@ -103,8 +103,14 @@ async def process_pdf(request: Request):
 
         # 5. Send Email if requested
         if email:
-            if not resend.api_key:
-                raise Exception("Missing RESEND_API_KEY in environment")
+            # Refresh key in case Render loaded it late
+            active_key = os.getenv("RESEND_API_KEY") or os.getenv("RESEND_APT_KEYS") or os.getenv("RESEND_APT_KEY")
+            
+            if not active_key:
+                found_keys = [k for k in os.environ.keys() if "RES" in k or "KEY" in k]
+                raise Exception(f"Missing API Key in environment. Keys found by Render: {found_keys}")
+                
+            resend.api_key = active_key
             
             # Encode PDF for attachment
             attachment = base64.b64encode(processed_data).decode()
