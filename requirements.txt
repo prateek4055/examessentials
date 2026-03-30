@@ -5,3 +5,4 @@ reportlab
 requests
 resend
 python-multipart
+supabase
