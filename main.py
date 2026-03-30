@@ -63,10 +63,17 @@ async def process_pdf(request: Request):
         raise HTTPException(status_code=400, detail="Missing pdf_url")
 
     try:
-        # 1. Download source PDF
-        resp = requests.get(pdf_url)
+        # 1. Download source PDF using secure Bearer authentication
+        supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+        headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
+        
+        # If the URL is set as public but the bucket is restricted, convert it to an authenticated endpoint
+        if supabase_key and "/object/public/" in pdf_url:
+            pdf_url = pdf_url.replace("/object/public/", "/object/authenticated/")
+
+        resp = requests.get(pdf_url, headers=headers)
         if resp.status_code != 200:
-            raise Exception(f"Failed to download PDF from {pdf_url}")
+            raise Exception(f"Failed to download PDF from {pdf_url}: HTTP {resp.status_code} - {resp.text}")
 
         reader = PdfReader(io.BytesIO(resp.content))
         writer = PdfWriter()
