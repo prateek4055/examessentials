@@ -44,10 +44,6 @@ function isRateLimited(clientIP: string): boolean {
 
 // Allowed origins for Razorpay payments
 const ALLOWED_ORIGINS = [
-  "https://examessentials.lovable.app",
-  "https://jewjjbrdriccunhyoxww.lovableproject.com",
-  "https://preview--jewjjbrdriccunhyoxww.lovable.app",
-  "https://gptengineer.app",
   "https://examessentials.in",
   "http://localhost",
 ];
@@ -58,8 +54,6 @@ function isAllowedOrigin(origin: string | null): boolean {
   return ALLOWED_ORIGINS.some(allowed =>
     origin === allowed ||
     origin.startsWith(allowed.replace(/\/$/, '')) ||
-    origin.includes("lovable.app") ||
-    origin.includes("lovableproject.com") ||
     origin.includes("examessentials.in") ||
     origin.includes("localhost")
   );

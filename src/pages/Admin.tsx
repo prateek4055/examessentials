@@ -295,8 +295,8 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Call Edge Function via direct fetch to bypass proxy/CORS issues
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://ckltitakyizupmsuddwc.supabase.co";
+      // Step 2: Call Render Worker directly to bypass proxy/CORS/Supabase issues
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://jfqjeqgwbpnnzdgcpbzw.supabase.co";
       // Step 2: Call Render Worker directly to bypass proxy/CORS/Supabase issues
       const res = await fetch("https://pdf-workerdf-workerpdf.onrender.com/process-pdf", {
         method: 'POST',
