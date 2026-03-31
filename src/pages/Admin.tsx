@@ -273,21 +273,22 @@ const Admin = () => {
         }
       }
 
-      // Step 1: Create admin order using raw SQL to bypass PostgREST schema cache
-      const adminOrderId = crypto.randomUUID();
-      const razorpayOrderId = "admin_order_" + crypto.randomUUID();
-      const { error: orderError } = await supabase.rpc("create_admin_order" as any, {
-        p_id: adminOrderId,
-        p_product_id: productIdStr,
-        p_student_name: mailForm.studentName.trim(),
-        p_email: mailForm.email.trim().toLowerCase(),
-        p_phone: mailForm.phone.trim(),
-        p_class: mailForm.class,
-        p_amount: orderAmount,
-        p_payment_status: "completed",
-        p_razorpay_payment_id: paymentId,
-        p_razorpay_order_id: razorpayOrderId,
-      });
+      // Step 1: Create admin order
+      const { data: orderData, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          product_id: productIdStr,
+          student_name: mailForm.studentName.trim(),
+          email: mailForm.email.trim().toLowerCase(),
+          phone: mailForm.phone.trim(),
+          class: mailForm.class,
+          amount: orderAmount,
+          payment_status: "completed",
+          razorpay_payment_id: paymentId,
+          razorpay_order_id: "admin_order_" + crypto.randomUUID(),
+        })
+        .select()
+        .single();
 
       if (orderError) {
         toast({ title: "Step 1 Failed: Order Creation", description: orderError.message, variant: "destructive" });
