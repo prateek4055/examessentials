@@ -185,8 +185,8 @@ export const calculateCartTotal = (
 ): CartCalculation => {
   // Group products by category
   const mindmapProducts = products.filter(p => p.category === "mindmaps");
-  const formulaSheetProducts = products.filter(p => p.category === "formula-sheet");
-  const otherProducts = products.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet");
+  const formulaSheetProducts = products.filter(p => p.category === "formula-sheet" || !p.category);
+  const otherProducts = products.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet" && p.category);
 
   // Calculate combos for each category separately
   const mindmapResult = mindmapProducts.length > 0
