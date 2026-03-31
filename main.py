@@ -351,30 +351,45 @@ async def process_pdf(request: Request):
 
             secure_download_url = p_pdf_url # Fallback
             
-            # 5. Upload to Supabase Storage
-            if supabase:
+            # 5. Upload to Supabase Storage via REST
+            if supabase_url and supabase_key:
                 try:
                     safe_phone = phone if phone else "000"
-                    # Generate a unique path: order_id/product_id_phone.pdf
-                    upload_filename = f"{order_id}/{p.get('id')}_{safe_phone}.pdf"
+                    upload_filename = f"orders/{order_id}/{p.get('id')}_{safe_phone}.pdf"
+                    upload_url = f"{supabase_url}/storage/v1/object/original_pdfs/{upload_filename}"
                     
-                    try:
-                        supabase.storage.from_("purchased_pdfs").upload(
-                            path=upload_filename,
-                            file=processed_data,
-                            file_options={"content-type": "application/pdf"}
-                        )
-                    except Exception as e:
-                        print(f"Upload error (likely already exists): {e}")
+                    upload_headers = {
+                        "Authorization": f"Bearer {supabase_key}",
+                        "apikey": supabase_key,
+                        "Content-Type": "application/pdf"
+                    }
+                    
+                    upload_resp = requests.post(upload_url, headers=upload_headers, data=processed_data)
+                    print(f"Upload response: {upload_resp.status_code} {upload_resp.text}")
                         
-                    # Create Signed URL for 7 days
-                    signed_response = supabase.storage.from_("purchased_pdfs").create_signed_url(
-                        path=upload_filename,
-                        expires_in=604800
-                    )
-                    secure_download_url = signed_response.get("signedURL") or p_pdf_url
+                    # Always try to generate signed URL, even if upload fails (might already exist from previous send)
+                    sign_url = f"{supabase_url}/storage/v1/object/sign/original_pdfs/{upload_filename}"
+                    sign_resp = requests.post(sign_url, headers={
+                        "Authorization": f"Bearer {supabase_key}",
+                        "apikey": supabase_key,
+                        "Content-Type": "application/json"
+                    }, json={"expiresIn": 604800})
+                    
+                    if sign_resp.status_code == 200:
+                        signed_data = sign_resp.json()
+                        val = signed_data.get("signedURL") or signed_data.get("signedUrl")
+                        if val:
+                            if val.startswith("/"):
+                                secure_download_url = f"{supabase_url}{val}"
+                            else:
+                                secure_download_url = val
+                        else:
+                            print(f"Missing signed URL in payload: {signed_data}")
+                    else:
+                        print(f"Failed to sign URL: {sign_resp.status_code} {sign_resp.text}")
                 except Exception as upload_err:
-                    print(f"Supabase storage operations failed: {upload_err}")
+                    print(f"Supabase REST storage operations failed: {upload_err}")
+
 
             processed_products.append({
                 "title": p.get("title"),
