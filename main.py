@@ -3,6 +3,7 @@ import io
 import requests
 import resend
 import base64
+import json
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader, PdfWriter
@@ -41,8 +42,7 @@ def create_diagonal_watermark_buffer(text: str):
     packet.seek(0)
     return packet
 
-
-def create_invoice_pdf(order_id, student_name, email, phone, product_name, price):
+def create_invoice_pdf(order_id, student_name, email, phone, products, total_amount):
     packet = io.BytesIO()
     doc = SimpleDocTemplate(packet, pagesize=letter, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
     elements = []
@@ -52,11 +52,10 @@ def create_invoice_pdf(order_id, student_name, email, phone, product_name, price
     # 1. Header (Logo / Title)
     logo_path = "public/logo.png"
     if not os.path.exists(logo_path):
-        logo_path = "src/assets/logo.png" # Fallback if running from src
+        logo_path = "src/assets/logo.png"
         
     logo_element = None
     if os.path.exists(logo_path):
-        # Determine aspect ratio roughly
         try:
             from PIL import Image as PILImage
             with PILImage.open(logo_path) as im:
@@ -87,10 +86,9 @@ def create_invoice_pdf(order_id, student_name, email, phone, product_name, price
     elements.append(Spacer(1, 20))
     
     # 3. Items Table
-    data = [
-        ["Product", "Qty", "Price", "Total"],
-        [Paragraph(product_name, styles['Normal']), "1", f"Rs. {price}", f"Rs. {price}"]
-    ]
+    data = [["Product", "Qty", "Price", "Total"]]
+    for p in products:
+        data.append([Paragraph(p['title'], styles['Normal']), "1", f"Rs. {p['price']}", f"Rs. {p['price']}"])
     
     table = Table(data, colWidths=[280, 50, 100, 100])
     table.setStyle(TableStyle([
@@ -108,16 +106,20 @@ def create_invoice_pdf(order_id, student_name, email, phone, product_name, price
     elements.append(table)
     elements.append(Spacer(1, 20))
     
-    # 4. Total Table
+    # 4. Total Table with GST
+    subtotal = float(total_amount) / 1.05
+    gst_amount = float(total_amount) - subtotal
+    
     total_data = [
-        ["Subtotal:", f"Rs. {price}"],
-        ["Total Paid:", f"Rs. {price}"]
+        ["Subtotal:", f"Rs. {subtotal:.2f}"],
+        ["GST (5%):", f"Rs. {gst_amount:.2f}"],
+        ["Total Paid (Inclusive of GST):", f"Rs. {float(total_amount):.2f}"]
     ]
-    total_table = Table(total_data, colWidths=[430, 100])
+    total_table = Table(total_data, colWidths=[380, 150])
     total_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
-        ('FONTNAME', (0, 1), (-1, 1), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 1), (-1, 1), 12),
+        ('FONTNAME', (0, 2), (-1, 2), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 2), (-1, 2), 12),
         ('TOPPADDING', (0, 0), (-1, -1), 5),
     ]))
     elements.append(total_table)
@@ -127,8 +129,39 @@ def create_invoice_pdf(order_id, student_name, email, phone, product_name, price
     
     return packet.getvalue()
 
+def get_html_template(student_name, phone, products, email, total_amount):
+    # Calculate GST
+    subtotal = float(total_amount) / 1.05
+    gst_amount = float(total_amount) - subtotal
 
-def get_html_template(student_name, phone, product_name, secure_download_url, price, email):
+    product_rows = ""
+    for p in products:
+        img_tag = f'<img src="{p["image_url"]}" alt="{p["title"]}" style="width: 60px; height: 80px; object-fit: cover; border-radius: 4px; margin-right: 15px;" />' if p.get('image_url') else ""
+        product_rows += f"""
+        <div class="product-row" style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background-color: #fcfcfc; border: 1px solid #eeeeee; border-radius: 6px; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center;">
+                {img_tag}
+                <div class="product-info">
+                    <p class="product-name" style="font-weight: bold; color: #333333; margin: 0 0 5px 0;">{p['title']}</p>
+                    <p style="font-size: 12px; color: #888; margin: 0;">Digital Handwritten Notes</p>
+                </div>
+            </div>
+            <div>
+                <a href="{p['secure_download_url']}" class="btn" style="display: inline-block; background-color: #7c4dff; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 14px; text-align: center;">Download</a>
+            </div>
+        </div>
+        """
+
+    summary_rows = ""
+    for p in products:
+        summary_rows += f"""
+        <tr>
+            <td style="padding: 12px; color: #333333; font-size: 14px; border-bottom: 1px solid #eeeeee;">{p['title']}</td>
+            <td style="padding: 12px; color: #333333; font-size: 14px; border-bottom: 1px solid #eeeeee; text-align: right;">1</td>
+            <td style="padding: 12px; color: #333333; font-size: 14px; border-bottom: 1px solid #eeeeee; text-align: right;">Rs. {p['price']}</td>
+        </tr>
+        """
+
     return f"""
     <!DOCTYPE html>
     <html>
@@ -146,10 +179,6 @@ def get_html_template(student_name, phone, product_name, secure_download_url, pr
         .password-box span {{ font-weight: bold; color: #e91e63; font-size: 18px; }}
         .downloads-section {{ margin-bottom: 25px; }}
         .downloads-title {{ font-size: 18px; color: #7c4dff; margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }}
-        .product-row {{ display: flex; align-items: center; justify-content: space-between; padding: 15px; background-color: #fcfcfc; border: 1px solid #eeeeee; border-radius: 6px; }}
-        .product-info {{ flex: 1; }}
-        .product-name {{ font-weight: bold; color: #333333; margin: 0 0 5px 0; }}
-        .btn {{ display: inline-block; background-color: #7c4dff; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 14px; text-align: center; }}
         .discount-banner {{ background-color: #fff9c4; border: 1px dashed #fbc02d; padding: 20px; text-align: center; border-radius: 6px; margin-bottom: 25px; }}
         .discount-banner h4 {{ margin: 0 0 10px 0; color: #f57f17; }}
         .discount-banner .code {{ display: inline-block; background-color: #ffffff; padding: 8px 15px; border-radius: 4px; font-weight: bold; color: #e65100; letter-spacing: 2px; font-size: 18px; border: 1px solid #fbc02d; }}
@@ -179,15 +208,7 @@ def get_html_template(student_name, phone, product_name, secure_download_url, pr
                 
                 <div class="downloads-section">
                     <h3 class="downloads-title">Your Downloads</h3>
-                    <div class="product-row">
-                        <div class="product-info">
-                            <p class="product-name">{product_name}</p>
-                            <p style="font-size: 12px; color: #888; margin: 0;">Digital Handwritten Notes</p>
-                        </div>
-                        <div>
-                            <a href="{secure_download_url}" class="btn">Download</a>
-                        </div>
-                    </div>
+                    {product_rows}
                     <p style="font-size: 11px; color: #999; text-align: right; margin-top: 5px;">Download link expires in 7 days. Save your files immediately!</p>
                 </div>
                 
@@ -202,20 +223,20 @@ def get_html_template(student_name, phone, product_name, secure_download_url, pr
                 <table class="summary-table">
                     <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Price</th>
+                            <th style="padding: 12px; text-align: left; background-color: #f9f9f9;">Product</th>
+                            <th style="padding: 12px; text-align: right; background-color: #f9f9f9;">Qty</th>
+                            <th style="padding: 12px; text-align: right; background-color: #f9f9f9;">Price</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {summary_rows}
                         <tr>
-                            <td>{product_name}</td>
-                            <td>1</td>
-                            <td>Rs. {price}</td>
+                            <td colspan="2" style="padding: 12px; text-align: right; color: #666; font-size: 14px;">GST (5%):</td>
+                            <td style="padding: 12px; text-align: right; color: #333; font-size: 14px;">Rs. {gst_amount:.2f}</td>
                         </tr>
                         <tr class="total-row">
-                            <td colspan="2" style="text-align: right;">Total Paid :</td>
-                            <td>Rs. {price}</td>
+                            <td colspan="2" style="padding: 12px; text-align: right; font-weight: bold; color: #7c4dff;">Total Paid :</td>
+                            <td style="padding: 12px; text-align: right; font-weight: bold; color: #7c4dff;">Rs. {float(total_amount):.2f}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -252,16 +273,15 @@ async def process_pdf(request: Request):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
 
-    pdf_url = data.get("pdf_url")
+    products_input = data.get("products", [])
     student_name = data.get("student_name", "Student")
     phone = data.get("phone", "")
     email = data.get("email")
     order_id = data.get("order_id", "N/A")
-    product_name = data.get("product_name", "Study Notes")
-    price = data.get("price", "Free")
+    total_amount = data.get("total_amount", 0)
 
-    if not pdf_url:
-        raise HTTPException(status_code=400, detail="Missing pdf_url")
+    if not products_input:
+        raise HTTPException(status_code=400, detail="Missing products array")
 
     try:
         # Initialize Supabase client
@@ -269,44 +289,88 @@ async def process_pdf(request: Request):
         supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
         supabase: Client = create_client(supabase_url, supabase_key) if supabase_url and supabase_key else None
 
-        # 1. Download source PDF using secure Bearer authentication
-        headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
-        if supabase_key and "/object/public/" in pdf_url:
-            pdf_url = pdf_url.replace("/object/public/", "/object/authenticated/")
+        processed_products = []
 
-        resp = requests.get(pdf_url, headers=headers)
-        if resp.status_code != 200:
-            raise Exception(f"Failed to download PDF from {pdf_url}: HTTP {resp.status_code} - {resp.text}")
+        for p in products_input:
+            p_pdf_url = p.get("pdf_url")
+            if not p_pdf_url:
+                continue
 
-        reader = PdfReader(io.BytesIO(resp.content))
-        writer = PdfWriter()
+            # 1. Download source PDF using secure Bearer authentication
+            headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
+            # Ensure URL uses authenticated endpoint if bucket is private
+            auth_pdf_url = p_pdf_url
+            if supabase_key and "/object/public/" in auth_pdf_url:
+                auth_pdf_url = auth_pdf_url.replace("/object/public/", "/object/authenticated/")
 
-        # 2. Create watermark
-        watermark_text = f"Licensed to: {student_name} ({phone})"
-        watermark_pdf_buffer = create_diagonal_watermark_buffer(watermark_text)
-        watermark_reader = PdfReader(watermark_pdf_buffer)
-        watermark_page = watermark_reader.pages[0]
+            resp = requests.get(auth_pdf_url, headers=headers)
+            if resp.status_code != 200:
+                print(f"Failed to download PDF for {p.get('title')}: {resp.status_code}")
+                continue
 
-        # 3. Apply watermark
-        for page in reader.pages:
-            page.merge_page(watermark_page)
-            writer.add_page(page)
+            reader = PdfReader(io.BytesIO(resp.content))
+            writer = PdfWriter()
 
-        # 4. Password Protection
-        if phone:
-            writer.encrypt(
-                user_password=phone,
-                owner_password=os.urandom(16).hex(),
-                permissions_flag=0
-            )
+            # 2. Create watermark
+            watermark_text = f"Licensed to: {student_name} ({phone})"
+            watermark_pdf_buffer = create_diagonal_watermark_buffer(watermark_text)
+            watermark_reader = PdfReader(watermark_pdf_buffer)
+            watermark_page = watermark_reader.pages[0]
 
-        output_buffer = io.BytesIO()
-        writer.write(output_buffer)
-        processed_data = output_buffer.getvalue()
+            # 3. Apply watermark
+            for page in reader.pages:
+                page.merge_page(watermark_page)
+                writer.add_page(page)
 
-        # 5. Send Email if requested
-        if email:
-            # Aggressively hunt for the Resend API Key in case of spelling typos
+            # 4. Password Protection
+            if phone:
+                writer.encrypt(
+                    user_password=phone,
+                    owner_password=os.urandom(16).hex(),
+                    permissions_flag=0
+                )
+
+            output_buffer = io.BytesIO()
+            writer.write(output_buffer)
+            processed_data = output_buffer.getvalue()
+
+            secure_download_url = p_pdf_url # Fallback
+            
+            # 5. Upload to Supabase Storage
+            if supabase:
+                try:
+                    safe_phone = phone if phone else "000"
+                    # Generate a unique path: order_id/product_id_phone.pdf
+                    upload_filename = f"{order_id}/{p.get('id')}_{safe_phone}.pdf"
+                    
+                    try:
+                        supabase.storage.from_("purchased_pdfs").upload(
+                            path=upload_filename,
+                            file=processed_data,
+                            file_options={"content-type": "application/pdf"}
+                        )
+                    except Exception as e:
+                        print(f"Upload error (likely already exists): {e}")
+                        
+                    # Create Signed URL for 7 days
+                    signed_response = supabase.storage.from_("purchased_pdfs").create_signed_url(
+                        path=upload_filename,
+                        expires_in=604800
+                    )
+                    secure_download_url = signed_response.get("signedURL") or p_pdf_url
+                except Exception as upload_err:
+                    print(f"Supabase storage operations failed: {upload_err}")
+
+            processed_products.append({
+                "title": p.get("title"),
+                "price": p.get("price"),
+                "image_url": p.get("image_url"),
+                "secure_download_url": secure_download_url
+            })
+
+        # 6. Send Email if requested
+        if email and processed_products:
+            # Refresh key
             active_key = None
             for key, val in os.environ.items():
                 if "RESEND" in key.upper().strip():
@@ -314,44 +378,16 @@ async def process_pdf(request: Request):
                     break
             
             if not active_key:
-                found_keys = [k for k in os.environ.keys() if "RESEND" in k.upper()]
-                raise Exception(f"Missing API Key in environment. Keys it sees: {found_keys}")
+                raise Exception("Missing RESEND API Key")
                 
             resend.api_key = active_key
             
-            secure_download_url = pdf_url  # Fallback to direct url
-            
-            # Step A: Upload encrypted PDF to purchased_pdfs and get Signed URL
-            if supabase:
-                try:
-                    safe_phone = phone if phone else "000"
-                    upload_filename = f"{order_id}_{safe_phone}.pdf"
-                    
-                    # Try uploading; ignore if exists (handle duplicate webhooks gracefully)
-                    try:
-                        supabase.storage.from_("purchased_pdfs").upload(
-                            path=upload_filename,
-                            file=processed_data,
-                            file_options={"content-type": "application/pdf"}
-                        )
-                    except Exception:
-                        pass
-                        
-                    # Create Signed URL for 7 days (604800 seconds)
-                    signed_response = supabase.storage.from_("purchased_pdfs").create_signed_url(
-                        path=upload_filename,
-                        expires_in=604800
-                    )
-                    secure_download_url = signed_response.get("signedURL")
-                except Exception as upload_err:
-                    print(f"Supabase upload failed: {upload_err}")
-            
-            # Step B: Generate Invoice PDF
-            invoice_pdf = create_invoice_pdf(order_id, student_name, email, phone, product_name, price)
+            # Generate Invoice PDF
+            invoice_pdf = create_invoice_pdf(order_id, student_name, email, phone, processed_products, total_amount)
             invoice_attachment = base64.b64encode(invoice_pdf).decode()
             
-            # Step C: Compose rich HTML
-            html_content = get_html_template(student_name, phone, product_name, secure_download_url, price, email)
+            # Compose HTML
+            html_content = get_html_template(student_name, phone, processed_products, email, total_amount)
             
             resend.Emails.send({
                 "from": "Exam Essentials <notes@examessentials.in>",
@@ -365,10 +401,9 @@ async def process_pdf(request: Request):
                     }
                 ]
             })
-            return {"status": "success", "message": f"PDF processed securely and emailed to {email}"}
+            return {"status": "success", "message": f"Processed {len(processed_products)} items and emailed to {email}"}
 
-        # Return PDF binary if no email provided
-        return Response(content=processed_data, media_type="application/pdf")
+        return {"status": "success", "message": "No individual PDF returned for direct download in multi-mode."}
 
     except Exception as e:
         print(f"Error: {e}")

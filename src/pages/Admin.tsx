@@ -295,29 +295,10 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Call Render Worker directly to bypass proxy/CORS/Supabase issues
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://jfqjeqgwbpnnzdgcpbzw.supabase.co";
-      // Step 2: Call Render Worker directly to bypass proxy/CORS/Supabase issues
-      const res = await fetch("https://pdf-workerdf-workerpdf.onrender.com/process-pdf", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-worker-secret': 'ExamNotes@2026',
-        },
-        body: JSON.stringify({
-          pdf_url: (products.find(p => p.id === mailForm.productIds[0]))?.pdf_url,
-          student_name: mailForm.studentName,
-          phone: mailForm.phone,
-          email: mailForm.email,
-          order_id: orderData.id,
-        }),
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        toast({ title: "Email Delivery Failed", description: errorText || "Unknown error calling worker", variant: "destructive" });
-        return;
-      }
+      // Step 2: Automated Delivery
+      // The database trigger 'tr_render_delivery' automatically listens for this insert 
+      // and securely handles calling the Python worker asynchronously in the background.
+      // This prevents our Admin panel from lagging or sending duplicate emails!
 
       toast({
         title: "Email Sent! ✉️",
@@ -354,6 +335,34 @@ const Admin = () => {
     .map((p) => ({ id: p.id, subject: p.subject, price: p.price, category: p.category }));
   const cartCalc = calculateCartTotal(selectedProductsForCalc);
   const detectedCombos = cartCalc.appliedCombos;
+
+  // Auto-detect and set combo prices when selection changes
+  useEffect(() => {
+    if (isAdmin && !authLoading && !isFreeDelivery && mailForm.productIds.length > 0) {
+      const selected = products.filter((p) => mailForm.productIds.includes(p.id));
+      const calc = calculateCartTotal(
+        selected.map((p) => ({
+          id: p.id,
+          subject: p.subject,
+          price: p.price,
+          category: p.category,
+        }))
+      );
+
+      const newCustomPrices = { ...customPrices };
+      let hasChanged = false;
+      calc.items.forEach((item) => {
+        if (newCustomPrices[item.productId] !== String(item.finalPrice)) {
+          newCustomPrices[item.productId] = String(item.finalPrice);
+          hasChanged = true;
+        }
+      });
+
+      if (hasChanged) {
+        setCustomPrices(newCustomPrices);
+      }
+    }
+  }, [mailForm.productIds, isFreeDelivery, products, isAdmin, authLoading]);
 
   // Show loading state until auth completes and we confirm admin status
   if (authLoading) {
