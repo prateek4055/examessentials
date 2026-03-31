@@ -403,13 +403,19 @@ async def process_pdf(request: Request):
                         signed_data = sign_resp.json()
                         val = signed_data.get("signedURL") or signed_data.get("signedUrl")
                         if val:
-                            if val.startswith("/"):
-                                secure_download_url = f"{supabase_url}{val}"
-                            else:
+                            # Robust URL repair: Ensure /storage/v1/ prefix is present for relative paths
+                            if val.startswith("http"):
                                 secure_download_url = val
+                            else:
+                                clean_path = val if val.startswith("/") else f"/{val}"
+                                if not clean_path.startswith("/storage/v1/"):
+                                    clean_path = f"/storage/v1{clean_path}"
+                                secure_download_url = f"{supabase_url}{clean_path}"
+                            
                             debug_log.append("Sign: SUCCESS")
                         else:
                             debug_log.append(f"Sign Payload Error: {signed_data}")
+
                     else:
                         debug_log.append(f"Sign HTTP Error: {sign_resp.status_code} {sign_resp.text[:50]}")
                 except Exception as upload_err:
