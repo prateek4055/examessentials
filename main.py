@@ -390,7 +390,7 @@ async def process_pdf(request: Request):
             html_content = get_html_template(student_name, phone, processed_products, email, total_amount)
             
             resend.Emails.send({
-                "from": "Exam Essentials <notes@examessentials.in>",
+                "from": "Exam Essentials <contact@examessentials.in>",
                 "to": email,
                 "subject": f"Your Study Material is Ready! - Order #{order_id}",
                 "html": html_content,
