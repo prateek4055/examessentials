@@ -326,16 +326,37 @@ async def process_pdf(request: Request):
             reader = PdfReader(io.BytesIO(resp.content))
             writer = PdfWriter()
 
-            # 2. Create watermark
+            # 2. & 3. Create and Apply dynamic centered watermark
             watermark_text = f"Licensed to: {student_name} ({phone})"
-            watermark_pdf_buffer = create_diagonal_watermark_buffer(watermark_text)
-            watermark_reader = PdfReader(watermark_pdf_buffer)
-            watermark_page = watermark_reader.pages[0]
-
-            # 3. Apply watermark
+            
             for page in reader.pages:
+                width = float(page.mediabox.width)
+                height = float(page.mediabox.height)
+                
+                packet = io.BytesIO()
+                can = canvas.Canvas(packet, pagesize=(width, height))
+                
+                # Dynamic font size: much smaller than before, scales nicely
+                font_size = min(24, max(10, int(width / 25)))
+                
+                can.setFont("Helvetica-Bold", font_size)
+                can.setFillGray(0.5, 0.4)
+                
+                can.saveState()
+                # Translate origin to exact center of the current page
+                can.translate(width / 2.0, height / 2.0)
+                can.rotate(45)
+                can.drawCentredString(0, 0, watermark_text)
+                can.restoreState()
+                can.save()
+                
+                packet.seek(0)
+                watermark_reader = PdfReader(packet)
+                watermark_page = watermark_reader.pages[0]
+                
                 page.merge_page(watermark_page)
                 writer.add_page(page)
+
 
             # 4. Password Protection
             if phone:
