@@ -279,6 +279,16 @@ async def process_pdf(request: Request):
     email = data.get("email")
     order_id = data.get("order_id", "N/A")
     total_amount = data.get("total_amount", 0)
+    payment_id = data.get("payment_id", "")
+    
+    # Check for custom/combo prices from Admin
+    custom_prices = {}
+    if payment_id and isinstance(payment_id, str) and payment_id.startswith("admin_custom_"):
+        try:
+            json_str = payment_id.replace("admin_custom_", "")
+            custom_prices = json.loads(json_str)
+        except Exception as pe:
+            print(f"Failed to parse custom prices: {pe}")
 
     if not products_input:
         raise HTTPException(status_code=400, detail="Missing products array")
@@ -292,9 +302,14 @@ async def process_pdf(request: Request):
         processed_products = []
 
         for p in products_input:
+            p_id = p.get("id")
             p_pdf_url = p.get("pdf_url")
             if not p_pdf_url:
                 continue
+
+            # Override price if provided in custom mapping (for combos/admin custom prices)
+            # Use string ID for mapping lookup
+            p_price = custom_prices.get(str(p_id), p.get("price"))
 
             # 1. Download source PDF using secure Bearer authentication
             headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
@@ -363,7 +378,7 @@ async def process_pdf(request: Request):
 
             processed_products.append({
                 "title": p.get("title"),
-                "price": p.get("price"),
+                "price": p_price,
                 "image_url": p.get("image_url"),
                 "secure_download_url": secure_download_url
             })
