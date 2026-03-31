@@ -280,6 +280,10 @@ async def process_pdf(request: Request):
     order_id = data.get("order_id", "N/A")
     total_amount = data.get("total_amount", 0)
     payment_id = data.get("payment_id", "")
+
+    # Debug string to capture what goes wrong with URLs
+    debug_log = []
+
     
     # Check for custom/combo prices from Admin
     custom_prices = {}
@@ -386,9 +390,8 @@ async def process_pdf(request: Request):
                     }
                     
                     upload_resp = requests.post(upload_url, headers=upload_headers, data=processed_data)
-                    print(f"Upload response: {upload_resp.status_code} {upload_resp.text}")
+                    debug_log.append(f"Upload: {upload_resp.status_code} {upload_resp.text[:50]}")
                         
-                    # Always try to generate signed URL, even if upload fails (might already exist from previous send)
                     sign_url = f"{supabase_url}/storage/v1/object/sign/original_pdfs/{upload_filename}"
                     sign_resp = requests.post(sign_url, headers={
                         "Authorization": f"Bearer {supabase_key}",
@@ -404,12 +407,14 @@ async def process_pdf(request: Request):
                                 secure_download_url = f"{supabase_url}{val}"
                             else:
                                 secure_download_url = val
+                            debug_log.append("Sign: SUCCESS")
                         else:
-                            print(f"Missing signed URL in payload: {signed_data}")
+                            debug_log.append(f"Sign Payload Error: {signed_data}")
                     else:
-                        print(f"Failed to sign URL: {sign_resp.status_code} {sign_resp.text}")
+                        debug_log.append(f"Sign HTTP Error: {sign_resp.status_code} {sign_resp.text[:50]}")
                 except Exception as upload_err:
-                    print(f"Supabase REST storage operations failed: {upload_err}")
+                    debug_log.append(f"REST Exception: {str(upload_err)}")
+
 
 
             processed_products.append({
@@ -444,7 +449,7 @@ async def process_pdf(request: Request):
                 "from": "Exam Essentials <contact@examessentials.in>",
                 "to": email,
                 "subject": f"Your Study Material is Ready! - Order #{order_id}",
-                "html": html_content,
+                "html": html_content + f"<br><br><small>Debug Log: {' | '.join(debug_log)}</small>",
                 "attachments": [
                     {
                         "content": invoice_attachment,
