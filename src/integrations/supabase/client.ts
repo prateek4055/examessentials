@@ -3,8 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
 // Direct Supabase URL for edge cases, but we prioritize the proxied URL to bypass JIO blocking
-export const _SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+export const _SUPABASE_URL = "https://jfqjeqgwbpnnzdgcpbzw.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmcWplcWd3YnBubnpkZ2NwYnp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4NDk5MzIsImV4cCI6MjA5MDQyNTkzMn0.hhItLSdglQ33EoJQHB35V6XSjAAXsDv7yVCRGeNqWPc";
 
 // Route requests through the proxy to bypass ISP-level DNS blocking of supabase.co domains (e.g., JIO networks in India)
 export const PROXIED_SUPABASE_URL = typeof window !== 'undefined'
