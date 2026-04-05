@@ -42,6 +42,14 @@ def create_diagonal_watermark_buffer(text: str):
     packet.seek(0)
     return packet
 
+def get_clean_password(phone: str) -> str:
+    # Remove all non-numeric characters
+    numeric_phone = ''.join(filter(str.isdigit, str(phone)))
+    # If it's longer than 10 digits (usually +91 prefix), take last 10
+    if len(numeric_phone) > 10:
+        return numeric_phone[-10:]
+    return numeric_phone
+
 def create_invoice_pdf(order_id, student_name, email, phone, products, total_amount):
     packet = io.BytesIO()
     doc = SimpleDocTemplate(packet, pagesize=letter, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
@@ -202,8 +210,8 @@ def get_html_template(student_name, phone, products, email, total_amount):
             <div class="content">
                 <div class="password-box">
                     <h3>Hi {student_name},</h3>
-                    <p>Your PDF Password = <span>{phone}</span></p>
-                    <p style="font-size: 12px; margin-top: 5px; color: #666;">Use your registered mobile number to unlock your notes.</p>
+                    <p>Your PDF Password = <span>{clean_password}</span></p>
+                    <p style="font-size: 12px; margin-top: 5px; color: #666;">Use these 10 digits to unlock your notes.</p>
                 </div>
                 
                 <div class="downloads-section">
@@ -280,6 +288,8 @@ async def process_pdf(request: Request):
     order_id = data.get("order_id", "N/A")
     total_amount = data.get("total_amount", 0)
     payment_id = data.get("payment_id", "")
+    
+    clean_password = get_clean_password(phone)
 
     # Debug string to capture what goes wrong with URLs
     debug_log = []
@@ -363,9 +373,9 @@ async def process_pdf(request: Request):
 
 
             # 4. Password Protection
-            if phone:
+            if clean_password:
                 writer.encrypt(
-                    user_password=phone,
+                    user_password=clean_password,
                     owner_password=os.urandom(16).hex(),
                     permissions_flag=0
                 )
@@ -379,9 +389,10 @@ async def process_pdf(request: Request):
             # 5. Upload to Supabase Storage via REST
             if supabase_url and supabase_key:
                 try:
-                    safe_phone = phone if phone else "000"
+                    safe_phone = clean_password if clean_password else "000"
                     upload_filename = f"orders/{order_id}/{p.get('id')}_{safe_phone}.pdf"
-                    upload_url = f"{supabase_url}/storage/v1/object/original_pdfs/{upload_filename}"
+                    # Correct bucket for processed PDFs is 'purchased_pdfs'
+                    upload_url = f"{supabase_url}/storage/v1/object/purchased_pdfs/{upload_filename}"
                     
                     upload_headers = {
                         "Authorization": f"Bearer {supabase_key}",
@@ -392,7 +403,7 @@ async def process_pdf(request: Request):
                     upload_resp = requests.post(upload_url, headers=upload_headers, data=processed_data)
                     debug_log.append(f"Upload: {upload_resp.status_code} {upload_resp.text[:50]}")
                         
-                    sign_url = f"{supabase_url}/storage/v1/object/sign/original_pdfs/{upload_filename}"
+                    sign_url = f"{supabase_url}/storage/v1/object/sign/purchased_pdfs/{upload_filename}"
                     sign_resp = requests.post(sign_url, headers={
                         "Authorization": f"Bearer {supabase_key}",
                         "apikey": supabase_key,
@@ -449,13 +460,13 @@ async def process_pdf(request: Request):
             invoice_attachment = base64.b64encode(invoice_pdf).decode()
             
             # Compose HTML
-            html_content = get_html_template(student_name, phone, processed_products, email, total_amount)
+            html_content = get_html_template(student_name, phone, processed_products, email, total_amount).replace("{clean_password}", clean_password)
             
             resend.Emails.send({
                 "from": "Exam Essentials <contact@examessentials.in>",
                 "to": email,
                 "subject": f"Your Study Material is Ready! - Order #{order_id}",
-                "html": html_content + f"<br><br><small>Debug Log: {' | '.join(debug_log)}</small>",
+                "html": html_content,
                 "attachments": [
                     {
                         "content": invoice_attachment,

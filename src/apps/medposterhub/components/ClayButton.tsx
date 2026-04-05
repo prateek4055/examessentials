@@ -1,19 +1,23 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes } from "react";
+import { Slot } from "@radix-ui/react-slot";
 
 interface ClayButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: "primary" | "secondary" | "icon";
     isActive?: boolean;
+    asChild?: boolean;
 }
 
 export const ClayButton = ({
     className,
     variant = "primary",
     isActive = false,
+    asChild = false,
     children,
     ...props
 }: ClayButtonProps) => {
+    const Component = asChild ? Slot : motion.button;
     const baseStyles = "relative inline-flex items-center justify-center rounded-2xl font-semibold transition-all duration-200 active:scale-95 active:shadow-clay-inner";
 
     const variants = {
@@ -25,13 +29,15 @@ export const ClayButton = ({
     const activeStyles = isActive ? "shadow-clay-inner text-blue-600 scale-95" : "";
 
     return (
-        <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+        <Component
+            {...(!asChild ? {
+                whileHover: { scale: 1.05 },
+                whileTap: { scale: 0.95 }
+            } : {})}
             className={cn(baseStyles, variants[variant], activeStyles, className)}
             {...props as any}
         >
             {children}
-        </motion.button>
+        </Component>
     );
 };

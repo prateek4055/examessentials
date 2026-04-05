@@ -5,8 +5,19 @@ import { CartDrawer } from "../components/CartDrawer";
 import { StickyCartBar } from "../components/StickyCartBar";
 import SEOHead from "@/components/SEOHead";
 import { Package } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const ShippingPolicyContent = () => {
+  const { toast } = useToast();
+
+  const handleAmazonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Amazon Store Coming Soon",
+      description: "We are currently setting up our Amazon catalog. Please buy directly from our website for priority delivery.",
+      variant: "default",
+    });
+  };
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       <SEOHead
@@ -30,7 +41,7 @@ const ShippingPolicyContent = () => {
           <div className="space-y-8 text-lg text-slate-600 leading-relaxed">
             <section>
               <h2 className="text-2xl font-bold text-slate-900 mb-4">Delivery Timeline</h2>
-              <p>We process all orders within 24 hours. Once dispatched, standard delivery across India takes <strong>3 to 5 business days</strong> depending on your location. Deliveries to Metro cities are typically faster.</p>
+              <p>We process and print all posters to order. Standard dispatch takes <strong>2-3 business days</strong> for single-sided prints and <strong>5 business days</strong> for custom double-sided prints. Once dispatched, delivery across India takes <strong>3 to 5 business days</strong>.</p>
             </section>
 
             <section>
@@ -44,8 +55,9 @@ const ShippingPolicyContent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">Shipping Charges</h2>
-              <p>We offer <strong>Free Standard Shipping</strong> on all orders across India. There are no hidden fees at checkout.</p>
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">No Cash on Delivery (COD)</h2>
+              <p>To ensure priority printing and the fastest possible shipping for your clinical charts, we only accept <strong>Prepaid Orders</strong> on our official website via Razorpay.</p>
+              <p className="mt-4">If you specifically require Cash on Delivery (COD), we recommend purchasing from our official <a href="#" onClick={handleAmazonClick} className="text-blue-600 font-semibold underline">Amazon Store</a>, where COD options are managed by Amazon logistics.</p>
             </section>
 
             <section>
@@ -62,9 +74,7 @@ const ShippingPolicyContent = () => {
 };
 
 const ShippingPolicy = () => (
-  <CartProvider>
-    <ShippingPolicyContent />
-  </CartProvider>
+  <ShippingPolicyContent />
 );
 
 export default ShippingPolicy;

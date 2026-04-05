@@ -5,8 +5,19 @@ import { CartDrawer } from "../components/CartDrawer";
 import { StickyCartBar } from "../components/StickyCartBar";
 import SEOHead from "@/components/SEOHead";
 import { RefreshCcw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const ReturnRefundContent = () => {
+  const { toast } = useToast();
+
+  const handleAmazonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Amazon Store Coming Soon",
+      description: "We are currently setting up our Amazon catalog. Please buy directly from our website for priority delivery.",
+      variant: "default",
+    });
+  };
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       <SEOHead
@@ -45,7 +56,8 @@ const ReturnRefundContent = () => {
 
             <section>
               <h2 className="text-2xl font-bold text-slate-900 mb-4">Refunds and Cancellations</h2>
-              <p>Because each poster is printed to order in the specific size you requested, <strong>we do not offer refunds or accept returns for a change of mind</strong>.</p>
+              <p>Each medical poster is custom-printed to order in the specific size you requested. <strong>Due to the nature of custom printing, we do not offer refunds or accept returns for any reason (change of mind, size error, etc.).</strong></p>
+              <p className="mt-4 italic text-sm text-slate-500">Note: COD is available only on our <a href="#" onClick={handleAmazonClick} className="text-blue-600 underline font-medium">Amazon store</a>. Orders placed on our website are prepaid and priority-processed.</p>
               <p className="mt-4">Order cancellations are only accepted if you contact us on WhatsApp within 2 hours of placing the order, before the printing process begins.</p>
             </section>
           </div>
@@ -58,9 +70,7 @@ const ReturnRefundContent = () => {
 };
 
 const ReturnRefund = () => (
-  <CartProvider>
-    <ReturnRefundContent />
-  </CartProvider>
+  <ReturnRefundContent />
 );
 
 export default ReturnRefund;

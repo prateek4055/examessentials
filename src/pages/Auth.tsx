@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, ArrowLeft, User } from "lucide-react";
@@ -34,14 +34,18 @@ const Auth = () => {
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
 
+  const redirectPath = searchParams.get("redirect") || "/";
+
   // Redirect if already logged in
-  if (user) {
-    navigate("/");
-    return null;
-  }
+  useEffect(() => {
+     if (user) {
+        navigate(redirectPath);
+     }
+  }, [user, navigate, redirectPath]);
 
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -64,7 +68,7 @@ const Auth = () => {
         title: "Welcome back!",
         description: "You have been logged in successfully.",
       });
-      navigate("/");
+      // Navigation happens in useEffect
     }
   };
 
@@ -81,7 +85,7 @@ const Auth = () => {
         title: "Account Created!",
         description: "Welcome to Exam Essentials!",
       });
-      navigate("/");
+      // Navigation happens in useEffect
     }
   };
 

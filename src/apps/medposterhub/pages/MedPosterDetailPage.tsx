@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Poster, posters } from "../data/posters";
-import { CartProvider, useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 import { MedPosterHeader } from "../components/MedPosterHeader";
 import { MedFooter } from "../components/MedFooter";
 import { CartDrawer } from "../components/CartDrawer";
@@ -21,7 +21,13 @@ import {
   MessageCircle,
   Package,
   ChevronRight,
+  ShieldCheck,
+  CreditCard,
+  ShoppingBag as AmazonIcon,
+  Clock,
+  CheckCircle2
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const BASE_URL = "https://examessentials.in";
 
@@ -29,6 +35,7 @@ const MedPosterDetailContent = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { toast } = useToast();
   const [selectedSize, setSelectedSize] = useState("A2");
   const [quantity, setQuantity] = useState(1);
   const [backPoster, setBackPoster] = useState<Poster | null>(null);
@@ -82,6 +89,15 @@ const MedPosterDetailContent = () => {
         `Please share payment details and delivery options.`
     );
     window.open(`https://wa.me/919460970342?text=${message}`, "_blank");
+  };
+
+  const handleAmazonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Amazon Store Coming Soon",
+      description: "We are currently setting up our Amazon catalog. Please buy directly from our website for priority delivery.",
+      variant: "default",
+    });
   };
 
   // Suggested combos
@@ -313,12 +329,49 @@ const MedPosterDetailContent = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="flex-1 rounded-xl border-green-600 text-green-700 hover:bg-green-50 h-14 text-lg"
-                    onClick={handleWhatsAppOrder}
+                    className="flex-1 rounded-xl border-blue-600 text-blue-700 hover:bg-blue-50 h-14 text-lg"
+                    onClick={() => {
+                      addToCart(poster, selectedSize, quantity, !!backPoster, backPoster?.title);
+                      navigate("/medposterhub/checkout");
+                    }}
                   >
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    Order on WhatsApp
+                    Buy Now
                   </Button>
+                </div>
+
+                {/* Trust & Policies */}
+                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-amber-50/50 border border-amber-100/50">
+                    <ShieldCheck className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                    <div>
+                      <span className="block text-sm font-bold text-amber-900">Non-Returnable</span>
+                      <span className="block text-[11px] text-amber-700">Printed to order specially for you</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50/50 border border-blue-100/50">
+                    <CreditCard className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                    <div>
+                      <span className="block text-sm font-bold text-blue-900">Prepaid Only</span>
+                      <span className="block text-[11px] text-blue-700">No COD available on website</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <Clock className="w-5 h-5 text-slate-600 flex-shrink-0" />
+                    <div>
+                      <span className="block text-sm font-bold text-slate-900">
+                        Dispatch: {backPoster ? "5 Business Days" : "2-3 Business Days"}
+                      </span>
+                      <span className="block text-[11px] text-slate-500">
+                        Estimated Delivery: 3-5 days after dispatch
+                      </span>
+                    </div>
+                  </div>
+                  <div className="sm:col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-slate-200">
+                    <AmazonIcon className="w-4 h-4 text-slate-400" />
+                    <span className="text-xs text-slate-500">
+                      Need COD? Order via our <a href="#" onClick={handleAmazonClick} className="font-semibold text-blue-600 underline">Amazon Store</a>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -375,9 +428,7 @@ const MedPosterDetailContent = () => {
 
 const MedPosterDetailPage = () => {
   return (
-    <CartProvider>
-      <MedPosterDetailContent />
-    </CartProvider>
+    <MedPosterDetailContent />
   );
 };
 

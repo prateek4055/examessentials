@@ -35,12 +35,13 @@ import logo from "@/assets/logo.jpeg";
 import { medicalApps } from "@/apps/medical/data/medicalAppsData";
 
 
-type Tab = "products" | "orders" | "blogs" | "wiki" | "sendmail";
+type Tab = "products" | "orders" | "poster-orders" | "blogs" | "wiki" | "sendmail";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState<Tab>("products");
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [posterOrders, setPosterOrders] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,14 +87,16 @@ const Admin = () => {
   const loadData = async () => {
     setIsLoading(true);
     try {
-      const [productsData, ordersData, blogsData, articlesData] = await Promise.all([
+      const [productsData, ordersData, posterOrdersData, blogsData, articlesData] = await Promise.all([
         fetchAllProducts(),
         fetchAllOrders(),
+        (supabase as any).from("poster_orders").select("*").order("created_at", { ascending: false }),
         supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
         (supabase as any).from("articles").select("*").order("created_at", { ascending: false }),
       ]);
       setProducts(productsData);
       setOrders(ordersData);
+      setPosterOrders(posterOrdersData.data || []);
       setBlogs(blogsData.data || []);
       setArticles(articlesData.data || []);
     } catch (error) {
@@ -282,7 +285,7 @@ const Admin = () => {
         p_class: mailForm.class,
         p_amount: orderAmount,
         p_payment_status: "completed",
-        p_razorpay_payment_id: paymentId,
+        p_razorpay_payment_id: "admin_manual_" + paymentId, // Trigger will ignore this prefix
         p_razorpay_order_id: "admin_order_" + crypto.randomUUID(),
       });
 
@@ -291,13 +294,51 @@ const Admin = () => {
         return;
       }
 
-      // Step 2: Automated Delivery
-      // The database trigger 'tr_render_delivery' automatically listens for this insert 
-      // and securely handles calling the Python worker asynchronously in the background.
-      // This prevents our Admin panel from lagging or sending duplicate emails!
+      // Step 2: Direct Synchronous Delivery via Worker
+      // Calling the worker directly from the UI allows us to show a real loading spinner
+      // for the 10-20 seconds it takes to process the PDFs.
+      const workerPayload = {
+        products: selectedProducts.map((p) => {
+          const itemPrice = isFreeDelivery ? 0 : (
+            detectedCombos.length > 0 
+              ? (cartCalc.items.find(i => i.productId === p.id)?.finalPrice || p.price)
+              : (parseFloat(customPrices[p.id]) || p.price)
+          );
+          
+          return {
+            id: p.id,
+            title: p.title,
+            price: itemPrice,
+            image_url: p.images && p.images[0] 
+              ? `https://jfqjeqgwbpnnzdgcpbzw.supabase.co/storage/v1/object/public/product-images/${p.images[0]}`
+              : '',
+            pdf_url: `https://jfqjeqgwbpnnzdgcpbzw.supabase.co/storage/v1/object/public/original_pdfs/${p.pdf_url}`
+          };
+        }),
+        student_name: mailForm.studentName.trim(),
+        phone: mailForm.phone.trim(),
+        email: mailForm.email.trim().toLowerCase(),
+        order_id: orderId,
+        total_amount: orderAmount,
+        payment_id: "admin_manual_" + paymentId
+      };
+
+      const workerResponse = await fetch("https://pdf-workerdf-workerpdf.onrender.com/process-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-worker-secret": "ExamNotes@2026"
+        },
+        body: JSON.stringify(workerPayload)
+      });
+
+      if (!workerResponse.ok) {
+        const errorText = await workerResponse.text();
+        throw new Error(`Worker Error: ${errorText}`);
+      }
 
       toast({
-        title: "Email Sent! ✉️",
+        title: "Email Sent Successfully! ✉️",
         description: `Download link sent to ${mailForm.email} for ${productNames}.`,
       });
 
@@ -306,6 +347,7 @@ const Admin = () => {
       setIsFreeDelivery(true);
       setCustomPrices({});
       loadData();
+
     } catch (error: any) {
       console.error("Send mail error:", error);
       toast({ title: "Error", description: error?.message || "Unknown error occurred.", variant: "destructive" });
@@ -503,6 +545,13 @@ const Admin = () => {
             >
               <ShoppingCart className="w-4 h-4 mr-2" />
               Orders
+            </Button>
+            <Button
+              variant={activeTab === "poster-orders" ? "gradient" : "secondary"}
+              onClick={() => setActiveTab("poster-orders")}
+            >
+              <Package className="w-4 h-4 mr-2" />
+              Poster Orders
             </Button>
             <Button
               variant={activeTab === "blogs" ? "gradient" : "secondary"}
@@ -762,6 +811,145 @@ const Admin = () => {
                             className="px-4 py-8 text-center text-muted-foreground"
                           >
                             No orders yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Poster Orders Tab */}
+          {activeTab === "poster-orders" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-4"
+            >
+              <h2 className="font-display text-xl font-bold text-foreground">
+                Poster Orders (Physical)
+              </h2>
+
+              <div className="bg-card border border-border rounded-xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-secondary">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Customer</th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Address</th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Items</th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Payment</th>
+                        <th className="px-4 py-3 text-left text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                        <th className="px-4 py-3 text-right text-xs font-body font-medium text-muted-foreground uppercase tracking-wider">Tracking</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {posterOrders.map((order) => (
+                        <tr key={order.id} className="hover:bg-secondary/50">
+                          <td className="px-4 py-4">
+                            <div className="font-body font-medium text-foreground">{order.customer_name}</div>
+                            <div className="text-xs text-muted-foreground">{order.customer_email}</div>
+                            <div className="text-xs text-muted-foreground">{order.customer_phone}</div>
+                          </td>
+                          <td className="px-4 py-4 text-xs text-muted-foreground max-w-[200px] truncate">
+                            {order.address_line1}, {order.address_line2 && `${order.address_line2}, `} 
+                            {order.city}, {order.state} - {order.pincode}
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="text-xs space-y-1">
+                              {order.items?.map((item: any, idx: number) => (
+                                <div key={idx} className="text-foreground">
+                                  {item.quantity}x {item.title} ({item.selectedSize})
+                                  {item.isDoubleSided && <span className="ml-1 text-green-500 font-bold">[DS]</span>}
+                                </div>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 font-body text-foreground">₹{order.total_amount}</td>
+                          <td className="px-4 py-4">
+                            <div className="flex flex-col gap-1">
+                              <div className="text-[10px] flex items-center justify-between">
+                                <span className="text-muted-foreground">Paid:</span>
+                                <span className="font-bold text-green-600">₹{order.amount_paid}</span>
+                              </div>
+                              <div className="text-[10px] flex items-center justify-between">
+                                <span className="text-muted-foreground">Due:</span>
+                                <span className={`font-bold ${order.balance_due > 0 ? "text-amber-600" : "text-slate-400"}`}>₹{order.balance_due}</span>
+                              </div>
+                              {order.payment_plan === "partial" && order.balance_due > 0 && (
+                                <button 
+                                  onClick={async () => {
+                                    await (supabase as any).from("poster_orders").update({ 
+                                      balance_due: 0, 
+                                      amount_paid: order.total_amount,
+                                      payment_status: 'completed' 
+                                    }).eq("id", order.id);
+                                    loadData();
+                                    toast({ title: "Balance Marked as Paid" });
+                                  }}
+                                  className="text-[9px] bg-blue-50 text-blue-600 border border-blue-200 rounded px-1 py-0.5 hover:bg-blue-600 hover:text-white transition-colors mt-1"
+                                >
+                                  Mark Final Paid
+                                </button>
+                              )}
+                              {order.payment_plan === "partial" && (
+                                <span className="text-[9px] bg-amber-50 text-amber-600 border border-amber-100 rounded px-1 py-0.5 text-center mt-1 font-bold">Trust Plan</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-4 py-4">
+                            <select 
+                              value={order.delivery_status} 
+                              onChange={async (e) => {
+                                const newStatus = e.target.value;
+                                await (supabase as any).from("poster_orders").update({ delivery_status: newStatus }).eq("id", order.id);
+                                loadData();
+                              }}
+                              className="bg-secondary text-xs rounded border border-border px-2 py-1"
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="shipped">Shipped</option>
+                              <option value="delivered">Delivered</option>
+                              <option value="cancelled">Cancelled</option>
+                            </select>
+                          </td>
+                          <td className="px-4 py-4 text-right">
+                            <div className="flex flex-col items-end gap-1">
+                              <input 
+                                type="text" 
+                                placeholder="Tracking ID"
+                                defaultValue={order.tracking_id}
+                                onBlur={async (e) => {
+                                  if (e.target.value !== order.tracking_id) {
+                                     await (supabase as any).from("poster_orders").update({ tracking_id: e.target.value }).eq("id", order.id);
+                                     toast({ title: "Tracking ID Updated" });
+                                  }
+                                }}
+                                className="text-[10px] bg-secondary border border-border rounded px-1 w-24"
+                              />
+                              <input 
+                                type="text" 
+                                placeholder="Courier Name"
+                                defaultValue={order.courier_name}
+                                onBlur={async (e) => {
+                                  if (e.target.value !== order.courier_name) {
+                                     await (supabase as any).from("poster_orders").update({ courier_name: e.target.value }).eq("id", order.id);
+                                     toast({ title: "Courier Updated" });
+                                  }
+                                }}
+                                className="text-[10px] bg-secondary border border-border rounded px-1 w-24"
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                      {posterOrders.length === 0 && (
+                        <tr>
+                          <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                            No physical poster orders yet.
                           </td>
                         </tr>
                       )}

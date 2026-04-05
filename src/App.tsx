@@ -39,6 +39,9 @@ import ReturnRefund from "./apps/medposterhub/pages/ReturnRefund";
 import BulkOrders from "./apps/medposterhub/pages/BulkOrders";
 import ContactUs from "./apps/medposterhub/pages/ContactUs";
 import PrivacyTerms from "./apps/medposterhub/pages/PrivacyTerms";
+import MedCheckoutPage from "./apps/medposterhub/pages/CheckoutPage";
+import MedOrderSuccessPage from "./apps/medposterhub/pages/OrderSuccessPage";
+import { CartProvider } from "./apps/medposterhub/context/CartContext";
 import MedOrthoPage from "./apps/medical/pages/MedOrthoPage";
 import MedWikiArticlePage from "./apps/medical/pages/MedWikiArticlePage";
 
@@ -54,64 +57,68 @@ const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/terms" element={<TermsRedirect />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/shipping-policy" element={<ShippingPolicy />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/purchase/:id" element={<PurchaseForm />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/product/:id" element={<AdminProductForm />} />
-              <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
-              <Route path="/admin/wiki-editor" element={<AdminWikiEditor />} />
-              <Route path="/admin/wiki-editor/:id" element={<AdminWikiEditor />} />
-              {/* SEO Category Pages */}
-              <Route path="/class-11-notes" element={<Class11Notes />} />
-              <Route path="/class-12-notes" element={<Class12Notes />} />
-              <Route path="/neet-notes" element={<NeetNotes />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogPost />} />
-              {/* Sub-Apps */}
-              <Route path="/medposterhub" element={<MedPosterHubIndex />} />
-              <Route path="/medposterhub/:slug" element={<MedPosterDetailPage />} />
-              <Route path="/medposterhub/shipping" element={<MedShippingPolicy />} />
-              <Route path="/medposterhub/returns" element={<ReturnRefund />} />
-              <Route path="/medposterhub/bulk-orders" element={<BulkOrders />} />
-              <Route path="/medposterhub/contact" element={<ContactUs />} />
-              <Route path="/medposterhub/privacy-terms" element={<PrivacyTerms />} />
-              <Route path="/medortho" element={<MedOrthoPage />} />
-              <Route path="/medortho/*" element={<MedWikiArticlePage />} />
-              <Route path="/medcardio" element={<MedCardioPage />} />
-              <Route path="/medcardio/*" element={<MedWikiArticlePage />} />
-              <Route path="/medneuro" element={<MedNeuroPage />} />
-              <Route path="/medneuro/*" element={<MedWikiArticlePage />} />
-              <Route path="/medphysio" element={<MedPhysioPage />} />
-              <Route path="/medphysio/*" element={<MedWikiArticlePage />} />
-              <Route path="/medradio" element={<MedRadioPage />} />
-              <Route path="/medradio/*" element={<MedWikiArticlePage />} />
-              <Route path="/medpharma" element={<MedPharmaPage />} />
-              <Route path="/medpharma/*" element={<MedWikiArticlePage />} />
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                <Route path="/terms" element={<TermsRedirect />} />
+                <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/purchase/:id" element={<PurchaseForm />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/product/:id" element={<AdminProductForm />} />
+                <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
+                <Route path="/admin/wiki-editor" element={<AdminWikiEditor />} />
+                <Route path="/admin/wiki-editor/:id" element={<AdminWikiEditor />} />
+                {/* SEO Category Pages */}
+                <Route path="/class-11-notes" element={<Class11Notes />} />
+                <Route path="/class-12-notes" element={<Class12Notes />} />
+                <Route path="/neet-notes" element={<NeetNotes />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogPost />} />
+                {/* Sub-Apps */}
+                <Route path="/medposterhub" element={<MedPosterHubIndex />} />
+                <Route path="/medposterhub/:slug" element={<MedPosterDetailPage />} />
+                <Route path="/medposterhub/shipping" element={<MedShippingPolicy />} />
+                <Route path="/medposterhub/returns" element={<ReturnRefund />} />
+                <Route path="/medposterhub/bulk-orders" element={<BulkOrders />} />
+                <Route path="/medposterhub/contact" element={<ContactUs />} />
+                <Route path="/medposterhub/privacy-terms" element={<PrivacyTerms />} />
+                <Route path="/medposterhub/checkout" element={<MedCheckoutPage />} />
+                <Route path="/medposterhub/success" element={<MedOrderSuccessPage />} />
+                <Route path="/medortho" element={<MedOrthoPage />} />
+                <Route path="/medortho/*" element={<MedWikiArticlePage />} />
+                <Route path="/medcardio" element={<MedCardioPage />} />
+                <Route path="/medcardio/*" element={<MedWikiArticlePage />} />
+                <Route path="/medneuro" element={<MedNeuroPage />} />
+                <Route path="/medneuro/*" element={<MedWikiArticlePage />} />
+                <Route path="/medphysio" element={<MedPhysioPage />} />
+                <Route path="/medphysio/*" element={<MedWikiArticlePage />} />
+                <Route path="/medradio" element={<MedRadioPage />} />
+                <Route path="/medradio/*" element={<MedWikiArticlePage />} />
+                <Route path="/medpharma" element={<MedPharmaPage />} />
+                <Route path="/medpharma/*" element={<MedWikiArticlePage />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <WhatsAppButton />
-            <SocialProofPopup />
-          </BrowserRouter>
-        </TooltipProvider>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <WhatsAppButton />
+              <SocialProofPopup />
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
   </HelmetProvider>

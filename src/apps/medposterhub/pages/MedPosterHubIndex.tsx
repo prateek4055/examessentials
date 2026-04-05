@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { posters, Poster } from "../data/posters";
-import { CartProvider } from "../context/CartContext";
 import { MedPosterHeader } from "../components/MedPosterHeader";
 import { HeroSection } from "../components/HeroSection";
 import { ProductGrid } from "../components/ProductGrid";
@@ -279,9 +278,7 @@ const MedPosterHubContent = () => {
 
 const MedPosterHubIndex = () => {
   return (
-    <CartProvider>
-      <MedPosterHubContent />
-    </CartProvider>
+    <MedPosterHubContent />
   )
 }
 

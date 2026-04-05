@@ -12,23 +12,15 @@ import { Separator } from "@/components/ui/separator";
 import { ClayButton } from "./ClayButton";
 import { ClayCard } from "./ClayCard";
 
+import { useNavigate } from "react-router-dom";
+
 export const CartDrawer = () => {
     const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, totalPrice } = useCart();
+    const navigate = useNavigate();
 
     const handleCheckout = () => {
-        // Generate WhatsApp message
-        let message = "Hi, I would like to order the following posters:\n\n";
-        cart.forEach((item) => {
-            message += `• ${item.title} (${item.selectedSize})`;
-            if (item.isDoubleSided) {
-                message += ` [${item.backPosterTitle ? `Double Sided: Back is ${item.backPosterTitle}` : 'Double Sided'}] (+₹200)`;
-            }
-            message += ` x ${item.quantity}\n`;
-        });
-        message += `\nTotal: ₹${totalPrice}`;
-
-        const url = `https://wa.me/919460970342?text=${encodeURIComponent(message)}`;
-        window.open(url, "_blank");
+        setIsCartOpen(false);
+        navigate("/medposterhub/checkout");
     };
 
     return (
@@ -118,11 +110,11 @@ export const CartDrawer = () => {
                                 <span>₹{totalPrice}</span>
                             </div>
                             <Separator className="bg-slate-200" />
-                            <ClayButton variant="primary" className="w-full py-4 rounded-xl text-lg hover:bg-green-600 bg-green-500 border-none" onClick={handleCheckout}>
-                                Checkout on WhatsApp
+                            <ClayButton variant="primary" className="w-full py-4 rounded-xl text-lg hover:bg-blue-600 bg-blue-500 border-none shadow-clay-md" onClick={handleCheckout}>
+                                Checkout
                             </ClayButton>
-                            <p className="text-xs text-center text-slate-400 font-medium">
-                                Secure checkout powered by WhatsApp
+                            <p className="text-[10px] text-center text-amber-600 font-bold uppercase tracking-tight mt-1 bg-amber-50 rounded py-0.5 border border-amber-100/50">
+                                Prepaid Only • Digital Payments Secure
                             </p>
                         </div>
                     </SheetFooter>

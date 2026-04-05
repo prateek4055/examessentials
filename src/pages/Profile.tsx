@@ -43,6 +43,7 @@ const Profile = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [posterOrders, setPosterOrders] = useState<any[]>([]);
   const [profileData, setProfileData] = useState<{
     full_name: string | null;
     email: string | null;
@@ -100,7 +101,7 @@ const Profile = () => {
           phone: profileInfo.phone || "" 
         });
 
-        // Fetch orders by email
+        // Fetch regular orders by email
         if (user.email) {
           const { data: ordersData, error: ordersError } = await supabase
             .from("orders")
@@ -126,11 +127,20 @@ const Profile = () => {
               })
             );
             setOrders(ordersWithProducts as any);
-            // Get phone from most recent order if available
-            if (ordersData && ordersData.length > 0 && ordersData[0].phone) {
-              setProfileData(prev => prev ? { ...prev, phone: ordersData[0].phone } : null);
-            }
           }
+        }
+
+        // Fetch physical poster orders by user_id
+        const { data: posterOrdersData, error: posterOrdersError } = await (supabase as any)
+          .from("poster_orders")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (posterOrdersError) {
+          console.error("Error fetching poster orders:", posterOrdersError);
+        } else {
+          setPosterOrders(posterOrdersData || []);
         }
       } catch (err) {
         console.error("Error:", err);
@@ -187,10 +197,15 @@ const Profile = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
+      case "delivered":
         return "bg-green-100 text-green-800";
       case "pending":
+      case "printing":
         return "bg-yellow-100 text-yellow-800";
+      case "shipped":
+        return "bg-blue-100 text-blue-800";
       case "failed":
+      case "cancelled":
         return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -332,68 +347,86 @@ const Profile = () => {
                 </form>
               </div>
 
-              {/* Orders/Purchases Card */}
+              {/* MedPosterHub Physical Orders Card */}
               <div className="p-6 rounded-2xl bg-card border border-border">
                 <div className="flex items-center gap-3 mb-6">
-                  <ShoppingBag className="w-6 h-6 text-primary" />
+                  <Package className="w-6 h-6 text-primary" />
                   <h2 className="font-display text-xl font-semibold text-foreground">
-                    My Purchases
+                    Physical Poster Orders
                   </h2>
                 </div>
 
-                {orders.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Package className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">You haven't made any purchases yet.</p>
-                    <Button asChild variant="outline">
-                      <Link to="/products">Browse Products</Link>
+                {posterOrders.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground text-sm mb-4">No posters ordered yet.</p>
+                    <Button asChild variant="outline" size="sm">
+                      <Link to="/medposterhub">Shop Posters</Link>
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {orders.map((order) => (
+                  <div className="space-y-6">
+                    {posterOrders.map((order) => (
                       <div
                         key={order.id}
-                        className="flex items-center gap-4 p-4 rounded-xl bg-secondary"
+                        className="p-5 rounded-xl bg-secondary border border-border/50 space-y-4"
                       >
-                        {/* Product Image */}
-                        <div className="w-16 h-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
-                          {order.product?.images?.[0] ? (
-                            <img
-                              src={order.product.images[0]}
-                              alt={order.product.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center">
-                              <Package className="w-8 h-8 text-muted-foreground/50" />
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider font-bold">
+                              Order ID: {order.id.slice(0, 8)}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDate(order.created_at)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                             <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${getStatusColor(order.delivery_status || 'pending')}`}>
+                                {order.delivery_status || 'pending'}
+                             </span>
+                             {order.payment_plan === "partial" && (
+                                <p className="text-[10px] text-amber-600 font-bold mt-2 uppercase tracking-tighter">
+                                  Trust Plan (50/50)
+                                </p>
+                             )}
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          {order.items?.map((item: any, idx: number) => (
+                            <div key={idx} className="flex gap-3">
+                              <div className="w-12 h-16 rounded bg-background border border-border overflow-hidden flex-shrink-0">
+                                <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold truncate text-foreground">{item.title}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {item.selectedSize} × {item.quantity}
+                                  {item.isDoubleSided && <span className="ml-1 text-green-600 font-medium">Double Sided</span>}
+                                </p>
+                              </div>
                             </div>
-                          )}
+                          ))}
                         </div>
 
-                        {/* Product Details */}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-foreground truncate">
-                            {order.product?.title || "Product"}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {order.product?.subject} • Class {order.product?.class}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {formatDate(order.created_at)}
-                          </p>
-                        </div>
-
-                        {/* Price & Status */}
-                        <div className="text-right flex-shrink-0">
-                          <p className="font-bold text-foreground">₹{order.amount}</p>
-                          <span
-                            className={`inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium capitalize ${getStatusColor(
-                              order.payment_status
-                            )}`}
-                          >
-                            {order.payment_status}
-                          </span>
+                        <div className="pt-4 border-t border-border/30 flex flex-wrap justify-between items-end gap-4">
+                           <div className="space-y-1">
+                              {order.tracking_id && (
+                                <div className="text-[11px] bg-blue-50 text-blue-700 px-2 py-1 rounded-lg border border-blue-100">
+                                  <strong className="block text-[9px] uppercase opacity-70">Tracking Info</strong>
+                                  {order.courier_name}: {order.tracking_id}
+                                </div>
+                              )}
+                              {order.payment_plan === "partial" && order.balance_due > 0 && (
+                                <div className="text-[11px] bg-amber-50 text-amber-800 px-2 py-1 rounded-lg border border-amber-100">
+                                  <strong className="block text-[9px] uppercase opacity-70">Payment Status</strong>
+                                  ₹{order.balance_due} payable after dispatch
+                                </div>
+                              )}
+                           </div>
+                           <div className="text-right">
+                              <p className="text-xs text-muted-foreground">Total Bill</p>
+                              <p className="text-lg font-bold text-foreground">₹{order.total_amount}</p>
+                           </div>
                         </div>
                       </div>
                     ))}

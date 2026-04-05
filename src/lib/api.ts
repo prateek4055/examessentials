@@ -234,3 +234,73 @@ export const updateOrderStatus = async (
 
   return data as Order;
 };
+
+// --- Poster Orders (MedPosterHub) ---
+
+export interface PosterOrderItem {
+  id: string;
+  title: string;
+  selectedSize: string;
+  quantity: number;
+  isDoubleSided: boolean;
+  backPosterTitle?: string;
+  price: number;
+}
+
+export interface PosterOrder {
+  id: string;
+  created_at: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  address_line1: string;
+  address_line2: string | null;
+  landmark: string | null;
+  city: string;
+  state: string;
+  pincode: string;
+  items: PosterOrderItem[];
+  total_amount: number;
+  payment_plan: "full" | "partial";
+  amount_paid: number;
+  balance_due: number;
+  payment_status: "pending" | "completed" | "failed";
+  delivery_status: "pending" | "shipped" | "delivered" | "cancelled";
+  razorpay_order_id: string | null;
+  razorpay_payment_id: string | null;
+  tracking_id: string | null;
+  courier_name: string | null;
+}
+
+export const fetchAllPosterOrders = async (): Promise<PosterOrder[]> => {
+  const { data, error } = await (supabase as any)
+    .from("poster_orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching poster orders:", error);
+    throw error;
+  }
+
+  return (data || []) as unknown as PosterOrder[];
+};
+
+export const updatePosterOrderStatus = async (
+  id: string,
+  updates: Partial<Pick<PosterOrder, "payment_status" | "delivery_status" | "tracking_id" | "courier_name">>
+): Promise<PosterOrder> => {
+  const { data, error } = await (supabase as any)
+    .from("poster_orders")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating poster order:", error);
+    throw error;
+  }
+
+  return data as unknown as PosterOrder;
+};
