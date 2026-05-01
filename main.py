@@ -137,7 +137,7 @@ def create_invoice_pdf(order_id, student_name, email, phone, products, total_amo
     
     return packet.getvalue()
 
-def get_html_template(student_name, phone, products, email, total_amount):
+def get_html_template(student_name, phone, products, email, total_amount, clean_password):
     # Calculate GST
     subtotal = float(total_amount) / 1.05
     gst_amount = float(total_amount) - subtotal
@@ -460,7 +460,7 @@ async def process_pdf(request: Request):
             invoice_attachment = base64.b64encode(invoice_pdf).decode()
             
             # Compose HTML
-            html_content = get_html_template(student_name, phone, processed_products, email, total_amount).replace("{clean_password}", clean_password)
+            html_content = get_html_template(student_name, phone, processed_products, email, total_amount, clean_password)
             
             resend.Emails.send({
                 "from": "Exam Essentials <contact@examessentials.in>",
