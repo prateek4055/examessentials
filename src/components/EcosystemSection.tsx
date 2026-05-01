@@ -82,9 +82,9 @@ const apps: AppCard[] = [
   },
   // Exam Apps
   {
-    name: "NEET Essentials",
-    description: "Medical entrance prep",
-    image: neetLogo,
+    name: "CAT Essentials",
+    description: "MBA entrance prep",
+    image: catLogo,
     category: "exam",
     comingSoon: true,
   },
@@ -92,13 +92,6 @@ const apps: AppCard[] = [
     name: "JEE Essentials",
     description: "PCM exam prep",
     image: jeeLogo,
-    category: "exam",
-    comingSoon: true,
-  },
-  {
-    name: "CAT Essentials",
-    description: "MBA entrance prep",
-    image: catLogo,
     category: "exam",
     comingSoon: true,
   },
@@ -113,6 +106,13 @@ const apps: AppCard[] = [
     name: "UPSC Essentials",
     description: "Civil services prep",
     image: upscLogo,
+    category: "exam",
+    comingSoon: true,
+  },
+  {
+    name: "NEET Essentials",
+    description: "Medical entrance prep",
+    image: neetLogo,
     category: "exam",
     comingSoon: true,
   },
@@ -308,13 +308,12 @@ const EcosystemSection = () => {
                     </span>
                   )}
 
-                  {/* App Logo */}
                   <div className="mb-4 flex justify-center">
                     {app.image ? (
                       <img
                         src={app.image}
                         alt={app.name}
-                        className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg"
+                        className="w-full h-32 object-contain drop-shadow-lg"
                         loading="lazy"
                       />
                     ) : (
