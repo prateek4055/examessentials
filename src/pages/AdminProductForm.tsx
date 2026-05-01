@@ -27,7 +27,7 @@ import {
   Product,
 } from "@/lib/api";
 import ProductImageUploader from "@/components/ProductImageUploader";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 
 const categoryOptions = [
   { value: "handwritten-notes", label: "Handwritten Notes" },

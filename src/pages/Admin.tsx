@@ -31,7 +31,7 @@ import {
 } from "@/lib/api";
 import { calculateCartTotal } from "@/lib/cartUtils";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { medicalApps } from "@/apps/medical/data/medicalAppsData";
 
 

@@ -3,17 +3,17 @@ import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // Import app logos
-import neetLogo from "@/assets/apps/neet.png";
-import upscLogo from "@/assets/apps/upsc.png";
-import catLogo from "@/assets/apps/cat.png";
-import sscLogo from "@/assets/apps/ssc.png";
-import jeeLogo from "@/assets/apps/jee.png";
-import medcardioLogo from "@/assets/apps/medcardio.png";
-import medneuroLogo from "@/assets/apps/medneuro.png";
-import medpharmaLogo from "@/assets/apps/medpharma.png";
-import medphysioLogo from "@/assets/apps/medphysio.png";
-import medradioLogo from "@/assets/apps/medradio.png";
-import medorthoLogo from "@/assets/apps/medortho.png";
+import neetLogo from "@/assets/apps/neet.webp";
+import upscLogo from "@/assets/apps/upsc.webp";
+import catLogo from "@/assets/apps/cat.webp";
+import sscLogo from "@/assets/apps/ssc.webp";
+import jeeLogo from "@/assets/apps/jee.webp";
+import medcardioLogo from "@/assets/apps/medcardio.webp";
+import medneuroLogo from "@/assets/apps/medneuro.webp";
+import medpharmaLogo from "@/assets/apps/medpharma.webp";
+import medphysioLogo from "@/assets/apps/medphysio.webp";
+import medradioLogo from "@/assets/apps/medradio.webp";
+import medorthoLogo from "@/assets/apps/medortho.webp";
 
 interface AppCard {
   name: string;

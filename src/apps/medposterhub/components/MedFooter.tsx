@@ -1,5 +1,5 @@
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 
 export const MedFooter = () => {
     return (

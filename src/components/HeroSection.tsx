@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 // Import 3D doodle images
-import lungsDoodle from "@/assets/doodles/lungs.png";
-import heartDoodle from "@/assets/doodles/heart.png";
-import brainDoodle from "@/assets/doodles/brain.png";
-import prismDoodle from "@/assets/doodles/prism.png";
+import lungsDoodle from "@/assets/doodles/lungs.webp";
+import heartDoodle from "@/assets/doodles/heart.webp";
+import brainDoodle from "@/assets/doodles/brain.webp";
+import prismDoodle from "@/assets/doodles/prism.webp";
 
 // Doodle elements — CSS-animated for compositor-thread performance
 const doodleElements = [

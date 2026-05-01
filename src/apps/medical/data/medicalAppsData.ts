@@ -1,9 +1,9 @@
-import medorthoLogo from "@/assets/apps/medortho.png";
-import medcardioLogo from "@/assets/apps/medcardio.png";
-import medneuroLogo from "@/assets/apps/medneuro.png";
-import medphysioLogo from "@/assets/apps/medphysio.png";
-import medradioLogo from "@/assets/apps/medradio.png";
-import medpharmaLogo from "@/assets/apps/medpharma.png";
+import medorthoLogo from "@/assets/apps/medortho.webp";
+import medcardioLogo from "@/assets/apps/medcardio.webp";
+import medneuroLogo from "@/assets/apps/medneuro.webp";
+import medphysioLogo from "@/assets/apps/medphysio.webp";
+import medradioLogo from "@/assets/apps/medradio.webp";
+import medpharmaLogo from "@/assets/apps/medpharma.webp";
 
 export interface MedAppFeature {
   icon: string; // lucide icon name
