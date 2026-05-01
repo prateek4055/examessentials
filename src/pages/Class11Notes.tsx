@@ -146,10 +146,10 @@ const Class11Notes = () => {
   return (
     <>
       <SEOHead
-        title="Class 11 Notes - Physics, Chemistry, Maths, Biology | Handwritten Notes PDF"
-        description="Buy premium Class 11 handwritten notes for Physics, Chemistry, Maths & Biology. CBSE board exam focused content by toppers. Perfect for NEET & JEE foundation. Instant PDF delivery."
+        title="Class 11 Handwritten Notes — Physics, Chemistry, Maths, Biology | By Toppers"
+        description="India's #1 topper-handwritten notes for Class 11 Science. CBSE-aligned Physics, Chemistry, Maths & Biology notes. Exam-focused, easy to revise. Order now."
         canonical="/class-11-notes"
-        keywords="class 11 notes, class 11 physics notes, class 11 chemistry notes, class 11 maths notes, class 11 biology notes, CBSE class 11 notes, handwritten notes class 11, topper notes class 11, NEET class 11, JEE class 11 notes"
+        keywords="class 11 handwritten notes, class 11 notes, class 11 physics notes, class 11 chemistry notes, class 11 maths notes, class 11 biology notes, CBSE class 11 notes, handwritten notes class 11, topper notes class 11, NEET class 11, JEE class 11 notes, class 11th handwritten notes"
         structuredData={structuredData}
       />
 

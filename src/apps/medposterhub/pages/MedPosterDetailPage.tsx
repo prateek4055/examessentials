@@ -180,8 +180,8 @@ const MedPosterDetailContent = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       <SEOHead
-        title={`${poster.title} – Buy ${poster.category} Poster Online | MedPosterHub`}
-        description={`${poster.description} Available in A3 (₹${poster.price.small}), A2 (₹${poster.price.medium}), A1 (₹${poster.price.large}). Premium 250gsm matte print. Order now from MedPosterHub.`}
+        title={poster.seoTitle || `${poster.title} – Buy ${poster.category} Poster Online | MedPosterHub`}
+        description={poster.seoDescription || `${poster.description} Available in A3 (₹${poster.price.small}), A2 (₹${poster.price.medium}), A1 (₹${poster.price.large}). Premium 250gsm matte print. Worldwide shipping available. Order now from MedPosterHub.`}
         canonical={`/medposterhub/${poster.slug}`}
         keywords={seoKeywords}
         ogImage={`${BASE_URL}${poster.image}`}

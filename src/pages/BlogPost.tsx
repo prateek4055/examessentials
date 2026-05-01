@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, Calendar, Clock, User, ArrowLeft, Share2, Twitter, Linkedin, Copy, ArrowRight } from "lucide-react";
 import DOMPurify from "dompurify";
@@ -7,20 +7,89 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { blogPosts, BlogPost, getCategoryColor } from "@/lib/blogData";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const BlogPostPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   
-  const post = blogPosts.find(p => p.id === id);
+  // First try static data
+  const staticPost = blogPosts.find(p => p.id === id);
+  
+  const [post, setPost] = useState<BlogPost | null>(staticPost || null);
+  const [isLoading, setIsLoading] = useState(!staticPost);
+
+  // If not found in static data, fetch from Supabase
+  useEffect(() => {
+    if (staticPost) {
+      setPost(staticPost);
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchFromSupabase = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .eq("slug", id)
+          .eq("published", true)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Error fetching blog post from Supabase:", error);
+          setPost(null);
+        } else if (data) {
+          // Map Supabase fields to BlogPost interface
+          setPost({
+            id: data.slug,
+            title: data.title,
+            excerpt: data.excerpt,
+            category: data.category,
+            date: data.created_at?.split("T")[0] || new Date().toISOString().split("T")[0],
+            readTime: data.read_time,
+            author: data.author,
+            image: data.image_url || "https://images.unsplash.com/photo-1559757175-9e351c9a1301?w=800&q=80",
+            featured: data.featured,
+            content: data.content,
+          });
+        } else {
+          setPost(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch blog post:", err);
+        setPost(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFromSupabase();
+  }, [id, staticPost]);
+
   const relatedPosts = post 
     ? blogPosts.filter(p => p.category === post.category && p.id !== id).slice(0, 3) 
     : [];
 
+  // Scroll to top on post change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
+
+  // Show loading state while fetching from Supabase
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0A0F1C] flex flex-col font-sans">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4DA6FF]" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -102,6 +171,94 @@ const BlogPostPage = () => {
     });
   };
 
+  // FAQ schemas for specific high-value blog posts (keyed by slug/id)
+  const blogFaqMap: Record<string, Array<{ question: string; answer: string }>> = {
+    "class-11-physics-notes-quick-revision": [
+      {
+        question: "Why is Class 11 Physics important for NEET and JEE preparation?",
+        answer: "Class 11 Physics forms the foundation for competitive exams like NEET and JEE. Topics such as Mechanics, Laws of Motion, Work-Energy-Power, and Thermodynamics carry significant weightage in both exams. A strong grasp of Class 11 concepts directly impacts your ability to solve advanced Class 12 and entrance-level problems."
+      },
+      {
+        question: "How should I revise Class 11 Physics quickly before exams?",
+        answer: "Focus on chapter-wise formula sheets and handwritten summary notes that highlight key derivations, diagrams, and numerical patterns. Prioritise high-weightage chapters like Kinematics, Laws of Motion, Work-Energy Theorem, Rotational Motion, and Oscillations. Use quick-revision PDFs to review one chapter in 20-30 minutes instead of re-reading the textbook."
+      },
+      {
+        question: "Where can I get Class 11 Physics notes PDF for quick revision?",
+        answer: "Exam Essentials offers topper-handwritten Class 11 Physics notes in PDF format. These notes are CBSE-aligned, cover every NCERT chapter, and are specifically designed for last-minute revision for Board exams, NEET, and JEE. You can order them at examessentials.in/class-11-notes."
+      }
+    ],
+  };
+
+  const postFaqs = post ? blogFaqMap[post.id] : undefined;
+
+  const blogStructuredData: object[] = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": post.image.startsWith('http') ? post.image : `https://examessentials.in${post.image}`,
+      "author": {
+        "@type": "Organization",
+        "name": "Exam Essentials",
+        "url": "https://examessentials.in"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Exam Essentials",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://examessentials.in/logo.png"
+        }
+      },
+      "datePublished": post.date,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://examessentials.in/blog/${post.id}`
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://examessentials.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://examessentials.in/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": post.title,
+          "item": `https://examessentials.in/blog/${post.id}`
+        }
+      ]
+    }
+  ];
+
+  // Conditionally add FAQ schema for posts that have FAQ entries
+  if (postFaqs) {
+    blogStructuredData.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": postFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    });
+  }
+
   return (
     <div className="min-h-screen bg-[#0A0F1C] flex flex-col font-sans">
       <SEOHead
@@ -111,57 +268,7 @@ const BlogPostPage = () => {
         ogType="article"
         ogImage={post.image.startsWith('http') ? post.image : `https://examessentials.in${post.image}`}
         keywords={`${post.category.toLowerCase()}, medical, studying, ${post.title.toLowerCase().split(' ').join(', ')}`}
-        structuredData={[
-          {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.excerpt,
-            "image": post.image.startsWith('http') ? post.image : `https://examessentials.in${post.image}`,
-            "author": {
-              "@type": "Organization",
-              "name": "Exam Essentials",
-              "url": "https://examessentials.in"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Exam Essentials",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://examessentials.in/logo.png"
-              }
-            },
-            "datePublished": post.date,
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": `https://examessentials.in/blog/${post.id}`
-            }
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://examessentials.in/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Blog",
-                "item": "https://examessentials.in/blog"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": post.title,
-                "item": `https://examessentials.in/blog/${post.id}`
-              }
-            ]
-          }
-        ]}
+        structuredData={blogStructuredData}
       />
 
       <Navbar />

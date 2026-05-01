@@ -120,10 +120,10 @@ const Index = () => {
   return (
     <>
       <SEOHead
-        title="Exam Essentials | Premium Handwritten Notes for Class 11 & 12 | CBSE, NEET, JEE"
-        description="India's #1 handwritten notes for Class 11 & 12 students. Exam-focused Physics, Chemistry, Maths & Biology notes by toppers. Perfect for CBSE Boards, NEET & JEE preparation. Download premium study materials now!"
+        title="Exam Essentials — Topper Handwritten Notes for Class 11, 12, NEET & JEE"
+        description="Buy India's best topper-handwritten notes for CBSE Class 11 & 12, NEET and JEE. Physics, Chemistry, Maths & Biology. Also: medical anatomy posters for MBBS students. Order now."
         canonical="/"
-        keywords="best handwritten notes India, topper notes class 11, topper notes class 12, CBSE board exam notes, NEET notes PDF, JEE notes PDF, physics handwritten notes, chemistry handwritten notes, biology handwritten notes, maths handwritten notes, study material for boards"
+        keywords="exam essentials, board exam essentials, best handwritten notes India, topper notes class 11, topper notes class 12, CBSE board exam notes, NEET notes PDF, JEE notes PDF, physics handwritten notes, chemistry handwritten notes, biology handwritten notes, maths handwritten notes, study material for boards, medical posters"
         structuredData={allStructuredData}
       />
 

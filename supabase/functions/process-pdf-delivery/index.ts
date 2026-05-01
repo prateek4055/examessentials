@@ -385,7 +385,10 @@ serve(async (req) => {
                     </div>
                 </td>
                 <td style="border: 1px solid #e0e0e0; padding: 14px; text-align: center; vertical-align: middle;">
-                    <a href="${entry.downloadUrl}" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px;">Download</a>
+                    ${entry.downloadUrl === "#" 
+                        ? `<span style="display: inline-block; padding: 10px 20px; background: #f3e8ff; color: #6D28D9; border: 1px solid #6D28D9; border-radius: 6px; font-weight: bold; font-size: 13px;">See Attachment</span>`
+                        : `<a href="${entry.downloadUrl}" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px;">Download</a>`
+                    }
                 </td>
             </tr>`).join("");
 
@@ -489,18 +492,27 @@ serve(async (req) => {
 
         // Send email — attach invoice only if not free
         if (RESEND_API_KEY) {
-            const attachments = invoiceBase64
-                ? [{ filename: `Invoice-EE-${shortOrderId}.pdf`, content: invoiceBase64 }]
-                : undefined;
+            const attachments: { filename: string; content: string }[] = [];
+            
+            if (invoiceBase64) {
+                attachments.push({ filename: `Invoice-EE-${shortOrderId}.pdf`, content: invoiceBase64 });
+            }
+
+            for (const entry of downloadEntries) {
+                if (entry.content) {
+                    // Attach the processed PDF
+                    attachments.push({ filename: `${entry.title}.pdf`, content: entry.content });
+                }
+            }
 
             await sendResendEmail(
                 RESEND_API_KEY,
                 order.email,
                 `Your Exam Essentials order is now complete - ${order.student_name}`,
                 emailHtml,
-                attachments
+                attachments.length > 0 ? attachments : undefined
             );
-            console.log(`Email sent to ${order.email}${invoiceBase64 ? ' with invoice' : ' (no invoice - free delivery)'}!`);
+            console.log(`Email sent to ${order.email}${invoiceBase64 ? ' with invoice' : ' (no invoice - free delivery)'}! Attached ${attachments.length - (invoiceBase64 ? 1 : 0)} PDF(s).`);
         }
 
         return new Response(JSON.stringify({ success: true }), { 

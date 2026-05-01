@@ -179,9 +179,9 @@ export const medicalApps: MedAppData[] = [
       { question: "Who can benefit from MedNeuro?", answer: "MedNeuro is built for medical students, neurology residents, physiotherapy students, and occupational therapists who need a reliable reference for neurological examination." },
     ],
     seo: {
-      title: "MedNeuro – Neuroscience & Neurological Examination App",
-      description: "Master neuroanatomy, cranial nerve exams & neurological conditions. The comprehensive neuro education app for medical students, coming soon.",
-      keywords: "neurology app, neuroanatomy, cranial nerve examination, neurological tests, brain anatomy app, neuro education, medical student neurology, reflex testing app, stroke localization, neuro exam",
+      title: "MedNeuro — Neurology Anatomy Poster | Brain, Nerves, CNS Chart PDF",
+      description: "Crystal-clear neurology poster covering CNS, PNS, brain anatomy, cranial nerves & dermatomes. Perfect for MBBS, NEET & medical students. Digital download — instant PDF delivery worldwide.",
+      keywords: "neurology app, neuroanatomy, cranial nerve examination, neurological tests, brain anatomy app, neuro education, medical student neurology, reflex testing app, stroke localization, neuro exam, neurology poster, CNS chart, cranial nerves poster, brain anatomy chart PDF",
     },
   },
   {

@@ -5,12 +5,56 @@ import { ChevronRight, Calendar, Clock, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
-import { blogPosts, categories, getCategoryColor } from "@/lib/blogData";
+import { blogPosts as staticBlogPosts, BlogPost, categories, getCategoryColor } from "@/lib/blogData";
+import { supabase } from "@/integrations/supabase/client";
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get("category") || "All";
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>(staticBlogPosts);
+
+  // Merge Supabase blog posts with static posts
+  useEffect(() => {
+    const fetchSupabasePosts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .eq("published", true)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching blog posts from Supabase:", error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const staticIds = new Set(staticBlogPosts.map(p => p.id));
+          const supabasePosts: BlogPost[] = data
+            .filter(p => !staticIds.has(p.slug))
+            .map(p => ({
+              id: p.slug,
+              title: p.title,
+              excerpt: p.excerpt,
+              category: p.category,
+              date: p.created_at?.split("T")[0] || new Date().toISOString().split("T")[0],
+              readTime: p.read_time,
+              author: p.author,
+              image: p.image_url || "https://images.unsplash.com/photo-1559757175-9e351c9a1301?w=800&q=80",
+              featured: p.featured,
+              content: p.content,
+            }));
+          
+          setAllPosts([...staticBlogPosts, ...supabasePosts]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch Supabase blog posts:", err);
+      }
+    };
+
+    fetchSupabasePosts();
+  }, []);
 
   useEffect(() => {
     if (initialCategory !== selectedCategory) {
@@ -24,8 +68,8 @@ const Blog = () => {
   };
 
   const filteredPosts = selectedCategory === "All"
-    ? blogPosts
-    : blogPosts.filter(post => post.category === selectedCategory);
+    ? allPosts
+    : allPosts.filter(post => post.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-[#0A0F1C] flex flex-col font-sans">

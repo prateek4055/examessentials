@@ -16,6 +16,9 @@ export interface Poster {
   rating?: number;
   reviewCount?: number;
   bestseller?: boolean;
+  /** Optional SEO overrides — used when the auto-generated title/desc from poster data isn't optimal for search CTR */
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 const POSTER_BASE = "/posters";
@@ -208,6 +211,8 @@ export const posters: Poster[] = [
     price: { small: 499, medium: 699, large: 899 },
     rating: 4.8,
     reviewCount: 142,
+    seoTitle: "Dermatomes & Sensory Nerve Supply Chart | Printable Anatomy Poster PDF",
+    seoDescription: "Complete dermatomal map with C1–S5 sensory nerve supply, spinal levels & clinical reference. Used by MBBS & nursing students. Instant digital download.",
   },
   {
     id: "14",
