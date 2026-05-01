@@ -482,6 +482,85 @@ async def process_pdf(request: Request):
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/watermark")
+async def watermark_pdf(request: Request):
+    token = request.headers.get("x-worker-secret")
+    if token != WORKER_SECRET:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    try:
+        data = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON payload")
+
+    pdf_url = data.get("pdf_url")
+    student_name = data.get("student_name", "Student")
+    phone = data.get("phone", "")
+
+    if not pdf_url:
+        raise HTTPException(status_code=400, detail="Missing pdf_url")
+
+    clean_password = get_clean_password(phone)
+
+    try:
+        # Download the original PDF
+        supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+        headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
+        auth_pdf_url = pdf_url
+        if supabase_key and "/object/public/" in auth_pdf_url:
+            auth_pdf_url = auth_pdf_url.replace("/object/public/", "/object/authenticated/")
+
+        resp = requests.get(auth_pdf_url, headers=headers)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=400, detail="Failed to download original PDF")
+
+        reader = PdfReader(io.BytesIO(resp.content))
+        writer = PdfWriter()
+
+        watermark_text = f"Licensed to: {student_name} ({phone})"
+
+        for page in reader.pages:
+            width = float(page.mediabox.width)
+            height = float(page.mediabox.height)
+            
+            packet = io.BytesIO()
+            can = canvas.Canvas(packet, pagesize=(width, height))
+            
+            font_size = min(24, max(10, int(width / 25)))
+            
+            can.setFont("Helvetica-Bold", font_size)
+            can.setFillGray(0.5, 0.4)
+            
+            can.saveState()
+            can.translate(width / 2.0, height / 2.0)
+            can.rotate(45)
+            can.drawCentredString(0, 0, watermark_text)
+            can.restoreState()
+            can.save()
+            
+            packet.seek(0)
+            watermark_reader = PdfReader(packet)
+            watermark_page = watermark_reader.pages[0]
+            
+            page.merge_page(watermark_page)
+            writer.add_page(page)
+
+        if clean_password:
+            writer.encrypt(
+                user_password=clean_password,
+                owner_password=os.urandom(16).hex(),
+                permissions_flag=0
+            )
+
+        output_buffer = io.BytesIO()
+        writer.write(output_buffer)
+        
+        return Response(content=output_buffer.getvalue(), media_type="application/pdf")
+
+    except Exception as e:
+        print(f"Watermark Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=7860)

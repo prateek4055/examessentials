@@ -301,7 +301,7 @@ serve(async (req) => {
                 try {
                     console.log(`[Worker] Processing ${product.title} via ${PDF_WORKER_URL}...`);
                     
-                    const workerRes = await fetch(`${PDF_WORKER_URL.replace(/\/$/, "")}/process-pdf`, {
+                    const workerRes = await fetch(`${PDF_WORKER_URL.replace(/\/$/, "")}/watermark`, {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
