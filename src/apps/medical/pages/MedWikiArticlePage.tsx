@@ -17,6 +17,14 @@ export interface WikiArticle {
   app_id: string;
   description?: string;
   image?: string;
+  evidence?: string;
+  subCategory?: string;
+  accuracy?: string;
+  usedFor?: string;
+  howTo?: string;
+  result?: string;
+  extra?: string;
+  youtube?: string;
 }
 
 const MedWikiArticlePage: React.FC = () => {
@@ -118,6 +126,14 @@ const MedWikiArticlePage: React.FC = () => {
                 app_id: "medortho",
                 description: cleanDescription,
                 image: imageUrl,
+                evidence: match.evidence,
+                subCategory: match.subCategory,
+                accuracy: match.accuracy,
+                usedFor: match.usedFor,
+                howTo: match.howTo,
+                result: match.result,
+                extra: match.extra,
+                youtube: match.youtube,
               });
               setLoading(false);
               return;
@@ -210,7 +226,8 @@ const MedWikiArticlePage: React.FC = () => {
           </button>
         </div>
       )}
-    </MedWikiLayout>
+      </MedWikiLayout>
+    </>
   );
 };
 
