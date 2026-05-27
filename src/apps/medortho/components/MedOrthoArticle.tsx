@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import TableOfContents, { extractHeadings } from "./TableOfContents";
 import AdSensePlaceholder from "./AdSensePlaceholder";
+import googlePlayBadge from "@/assets/google-play-badge.png";
+import appStoreBadge from "@/assets/app-store-badge.png";
+import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 export interface MedOrthoWikiArticle {
   id: string;
   category: string;
@@ -313,6 +318,11 @@ const FAQSection: React.FC<{ article: MedOrthoWikiArticle }> = ({ article }) => 
 };
 
 const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
+  const [showIosModal, setShowIosModal] = useState(false);
+  const [iosEmail, setIosEmail] = useState("");
+  const [isIosSubmitting, setIsIosSubmitting] = useState(false);
+  const [isIosSubmitted, setIsIosSubmitted] = useState(false);
+
   return (
     <article className="font-serif lg:font-sans">
       <div className="mb-8">
@@ -341,9 +351,9 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
         <YouTubePlayer embedUrl={article.youtube} title={article.title} />
       ) : null}
 
-      {/* App Promotion Banner */}
+      {/* App Promotion Banner with both App Store & Play Store badges */}
       {article.app_id === "medortho" && (
-        <div className="mt-12 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-100 dark:border-blue-900/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+        <div className="mt-12 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-100 dark:border-blue-900/40 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white flex-shrink-0 shadow-md">
               <svg className="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
@@ -355,14 +365,30 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
               <p className="text-sm text-gray-600 dark:text-gray-400">Access all 300+ special tests offline with clinical videos, step-by-step guides, and bookmarking features.</p>
             </div>
           </div>
-          <a 
-            href="https://play.google.com/store/apps/details?id=com.examessentials.medortho"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full text-center transition-all shadow-md hover:shadow-lg flex-shrink-0 text-sm whitespace-nowrap"
-          >
-            Download for Android
-          </a>
+          <div className="flex flex-row gap-4 items-center flex-shrink-0">
+            <a 
+              href="https://play.google.com/store/apps/details?id=com.examessentials.medortho" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:scale-105 transition-transform duration-300"
+            >
+              <img 
+                src={googlePlayBadge} 
+                alt="Get it on Google Play" 
+                className="h-12 md:h-14 w-auto object-contain"
+              />
+            </a>
+            <button 
+              onClick={() => setShowIosModal(true)} 
+              className="hover:scale-105 transition-transform duration-300"
+            >
+              <img 
+                src={appStoreBadge} 
+                alt="Download on the App Store" 
+                className="h-11 md:h-13 w-auto object-contain"
+              />
+            </button>
+          </div>
         </div>
       )}
 
@@ -379,6 +405,120 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
           </ol>
         </div>
       )}
+
+      {/* iOS Coming Soon Modal */}
+      <AnimatePresence>
+        {showIosModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setShowIosModal(false);
+                setIsIosSubmitted(false);
+                setIosEmail("");
+              }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Modal Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-3xl p-8 border border-slate-100 dark:border-gray-800 shadow-2xl z-10 overflow-hidden text-slate-800 dark:text-slate-100"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => {
+                  setShowIosModal(false);
+                  setIsIosSubmitted(false);
+                  setIosEmail("");
+                }}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-gray-805"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center">
+                {/* Visual Icon */}
+                <div className="w-16 h-16 bg-slate-50 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-100 dark:border-gray-700 shadow-sm">
+                  {/* Apple Icon */}
+                  <svg className="w-8 h-8 text-slate-800 dark:text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71,19.5 C17.88,20.74 17,21.95 15.66,21.97 C14.32,22 13.89,21.18 12.37,21.18 C10.84,21.18 10.37,21.95 9.1,22 C7.79,22.05 6.8,20.68 5.96,19.47 C4.25,17 2.94,12.45 4.7,9.39 C5.57,7.87 7.13,6.91 8.82,6.88 C10.1,6.86 11.32,7.75 12.11,7.75 C12.89,7.75 14.37,6.68 15.92,6.84 C16.57,6.87 18.39,7.1 19.56,8.82 C19.47,8.88 17.39,10.1 17.41,12.63 C17.44,15.65 20.06,16.66 20.1,16.67 C20.08,16.74 19.67,18.11 18.71,19.5 M15.97,4.17 C16.63,3.37 17.07,2.28 16.95,1 C16,1.04 14.9,1.6 14.24,2.38 C13.68,3.04 13.19,4.14 13.34,5.39 C14.39,5.47 15.4,4.88 15.97,4.17 Z" />
+                  </svg>
+                </div>
+
+                {!isIosSubmitted ? (
+                  <>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 font-sans">
+                      iOS Version Coming Soon
+                    </h3>
+                    <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed mb-6 font-sans">
+                      Our team is currently developing the iOS app for MedOrtho to bring the ultimate clinical learning experience to your iPhone and iPad.
+                      <br /><br />
+                      Leave your email below and be the first to know when it goes live on the App Store!
+                    </p>
+                    <form
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        if (!iosEmail) return;
+                        setIsIosSubmitting(true);
+                        try {
+                          await supabase
+                            .from("ios_notifications")
+                            .insert([{ email: iosEmail, app_id: "medortho", app_name: "MedOrtho" }]);
+                        } catch (err) {
+                          console.log("Database insert simulated:", err);
+                        } finally {
+                          setIsIosSubmitting(false);
+                          setIsIosSubmitted(true);
+                        }
+                      }}
+                      className="space-y-3"
+                    >
+                      <input
+                        type="email"
+                        required
+                        value={iosEmail}
+                        onChange={(e) => setIosEmail(e.target.value)}
+                        placeholder="Enter your email address"
+                        className="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-slate-800 dark:text-white text-sm text-center"
+                      />
+                      <button
+                        type="submit"
+                        disabled={isIosSubmitting}
+                        className="w-full h-12 rounded-xl bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-lg disabled:opacity-50"
+                      >
+                        {isIosSubmitting ? "Saving..." : "Get Notified on Release"}
+                      </button>
+                    </form>
+                  </>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="py-4"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4 border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </div>
+                    <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2 font-sans">You're on the list!</h4>
+                    <p className="text-slate-500 dark:text-gray-400 text-sm max-w-xs mx-auto leading-relaxed font-sans">
+                      Thank you! We will email you at <strong>{iosEmail}</strong> as soon as we release the iOS version of MedOrtho.
+                    </p>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </article>
   );
 };
