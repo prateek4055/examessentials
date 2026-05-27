@@ -325,14 +325,49 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
 
   return (
     <article className="font-serif lg:font-sans">
-      <div className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900 dark:text-white leading-tight">
+      <div className="mb-10">
+        {/* Category Badge & Status */}
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-200/50 dark:border-blue-900/30">
+            {article.category}
+          </span>
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 text-gray-655 dark:bg-gray-800 dark:text-gray-350 border border-gray-150 dark:border-gray-700/60">
+            <svg className="w-3 h-3 text-blue-500 mr-1.5 fill-current" viewBox="0 0 24 24">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            Clinical Reference
+          </span>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight text-gray-900 dark:text-white leading-tight">
           {article.title}
         </h1>
-        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800 pb-6">
-          <span>Category: <strong className="text-gray-700 dark:text-gray-300">{article.category}</strong></span>
-          <span>•</span>
-          <span>Last Updated: {article.lastUpdated}</span>
+
+        {/* Meta Info Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-y-4 gap-x-6 pb-6 border-b border-gray-250 dark:border-gray-800">
+          <div className="flex flex-wrap items-center gap-y-2.5 gap-x-6 text-sm text-gray-500 dark:text-gray-400">
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Updated: <strong className="text-gray-700 dark:text-gray-300 font-semibold">{article.lastUpdated}</strong>
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              Read Time: <strong className="text-gray-700 dark:text-gray-300 font-semibold">3 min read</strong>
+            </span>
+            {article.evidence && (
+              <span className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Evidence: <strong className="text-gray-700 dark:text-gray-300 font-semibold capitalize">{article.evidence}</strong>
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -367,7 +402,7 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
           </div>
           <div className="flex flex-row gap-4 items-center flex-shrink-0">
             <a 
-              href="https://play.google.com/store/apps/details?id=com.examessentials.medortho" 
+              href="https://play.google.com/store/apps/details?id=com.prateek.orthoexam" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:scale-105 transition-transform duration-300"
