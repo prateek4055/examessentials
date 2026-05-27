@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Search, Heart, Brain, Eye, Zap, FileText, BookOpen, GraduationCap,
   Activity, Stethoscope, Dumbbell, Hand, Waves, ClipboardList,
@@ -39,13 +39,36 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
   const otherApps = getOtherApps(app.slug);
   const appArticles = blogPosts.filter(post => post.category === app.name);
   
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryParam = searchParams.get("q") || "";
+  const [searchQuery, setSearchQuery] = useState(queryParam);
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showIosModal, setShowIosModal] = useState(false);
   const [iosEmail, setIosEmail] = useState("");
   const [isIosSubmitted, setIsIosSubmitted] = useState(false);
   const [isIosSubmitting, setIsIosSubmitting] = useState(false);
+  const [localTests, setLocalTests] = useState<any[]>([]);
+
+  // Update searchQuery if query parameter changes
+  useEffect(() => {
+    setSearchQuery(queryParam);
+  }, [queryParam]);
+
+  // Load MedOrtho local JSON database on mount
+  useEffect(() => {
+    if (app.slug === "medortho") {
+      fetch("/medortho/tests/tests_data.json")
+        .then((res) => {
+          if (res.ok) return res.json();
+          return [];
+        })
+        .then((data) => {
+          setLocalTests(data);
+        })
+        .catch((err) => console.error("Error loading tests_data.json on home page:", err));
+    }
+  }, [app.slug]);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -70,7 +93,6 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
             .from("articles")
             .select("id, title, category, content, slug, keywords")
             .eq("published", true)
-            // Removed app.name filter for articles as they use sub-categories like "Anatomy"
             .or(`title.ilike.%${searchQuery}%,category.ilike.%${searchQuery}%,content.ilike.%${searchQuery}%,keywords.ilike.%${searchQuery}%`)
             .limit(15)
         ]);
@@ -80,15 +102,36 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
           id: art.id,
           title: art.title,
           category: art.category,
-          // Generate an excerpt from content if not present
           excerpt: art.content 
             ? art.content.replace(/[#*`]/g, "").substring(0, 160).trim() + "..." 
             : (art.keywords || ""),
           slug: art.slug
         }));
 
+        // Filter local tests if this is MedOrtho
+        let localResults: any[] = [];
+        if (app.slug === "medortho" && localTests.length > 0) {
+          const q = searchQuery.toLowerCase();
+          localResults = localTests
+            .filter((t) => {
+              return (
+                (t.title || "").toLowerCase().includes(q) ||
+                (t.category || "").toLowerCase().includes(q) ||
+                (t.subCategory || "").toLowerCase().includes(q) ||
+                (t.usedFor || "").toLowerCase().includes(q)
+              );
+            })
+            .map((t) => ({
+              id: `local-test-${t.id}`,
+              title: t.title || "",
+              category: `${t.category} Special Test`,
+              excerpt: t.usedFor ? t.usedFor.replace(/<[^>]*>/g, "").substring(0, 160).trim() + "..." : "",
+              slug: `tests/${(t.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`
+            }));
+        }
+
         // Combine and deduplicate by slug
-        const combined = [...blogResults, ...wikiResults];
+        const combined = [...blogResults, ...wikiResults, ...localResults];
         const unique = combined.reduce((acc: any[], curr) => {
           if (!acc.find(item => item.slug === curr.slug)) {
             acc.push(curr);
@@ -96,7 +139,7 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
           return acc;
         }, []);
 
-        setResults(unique.slice(0, 20)); // Final limit
+        setResults(unique.slice(0, 25)); // Final limit
       } catch (err) {
         console.error("Search error:", err);
         setResults([]);
@@ -111,7 +154,7 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [searchQuery, app.hasWiki]);
+  }, [searchQuery, app.hasWiki, app.slug, localTests]);
 
   return (
     <div className="min-h-screen bg-white text-slate-800 overflow-hidden">
@@ -356,9 +399,48 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
             <div className="max-w-4xl mx-auto mb-20">
               <MedOrthoSearch 
                 value={searchQuery} 
-                onChange={setSearchQuery} 
+                onChange={(val) => {
+                  setSearchQuery(val);
+                  if (val === "") {
+                    setSearchParams({});
+                  } else {
+                    setSearchParams({ q: val });
+                  }
+                }} 
                 placeholder="Search for conditions, tests, or anatomy..."
               />
+              
+              {app.slug === "medortho" && (
+                <div className="flex flex-wrap gap-2 justify-center mt-6">
+                  {["Shoulder", "Knee", "Hip", "Spine", "Elbow", "Wrist", "Ankle & Foot"].map((joint) => (
+                    <button
+                      key={joint}
+                      onClick={() => {
+                        setSearchQuery(joint);
+                        setSearchParams({ q: joint });
+                      }}
+                      className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
+                        searchQuery.toLowerCase() === joint.toLowerCase()
+                          ? "bg-blue-600 text-white border-blue-600 shadow-sm" 
+                          : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 dark:bg-zinc-900 dark:text-gray-300 dark:border-zinc-800"
+                      }`}
+                    >
+                      {joint} Tests
+                    </button>
+                  ))}
+                  {searchQuery !== "" && (
+                    <button
+                      onClick={() => {
+                        setSearchQuery("");
+                        setSearchParams({});
+                      }}
+                      className="px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-400"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              )}
               
               {searchQuery !== "" ? (
                 <div className="mt-8">

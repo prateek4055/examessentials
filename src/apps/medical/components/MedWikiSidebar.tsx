@@ -41,6 +41,46 @@ const WIKI_NAVIGATION: NavNode[] = [
   },
 ];
 
+const getNavigation = (appId: string): NavNode[] => {
+  if (appId === "medortho") {
+    return [
+      {
+        title: "Special Tests",
+        icon: <Stethoscope className="w-4 h-4" />,
+        children: [
+          { title: "Shoulder Tests", path: "/medortho?q=Shoulder" },
+          { title: "Knee Tests", path: "/medortho?q=Knee" },
+          { title: "Hip Tests", path: "/medortho?q=Hip" },
+          { title: "Spine Tests", path: "/medortho?q=Spine" },
+          { title: "Elbow Tests", path: "/medortho?q=Elbow" },
+          { title: "Wrist & Hand Tests", path: "/medortho?q=Wrist" },
+          { title: "Ankle & Foot Tests", path: "/medortho?q=Ankle" },
+        ],
+      },
+      {
+        title: "Anatomy",
+        icon: <BookOpen className="w-4 h-4" />,
+        children: [
+          { title: "Bones", path: "/blog?category=medortho&q=Bones" },
+          { title: "Joints", path: "/blog?category=medortho&q=Joints" },
+          { title: "Muscles", path: "/blog?category=medortho&q=Muscles" },
+          { title: "Ligaments", path: "/blog?category=medortho&q=Ligaments" },
+        ],
+      },
+      {
+        title: "Pathologies",
+        icon: <Activity className="w-4 h-4" />,
+        children: [
+          { title: "Fractures", path: "/blog?category=medortho&q=Fracture" },
+          { title: "Inflammation", path: "/blog?category=medortho&q=Inflammation" },
+          { title: "Chronic Conditions", path: "/blog?category=medortho&q=Chronic" },
+        ],
+      },
+    ];
+  }
+  return WIKI_NAVIGATION;
+};
+
 const NavTreeItem = ({ node, level = 0, appId }: { node: NavNode; level?: number, appId: string }) => {
   const [isOpen, setIsOpen] = useState(true);
   const hasChildren = node.children && node.children.length > 0;
@@ -116,7 +156,7 @@ const MedWikiSidebar: React.FC<MedWikiSidebarProps> = ({ app, className = "" }) 
       </div>
 
       <nav className="flex-1">
-        {WIKI_NAVIGATION.map((node, idx) => (
+        {getNavigation(app.id).map((node, idx) => (
           <NavTreeItem key={idx} node={node} appId={app.id} />
         ))}
       </nav>
