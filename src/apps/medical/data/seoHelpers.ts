@@ -118,3 +118,62 @@ export function buildAppStructuredData(app: MedAppData): object[] {
 
   return schemas;
 }
+
+/**
+ * Generates structured data for a specific wiki article / special test page.
+ */
+export function buildWikiArticleStructuredData(
+  appSlug: string,
+  article: { title: string; description?: string; lastUpdated: string; category: string },
+  slug: string
+): object[] {
+  const url = `${BASE_URL}/${appSlug}/tests/${slug}`;
+  const title = `${article.title} - ${article.category}`;
+  
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": `${BASE_URL}/`,
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": appSlug === "medortho" ? "MedOrtho" : appSlug,
+          "item": `${BASE_URL}/${appSlug}`,
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": article.title,
+          "item": url,
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalWebPage",
+      "name": title,
+      "description": article.description || `Learn how to perform the ${article.title} orthopedic special test including indications, test procedure, positive results, and diagnostic accuracy.`,
+      "url": url,
+      "lastReviewed": article.lastUpdated === "Today" ? new Date().toISOString().split("T")[0] : article.lastUpdated,
+      "aspect": [
+        "Indications",
+        "Clinical examination procedure",
+        "Result interpretation",
+        "Diagnostic accuracy"
+      ],
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Exam Essentials",
+        "url": BASE_URL,
+      },
+      "inLanguage": "en-IN",
+    },
+  ];
+}

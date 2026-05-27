@@ -4,6 +4,8 @@ import MedWikiLayout from "../components/MedWikiLayout";
 import MedOrthoArticle from "../../medortho/components/MedOrthoArticle"; // This can be made generic too later if needed
 import { supabase } from "@/integrations/supabase/client";
 import { getAppBySlug } from "../data/medicalAppsData";
+import SEOHead from "@/components/SEOHead";
+import { buildWikiArticleStructuredData } from "../data/seoHelpers";
 
 export interface WikiArticle {
   id: string;
@@ -13,6 +15,8 @@ export interface WikiArticle {
   references: string[];
   lastUpdated: string;
   app_id: string;
+  description?: string;
+  image?: string;
 }
 
 const MedWikiArticlePage: React.FC = () => {
@@ -24,6 +28,9 @@ const MedWikiArticlePage: React.FC = () => {
   // Extract app slug from path (e.g., /medcardio/slug -> medcardio)
   const appSlug = location.pathname.split("/")[1];
   const app = getAppBySlug(appSlug);
+  
+  const segments = pathId?.split("/") || [];
+  const slug = segments[segments.length - 1] || "";
   
   const [article, setArticle] = useState<WikiArticle | null>(null);
   const [loading, setLoading] = useState(true);
@@ -93,6 +100,14 @@ const MedWikiArticlePage: React.FC = () => {
                 content = `![${match.title}](${imgUrl})\n\n` + content;
               }
 
+              const cleanDescription = match.usedFor 
+                ? match.usedFor.replace(/<[^>]*>/g, "").substring(0, 160).trim() + "..."
+                : `Learn how to perform the ${match.title} orthopedic special test including indications, procedure, and accuracy.`;
+
+              const imageUrl = match.image1 
+                ? `https://examessentials.in/medortho/tests/images/${match.image1.split("/").pop()}`
+                : undefined;
+
               setArticle({
                 id: match.id || "",
                 category: match.category || "Special Tests",
@@ -101,6 +116,8 @@ const MedWikiArticlePage: React.FC = () => {
                 references: references,
                 lastUpdated: "Today",
                 app_id: "medortho",
+                description: cleanDescription,
+                image: imageUrl,
               });
               setLoading(false);
               return;
@@ -121,6 +138,9 @@ const MedWikiArticlePage: React.FC = () => {
           .maybeSingle();
 
         if (data) {
+          const cleanDesc = data.content 
+            ? data.content.replace(/[#*`]/g, "").substring(0, 160).trim() + "..."
+            : undefined;
           setArticle({
             id: data.id,
             category: data.category,
@@ -129,6 +149,7 @@ const MedWikiArticlePage: React.FC = () => {
             references: data.references || [],
             lastUpdated: new Date(data.updated_at || data.created_at).toLocaleDateString(),
             app_id: data.app_id,
+            description: cleanDesc,
           });
         } else {
           setArticle(null);
@@ -156,7 +177,20 @@ const MedWikiArticlePage: React.FC = () => {
   }
 
   return (
-    <MedWikiLayout app={app}>
+    <>
+      {article && (
+        <SEOHead
+          title={`${article.title} - ${article.category} Special Test`}
+          description={article.description || `Read details of the ${article.title} assessment.`}
+          canonical={`/${app.slug}/tests/${slug}`}
+          ogImage={article.image}
+          ogType="article"
+          structuredData={buildWikiArticleStructuredData(app.slug, article, slug)}
+          skipDefaultKeywords={true}
+          keywords={`${article.title}, ${article.category} test, orthopedic special test, medortho wiki, ${app.name} education`}
+        />
+      )}
+      <MedWikiLayout app={app}>
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2" style={{ borderTopColor: app.theme.primary }}></div>
