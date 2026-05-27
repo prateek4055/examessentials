@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.prateek.orthoexam",
+      "sha256_cert_fingerprints": [
+        "56:D0:63:B1:FB:C0:DD:69:67:84:75:AA:DE:1F:90:10:40:14:85:12:98:97:9D:8A:CC:31:B6:13:B8:55:54:87"
+      ]
+    }
+  }
+]
