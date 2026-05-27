@@ -323,7 +323,10 @@ const Admin = () => {
         payment_id: "admin_manual_" + paymentId
       };
 
-      const workerResponse = await fetch("https://pdf-workerdf-workerpdf.onrender.com/process-pdf", {
+      const workerUrl = import.meta.env.DEV
+        ? "http://localhost:7860/process-pdf"
+        : "https://pdf-workerdf-workerpdf.onrender.com/process-pdf";
+      const workerResponse = await fetch(workerUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

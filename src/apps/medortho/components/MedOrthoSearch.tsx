@@ -24,7 +24,7 @@ const MedOrthoSearch: React.FC<MedOrthoSearchProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="pl-12 h-14 text-lg bg-white/5 dark:bg-white/5 border-white/10 dark:border-white/10 backdrop-blur-md shadow-2xl rounded-2xl w-full focus-visible:ring-blue-500/30 text-white placeholder:text-white/30 transition-all duration-300 hover:border-white/20"
+        className="pl-12 h-14 text-lg bg-white border-slate-200/80 shadow-md rounded-2xl w-full focus-visible:ring-blue-500/20 text-slate-800 placeholder:text-slate-400 transition-all duration-300 hover:border-slate-300"
       />
     </div>
   );

@@ -137,7 +137,8 @@ const PaymentSuccessModal = ({ isOpen, onClose }: PaymentSuccessModalProps) => {
         >
           <Button
             onClick={onClose}
-            className="w-full bg-gradient-to-r from-gold to-gold-light hover:from-gold-light hover:to-gold text-primary-foreground font-body font-semibold py-6 text-lg"
+            variant="gradient"
+            className="w-full py-6 text-lg font-semibold"
           >
             I Understand
           </Button>

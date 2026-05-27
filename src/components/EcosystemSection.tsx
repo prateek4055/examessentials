@@ -221,41 +221,41 @@ const EcosystemSection = () => {
                   scale: 1.03,
                 }}
                 viewport={{ once: true, margin: "-50px" }}
+                className="h-full flex flex-col"
               >
                 {app.internalLink ? (
-                  <Link to={app.internalLink} className="ecosystem-card group relative overflow-hidden block no-underline">
-                    {app.comingSoon && (
-                      <span className="coming-soon-badge">
-                        Coming Soon
-                      </span>
-                    )}
-                    <div className="mb-4 flex justify-center">
+                  <Link to={app.internalLink} className="ecosystem-card group relative overflow-hidden block no-underline h-full flex flex-col items-center justify-start">
+                    <div className="mb-4 flex justify-center flex-shrink-0">
                       {app.image && (
                         <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
                       )}
                     </div>
-                    <h4 className="font-display text-base font-semibold text-foreground mb-1">{app.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground">{app.description}</p>
+                    {app.comingSoon && (
+                      <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
+                        Coming Soon
+                      </span>
+                    )}
+                    <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">{app.name}</h4>
+                    <p className="font-body text-xs text-muted-foreground mt-auto">{app.description}</p>
                   </Link>
                 ) : app.link ? (
-                  <a href={app.link} target="_blank" rel="noopener noreferrer" className="ecosystem-card group relative overflow-hidden block no-underline">
-                    <div className="mb-4 flex justify-center">
+                  <a href={app.link} target="_blank" rel="noopener noreferrer" className="ecosystem-card group relative overflow-hidden block no-underline h-full flex flex-col items-center justify-start">
+                    <div className="mb-4 flex justify-center flex-shrink-0">
                       {app.image && (
                         <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
                       )}
                     </div>
-                    <h4 className="font-display text-base font-semibold text-foreground mb-1">{app.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground">{app.description}</p>
-                  </a>
-                ) : (
-                  <div className="ecosystem-card group relative overflow-hidden">
                     {app.comingSoon && (
-                      <span className="coming-soon-badge">
+                      <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
                         Coming Soon
                       </span>
                     )}
-
-                    <div className="mb-4 flex justify-center">
+                    <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">{app.name}</h4>
+                    <p className="font-body text-xs text-muted-foreground mt-auto">{app.description}</p>
+                  </a>
+                ) : (
+                  <div className="ecosystem-card group relative overflow-hidden h-full flex flex-col items-center justify-start">
+                    <div className="mb-4 flex justify-center flex-shrink-0">
                       {app.image ? (
                         <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
                       ) : (
@@ -264,9 +264,13 @@ const EcosystemSection = () => {
                         </div>
                       )}
                     </div>
-
-                    <h4 className="font-display text-base font-semibold text-foreground mb-1">{app.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground">{app.description}</p>
+                    {app.comingSoon && (
+                      <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
+                        Coming Soon
+                      </span>
+                    )}
+                    <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">{app.name}</h4>
+                    <p className="font-body text-xs text-muted-foreground mt-auto">{app.description}</p>
                   </div>
                 )}
               </motion.div>
@@ -300,15 +304,10 @@ const EcosystemSection = () => {
                   scale: 1.03,
                 }}
                 viewport={{ once: true, margin: "-50px" }}
+                className="h-full flex flex-col"
               >
-                <div className="ecosystem-card group relative overflow-hidden">
-                  {app.comingSoon && (
-                    <span className="coming-soon-badge">
-                      Coming Soon
-                    </span>
-                  )}
-
-                  <div className="mb-4 flex justify-center">
+                <div className="ecosystem-card group relative overflow-hidden h-full flex flex-col items-center justify-start">
+                  <div className="mb-4 flex justify-center flex-shrink-0 w-full">
                     {app.image ? (
                       <img
                         src={app.image}
@@ -323,10 +322,16 @@ const EcosystemSection = () => {
                     )}
                   </div>
 
-                  <h4 className="font-display text-base font-semibold text-foreground mb-1">
+                  {app.comingSoon && (
+                    <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
+                      Coming Soon
+                    </span>
+                  )}
+
+                  <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">
                     {app.name}
                   </h4>
-                  <p className="font-body text-xs text-muted-foreground">
+                  <p className="font-body text-xs text-muted-foreground mt-auto">
                     {app.description}
                   </p>
                 </div>
