@@ -38,9 +38,31 @@ export const renderWikiContent = (content: string) => {
   };
 
   const renderTextWithLinks = (text: string) => {
-    const parts = text.split(/(\\[.*?\\]\\(.*?\\))/g);
+    // 1. Handle Markdown images: ![alt](url)
+    if (text.startsWith("![") && text.endsWith(")")) {
+      const match = text.match(/^!\[(.*?)\]\((.*?)\)$/);
+      if (match) {
+        return (
+          <div className="my-6 flex justify-center">
+            <img 
+              src={match[2]} 
+              alt={match[1]} 
+              className="rounded-2xl max-w-full max-h-[400px] object-contain shadow-md border border-gray-100 dark:border-gray-800" 
+            />
+          </div>
+        );
+      }
+    }
+
+    // 2. Handle HTML tags (lists, tables, strong text)
+    if (/<[a-z]/i.test(text)) {
+      return <span dangerouslySetInnerHTML={{ __html: text }} className="block text-gray-850 dark:text-gray-200" />;
+    }
+
+    // 3. Handle standard markdown links
+    const parts = text.split(/(\[.*?\]\(.*?\))/g);
     return parts.map((part, i) => {
-      const linkMatch = part.match(/\\[(.*?)\\]\\((.*?)\\)/);
+      const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
       if (linkMatch) {
         return (
           <Link 
@@ -128,6 +150,29 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
       <div className="prose prose-lg dark:prose-invert max-w-none">
         {renderWikiContent(article.content)}
       </div>
+
+      {/* App Promotion Banner for Video Guide */}
+      {article.app_id === "medortho" && (
+        <div className="mt-12 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-100 dark:border-blue-900/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white flex-shrink-0 shadow-md">
+              <svg className="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Watch Video Demonstration</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Watch the step-by-step clinical video guide for this test in the MedOrtho Mobile App.</p>
+            </div>
+          </div>
+          <a 
+            href={`https://examessentials.in/medortho/tests/${article.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full text-center transition-all shadow-md hover:shadow-lg flex-shrink-0 text-sm whitespace-nowrap"
+          >
+            Open in MedOrtho App
+          </a>
+        </div>
+      )}
 
       {article.references && article.references.length > 0 && (
         <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">

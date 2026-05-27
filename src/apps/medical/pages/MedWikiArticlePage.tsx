@@ -45,6 +45,72 @@ const MedWikiArticlePage: React.FC = () => {
         return;
       }
 
+      // Fallback/direct check for MedOrtho local JSON database
+      if (app.id === "medortho") {
+        try {
+          const response = await fetch("/medortho/tests/tests_data.json");
+          if (response.ok) {
+            const list: any[] = await response.json();
+            const match = list.find((item) => {
+              const testSlug = (item.title || "")
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "");
+              return testSlug === slug;
+            });
+
+            if (match) {
+              let content = "";
+              if (match.usedFor) {
+                content += `## What is it used for?\n${match.usedFor}\n\n`;
+              }
+              if (match.howTo) {
+                content += `## How to Perform\n${match.howTo}\n\n`;
+              }
+              if (match.result) {
+                content += `## Interpretation of Results\n${match.result}\n\n`;
+              }
+              if (match.accuracy && match.accuracy.trim() !== "") {
+                content += `## Diagnostic Accuracy\n${match.accuracy}\n\n`;
+              }
+              if (match.extra && match.extra.trim() !== "") {
+                content += `## Clinical Tips & Notes\n${match.extra}\n\n`;
+              }
+
+              let references: string[] = [];
+              if (match.references) {
+                const liMatches = match.references.match(/<li>(.*?)<\/li>/g);
+                if (liMatches) {
+                  references = liMatches.map((li: string) => li.replace(/<\/?li>/g, "").replace(/<[^>]*>/g, ""));
+                } else {
+                  references = [match.references.replace(/<[^>]*>/g, "")];
+                }
+              }
+
+              if (match.image1) {
+                const filename = match.image1.split("/").pop();
+                const imgUrl = `/medortho/tests/images/${filename}`;
+                content = `![${match.title}](${imgUrl})\n\n` + content;
+              }
+
+              setArticle({
+                id: match.id || "",
+                category: match.category || "Special Tests",
+                title: match.title || "",
+                content: content,
+                references: references,
+                lastUpdated: "Today",
+                app_id: "medortho",
+              });
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (jsonErr) {
+          console.error("Error loading tests_data.json in wiki page:", jsonErr);
+        }
+      }
+
       try {
         const { data, error } = await (supabase as any)
           .from("articles")
