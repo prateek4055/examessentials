@@ -20,7 +20,7 @@ export const renderWikiContent = (content: string) => {
   // It handles headers (## and ###) and links [Text](url).
   // Also handles paragraphs.
   
-  const lines = content.split('\\n');
+  const lines = content.split(/\r?\n|\\n/);
   const elements: React.ReactNode[] = [];
   
   let paragraphBuffer: string[] = [];
