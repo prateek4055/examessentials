@@ -207,34 +207,6 @@ const FactSheet: React.FC<{ article: MedOrthoWikiArticle }> = ({ article }) => {
   );
 };
 
-const YouTubePlayer: React.FC<{ embedUrl: string; title: string }> = ({ embedUrl, title }) => {
-  return (
-    <div className="my-10 overflow-hidden border border-gray-200 dark:border-gray-800 rounded-2xl shadow-md bg-black">
-      <div className="p-4 bg-gray-50 dark:bg-gray-900/60 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-        <span className="font-bold text-sm text-gray-800 dark:text-gray-200 flex items-center gap-2">
-          <svg className="w-5 h-5 text-red-600 fill-current" viewBox="0 0 24 24">
-            <path d="M23.498 6.163c-.272-1.016-1.07-1.815-2.085-2.087C19.56 3.6 12 3.6 12 3.6s-7.56 0-9.413.476c-1.016.272-1.815 1.07-2.087 2.087C0 8.01 0 12 0 12s0 3.99.476 5.837c.272 1.016 1.07 1.815 2.087 2.087C4.44 20.4 12 20.4 12 20.4s7.56 0 9.413-.476c1.016-.272 1.815-1.07 2.087-2.087C24 15.99 24 12 24 12s0-3.99-.476-5.837z" />
-            <path fill="white" d="M10 15l5.197-3L10 9v6z" />
-          </svg>
-          Clinical Demonstration Video
-        </span>
-        <span className="text-xs bg-red-50 text-red-650 dark:bg-red-950/40 dark:text-red-400 font-bold px-2 py-0.5 rounded-full border border-red-200/50 dark:border-red-900/30">
-          YouTube Guide
-        </span>
-      </div>
-      <div className="relative pb-[56.25%] h-0">
-        <iframe
-          src={embedUrl}
-          title={`${title} Clinical Video Demonstration`}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="absolute top-0 left-0 w-full h-full"
-        ></iframe>
-      </div>
-    </div>
-  );
-};
 
 const FAQSection: React.FC<{ article: MedOrthoWikiArticle }> = ({ article }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -381,23 +353,30 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
         {renderWikiContent(article.content)}
       </div>
 
-      {/* Video player guide if present */}
-      {article.youtube ? (
-        <YouTubePlayer embedUrl={article.youtube} title={article.title} />
-      ) : null}
-
       {/* App Promotion Banner with both App Store & Play Store badges */}
       {article.app_id === "medortho" && (
         <div className="mt-12 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-100 dark:border-blue-900/40 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white flex-shrink-0 shadow-md">
-              <svg className="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
-                <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
-              </svg>
+              {article.youtube ? (
+                <svg className="w-6 h-6 fill-current text-white animate-pulse" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+                  <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
+                </svg>
+              )}
             </div>
             <div>
-              <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Get MedOrtho Mobile App</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Access all 300+ special tests offline with clinical videos, step-by-step guides, and bookmarking features.</p>
+              <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                {article.youtube ? "Watch Clinical Video Guide" : "Get MedOrtho Mobile App"}
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {article.youtube 
+                  ? "A step-by-step video demonstration guide is available for this test. Download the MedOrtho app to watch it."
+                  : "Access all 300+ special tests offline with clinical videos, step-by-step guides, and bookmarking features."}
+              </p>
             </div>
           </div>
           <div className="flex flex-row gap-4 items-center flex-shrink-0">
