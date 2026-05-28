@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { ArrowLeft, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -191,11 +191,12 @@ const AdminProductForm = () => {
 
   return (
     <>
-      <Helmet>
-        <title>
-          {isEditing ? "Edit Product" : "New Product"} | Exam Essentials Admin
-        </title>
-      </Helmet>
+      <SEOHead
+        title={isEditing ? "Edit Product" : "New Product"}
+        description="Manage products on Exam Essentials."
+        noIndex={true}
+        canonical={isEditing ? `/admin/product/${id}` : "/admin/product/new"}
+      />
 
       <div className="min-h-screen bg-background">
         {/* Header */}

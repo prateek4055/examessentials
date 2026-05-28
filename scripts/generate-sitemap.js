@@ -75,6 +75,52 @@ async function generateSitemaps() {
 
     const today = new Date().toISOString().split('T')[0];
 
+    // 2b. Fetch all wiki articles from Supabase
+    console.log('Fetching wiki articles from Supabase...');
+    let dbArticles = [];
+    try {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('app_id, slug, updated_at')
+        .eq('published', true);
+
+      if (error) {
+        console.warn('⚠️ Could not fetch wiki articles from Supabase:', error.message);
+      } else {
+        dbArticles = data || [];
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not fetch wiki articles from Supabase:', e.message);
+    }
+    console.log(`✅ Found ${dbArticles.length} published wiki articles in DB.`);
+
+    // 2c. Read local medortho tests from tests_data.json
+    console.log('Reading local medortho tests from tests_data.json...');
+    let localWikiTests = [];
+    try {
+      const localTestsPath = path.resolve(process.cwd(), 'public/medortho/tests/tests_data.json');
+      if (fs.existsSync(localTestsPath)) {
+        const localTestsContent = fs.readFileSync(localTestsPath, 'utf8');
+        const list = JSON.parse(localTestsContent);
+        list.forEach((t) => {
+          if (t.title) {
+            const cleanSlug = t.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "");
+            localWikiTests.push({
+              app_id: 'medortho',
+              slug: cleanSlug,
+              updated_at: today
+            });
+          }
+        });
+        console.log(`✅ Found ${localWikiTests.length} local wiki tests.`);
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not read local medortho tests:', e.message);
+    }
+
     // 3. Generate Product Sitemap (sitemap-products.xml)
     let productSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -145,6 +191,50 @@ async function generateSitemaps() {
 
     blogSitemap += `\n</urlset>`;
 
+    // 4b. Generate Wiki Sitemap (sitemap-wiki.xml)
+    let wikiSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+    // Combine Supabase articles and local articles, deduplicating by unique path
+    const allWikiArticles = [];
+    const seenWikiPaths = new Set();
+
+    if (dbArticles && dbArticles.length > 0) {
+      dbArticles.forEach(art => {
+        const path = `/${art.app_id}/tests/${art.slug}`;
+        if (!seenWikiPaths.has(path)) {
+          seenWikiPaths.add(path);
+          allWikiArticles.push({
+            loc: `${DOMAIN}${path}`,
+            lastmod: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : today
+          });
+        }
+      });
+    }
+
+    localWikiTests.forEach(art => {
+      const path = `/${art.app_id}/tests/${art.slug}`;
+      if (!seenWikiPaths.has(path)) {
+        seenWikiPaths.add(path);
+        allWikiArticles.push({
+          loc: `${DOMAIN}${path}`,
+          lastmod: today
+        });
+      }
+    });
+
+    allWikiArticles.forEach(item => {
+      wikiSitemap += `
+  <url>
+    <loc>${item.loc}</loc>
+    <lastmod>${item.lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
+    wikiSitemap += `\n</urlset>`;
+
     // 5. Generate Static Pages Sitemap (sitemap-pages.xml)
     const staticPages = [
       { path: '/', priority: '1.0', changefreq: 'daily' },
@@ -213,6 +303,10 @@ async function generateSitemaps() {
     <loc>${DOMAIN}/sitemap-blog.xml</loc>
     <lastmod>${today}</lastmod>
   </sitemap>
+  <sitemap>
+    <loc>${DOMAIN}/sitemap-wiki.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
 </sitemapindex>`;
 
     // 7. Write files to the public directory
@@ -228,6 +322,9 @@ async function generateSitemaps() {
 
     fs.writeFileSync(path.join(publicDir, 'sitemap-blog.xml'), blogSitemap);
     console.log('✅ Generated public/sitemap-blog.xml');
+
+    fs.writeFileSync(path.join(publicDir, 'sitemap-wiki.xml'), wikiSitemap);
+    console.log('✅ Generated public/sitemap-wiki.xml');
 
     fs.writeFileSync(path.join(publicDir, 'sitemap-pages.xml'), pagesSitemap);
     console.log('✅ Generated public/sitemap-pages.xml');

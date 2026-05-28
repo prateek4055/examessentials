@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, ArrowLeft, User } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -91,10 +91,12 @@ const Auth = () => {
 
   return (
     <>
-      <Helmet>
-        <title>My Account | Exam Essentials</title>
-        <meta name="description" content="Login or register to access your Exam Essentials account and manage your study materials." />
-      </Helmet>
+      <SEOHead
+        title="My Account"
+        description="Login or register to access your Exam Essentials account and manage your study materials."
+        noIndex={true}
+        canonical="/auth"
+      />
 
       <Navbar />
       <main className="min-h-screen pt-32 pb-16 bg-background">

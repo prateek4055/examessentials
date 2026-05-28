@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { ArrowLeft, User, Mail, Phone, Calendar, Save, ShoppingBag, Package } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -230,10 +230,12 @@ const Profile = () => {
 
   return (
     <>
-      <Helmet>
-        <title>My Profile | Exam Essentials</title>
-        <meta name="description" content="View and update your Exam Essentials account profile." />
-      </Helmet>
+      <SEOHead
+        title="My Profile"
+        description="View and update your Exam Essentials account profile."
+        noIndex={true}
+        canonical="/profile"
+      />
 
       <Navbar />
       <main className="min-h-screen pt-32 pb-16 bg-background">

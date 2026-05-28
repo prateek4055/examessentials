@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { ArrowLeft, Lock, Tag, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -447,15 +447,14 @@ const PurchaseForm = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{pageTitle} | Exam Essentials</title>
-        <meta
-          name="description"
-          content={isCartCheckout
-            ? "Complete your purchase of study notes with combo discounts applied."
-            : `Complete your purchase of ${product?.title} - Premium handwritten notes.`}
-        />
-      </Helmet>
+      <SEOHead
+        title={pageTitle}
+        description={isCartCheckout
+          ? "Complete your purchase of study notes with combo discounts applied."
+          : `Complete your purchase of ${product?.title} - Premium handwritten notes.`}
+        noIndex={true}
+        canonical={isCartCheckout ? "/purchase/cart" : `/purchase/${id}`}
+      />
 
       <Navbar />
       <main className="min-h-screen pt-24 pb-16">

@@ -192,20 +192,54 @@ const MedWikiArticlePage: React.FC = () => {
       );
   }
 
+  const getFallbackTitle = (slugStr: string) => {
+    if (!slugStr || slugStr === "tests") return "";
+    return slugStr
+      .split("-")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const articleTitle = article
+    ? article.title
+    : (slug && slug !== "tests" ? getFallbackTitle(slug) : "");
+
+  const pageTitle = articleTitle
+    ? `${articleTitle} - ${article?.category || "Special Test"}`
+    : `${app.name} Wiki - Medical Education`;
+      
+  const pageDescription = article
+    ? (article.description || `Read details of the ${article.title} assessment.`)
+    : (slug && slug !== "tests" 
+        ? `Read details of the ${getFallbackTitle(slug)} assessment on ${app.name} Wiki.`
+        : `Search and read medical special tests and articles in the ${app.name} Wiki.`);
+
+  const pageCanonical = slug && slug !== "tests"
+    ? `/${app.slug}/tests/${slug}`
+    : `/${app.slug}`;
+      
+  const pageKeywords = article
+    ? `${article.title}, ${article.category} test, orthopedic special test, medortho wiki, ${app.name} education`
+    : (slug && slug !== "tests"
+        ? `${getFallbackTitle(slug)}, special test, ${app.name} wiki, medical education`
+        : `${app.name}, medical education, wiki, special tests`);
+
+  const pageStructuredData = article 
+    ? buildWikiArticleStructuredData(app.slug, article, slug)
+    : undefined;
+
   return (
     <>
-      {article && (
-        <SEOHead
-          title={`${article.title} - ${article.category} Special Test`}
-          description={article.description || `Read details of the ${article.title} assessment.`}
-          canonical={`/${app.slug}/tests/${slug}`}
-          ogImage={article.image}
-          ogType="article"
-          structuredData={buildWikiArticleStructuredData(app.slug, article, slug)}
-          skipDefaultKeywords={true}
-          keywords={`${article.title}, ${article.category} test, orthopedic special test, medortho wiki, ${app.name} education`}
-        />
-      )}
+      <SEOHead
+        title={pageTitle}
+        description={pageDescription}
+        canonical={pageCanonical}
+        ogImage={article?.image}
+        ogType={article ? "article" : "website"}
+        structuredData={pageStructuredData}
+        skipDefaultKeywords={true}
+        keywords={pageKeywords}
+      />
       <MedWikiLayout app={app}>
       {loading ? (
         <div className="flex justify-center items-center h-64">

@@ -128,43 +128,10 @@ const ProductDetail = () => {
     "Instant PDF delivery",
   ];
 
-  if (isLoading) {
-    return (
-      <>
-        <Navbar />
-        <main className="min-h-screen pt-24 flex items-center justify-center">
-          <div className="animate-pulse text-muted-foreground font-body">
-            Loading...
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
-  if (!product) {
-    return (
-      <>
-        <Navbar />
-        <main className="min-h-screen pt-24 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="font-display text-2xl font-bold text-foreground mb-4">
-              Product Not Found
-            </h1>
-            <Button asChild variant="outline">
-              <Link to="/products">Browse All Notes</Link>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
   // Default fallback image for products without images
-  const productImage = getProxiedImageUrl(product.images?.[0]) || "https://examessentials.in/og-image.png";
+  const productImage = product ? (getProxiedImageUrl(product.images?.[0]) || "https://examessentials.in/og-image.png") : "https://examessentials.in/og-image.png";
 
-  const productStructuredData = [
+  const productStructuredData = product ? [
     {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -260,24 +227,56 @@ const ProductDetail = () => {
         }
       ]
     }
-  ];
+  ] : undefined;
+
+  const pageTitle = product
+    ? `${product.title} - Class ${product.class} ${product.subject} Notes | Buy Now`
+    : "Premium Study Notes | Exam Essentials";
+
+  const pageDescription = product
+    ? `${product.title} - ${product.description.slice(0, 140)}. Premium handwritten ${product.subject} notes for Class ${product.class}. Best for CBSE, NEET, JEE. Instant PDF delivery. ₹${product.price} only.`
+    : "Buy premium handwritten notes for CBSE Class 11 & 12, NEET, and JEE. Instant delivery.";
+
+  const pageCanonical = product ? `/product/${product.id}` : `/products`;
+
+  const pageKeywords = product
+    ? `${product.subject} notes class ${product.class}, ${product.title}, CBSE ${product.subject} notes class ${product.class}, handwritten ${product.subject} notes, best ${product.subject} notes, topper notes ${product.subject}, ${product.subject} PDF notes, NEET ${product.subject} notes, JEE ${product.subject} notes`
+    : "handwritten notes, CBSE notes, topper notes";
 
   return (
     <>
       <SEOHead
-        title={`${product.title} - Class ${product.class} ${product.subject} Notes | Buy Now`}
-        description={`${product.title} - ${product.description.slice(0, 140)}. Premium handwritten ${product.subject} notes for Class ${product.class}. Best for CBSE, NEET, JEE. Instant PDF delivery. ₹${product.price} only.`}
-        canonical={`/product/${product.id}`}
+        title={pageTitle}
+        description={pageDescription}
+        canonical={pageCanonical}
         ogImage={productImage}
         ogType="product"
-        keywords={`${product.subject} notes class ${product.class}, ${product.title}, CBSE ${product.subject} notes class ${product.class}, handwritten ${product.subject} notes, best ${product.subject} notes, topper notes ${product.subject}, ${product.subject} PDF notes, NEET ${product.subject} notes, JEE ${product.subject} notes`}
+        keywords={pageKeywords}
         structuredData={productStructuredData}
-        productPrice={product.price}
+        productPrice={product?.price}
       />
 
       <Navbar />
-      <main className="min-h-screen pt-24 pb-16">
-        <div className="container mx-auto px-4">
+      {isLoading ? (
+        <main className="min-h-screen pt-24 flex items-center justify-center">
+          <div className="animate-pulse text-muted-foreground font-body">
+            Loading...
+          </div>
+        </main>
+      ) : !product ? (
+        <main className="min-h-screen pt-24 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="font-display text-2xl font-bold text-foreground mb-4">
+              Product Not Found
+            </h1>
+            <Button asChild variant="outline">
+              <Link to="/products">Browse All Notes</Link>
+            </Button>
+          </div>
+        </main>
+      ) : (
+        <main className="min-h-screen pt-24 pb-16">
+          <div className="container mx-auto px-4">
           {/* Back Button */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -606,6 +605,7 @@ const ProductDetail = () => {
           <ProductFAQ product={product} />
         </div>
       </main>
+      )}
       <Footer />
     </>
   );

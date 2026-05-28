@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import {
   Plus,
@@ -430,9 +430,12 @@ const Admin = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Admin Dashboard | Exam Essentials</title>
-      </Helmet>
+      <SEOHead
+        title="Admin Dashboard"
+        description="Exam Essentials Admin Dashboard."
+        noIndex={true}
+        canonical="/admin"
+      />
 
       <div className="min-h-screen bg-background">
         {/* Header */}

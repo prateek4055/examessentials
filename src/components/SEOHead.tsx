@@ -33,7 +33,16 @@ const SEOHead = ({
   // Default to current pathname if no canonical is provided
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
   const cleanCanonical = (canonical || currentPath).split('?')[0];
-  const fullCanonical = `${baseUrl}${cleanCanonical === '/' ? '' : cleanCanonical}`;
+  
+  let fullCanonical = "";
+  if (cleanCanonical) {
+    if (cleanCanonical.startsWith('http://') || cleanCanonical.startsWith('https://')) {
+      fullCanonical = cleanCanonical;
+    } else {
+      const prefixedPath = cleanCanonical.startsWith('/') ? cleanCanonical : `/${cleanCanonical}`;
+      fullCanonical = `${baseUrl}${prefixedPath === '/' ? '' : prefixedPath}`;
+    }
+  }
   
   // Ensure title is under 60 chars for optimal SEO
   const baseTitleWithSuffix = title.includes("Exam Essentials") ? title : `${title} | Exam Essentials`;
@@ -65,6 +74,11 @@ const SEOHead = ({
       <meta name="title" content={fullTitle} />
       <meta name="description" content={truncatedDescription} />
       {finalKeywords && <meta name="keywords" content={finalKeywords} />}
+      
+      {/* Geo Tags for India */}
+      <meta name="geo.region" content="IN" />
+      <meta name="geo.placename" content="India" />
+      <meta name="language" content="en" />
       
       {/* Robots */}
       {noIndex ? (
