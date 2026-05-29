@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://examessentials.in/medortho/tests/anterior-cruciate-ligament</loc>
     <lastmod>2026-03-30</lastmod>
@@ -11,1745 +12,3200 @@
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Jack-Test.webp</image:loc>
+      <image:title>Jack Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Jack Test: Assessing hindfoot and subtalar flexibility in cases of flexible flatfoot.Evaluating the mechanical </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ankle-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ankle-rom.webp</image:loc>
+      <image:title>Ankle Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ankle Range of Motion: Measuring the degrees of movement available at the ankle joint.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ankle-anterior-drawer-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ankle-drawer.webp</image:loc>
+      <image:title>Ankle Anterior Drawer Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ankle Anterior Drawer Test: Diagnosing injuries to the Anterior Talofibular Ligament (ATFL).Assessing ankle instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/deltoid-ligament-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Deltoid-Ligament.webp</image:loc>
+      <image:title>Deltoid Ligament Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Deltoid Ligament Test: Assessing the medial ligaments (Deltoid ligament) of the ankle.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/heel-thump-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Heel-Thump-Test.webp</image:loc>
+      <image:title>Heel Thump Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Heel Thump Test: Screening for tibial stress fractures.Differentiating between a high ankle sprain (syndesmosis) and </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/homans-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/homans sign.webp</image:loc>
+      <image:title>Homans Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Homans Sign: Screening for Deep Vein Thrombosis (DVT).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mortons-neuroma-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/morton.webp</image:loc>
+      <image:title>Mortons Neuroma Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Mortons Neuroma Test: Detecting Morton&#39;s Neuroma (pinched nerve between toes).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ankle-posterior-drawer-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ankle-posterior-drawer-test.webp</image:loc>
+      <image:title>Ankle Posterior Drawer Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ankle Posterior Drawer Test: Assessing the Posterior Talofibular Ligament (PTFL) and posterior instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ramirez-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ramirez test.webp</image:loc>
+      <image:title>Ramirez Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ramirez Test: Testing for Deep Vein Thrombosis (DVT).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/talar-tilt-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/talar tilt.webp</image:loc>
+      <image:title>Talar Tilt Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Talar Tilt Test: Assessing the Calcaneofibular Ligament (CFL).Checking for lateral ankle instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/thompson-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/thompson.webp</image:loc>
+      <image:title>Thompson’s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Thompson’s Test: Identifying a complete rupture of the Achilles Tendon.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/external-rotation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/external-rotation-test.webp</image:loc>
+      <image:title>External Rotation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for External Rotation Test: Diagnosing syndesmosis injuries (High Ankle Sprain).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/squeeze-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/squeeze-test.webp</image:loc>
+      <image:title>Squeeze Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Squeeze Test: Diagnosing syndesmotic ankle sprains (High Ankle Sprain).Assessing the integrity of the interosseous</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/matles-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Matles-Test.webp</image:loc>
+      <image:title>Matles Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Matles Test: Visual assessment for Achilles Tendon Rupture.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-valgus-stress-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/elbow-valgus.webp</image:loc>
+      <image:title>Elbow Valgus Stress Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow Valgus Stress Test: Assessing the integrity of the Medial Ulnar Collateral Ligament (UCL).Primary test for medial elbow </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/milking-maneuver</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/milking.webp</image:loc>
+      <image:title>Milking Maneuver Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Milking Maneuver: Detecting partial tears or insufficiency of the Posterior Band of the UCL.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/moving-valgus-stress-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/moving-valgus-stress-test.webp</image:loc>
+      <image:title>Moving Valgus Stress Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Moving Valgus Stress Test: Diagnosing chronic UCL tears, specifically in overhead athletes (baseball pitchers).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-lateral-pivot-shift-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lateral-pivot-shift-test.webp</image:loc>
+      <image:title>Elbow Lateral Pivot-Shift Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow Lateral Pivot-Shift Test: Diagnosing Posterolateral Rotatory Instability (PLRI).Assessing the Lateral Ulnar Collateral Ligamen</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hook-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hook-test-scaled.webp</image:loc>
+      <image:title>Hook Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hook Test: Diagnosing complete avulsion of the Distal Biceps Tendon.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ruland-biceps-squeeze-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/biceps squeez.webp</image:loc>
+      <image:title>Ruland Biceps Squeeze Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ruland Biceps Squeeze Test: Diagnosing Distal Biceps Tendon Rupture (similar to the Thompson test for the ankle).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/the-chair-push-up-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Chair-Push-up-Test.webp</image:loc>
+      <image:title>The Chair Push-up Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for The Chair Push-up Test: Assessing Posterolateral Rotatory Instability (PLRI) and Radial Collateral Ligament insufficiency.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/cozen-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Cozens-Test-1.webp</image:loc>
+      <image:title>Cozen&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Cozen&#39;s Test: Diagnosing Lateral Epicondylalgia (Tennis Elbow).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/golfer-s-elbow-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/golf.webp</image:loc>
+      <image:title>Golfer&#39;s Elbow Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Golfer&#39;s Elbow Test: Diagnosing Medial Epicondylitis (Golfer&#39;s Elbow).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mill-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/mills.webp</image:loc>
+      <image:title>Mill&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Mill&#39;s Test: Diagnosing Lateral Epicondylitis (Tennis Elbow) via passive stretching.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/maudsley-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Maudsleys-test-1.webp</image:loc>
+      <image:title>Maudsley&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Maudsley&#39;s Test: Diagnosing Lateral Epicondylitis (Tennis Elbow).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/chair-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Chair test.webp</image:loc>
+      <image:title>Chair Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Chair Test: Functional test for Lateral Epicondylitis.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/reverse-cozen-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Reverse-Cozen-Test.webp</image:loc>
+      <image:title>Reverse Cozen Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Reverse Cozen Test: Diagnosing Medial Epicondylitis (Golfer&#39;s Elbow).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/elbow-rom.webp</image:loc>
+      <image:title>Elbow Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow Range of Motion: Measuring functional and physiological limits of the elbow joint.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/bicipital-aponeurosis-flex-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Bicipital-aponeurosis-flex-test.webp</image:loc>
+      <image:title>Bicipital Aponeurosis Flex Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Bicipital Aponeurosis Flex Test: Confirming complete distal biceps rupture (checking if the aponeurosis is intact).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ober-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ober.webp</image:loc>
+      <image:title>Ober&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ober&#39;s Test: Assessing tightness (contracture) of the Iliotibial Band (ITB) and Tensor Fasciae Latae (TFL).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/noble-compression-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/nobles test.webp</image:loc>
+      <image:title>Noble Compression Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Noble Compression Test: Diagnosing Iliotibial Band Friction Syndrome (Runner&#39;s Knee).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/thomas-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/thomas.webp</image:loc>
+      <image:title>Thomas Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Thomas Test: Assessing Hip Flexor Contracture (tightness of Iliopsoas, Rectus Femoris, or TFL).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/staheli-test-prone-hip-extension</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/prone-hip-extension-test.webp</image:loc>
+      <image:title>Staheli Test (Prone Hip Extension) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Staheli Test (Prone Hip Extension): Assessing Hip Flexion Contractures (specifically Iliopsoas).Often used when the Thomas Test is ambig</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ely-s-test-duncan-ely</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Duncan-Ely-Test.webp</image:loc>
+      <image:title>Ely&#39;s Test (Duncan-Ely) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ely&#39;s Test (Duncan-Ely): Assessing spasticity or tightness of the Rectus Femoris.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/patrick-s-test-faber</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/patric.webp</image:loc>
+      <image:title>Patrick&#39;s Test (FABER) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Patrick&#39;s Test (FABER): Screening for hip joint pathology vs. Sacroiliac (SI) joint dysfunction.FABER: Flexion, ABduction, E</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/faddir-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/FADDIR.webp</image:loc>
+      <image:title>FADDIR Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for FADDIR Test: Diagnosing Femoroacetabular Impingement (FAI) and Anterior Labral Tears.FADDIR: Flexion, ADDuction, </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/log-roll-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/log-roll-test.webp</image:loc>
+      <image:title>Log Roll Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Log Roll Test: Screening for intra-articular hip pathology (synovitis, infection, fracture) without stressing muscl</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/stinchfield-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Stinchfields-test.webp</image:loc>
+      <image:title>Stinchfield Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Stinchfield Test: Differentiating between Hip Joint pathology and Lumbar/SI issues.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hip-scour-test-quadrant</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Hip-Quadrant-Test.webp</image:loc>
+      <image:title>Hip Scour Test (Quadrant) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hip Scour Test (Quadrant): Detecting arthritis, labral tears, or capsular defects (inner and outer quadrants).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/trendelenburg-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Trendlenburg.webp</image:loc>
+      <image:title>Trendelenburg&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Trendelenburg&#39;s Test: Identifying weakness of the Gluteus Medius (Hip Abductors).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/craig-s-test-ryder-method</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Craig-Test.webp</image:loc>
+      <image:title>Craig&#39;s Test (Ryder Method) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Craig&#39;s Test (Ryder Method): Measuring Femoral Anteversion (internal twist of the femur).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pelvic-drop-test-step-down</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Pelvic-Drop-Test.webp</image:loc>
+      <image:title>Pelvic Drop Test (Step-Down) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pelvic Drop Test (Step-Down): Assessing core and hip stability (similar to Trendelenburg but dynamic).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hip-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Hip-ROM.webp</image:loc>
+      <image:title>Hip Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hip Range of Motion: Measuring physiological limits of the hip joint.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ortolani-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Ortolani-Test-3.webp</image:loc>
+      <image:title>Ortolani&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ortolani&#39;s Test: Reducing a dislocated hip in newborns with Developmental Dysplasia of the Hip (DDH).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/barlow-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Barlow.webp</image:loc>
+      <image:title>Barlow&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Barlow&#39;s Test: Provoking dislocation in an unstable hip (Newborn DDH).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/patellar-pubic-percussion-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Auscultatory-Patellar-Pubic-Percussion-Test.webp</image:loc>
+      <image:title>Patellar-Pubic Percussion Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Patellar-Pubic Percussion Test: Detecting Occult Hip Fractures when X-rays are negative.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/fulcrum-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Fulcrum-test.webp</image:loc>
+      <image:title>Fulcrum Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Fulcrum Test: Detecting Femoral Shaft Stress Fractures.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pelvic-ligament-stress-tests</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Iliolumbar-ligament.webp</image:loc>
+      <image:title>Pelvic Ligament Stress Tests Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pelvic Ligament Stress Tests: Pain provocation for Sacroiliac (SI) and pelvic ligaments (Iliolumbar, Sacrotuberous).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lachman-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lachmans.webp</image:loc>
+      <image:title>Lachman Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lachman Test: Assessing the integrity of the Anterior Cruciate Ligament (ACL), specifically the posterolateral bun</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/anterior-drawer-test-knee</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee anterior-drawer-test.webp</image:loc>
+      <image:title>Anterior Drawer Test (Knee) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Anterior Drawer Test (Knee): Assessing the Anterior Cruciate Ligament (ACL) (anteromedial bundle).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pivot-shift-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee pivot.webp</image:loc>
+      <image:title>Pivot Shift Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pivot Shift Test: Diagnosing Anterolateral Rotatory Instability (ACL + lateral capsule injury).Replicates the &amp;ldquo;g</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/posterior-drawer-test-knee</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee posterior-drawer-test-1.webp</image:loc>
+      <image:title>Posterior Drawer Test (Knee) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Posterior Drawer Test (Knee): Assessing the integrity of the Posterior Cruciate Ligament (PCL).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/posterior-sag-sign-godfrey-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee Posterior Sag-Sign-1.webp</image:loc>
+      <image:title>Posterior Sag Sign (Godfrey&#39;s Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Posterior Sag Sign (Godfrey&#39;s Test): Visual assessment of PCL integrity.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/quadriceps-active-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Quadriceps-Active-Test.webp</image:loc>
+      <image:title>Quadriceps Active Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Quadriceps Active Test: Confirming PCL Rupture.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/dial-test-tibial-external-rotation</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Dial-test.webp</image:loc>
+      <image:title>Dial Test (Tibial External Rotation) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Dial Test (Tibial External Rotation): Differentiating between isolated Posterolateral Corner (PLC) injury and combined PCL + PLC injury.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/valgus-stress-test-knee</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee valgus-test.webp</image:loc>
+      <image:title>Valgus Stress Test (Knee) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Valgus Stress Test (Knee): Assessing the Medial Collateral Ligament (MCL).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/varus-stress-test-knee</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee varus.webp</image:loc>
+      <image:title>Varus Stress Test (Knee) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Varus Stress Test (Knee): Assessing the Lateral Collateral Ligament (LCL).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/apley-s-distraction-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/apply-dis.webp</image:loc>
+      <image:title>Apley’s Distraction Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Apley’s Distraction Test: Distinguishing ligamentous injury from meniscal injury.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mcmurray-s-test-medial</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/medial-McMurray-Test.webp</image:loc>
+      <image:title>McMurray’s Test (Medial) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for McMurray’s Test (Medial): Diagnosing tears of the Posterior Horn of the Medial Meniscus.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mcmurray-s-test-lateral</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lateral-McMurray-Test-4.webp</image:loc>
+      <image:title>McMurray’s Test (Lateral) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for McMurray’s Test (Lateral): Diagnosing tears of the Lateral Meniscus.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/apley-s-compression-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/apply-comm.webp</image:loc>
+      <image:title>Apley’s Compression Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Apley’s Compression Test: Diagnosing Meniscal Tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/thessaly-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Thessaly-test.webp</image:loc>
+      <image:title>Thessaly Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Thessaly Test: Dynamic reproduction of meniscal loading (considered more accurate than McMurray&#39;s).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ege-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Eges Test.webp</image:loc>
+      <image:title>Ege&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ege&#39;s Test: Functional loading test for Meniscal Tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/bounce-home-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Bounce-Home-Test.webp</image:loc>
+      <image:title>Bounce Home Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Bounce Home Test: Detecting Meniscal Tears or loose bodies blocking extension.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/patellar-apprehension-test-fairbank-s</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/patella apprehension.webp</image:loc>
+      <image:title>Patellar Apprehension Test (Fairbank’s) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Patellar Apprehension Test (Fairbank’s): Assessing history of Lateral Patellar Dislocation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/patellofemoral-grind-test-clarke-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/patellofemoral-grind-test.webp</image:loc>
+      <image:title>Patellofemoral Grind Test (Clarke’s Sign) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Patellofemoral Grind Test (Clarke’s Sign): Detecting Chondromalacia Patella or Patellofemoral Pain Syndrome (PFPS).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/waldron-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/waldrons.webp</image:loc>
+      <image:title>Waldron’s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Waldron’s Test: Assessing Patellofemoral Pain Syndrome (PFPS) functionally.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/medial-plica-test-mital-hayden</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Medial-plica-shelf-test.webp</image:loc>
+      <image:title>Medial Plica Test (Mital &amp; Hayden) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Medial Plica Test (Mital &amp; Hayden): Diagnosing Mediopatellar Plica Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hughston-s-plica-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hughston-plica-test.webp</image:loc>
+      <image:title>Hughston’s Plica Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hughston’s Plica Test: Diagnosing Suprapatellar Plica Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/wilson-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Wilson-Test.webp</image:loc>
+      <image:title>Wilson’s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Wilson’s Test: Diagnosing Osteochondritis Dissecans (OCD) of the medial femoral condyle.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/patellar-tap-ballottement-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Patellar-Ballottement.webp</image:loc>
+      <image:title>Patellar Tap / Ballottement Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Patellar Tap / Ballottement Test: Detecting Major Knee Effusion (swelling).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/knee-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee-range-of-motion.webp</image:loc>
+      <image:title>Knee Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Knee Range of Motion: Measuring physiological limits.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/popliteal-angle-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Popliteal-Angle-Test.webp</image:loc>
+      <image:title>Popliteal Angle Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Popliteal Angle Test: Assessing Hamstring Tightness (Contracture), commonly in Cerebral Palsy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/garrick-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Garrick_test.webp</image:loc>
+      <image:title>Garrick Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Garrick Test: Diagnosing Popliteus Tendinopathy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/neer-impingement-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Neer_Test.webp</image:loc>
+      <image:title>Neer Impingement Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Neer Impingement Test: Diagnosing Subacromial Impingement (Supraspinatus/Biceps tendon overuse).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hawkins-kennedy-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Hawkins-Kennedy-test.webp</image:loc>
+      <image:title>Hawkins-Kennedy Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hawkins-Kennedy Test: Diagnosing Subacromial Impingement.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/coracoid-impingement-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/coracoid-impingement-sign.webp</image:loc>
+      <image:title>Coracoid Impingement Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Coracoid Impingement Sign: Diagnosing Subcoracoid Impingement (Lesser Tuberosity hitting the Coracoid).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/internal-rotation-resistance-stress-test-irrst</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Internal Rotation Resistance Stress Test.webp</image:loc>
+      <image:title>Internal Rotation Resistance Stress Test (IRRST) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Internal Rotation Resistance Stress Test (IRRST): Differentiating Internal Impingement from Outlet Impingement.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/empty-can-test-jobe-s</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/jobe test.webp</image:loc>
+      <image:title>Empty Can Test (Jobe&#39;s) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Empty Can Test (Jobe&#39;s): Assessing the Supraspinatus tendon.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lift-off-test-gerber-s</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lift-off.webp</image:loc>
+      <image:title>Lift-Off Test (Gerber&#39;s) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lift-Off Test (Gerber&#39;s): Diagnosing Subscapularis tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hornblower-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Hornblowers-Sign.webp</image:loc>
+      <image:title>Hornblower&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hornblower&#39;s Sign: Diagnosing Teres Minor (and Infraspinatus) pathology.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/rent-test-transdeltoid-palpation</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Rent-Test.webp</image:loc>
+      <image:title>Rent Test (Transdeltoid Palpation) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Rent Test (Transdeltoid Palpation): Palpating Rotator Cuff Tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/speed-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/speed-test.webp</image:loc>
+      <image:title>Speed&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Speed&#39;s Test: Diagnosing Bicipital Tendinopathy or SLAP lesions.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/yergason-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/yergenson.webp</image:loc>
+      <image:title>Yergason&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Yergason&#39;s Test: Diagnosing Transverse Humeral Ligament integrity and Biceps Tendinopathy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/active-compression-test-o-brien-s</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/OBriens-Test.webp</image:loc>
+      <image:title>Active Compression Test (O&#39;Brien&#39;s) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Active Compression Test (O&#39;Brien&#39;s): Diagnosing SLAP Lesions or AC Joint pathology.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/crank-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/crank-test-1024x724-1.webp</image:loc>
+      <image:title>Crank Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Crank Test: Diagnosing Labral Tears (SLAP).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/kim-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/kim-test.webp</image:loc>
+      <image:title>Kim Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Kim Test: Diagnosing Posteroinferior Labral Lesions.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/load-and-shift-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Shoulder Load and Shift.webp</image:loc>
+      <image:title>Load and Shift Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Load and Shift Test: Grading Anterior/Posterior Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/apprehension-and-relocation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/apprension.webp</image:loc>
+      <image:title>Apprehension and Relocation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Apprehension and Relocation Test: Diagnosing Anterior Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/sulcus-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/sulcus-sign.webp</image:loc>
+      <image:title>Sulcus Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Sulcus Sign: Diagnosing Multidirectional Instability (MDI) and Inferior Laxity.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/jerk-test-posterior</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/jerk test.webp</image:loc>
+      <image:title>Jerk Test (Posterior) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Jerk Test (Posterior): Diagnosing Posterior Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/shoulder-anterior-drawer-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Shoudler Anterior drawer.webp</image:loc>
+      <image:title>Shoulder Anterior Drawer Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Shoulder Anterior Drawer Test: Assessing Anterior Glenohumeral Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/cross-body-adduction-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ac-joint.webp</image:loc>
+      <image:title>Cross-Body Adduction Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Cross-Body Adduction Test: Diagnosing AC Joint pathology.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/wright-s-test-hyperabduction</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/wright.webp</image:loc>
+      <image:title>Wright&#39;s Test (Hyperabduction) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Wright&#39;s Test (Hyperabduction): Diagnosing Thoracic Outlet Syndrome (TOS).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/roos-test-east</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/roos.webp</image:loc>
+      <image:title>Roos Test (EAST) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Roos Test (EAST): Diagnosing TOS.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/spurling-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/spurling test.webp</image:loc>
+      <image:title>Spurling&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Spurling&#39;s Test: Diagnosing Cervical Radiculopathy (compression of a nerve root in the neck).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/distraction-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/distraction cervical.webp</image:loc>
+      <image:title>Distraction Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Distraction Test: Confirming Cervical Radiculopathy by relieving symptoms.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lasegue-test-straight-leg-raise</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Straight-leg-raise.webp</image:loc>
+      <image:title>Lasegue Test (Straight Leg Raise) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lasegue Test (Straight Leg Raise): Diagnosing Sciatica or Lumbar Disc Herniation (specifically L4-S1 nerve roots).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/crossed-over-lasegue-well-leg-raise</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/crossed-over-lasegue.webp</image:loc>
+      <image:title>Crossed Over Lasegue (Well Leg Raise) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Crossed Over Lasegue (Well Leg Raise): Diagnosing a Large Central Disc Herniation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/slump-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Slump-test-scaled-1.webp</image:loc>
+      <image:title>Slump Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Slump Test: Detecting Neural Tension anywhere in the spinal tract (more sensitive than the Straight Leg Raise).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/gaenslen-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Gaenslens_test.webp</image:loc>
+      <image:title>Gaenslen Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Gaenslen Test: Provoking pain in the Sacroiliac Joint (SIJ).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elvey-test-upper-limb-tension-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/elvey-test.webp</image:loc>
+      <image:title>Elvey Test (Upper Limb Tension Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elvey Test (Upper Limb Tension Test): Screening for Cervical Radiculopathy or Peripheral Nerve Entrapment in the arm.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/shoulder-press-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/shoulder-press-test.webp</image:loc>
+      <image:title>Shoulder Press Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Shoulder Press Test: Differentiating Nerve Root pain from Muscle/Facet pain.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/shoulder-abduction-test-bakody</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Shoulder-Abduction-Test-Bakody-Test.webp</image:loc>
+      <image:title>Shoulder Abduction Test (Bakody) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Shoulder Abduction Test (Bakody): Diagnosing Cervical Radiculopathy (specifically C4, C5, or C6 nerve roots).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lhermitte-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Lhermitte-Sign.webp</image:loc>
+      <image:title>Lhermitte Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lhermitte Sign: Screening for Cervical Myelopathy (spinal cord compression), Multiple Sclerosis, or severe Stenosis.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/prone-knee-flexion-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Prone-Knee-Flexion-Test-for-Lumbar-Spine.webp</image:loc>
+      <image:title>Prone Knee Flexion Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Prone Knee Flexion Test: Differentiating between Lumbar, SI Joint, and Femoral Nerve pathology.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/spinous-process-tap-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Spinous-Process-Tap-Test.webp</image:loc>
+      <image:title>Spinous Process Tap Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Spinous Process Tap Test: Screening for serious spinal pathology like Fracture, Infection, or Disc Herniation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lasegue-drop-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lasegue-drop.webp</image:loc>
+      <image:title>Lasegue Drop Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lasegue Drop Test: Identifying Lumbar or SI pain caused by sudden muscle guarding.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/springing-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Springing-Test.webp</image:loc>
+      <image:title>Springing Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Springing Test: Assessing Segmental Mobility (Stiffness vs Instability) and Pain provocation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/bragard-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Bragard-Test.webp</image:loc>
+      <image:title>Bragard Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Bragard Test: Differentiating Neural Pain from Hamstring Tightness.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/three-phase-hyperextension-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Three-Phase-Hyperextension-Test-1.webp</image:loc>
+      <image:title>Three-Phase Hyperextension Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Three-Phase Hyperextension Test: Differentiating the source of pain: Hip vs. SI Joint vs. Lumbar Spine.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/standing-flexion-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Standing-Flexion-Test.webp</image:loc>
+      <image:title>Standing Flexion Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Standing Flexion Test: Assessing Sacroiliac Joint Stiffness (Hypomobility).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/derbolowsky-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Derbolowsky-Test.webp</image:loc>
+      <image:title>Derbolowsky Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Derbolowsky Test: Diagnosing Functional Leg Length Discrepancy caused by pelvic rotation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/yeoman-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Yeoman-Test.webp</image:loc>
+      <image:title>Yeoman Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Yeoman Test: Stressing the Anterior Sacroiliac Ligaments.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/spine-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/spine-ROM.webp</image:loc>
+      <image:title>Spine Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Spine Range of Motion: Measuring physiological limits of the spine.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/schober-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Schober-Sign.webp</image:loc>
+      <image:title>Schober Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Schober Sign: Measuring Lumbar Flexion (specifically for Ankylosing Spondylitis).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/soto-hall-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Soto-Hall-Test.webp</image:loc>
+      <image:title>Soto-Hall Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Soto-Hall Test: Differentiating between Bone/Ligament pathology and Muscle pathology in the neck.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/thigh-thrust-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Thigh-Thrust-Test.webp</image:loc>
+      <image:title>Thigh Thrust Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Thigh Thrust Test: Provocation test for Sacroiliac Joint Dysfunction.Also called Posterior Shear Test.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/beevor-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/beevor-sign.webp</image:loc>
+      <image:title>Beevor Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Beevor Sign: Diagnosing weakness of T10-T12 Nerve Roots or Spinal Cord Lesion.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/femoral-nerve-stretch-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Femoral-Nerve-Stretch-Test.webp</image:loc>
+      <image:title>Femoral Nerve Stretch Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Femoral Nerve Stretch Test: Diagnosing High Lumbar Radiculopathy (L2-L4 Nerve Roots).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/alar-ligament-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Alar-Ligament-Test.webp</image:loc>
+      <image:title>Alar Ligament Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Alar Ligament Test: Assessing Upper Cervical Instability (specifically the Alar Ligament which stabilizes C2).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/cmc-grind-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/cmc.webp</image:loc>
+      <image:title>CMC Grind Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for CMC Grind Test: Diagnosing Osteoarthritis of the Thumb Carpometacarpal (CMC) Joint.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lunotriquetral-ballottement-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/druj-ballotment-test.webp</image:loc>
+      <image:title>Lunotriquetral Ballottement Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lunotriquetral Ballottement Test: Assessing instability of the Lunotriquetral Ligament.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/watson-test-scaphoid-shift</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/watson.webp</image:loc>
+      <image:title>Watson Test (Scaphoid Shift) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Watson Test (Scaphoid Shift): Diagnosing Scapholunate Ligament Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ulnocarpal-abutment-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ulnar-carpal-abutement.webp</image:loc>
+      <image:title>Ulnocarpal Abutment Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ulnocarpal Abutment Test: Diagnosing TFCC Tears or Ulnocarpal Impingement Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/gamekeeper-s-test-ucl-stress</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/gamekeeper.webp</image:loc>
+      <image:title>Gamekeeper&#39;s Test (UCL Stress) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Gamekeeper&#39;s Test (UCL Stress): Diagnosing Ulnar Collateral Ligament (UCL) tears of the thumb (Skier&#39;s Thumb).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lichtman-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lichtman.webp</image:loc>
+      <image:title>Lichtman Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lichtman Test: Diagnosing Midcarpal Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tinel-s-sign-wrist</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/tinel.webp</image:loc>
+      <image:title>Tinel&#39;s Sign (Wrist) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Tinel&#39;s Sign (Wrist): Diagnosing Carpal Tunnel Syndrome (Median Nerve).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/phalen-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/phalen.webp</image:loc>
+      <image:title>Phalen&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Phalen&#39;s Test: Diagnosing Carpal Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/froment-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/froment.webp</image:loc>
+      <image:title>Froment&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Froment&#39;s Sign: Testing Ulnar Nerve motor function (Adductor Pollicis muscle).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/wartenberg-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/wartenbergs.webp</image:loc>
+      <image:title>Wartenberg&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Wartenberg&#39;s Sign: Diagnosing Ulnar Nerve Neuropathy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/jeanne-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Jeanne sign.webp</image:loc>
+      <image:title>Jeanne&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Jeanne&#39;s Sign: Diagnosing Ulnar Nerve Paralysis.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/piano-key-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/piano-key-sign.webp</image:loc>
+      <image:title>Piano Key Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Piano Key Sign: Diagnosing Distal Radioulnar Joint (DRUJ) Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/finkelstein-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/finkelsteins.webp</image:loc>
+      <image:title>Finkelstein&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Finkelstein&#39;s Test: Diagnosing De Quervain&#39;s Tenosynovitis.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/bunnel-littler-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/bunnels.webp</image:loc>
+      <image:title>Bunnel-Littler Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Bunnel-Littler Test: Differentiating Intrinsic Muscle Tightness from Joint Capsule Tightness.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/durkan-s-test-carpal-compression</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/durkan-test.webp</image:loc>
+      <image:title>Durkan&#39;s Test (Carpal Compression) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Durkan&#39;s Test (Carpal Compression): Diagnosing Carpal Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elson-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Elson-test.webp</image:loc>
+      <image:title>Elson Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elson Test: Diagnosing Central Slip Injury (precursor to Boutonniere Deformity).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/allen-test-vascular</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/allen-test.webp</image:loc>
+      <image:title>Allen Test (Vascular) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Allen Test (Vascular): Assessing Arterial Blood Flow (Radial/Ulnar Artery Patency).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/wrist-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/wrist-rom.webp</image:loc>
+      <image:title>Wrist Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Wrist Range of Motion: Measuring physiological limits.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hand-range-of-motion</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hand-rom.webp</image:loc>
+      <image:title>Hand Range of Motion Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hand Range of Motion: Measuring finger joint mobility.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/capillary-refill-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Capillary-Refill-Test.webp</image:loc>
+      <image:title>Capillary Refill Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Capillary Refill Test: Assessing peripheral perfusion.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/wrist-hand-general-examination</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/wrist.webp</image:loc>
+      <image:title>Wrist &amp; Hand General Examination Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Wrist &amp; Hand General Examination: </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-general-examination</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/elbow.webp</image:loc>
+      <image:title>Elbow General Examination Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow General Examination: </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/shoulder-general-examination</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/shoulder.webp</image:loc>
+      <image:title>Shoulder General Examination Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Shoulder General Examination: </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/foot-ankle-general-examination</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ankle.webp</image:loc>
+      <image:title>Foot &amp; Ankle General Examination Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Foot &amp; Ankle General Examination: </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/knee-general-examination</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/knee.webp</image:loc>
+      <image:title>Knee General Examination Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Knee General Examination: </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hip-general-examination</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hip.webp</image:loc>
+      <image:title>Hip General Examination Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hip General Examination: </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/navicular-drop-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/navicular.webp</image:loc>
+      <image:title>Navicular Drop Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Navicular Drop Test: Quantifying the amount of foot pronation (flattening) during weight-bearing.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/coleman-block-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/coleman.webp</image:loc>
+      <image:title>Coleman Block Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Coleman Block Test: Differentiating between flexible and rigid hindfoot varus deformities.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tinel-s-sign-ankle</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/tinel ankle.webp</image:loc>
+      <image:title>Tinel&#39;s Sign (Ankle) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Tinel&#39;s Sign (Ankle): Testing for Tarsal Tunnel Syndrome (Posterior Tibial Nerve compression).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/cotton-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/cotton.webp</image:loc>
+      <image:title>Cotton Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Cotton Test: Assessing instability of the syndesmosis (lateral talar shift).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ottawa-ankle-rules</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ottawa.webp</image:loc>
+      <image:title>Ottawa Ankle Rules Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ottawa Ankle Rules: Determining the need for X-rays after acute ankle injury.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/too-many-toes-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/too many toes.webp</image:loc>
+      <image:title>Too Many Toes Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Too Many Toes Sign: Assessing for hyperpronation (flatfoot) and tibial torsion.Identifying dysfunction of the posterior </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/single-leg-heel-raise</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/single-leg.webp</image:loc>
+      <image:title>Single Leg Heel Raise Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Single Leg Heel Raise: Testing the strength and function of the Posterior Tibial Tendon.Diagnosing acquired flatfoot deform</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/silfverski-ld-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/silfverskoild.webp</image:loc>
+      <image:title>Silfverskiöld Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Silfverskiöld Test: Differentiating between tightness in the Gastrocnemius muscle versus the Soleus muscle.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/crossed-leg-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/crossed-leg.webp</image:loc>
+      <image:title>Crossed-Leg Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Crossed-Leg Test: Diagnosing Syndesmosis injury (High Ankle Sprain).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/dorsiflexion-maneuver</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/dorsiflexion.webp</image:loc>
+      <image:title>Dorsiflexion Maneuver Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Dorsiflexion Maneuver: Testing for Tarsal Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/figure-eight-measurement</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/figure-8.webp</image:loc>
+      <image:title>Figure-Eight Measurement Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Figure-Eight Measurement: Reliably quantifying ankle swelling (edema).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mulder-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/mulder.webp</image:loc>
+      <image:title>Mulder&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Mulder&#39;s Sign: Diagnosing Morton&#39;s Neuroma (interdigital neuroma), typically between the 3rd and 4th toes.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/royal-london-hospital-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/royal-london.webp</image:loc>
+      <image:title>Royal London Hospital Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Royal London Hospital Test: Diagnosing Achilles Tendinopathy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/arc-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/arc.webp</image:loc>
+      <image:title>Arc Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Arc Sign: Differentiating between Achilles Tendinosis (tendon degeneration) and Paratendonitis (inflammation o</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/buerger-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/buerger.webp</image:loc>
+      <image:title>Buerger’s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Buerger’s Test: Assessing arterial blood supply to the leg (Peripheral Arterial Disease).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/peroneal-tendon-dislocation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/peroneal-tendon.webp</image:loc>
+      <image:title>Peroneal Tendon Dislocation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Peroneal Tendon Dislocation Test: Diagnosing Peroneal Tendon Subluxation or Dislocation (Snapping Ankle).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/paper-grip-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/paper grip.webp</image:loc>
+      <image:title>Paper Grip Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Paper Grip Test: Testing the strength of the intrinsic muscles of the foot (toe plantar flexion).Screening for intrin</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/triple-compression-stress-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/triple-compression.webp</image:loc>
+      <image:title>Triple Compression Stress Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Triple Compression Stress Test: Diagnosing Tarsal Tunnel Syndrome (Posterior Tibial Nerve entrapment).Considered more sensitive than</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/calcaneal-squeeze-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/calcaneal-squeeze.webp</image:loc>
+      <image:title>Calcaneal Squeeze Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Calcaneal Squeeze Test: Diagnosing Calcaneal Stress Fractures.Differentiating heel pain sources (e.g., Plantar Fasciitis vs.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/fibular-translation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/fibular transalation.webp</image:loc>
+      <image:title>Fibular Translation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Fibular Translation Test: Diagnosing Syndesmosis Injury (High Ankle Sprain).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/anterior-impingement-test-molloy-bendall</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/molloy-bendall.webp</image:loc>
+      <image:title>Anterior Impingement Test (Molloy-Bendall) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Anterior Impingement Test (Molloy-Bendall): Diagnosing Anterior Ankle Impingement (Footballer&#39;s Ankle).Identifying soft tissue or bony entrapmen</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/functional-hallux-limitus-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hallux limitus.webp</image:loc>
+      <image:title>Functional Hallux Limitus Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Functional Hallux Limitus Test: Determining if the big toe (Hallux) lacks extension specifically during weight-bearing (functional l</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/shin-palpation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/shin-palpation.webp</image:loc>
+      <image:title>Shin Palpation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Shin Palpation Test: Diagnosing Medial Tibial Stress Syndrome (MTSS / Shin Splints).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/prone-anterior-drawer-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/prone-drawer.webp</image:loc>
+      <image:title>Prone Anterior Drawer Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Prone Anterior Drawer Test: Assessing the Anterior Talofibular Ligament (ATFL).Often considered more sensitive than the supine t</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/dorsiflexion-compression-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/dorsiflexion compression.webp</image:loc>
+      <image:title>Dorsiflexion Compression Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Dorsiflexion Compression Test: Diagnosing Syndesmosis Injury (High Ankle Sprain).Differentiating syndesmosis pain from other ankle </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/medial-subtalar-glide-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/medial-glide.webp</image:loc>
+      <image:title>Medial Subtalar Glide Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Medial Subtalar Glide Test: Assessing lateral stability of the Subtalar Joint.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tuning-fork-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/tuning fork.webp</image:loc>
+      <image:title>Tuning Fork Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Tuning Fork Test: Screening for Stress Fractures (e.g., Tibia, Fibula, Metatarsals).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/subtalar-neutral</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/subtalar-neutral.webp</image:loc>
+      <image:title>Subtalar Neutral Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Subtalar Neutral: Determining the neutral position of the rearfoot for biomechanical assessment and orthotic casting.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-varus-stress-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/varus stress test.webp</image:loc>
+      <image:title>Elbow Varus Stress Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow Varus Stress Test: Assessing the integrity of the Lateral Collateral Ligament (LCL) complex.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tabletop-relocation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/tabletop.webp</image:loc>
+      <image:title>Tabletop Relocation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Tabletop Relocation Test: Diagnosing Posterolateral Rotatory Instability (PLRI).Useful for patients who are too apprehensive f</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/posterolateral-rotatory-drawer-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/posterolateral rotatory drawer test.webp</image:loc>
+      <image:title>Posterolateral Rotatory Drawer Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Posterolateral Rotatory Drawer Test: Testing for PLRI (Rotatory instability of the radius/ulna unit).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/prone-push-up-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/prone push-up.webp</image:loc>
+      <image:title>Prone Push-Up Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Prone Push-Up Test: Functional test for PLRI.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/resisted-supination-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/resisted-supination.webp</image:loc>
+      <image:title>Resisted Supination Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Resisted Supination Test: Differentiating Tennis Elbow from Radial Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/reverse-mill-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/reverse mill.webp</image:loc>
+      <image:title>Reverse Mill&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Reverse Mill&#39;s Test: Diagnosing Medial Epicondylitis (Golfer&#39;s Elbow).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/biceps-crease-interval-bci</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/bci.webp</image:loc>
+      <image:title>Biceps Crease Interval (BCI) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Biceps Crease Interval (BCI): Diagnosing Distal Biceps Tendon Rupture.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/passive-pronation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/passive pronation test.webp</image:loc>
+      <image:title>Passive Pronation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Passive Pronation Test: Identifying a partial tear or thickening of the bicipital aponeurosis/tendon.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/triceps-squeeze-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/triceps-squeeze test.webp</image:loc>
+      <image:title>Triceps Squeeze Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Triceps Squeeze Test: Diagnosing Triceps Tendon Rupture.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tinel-s-sign-elbow</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/tinel-sign.webp</image:loc>
+      <image:title>Tinel&#39;s Sign (Elbow) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Tinel&#39;s Sign (Elbow): Diagnosing Cubital Tunnel Syndrome (Ulnar Nerve).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-flexion-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/elbow-flexion.webp</image:loc>
+      <image:title>Elbow Flexion Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow Flexion Test: Provocative test for Cubital Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pressure-provocation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/pressure-provocation-test.webp</image:loc>
+      <image:title>Pressure Provocation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pressure Provocation Test: Diagnosing Cubital Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/scratch-collapse-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/scratch collapse test.webp</image:loc>
+      <image:title>Scratch Collapse Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Scratch Collapse Test: Detecting nerve compression (Ulnar or Median).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/elbow-extension-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/elbow-extension.webp</image:loc>
+      <image:title>Elbow Extension Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Elbow Extension Test: Screening for Elbow Fracture in acute trauma.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/valgus-extension-overload-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/valgus extension overload.webp</image:loc>
+      <image:title>Valgus Extension Overload Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Valgus Extension Overload Test: Diagnosing Posteromedial Impingement (Pitcher&#39;s Elbow).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/carrying-angle-measurement</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/carrying-angle.webp</image:loc>
+      <image:title>Carrying Angle Measurement Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Carrying Angle Measurement: Assessing skeletal alignment (Cubitus Valgus/Varus).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/modified-milking-maneuver</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/modified-milking.webp</image:loc>
+      <image:title>Modified Milking Maneuver Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Modified Milking Maneuver: Detecting Ulnar Collateral Ligament (UCL) insufficiency (specifically the posterior bundle).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/posterolateral-apprehension-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/posterolateral apprehension.webp</image:loc>
+      <image:title>Posterolateral Apprehension Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Posterolateral Apprehension Test: Screening for Posterolateral Rotatory Instability (PLRI).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/polk-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/polk test.webp</image:loc>
+      <image:title>Polk&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Polk&#39;s Test: Differentiating Lateral Epicondylitis from other lateral elbow pain.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/triceps-reflex-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/triceps-reflex.webp</image:loc>
+      <image:title>Triceps Reflex Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Triceps Reflex Test: Assessing the integrity of the C7 Nerve Root and Triceps Tendon.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/biceps-reflex-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/biceps-reflex.webp</image:loc>
+      <image:title>Biceps Reflex Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Biceps Reflex Test: Assessing the integrity of the C5-C6 Nerve Roots and Biceps Tendon.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/galeazzi-sign-allis-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/galeazzi.webp</image:loc>
+      <image:title>Galeazzi Sign (Allis Sign) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Galeazzi Sign (Allis Sign): Screening for Developmental Dysplasia of the Hip (DDH) or Leg Length Discrepancy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/telescoping-sign-piston-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/telescoping sign.webp</image:loc>
+      <image:title>Telescoping Sign (Piston Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Telescoping Sign (Piston Test): Detecting a dislocated hip in a child (DDH).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/90-90-straight-leg-raise</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/90-90.webp</image:loc>
+      <image:title>90-90 Straight Leg Raise Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for 90-90 Straight Leg Raise: Assessing Hamstring Tightness.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/thigh-thrust-test-posterior-shear</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/thigh-thrust.webp</image:loc>
+      <image:title>Thigh Thrust Test (Posterior Shear) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Thigh Thrust Test (Posterior Shear): Provocation test for Sacroiliac Joint (SIJ) dysfunction.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/gaenslen-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/gaenslen.webp</image:loc>
+      <image:title>Gaenslen&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Gaenslen&#39;s Test: Provocation test for Sacroiliac Joint (SIJ) dysfunction.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mccarthy-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/mccarthy.webp</image:loc>
+      <image:title>McCarthy Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for McCarthy Sign: Diagnosing Acetabular Labral Tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/leg-length-measurement-true-vs-apparent</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/leg-length.webp</image:loc>
+      <image:title>Leg Length Measurement (True vs Apparent) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Leg Length Measurement (True vs Apparent): Differentiating True (Structural) from Apparent (Functional) Leg Length Discrepancy (LLD).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/heel-strike-test-anvil-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/anvil test.webp</image:loc>
+      <image:title>Heel Strike Test (Anvil Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Heel Strike Test (Anvil Test): Screening for Hip Fracture or severe joint pathology.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/rectus-femoris-contracture-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/rectus-femoris.webp</image:loc>
+      <image:title>Rectus Femoris Contracture Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Rectus Femoris Contracture Test: Differentiating Rectus Femoris tightness from other hip flexors.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/abduction-test-hart-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/abduction test.webp</image:loc>
+      <image:title>Abduction Test (Hart&#39;s Sign) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Abduction Test (Hart&#39;s Sign): Screening for Developmental Dysplasia of the Hip (DDH) in older infants where Ortolani is no longer </image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/weber-barstow-maneuver</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/weber-barstow.webp</image:loc>
+      <image:title>Weber-Barstow Maneuver Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Weber-Barstow Maneuver: Normalizing pelvic alignment before measuring Leg Length Discrepancy (LLD).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/supine-to-sit-test-long-sitting-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/supine-to-sit.webp</image:loc>
+      <image:title>Supine-to-Sit Test (Long Sitting Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Supine-to-Sit Test (Long Sitting Test): Differentiating Functional Leg Length Discrepancy caused by Sacroiliac Joint (SIJ) rotation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/gillet-s-test-marching-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/gillet.webp</image:loc>
+      <image:title>Gillet&#39;s Test (Marching Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Gillet&#39;s Test (Marching Test): Assessing Sacroiliac Joint Mobility (Hypomobility).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/yeoman-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/yeoman.webp</image:loc>
+      <image:title>Yeoman&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Yeoman&#39;s Test: Stressing the Anterior Sacroiliac Ligaments.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/flamingo-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/flamingo.webp</image:loc>
+      <image:title>Flamingo Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Flamingo Test: Provocation test for Pubic Symphysis or SI Joint lesions.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/posterior-labral-tear-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/post-labral tear.webp</image:loc>
+      <image:title>Posterior Labral Tear Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Posterior Labral Tear Test: Diagnosing Posterior Acetabular Labral Tears or instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ischiofemoral-impingement-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ischiofemoral.webp</image:loc>
+      <image:title>Ischiofemoral Impingement Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ischiofemoral Impingement Test: Diagnosing Ischiofemoral Impingement (Quadratus Femoris crushing).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/slocum-test-rotatory-drawer</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/slocum1.webp</image:loc>
+      <image:title>Slocum Test (Rotatory Drawer) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Slocum Test (Rotatory Drawer): Diagnosing Anteromedial (AMRI) or Anterolateral (ALRI) Rotatory Instability.This is a modification o</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/jerk-test-of-hughston</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/jerk-test.webp</image:loc>
+      <image:title>Jerk Test of Hughston Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Jerk Test of Hughston: Diagnosing Anterolateral Rotatory Instability (ALRI) (ACL + Lateral Capsule).Similar to the Pivot Sh</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/losee-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/loose.webp</image:loc>
+      <image:title>Losee Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Losee Test: Diagnosing Anterolateral Rotatory Instability (ALRI).Considered a dynamic variation of the Pivot Shi</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/noyes-flexion-rotation-drawer-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/noyes.webp</image:loc>
+      <image:title>Noyes Flexion-Rotation Drawer Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Noyes Flexion-Rotation Drawer Test: Diagnosing Anterior Cruciate Ligament (ACL) tears and ALRI.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/external-rotation-recurvatum-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/recurvatum.webp</image:loc>
+      <image:title>External Rotation Recurvatum Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for External Rotation Recurvatum Test: Diagnosing Posterolateral Corner (PLC) instability or PCL injury.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/reverse-pivot-shift-test-jakob</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/jakob.webp</image:loc>
+      <image:title>Reverse Pivot Shift Test (Jakob) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Reverse Pivot Shift Test (Jakob): Diagnosing Posterolateral Rotatory Instability (PLRI).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/loomer-s-posterolateral-rotary-instability-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/loomers.webp</image:loc>
+      <image:title>Loomer’s Posterolateral Rotary Instability Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Loomer’s Posterolateral Rotary Instability Test: Diagnosing Posterolateral Corner (PLC) injury.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/crossover-test-arnold</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/arnold.webp</image:loc>
+      <image:title>Crossover Test (Arnold) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Crossover Test (Arnold): Differentiating between Anterolateral (ALRI) and Anteromedial (AMRI) instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/childress-sign-duck-walk-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/childress.webp</image:loc>
+      <image:title>Childress Sign (Duck Walk Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Childress Sign (Duck Walk Test): Functional test for Meniscal Tears (specifically posterior horn).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/brush-stroke-test-swipe-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/brush.webp</image:loc>
+      <image:title>Brush / Stroke Test (Swipe Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Brush / Stroke Test (Swipe Test): Detecting Minimal Knee Effusion (swelling) that Ballottement might miss.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/fluctuation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/fluctuation.webp</image:loc>
+      <image:title>Fluctuation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Fluctuation Test: Detecting Large Knee Effusion.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/indentation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/indentation.webp</image:loc>
+      <image:title>Indentation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Indentation Test: Differentiating Synovial Thickening from Joint Effusion.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/mcconnell-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/patellofemoral-grind-test.webp</image:loc>
+      <image:title>McConnell Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for McConnell Test: Diagnosing Patellofemoral Pain Syndrome (PFPS).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/q-angle-measurement</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Q-angle.webp</image:loc>
+      <image:title>Q-Angle Measurement Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Q-Angle Measurement: Assessing patellar tracking alignment.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tubercle-sulcus-angle</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/tubercle sulcus.webp</image:loc>
+      <image:title>Tubercle Sulcus Angle Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Tubercle Sulcus Angle: Assessing lateral patellar tracking (alternate to Q-angle).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/plica-stutter-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/plica-stutter.webp</image:loc>
+      <image:title>Plica Stutter Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Plica Stutter Test: Diagnosing Medial Plica Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lever-sign-lelli-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lever sign.webp</image:loc>
+      <image:title>Lever Sign (Lelli&#39;s Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lever Sign (Lelli&#39;s Test): Diagnosing Anterior Cruciate Ligament (ACL) rupture.Effective even in patients with large legs or ac</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/prone-lachman-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/prone-lachma.webp</image:loc>
+      <image:title>Prone Lachman Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Prone Lachman Test: Diagnosing ACL Rupture.Useful for examiners with small hands or patients with large legs.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/adson-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/adson.webp</image:loc>
+      <image:title>Adson&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Adson&#39;s Test: Diagnosing TOS (specifically Scalene muscle compression).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/allen-test-shoulder</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/allen.webp</image:loc>
+      <image:title>Allen Test (Shoulder) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Allen Test (Shoulder): Diagnosing TOS (Pectoralis Minor compression).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/costoclavicular-syndrome-test-military-brace</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/costoclavicular-syndrome-test.webp</image:loc>
+      <image:title>Costoclavicular Syndrome Test (Military Brace) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Costoclavicular Syndrome Test (Military Brace): Diagnosing TOS (Costoclavicular space compression).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/halstead-maneuver</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/halstead.webp</image:loc>
+      <image:title>Halstead Maneuver Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Halstead Maneuver: Diagnosing TOS.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ac-shear-test-paxinos-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/paxinos.webp</image:loc>
+      <image:title>AC Shear Test (Paxinos Sign) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for AC Shear Test (Paxinos Sign): Diagnosing Acromioclavicular (AC) Joint pathology.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/anterior-slide-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/anterior-slide.webp</image:loc>
+      <image:title>Anterior Slide Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Anterior Slide Test: Diagnosing SLAP Lesions (Superior Labrum Anterior to Posterior).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/clunk-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/clunk.webp</image:loc>
+      <image:title>Clunk Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Clunk Test: Diagnosing Bankart or Labral Tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/compression-rotation-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/compression-rotation.webp</image:loc>
+      <image:title>Compression-Rotation Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Compression-Rotation Test: Diagnosing SLAP or Bankart lesions.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pain-provocation-test-mimori</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/pain-provocation.webp</image:loc>
+      <image:title>Pain Provocation Test (Mimori) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pain Provocation Test (Mimori): Diagnosing SLAP Lesions.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/feagin-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/feagin.webp</image:loc>
+      <image:title>Feagin Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Feagin Test: Diagnosing Inferior Instability (Multidirectional).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/anterior-release-test-surprise-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/anterior-release.webp</image:loc>
+      <image:title>Anterior Release Test (Surprise Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Anterior Release Test (Surprise Test): Diagnosing Anterior Instability.Part of the Apprehension-Relocation cluster.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/whipple-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/whipple.webp</image:loc>
+      <image:title>Whipple Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Whipple Test: Diagnosing Partial-Thickness Supraspinatus Tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/upper-cut-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/upper-cut.webp</image:loc>
+      <image:title>Upper Cut Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Upper Cut Test: Diagnosing Biceps Tendinopathy.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pectoralis-major-contracture-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Pectoralis Major Contracture Test.webp</image:loc>
+      <image:title>Pectoralis Major Contracture Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pectoralis Major Contracture Test: Assessing tightness of the Pectoralis Major.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/lateral-scapular-slide-test-kibler</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/lateral-scapular.webp</image:loc>
+      <image:title>Lateral Scapular Slide Test (Kibler) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Lateral Scapular Slide Test (Kibler): Diagnosing Scapular Dyskinesis and stability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/yokum-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/yokum.webp</image:loc>
+      <image:title>Yokum Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Yokum Test: Diagnosing Subacromial Impingement.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/posterior-impingement-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/posterior impingement.webp</image:loc>
+      <image:title>Posterior Impingement Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Posterior Impingement Sign: Diagnosing Internal Impingement (Posterior-Superior Glenoid Impingement).Common in throwers.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pectoralis-minor-length-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/pectoralis minor length test.webp</image:loc>
+      <image:title>Pectoralis Minor Length Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pectoralis Minor Length Test: Assessing tightness of the Pectoralis Minor (causes anterior scapular tilt).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/latissimus-dorsi-length-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/latissimus dorsi length test.webp</image:loc>
+      <image:title>Latissimus Dorsi Length Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Latissimus Dorsi Length Test: Assessing tightness of the Latissimus Dorsi.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/olecranon-manubrium-percussion-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/Olecranon manubrium percussion sign.webp</image:loc>
+      <image:title>Olecranon-Manubrium Percussion Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Olecranon-Manubrium Percussion Test: Screening for Shoulder Dislocation or Bony Injury.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ultt-1-median-nerve-bias</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ultt-1.webp</image:loc>
+      <image:title>ULTT 1 (Median Nerve Bias) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for ULTT 1 (Median Nerve Bias): Screening for Cervical Radiculopathy or Median Nerve tension.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ultt-2a-median-nerve-bias</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ultt-2.webp</image:loc>
+      <image:title>ULTT 2a (Median Nerve Bias) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for ULTT 2a (Median Nerve Bias): Screening for Median Nerve tension.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ultt-2b-radial-nerve-bias</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ultt-3.webp</image:loc>
+      <image:title>ULTT 2b (Radial Nerve Bias) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for ULTT 2b (Radial Nerve Bias): Screening for Radial Nerve tension.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ultt-3-ulnar-nerve-bias</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/ultt-4.webp</image:loc>
+      <image:title>ULTT 3 (Ulnar Nerve Bias) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for ULTT 3 (Ulnar Nerve Bias): Screening for Ulnar Nerve tension.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/vertebral-artery-test-vbi</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/VBI.webp</image:loc>
+      <image:title>Vertebral Artery Test (VBI) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Vertebral Artery Test (VBI): Screening for Vertebrobasilar Insufficiency (VBI) before performing cervical manipulation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/sharp-purser-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/sharp-pursor.webp</image:loc>
+      <image:title>Sharp-Purser Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Sharp-Purser Test: Assessing Atlantoaxial Instability (Transverse Ligament rupture).Commonly used in Rheumatoid Arthrit</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/jackson-s-compression-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/jackson.webp</image:loc>
+      <image:title>Jackson&#39;s Compression Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Jackson&#39;s Compression Test: Diagnosing Cervical Radiculopathy (Alternative to Spurling&#39;s).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/craniocervical-flexion-test-ccft</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/craniocervical.webp</image:loc>
+      <image:title>Craniocervical Flexion Test (CCFT) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Craniocervical Flexion Test (CCFT): Assessing endurance/control of Deep Neck Flexors (Longus Colli/Capitis).Crucial for whiplash and cer</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/chest-expansion-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/chest-expansion.webp</image:loc>
+      <image:title>Chest Expansion Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Chest Expansion Test: Diagnosing Ankylosing Spondylitis (Costovertebral joint stiffness).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/kemp-s-test-quadrant-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/kemp.webp</image:loc>
+      <image:title>Kemp&#39;s Test (Quadrant Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Kemp&#39;s Test (Quadrant Test): Diagnosing Facet Joint Syndrome or Lateral Stenosis.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/stork-test-one-leg-standing-extension</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/stork.webp</image:loc>
+      <image:title>Stork Test (One-Leg Standing Extension) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Stork Test (One-Leg Standing Extension): Diagnosing Spondylolysis (Pars Interarticularis stress fracture) or Spondylolisthesis.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/segmental-instability-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/segmental-instability.webp</image:loc>
+      <image:title>Segmental Instability Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Segmental Instability Test: Diagnosing Lumbar Segmental Instability.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hoover-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hoover.webp</image:loc>
+      <image:title>Hoover Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hoover Test: Diagnosing Malingering or Functional Weakness (checking if effort is genuine).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/si-joint-compression-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/SI-joint-compession.webp</image:loc>
+      <image:title>SI Joint Compression Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for SI Joint Compression Test: Provocation test for SI Joint Pain.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/si-joint-distraction-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/SI-joint-distraction.webp</image:loc>
+      <image:title>SI Joint Distraction Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for SI Joint Distraction Test: Provocation test for SI Joint Pain.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/sacral-thrust-sacral-compression</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/sacral-thrust.webp</image:loc>
+      <image:title>Sacral Thrust (Sacral Compression) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Sacral Thrust (Sacral Compression): Provocation test for SI Joint Pain.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/babinski-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/babinski.webp</image:loc>
+      <image:title>Babinski Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Babinski Sign: Screening for Upper Motor Neuron Lesions (CNS pathology).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ankle-clonus-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/clonus.webp</image:loc>
+      <image:title>Ankle Clonus Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ankle Clonus Test: Screening for Upper Motor Neuron Lesions (Hyper-reflexia).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/hoffmann-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/hoffman.webp</image:loc>
+      <image:title>Hoffmann&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Hoffmann&#39;s Sign: Screening for Cervical Myelopathy or Upper Motor Neuron (UMN) lesions.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/kernig-s-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/kernig.webp</image:loc>
+      <image:title>Kernig&#39;s Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Kernig&#39;s Sign: Diagnosing Meningitis or Subarachnoid Hemorrhage.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/romberg-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/romberg.webp</image:loc>
+      <image:title>Romberg Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Romberg Test: Assessing Proprioception (Dorsal Columns) vs. Cerebellar Ataxia.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/tfcc-load-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/TFCC-load.webp</image:loc>
+      <image:title>TFCC Load Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for TFCC Load Test: Diagnosing Triangular Fibrocartilage Complex (TFCC) tears.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/press-test-sit-to-stand</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/press-test.webp</image:loc>
+      <image:title>Press Test (Sit-to-Stand) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Press Test (Sit-to-Stand): Functional test for TFCC Tear.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/supination-lift-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/supination-lift.webp</image:loc>
+      <image:title>Supination Lift Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Supination Lift Test: Diagnosing TFCC Tear.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/sweater-finger-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/sweater-finger.webp</image:loc>
+      <image:title>Sweater Finger Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Sweater Finger Sign: Diagnosing Flexor Digitorum Profundus (FDP) Rupture (Jersey Finger).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/boyes-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/boyes.webp</image:loc>
+      <image:title>Boyes Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Boyes Test: Diagnosing Central Slip Injury (Boutonniere Deformity).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/linburg-comstock-anomaly-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/linburg.webp</image:loc>
+      <image:title>Linburg-Comstock Anomaly Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Linburg-Comstock Anomaly Test: Detecting an anatomical connection between the FPL (Thumb) and FDP (Index) tendons.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/reverse-phalen-s-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/reverse-phalens.webp</image:loc>
+      <image:title>Reverse Phalen&#39;s Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Reverse Phalen&#39;s Test: Diagnosing Carpal Tunnel Syndrome.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/semmes-weinstein-monofilament-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/semmes.webp</image:loc>
+      <image:title>Semmes-Weinstein Monofilament Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Semmes-Weinstein Monofilament Test: The Gold Standard for testing cutaneous pressure threshold (Protective Sensation).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/two-point-discrimination-static</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/two-point.webp</image:loc>
+      <image:title>Two-Point Discrimination (Static) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Two-Point Discrimination (Static): Assessing Functional Sensation and innervation density.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/anatomical-snuffbox-tenderness</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/anatomical-snuffbox.webp</image:loc>
+      <image:title>Anatomical Snuffbox Tenderness Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Anatomical Snuffbox Tenderness: Screening for Scaphoid Fracture.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/scaphoid-compression-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/scaphoid-compression.webp</image:loc>
+      <image:title>Scaphoid Compression Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Scaphoid Compression Test: Diagnosing Scaphoid Fracture.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/murphy-s-sign-lunate</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/murphy.webp</image:loc>
+      <image:title>Murphy&#39;s Sign (Lunate) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Murphy&#39;s Sign (Lunate): Diagnosing Lunate Dislocation.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/grip-strength-dynamometry</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/dynamometer.webp</image:loc>
+      <image:title>Grip Strength (Dynamometry) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Grip Strength (Dynamometry): Objective measurement of overall hand function and weakness.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/pinch-strength-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/pinch.webp</image:loc>
+      <image:title>Pinch Strength Test Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Pinch Strength Test: Assessing intrinsic muscle strength and nerve integrity.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/finger-extension-test-shuck-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/shuck.webp</image:loc>
+      <image:title>Finger Extension Test (Shuck Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Finger Extension Test (Shuck Test): Diagnosing Radiocarpal/Midcarpal Instability or Kienbock&#39;s Disease.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/wrinkle-test-shrivel-test</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/shrivel.webp</image:loc>
+      <image:title>Wrinkle Test (Shrivel Test) Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Wrinkle Test (Shrivel Test): Assessing Peripheral Nerve Function (Sympathetic innervation).Used in children or uncooperative pati</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/ulnar-fovea-sign</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/fovea.webp</image:loc>
+      <image:title>Ulnar Fovea Sign Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Ulnar Fovea Sign: Diagnosing TFCC Tears (specifically foveal disruptions).</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/test-for-extrinsic-tightness</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/extrinsic.webp</image:loc>
+      <image:title>Test for Extrinsic Tightness Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Test for Extrinsic Tightness: Assessing tightness of the Extensor Muscles.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://examessentials.in/medortho/tests/test-for-intrinsic-tightness</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://examessentials.in/medortho/tests/images/intrinsic.webp</image:loc>
+      <image:title>Test for Intrinsic Tightness Orthopedic Special Test</image:title>
+      <image:caption>Diagnostic guide and procedure for Test for Intrinsic Tightness: Assessing tightness of the Intrinsic Muscles (Interossei/Lumbricals).</image:caption>
+    </image:image>
   </url>
 </urlset>

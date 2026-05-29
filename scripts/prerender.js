@@ -82,7 +82,6 @@ function writePage(routePath, htmlContent) {
   }
   fs.writeFileSync(path.join(dirPath, 'index.html'), htmlContent);
 }
-
 // Generate MedicalPhysicalExam and Breadcrumb schemas
 function buildWikiArticleStructuredData(appSlug, article, slug) {
   const url = `${DOMAIN}/${appSlug}/tests/${slug}`;
@@ -92,6 +91,11 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
   const cleanHowTo = stripHtml(article.howTo);
   const cleanResult = stripHtml(article.result);
   const cleanAccuracy = stripHtml(article.accuracy);
+
+  const imageFilename = article.image1 ? article.image1.split('/').pop() : null;
+  const imageUrl = imageFilename 
+    ? `${DOMAIN}/medortho/tests/images/${imageFilename}` 
+    : `${DOMAIN}/og-image.png`;
 
   const schemas = [
     {
@@ -125,6 +129,7 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
       "description": article.description || `Learn how to perform the ${article.title} orthopedic special test including indications, test procedure, positive results, and diagnostic accuracy.`,
       "url": url,
       "lastReviewed": new Date().toISOString().split("T")[0],
+      "image": imageUrl,
       "aspect": [
         "Indications",
         "Clinical examination procedure",
@@ -147,13 +152,13 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
       "purpose": cleanUsedFor,
       "howPerformed": cleanHowTo,
       "significance": cleanResult,
+      "image": imageUrl,
       "usedToDiagnose": {
         "@type": "MedicalCondition",
         "name": cleanUsedFor.length > 100 ? cleanUsedFor.substring(0, 97) + "..." : cleanUsedFor
       }
     }
   ];
-
   // Compile FAQs
   const faqs = [];
   if (article.usedFor) {
