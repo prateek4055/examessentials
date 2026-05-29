@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import MedWikiLayout from "../components/MedWikiLayout";
 import MedOrthoArticle from "../../medortho/components/MedOrthoArticle"; // This can be made generic too later if needed
+import MedOrthoSpecialTestsIndex from "../../medortho/components/MedOrthoSpecialTestsIndex";
+import MedOrthoTopicPage from "../../medortho/components/MedOrthoTopicPage";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppBySlug } from "../data/medicalAppsData";
 import SEOHead from "@/components/SEOHead";
@@ -43,6 +45,11 @@ const MedWikiArticlePage: React.FC = () => {
   const [article, setArticle] = useState<WikiArticle | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const isSpecialTestsIndex = pathId?.toLowerCase().replace(/\/$/, "") === "special-tests";
+  const isCategoryPage = ["shoulder", "knee", "hip", "spine", "elbow", "wrist-hand", "wrist", "ankle-foot", "ankle", "neurological"].includes(segments[0]?.toLowerCase().replace(/\/$/, ""));
+  const isAnatomyPage = segments[0]?.toLowerCase() === "anatomy" && segments[1];
+  const isPathologyPage = segments[0]?.toLowerCase() === "pathologies" && segments[1];
+
   useEffect(() => {
     const fetchArticle = async () => {
       if (!app) {
@@ -53,6 +60,13 @@ const MedWikiArticlePage: React.FC = () => {
       setLoading(true);
       const segments = pathId?.split("/") || [];
       const slug = segments[segments.length - 1];
+
+      // If it's a special directory/category/anatomy route, do not fetch a single article
+      if (isSpecialTestsIndex || isCategoryPage || isAnatomyPage || isPathologyPage) {
+        setArticle(null);
+        setLoading(false);
+        return;
+      }
 
       if (!slug) {
         setArticle(null);
@@ -182,7 +196,7 @@ const MedWikiArticlePage: React.FC = () => {
     
     // Scroll to top
     window.scrollTo(0, 0);
-  }, [pathId, app]);
+  }, [pathId, app, isSpecialTestsIndex, isCategoryPage, isAnatomyPage, isPathologyPage]);
 
   if (!app) {
       return (
@@ -200,29 +214,49 @@ const MedWikiArticlePage: React.FC = () => {
       .join(" ");
   };
 
-  const articleTitle = article
-    ? article.title
-    : (slug && slug !== "tests" ? getFallbackTitle(slug) : "");
+  // Define unique title and descriptions for category/topic pages
+  let pageTitle = `${app.name} Wiki - Medical Education`;
+  let pageDescription = `Search and read medical special tests and articles in the ${app.name} Wiki.`;
+  let pageCanonical = `/${app.slug}/${pathId || ""}`;
+  let pageKeywords = `${app.name}, medical education, wiki, special tests`;
 
-  const pageTitle = articleTitle
-    ? `${articleTitle} - ${article?.category || "Special Test"}`
-    : `${app.name} Wiki - Medical Education`;
-      
-  const pageDescription = article
-    ? (article.description || `Read details of the ${article.title} assessment.`)
-    : (slug && slug !== "tests" 
-        ? `Read details of the ${getFallbackTitle(slug)} assessment on ${app.name} Wiki.`
-        : `Search and read medical special tests and articles in the ${app.name} Wiki.`);
-
-  const pageCanonical = slug && slug !== "tests"
-    ? `/${app.slug}/tests/${slug}`
-    : `/${app.slug}`;
-      
-  const pageKeywords = article
-    ? `${article.title}, ${article.category} test, orthopedic special test, medortho wiki, ${app.name} education`
-    : (slug && slug !== "tests"
-        ? `${getFallbackTitle(slug)}, special test, ${app.name} wiki, medical education`
-        : `${app.name}, medical education, wiki, special tests`);
+  if (isSpecialTestsIndex) {
+    pageTitle = `Orthopedic Special Tests Directory | MedOrtho`;
+    pageDescription = `Browse and search all 700+ orthopedic physical examination special tests, clinical diagnostics, sensitivity, specificity, and procedures.`;
+    pageKeywords = `orthopedic special tests, physical examination tests, clinical tests, orthopedic wiki`;
+  } else if (isCategoryPage) {
+    const rawCat = segments[0]?.toLowerCase().replace(/\/$/, "");
+    const formattedCat = rawCat === "wrist" || rawCat === "wrist-hand" ? "Wrist & Hand" :
+                         rawCat === "ankle" || rawCat === "ankle-foot" ? "Ankle & Foot" :
+                         rawCat === "neurological" ? "Neurological Tests" :
+                         rawCat.charAt(0).toUpperCase() + rawCat.slice(1);
+    pageTitle = `${formattedCat} Special Tests & Clinical Examination | MedOrtho`;
+    pageDescription = `Master diagnostic physical examination special tests for ${formattedCat}. Sensitivity, specificity, and step-by-step performance guidelines.`;
+    pageKeywords = `${formattedCat} special tests, ${formattedCat} exam, orthopedic tests`;
+  } else if (isAnatomyPage) {
+    const topic = segments[1]?.toLowerCase().replace(/\/$/, "");
+    const formattedTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+    pageTitle = `${formattedTopic} Study Guide & Clinical Notes | MedOrtho`;
+    pageDescription = `Read educational notes, anatomical reviews, and pathology guides for orthopedic students on ${formattedTopic}.`;
+    pageKeywords = `orthopedic anatomy, ${topic}, medical revision notes`;
+  } else if (isPathologyPage) {
+    const topic = segments[1]?.toLowerCase().replace(/\/$/, "");
+    const formattedTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+    pageTitle = `${formattedTopic} Pathology Guide & Clinical Notes | MedOrtho`;
+    pageDescription = `Read diagnostic guidelines, classifications, and clinical notes for orthopedic pathologies: ${formattedTopic}.`;
+    pageKeywords = `orthopedic pathology, ${topic}, bone pathology, joint pathologies`;
+  } else if (article) {
+    pageTitle = `${article.title} – ${article.category} | ${app.name}`;
+    pageDescription = article.description || `Learn how to perform the ${article.title} orthopedic special test including indications, procedure, and accuracy.`;
+    pageCanonical = `/${app.slug}/tests/${slug}`;
+    pageKeywords = `${article.title}, ${article.category} test, orthopedic special test, medortho wiki, ${app.name} education`;
+  } else if (slug && slug !== "tests") {
+    const fallbackTitle = getFallbackTitle(slug);
+    pageTitle = `${fallbackTitle} – Special Test | ${app.name}`;
+    pageDescription = `Read details of the ${fallbackTitle} assessment on ${app.name} Wiki.`;
+    pageCanonical = `/${app.slug}/tests/${slug}`;
+    pageKeywords = `${fallbackTitle}, special test, ${app.name} wiki, medical education`;
+  }
 
   const pageStructuredData = article 
     ? buildWikiArticleStructuredData(app.slug, article, slug)
@@ -245,6 +279,22 @@ const MedWikiArticlePage: React.FC = () => {
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2" style={{ borderTopColor: app.theme.primary }}></div>
         </div>
+      ) : isSpecialTestsIndex ? (
+        <MedOrthoSpecialTestsIndex />
+      ) : isCategoryPage ? (
+        <MedOrthoSpecialTestsIndex 
+          initialCategory={
+            segments[0].toLowerCase() === "wrist" || segments[0].toLowerCase() === "wrist-hand" ? "Wrist & Hand" :
+            segments[0].toLowerCase() === "ankle" || segments[0].toLowerCase() === "ankle-foot" ? "Ankle & Foot" :
+            segments[0].toLowerCase() === "neurological" ? "Neurological" :
+            segments[0].charAt(0).toUpperCase() + segments[0].slice(1)
+          } 
+          isCategoryLocked={true} 
+        />
+      ) : isAnatomyPage ? (
+        <MedOrthoTopicPage topicType="anatomy" topicName={segments[1]} />
+      ) : isPathologyPage ? (
+        <MedOrthoTopicPage topicType="pathologies" topicName={segments[1]} />
       ) : article ? (
         <MedOrthoArticle article={article as any} /> 
       ) : (

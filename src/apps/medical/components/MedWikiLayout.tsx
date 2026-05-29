@@ -68,22 +68,34 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
         </main>
 
         {/* Desktop Right Sidebar (Optional placeholder for ads or promo) */}
-        <aside className="hidden xl:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 space-y-8 bg-gray-50/50 dark:bg-gray-900/50">
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20">
-              <h3 className="font-bold text-lg mb-2" style={{ color: app.theme.primary }}>Download {app.name}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{app.tagline}</p>
-              <Button className="w-full rounded-full" style={{ backgroundColor: app.theme.primary }}>Get the App</Button>
-          </div>
-          
-          <div className="sticky top-6">
-            <h4 className="text-xs uppercase font-bold text-gray-500 mb-3 tracking-wider text-center">Resources</h4>
-            <div className="space-y-3">
-                {app.features.slice(0, 3).map((f, i) => (
-                    <div key={i} className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-sm">
-                        <span className="font-semibold block mb-1">{f.title}</span>
-                        <span className="text-xs text-muted-foreground">{f.description}</span>
-                    </div>
-                ))}
+        <aside className="hidden xl:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 bg-gray-50/50 dark:bg-gray-900/50">
+          <style dangerouslySetInnerHTML={{__html: `
+            #wiki-right-sidebar-target:has(> div:not(.default-sidebar-content)) .default-sidebar-content {
+              display: none;
+            }
+          `}} />
+          <div id="wiki-right-sidebar-target" className="space-y-8">
+            <div className="default-sidebar-content space-y-8">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20">
+                  <h3 className="font-bold text-lg mb-2" style={{ color: app.theme.primary }}>Download {app.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{app.tagline}</p>
+                  <Button className="w-full rounded-full" style={{ backgroundColor: app.theme.primary }} onClick={() => {
+                    const el = document.getElementById("download-cta");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}>Get the App</Button>
+              </div>
+              
+              <div className="sticky top-6">
+                <h4 className="text-xs uppercase font-bold text-gray-500 mb-3 tracking-wider text-center">Resources</h4>
+                <div className="space-y-3">
+                    {app.features.slice(0, 3).map((f, i) => (
+                        <div key={i} className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-sm">
+                            <span className="font-semibold block mb-1">{f.title}</span>
+                            <span className="text-xs text-muted-foreground">{f.description}</span>
+                        </div>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         </aside>

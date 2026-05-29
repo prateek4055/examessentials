@@ -48,32 +48,34 @@ const getNavigation = (appId: string): NavNode[] => {
         title: "Special Tests",
         icon: <Stethoscope className="w-4 h-4" />,
         children: [
-          { title: "Shoulder Tests", path: "/medortho?q=Shoulder" },
-          { title: "Knee Tests", path: "/medortho?q=Knee" },
-          { title: "Hip Tests", path: "/medortho?q=Hip" },
-          { title: "Spine Tests", path: "/medortho?q=Spine" },
-          { title: "Elbow Tests", path: "/medortho?q=Elbow" },
-          { title: "Wrist & Hand Tests", path: "/medortho?q=Wrist" },
-          { title: "Ankle & Foot Tests", path: "/medortho?q=Ankle" },
+          { title: "All Special Tests", path: "/medortho/special-tests" },
+          { title: "Shoulder Tests", path: "/medortho/shoulder" },
+          { title: "Knee Tests", path: "/medortho/knee" },
+          { title: "Hip Tests", path: "/medortho/hip" },
+          { title: "Spine Tests", path: "/medortho/spine" },
+          { title: "Elbow Tests", path: "/medortho/elbow" },
+          { title: "Wrist & Hand Tests", path: "/medortho/wrist-hand" },
+          { title: "Ankle & Foot Tests", path: "/medortho/ankle-foot" },
+          { title: "Neurological Tests", path: "/medortho/neurological" },
         ],
       },
       {
         title: "Anatomy",
         icon: <BookOpen className="w-4 h-4" />,
         children: [
-          { title: "Bones", path: "/blog?category=medortho&q=Bones" },
-          { title: "Joints", path: "/blog?category=medortho&q=Joints" },
-          { title: "Muscles", path: "/blog?category=medortho&q=Muscles" },
-          { title: "Ligaments", path: "/blog?category=medortho&q=Ligaments" },
+          { title: "Bones", path: "/medortho/anatomy/bones" },
+          { title: "Joints", path: "/medortho/anatomy/joints" },
+          { title: "Muscles", path: "/medortho/anatomy/muscles" },
+          { title: "Ligaments", path: "/medortho/anatomy/ligaments" },
         ],
       },
       {
         title: "Pathologies",
         icon: <Activity className="w-4 h-4" />,
         children: [
-          { title: "Fractures", path: "/blog?category=medortho&q=Fracture" },
-          { title: "Inflammation", path: "/blog?category=medortho&q=Inflammation" },
-          { title: "Chronic Conditions", path: "/blog?category=medortho&q=Chronic" },
+          { title: "Fractures", path: "/medortho/pathologies/fractures" },
+          { title: "Inflammation", path: "/medortho/pathologies/inflammation" },
+          { title: "Chronic Conditions", path: "/medortho/pathologies/chronic-conditions" },
         ],
       },
     ];
@@ -88,8 +90,21 @@ const NavTreeItem = ({ node, level = 0, appId }: { node: NavNode; level?: number
 
   const getPath = (originalPath?: string) => {
       if (!originalPath) return undefined;
-      // Replace category with app name if needed, or keep it generic
+      if (originalPath.startsWith("/medortho")) return originalPath;
       return originalPath.replace("category=Med", `category=${appId}`);
+  };
+
+  const isActive = (path?: string) => {
+    if (!path) return false;
+    const cleanPath = getPath(path);
+    if (!cleanPath) return false;
+    if (cleanPath.includes("?")) {
+      return location.pathname + location.search === cleanPath;
+    }
+    // Remove trailing slashes for comparison
+    const normLocation = location.pathname.replace(/\/$/, "");
+    const normPath = cleanPath.replace(/\/$/, "");
+    return normLocation === normPath;
   };
 
   return (
@@ -112,7 +127,7 @@ const NavTreeItem = ({ node, level = 0, appId }: { node: NavNode; level?: number
           <Link 
             to={getPath(node.path)!} 
             onClick={(e) => e.stopPropagation()} 
-            className={`flex-1 hover:text-primary transition-colors ${location.search.includes(appId) && node.path && location.search.includes(node.path.split('q=')[1]) ? 'text-primary font-medium' : ''}`}
+            className={`flex-1 hover:text-primary transition-colors ${isActive(node.path) ? 'text-primary font-semibold' : ''}`}
           >
             {node.title}
           </Link>

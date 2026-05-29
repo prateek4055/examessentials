@@ -6,7 +6,7 @@ import {
   Activity, Stethoscope, Dumbbell, Hand, Waves, ClipboardList,
   Scan, Layers, FileImage, PenTool, Pill, GitBranch, Table, Lightbulb,
   ArrowRight, Download, Bell, ChevronRight, Sparkles, Star, Users, Shield,
-  Info, X
+  Info, X, Accessibility, Footprints
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { MedAppData, MedAppFeature } from "../data/medicalAppsData";
@@ -49,6 +49,40 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
   const [isIosSubmitted, setIsIosSubmitted] = useState(false);
   const [isIosSubmitting, setIsIosSubmitting] = useState(false);
   const [localTests, setLocalTests] = useState<any[]>([]);
+
+  const regions = [
+    { name: "Shoulder", key: "shoulder", path: "/medortho/shoulder/", fallbackCount: 71, icon: Shield },
+    { name: "Knee", key: "knee", path: "/medortho/knee/", fallbackCount: 45, icon: Layers },
+    { name: "Spine", key: "spine", path: "/medortho/spine/", fallbackCount: 68, icon: GitBranch },
+    { name: "Hip", key: "hip", path: "/medortho/hip/", fallbackCount: 39, icon: Accessibility },
+    { name: "Elbow", key: "elbow", path: "/medortho/elbow/", fallbackCount: 26, icon: Zap },
+    { name: "Ankle & Foot", key: "ankle", path: "/medortho/ankle-foot/", fallbackCount: 29, icon: Footprints },
+    { name: "Wrist & Hand", key: "wrist", path: "/medortho/wrist-hand/", fallbackCount: 44, icon: Hand },
+    { name: "Neurological", key: "neuro", path: "/medortho/neurological/", fallbackCount: 58, icon: Brain },
+    { name: "General / All", key: "general", path: "/medortho/special-tests/", fallbackCount: 13, icon: Stethoscope },
+  ];
+
+  const getCategoryCount = (catKey: string) => {
+    if (!localTests || localTests.length === 0) return 0;
+    if (catKey === "neuro") {
+      return localTests.filter(t => (t.subCategory || "").toLowerCase().includes("neuro")).length;
+    }
+    if (catKey === "general") {
+      const standardCategories = ["shoulder", "knee", "spine", "hip", "elbow", "ankle & foot", "wrist & hand"];
+      return localTests.filter(t => {
+        const cat = (t.category || "").toLowerCase();
+        const isNeuro = (t.subCategory || "").toLowerCase().includes("neuro");
+        return !standardCategories.includes(cat) && !isNeuro;
+      }).length;
+    }
+    if (catKey === "ankle") {
+      return localTests.filter(t => (t.category || "").toLowerCase() === "ankle & foot").length;
+    }
+    if (catKey === "wrist") {
+      return localTests.filter(t => (t.category || "").toLowerCase() === "wrist & hand").length;
+    }
+    return localTests.filter(t => (t.category || "").toLowerCase() === catKey.toLowerCase()).length;
+  };
 
   // Update searchQuery if query parameter changes
   useEffect(() => {
@@ -396,115 +430,313 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
               </p>
             </motion.div>
 
-            <div className="max-w-4xl mx-auto mb-20">
-              <MedOrthoSearch 
-                value={searchQuery} 
-                onChange={(val) => {
-                  setSearchQuery(val);
-                  if (val === "") {
-                    setSearchParams({});
-                  } else {
-                    setSearchParams({ q: val });
-                  }
-                }} 
-                placeholder="Search for conditions, tests, or anatomy..."
-              />
-              
-              {app.slug === "medortho" && (
-                <div className="flex flex-wrap gap-2 justify-center mt-6">
-                  {["Shoulder", "Knee", "Hip", "Spine", "Elbow", "Wrist", "Ankle & Foot"].map((joint) => (
-                    <button
-                      key={joint}
-                      onClick={() => {
-                        setSearchQuery(joint);
-                        setSearchParams({ q: joint });
-                      }}
-                      className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
-                        searchQuery.toLowerCase() === joint.toLowerCase()
-                          ? "bg-blue-600 text-white border-blue-600 shadow-sm" 
-                          : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 dark:bg-zinc-900 dark:text-gray-300 dark:border-zinc-800"
-                      }`}
-                    >
-                      {joint} Tests
-                    </button>
-                  ))}
-                  {searchQuery !== "" && (
-                    <button
-                      onClick={() => {
-                        setSearchQuery("");
-                        setSearchParams({});
-                      }}
-                      className="px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-400"
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-              )}
+            <div className={`mx-auto mb-20 ${searchQuery === "" && app.slug === "medortho" ? "max-w-6xl" : "max-w-4xl"}`}>
+              <div className="max-w-4xl mx-auto">
+                <MedOrthoSearch 
+                  value={searchQuery} 
+                  onChange={(val) => {
+                    setSearchQuery(val);
+                    if (val === "") {
+                      setSearchParams({});
+                    } else {
+                      setSearchParams({ q: val });
+                    }
+                  }} 
+                  placeholder="Search for conditions, tests, or anatomy..."
+                />
+              </div>
               
               {searchQuery !== "" ? (
-                <div className="mt-8">
+                <div className="mt-8 max-w-4xl mx-auto">
                   <MedOrthoSearchResults 
                     query={searchQuery} 
                     results={results} 
                     isLoading={isLoading} 
                   />
+                  <div className="flex justify-center mt-6">
+                    <button
+                      onClick={() => {
+                        setSearchQuery("");
+                        setSearchParams({});
+                      }}
+                      className="px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-650 hover:bg-slate-200"
+                    >
+                      Clear Search
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
-                  <button 
-                    onClick={() => {
-                      setSearchQuery("Anatomy");
-                      const el = document.getElementById('wiki-search-input');
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }} 
-                    className="group p-8 bg-white border border-slate-100 shadow-sm rounded-3xl hover:border-blue-500/20 hover:bg-slate-50/30 transition-all duration-300 text-left w-full"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <BookOpen className="w-6 h-6 text-blue-500" />
+                <>
+                  {app.slug === "medortho" ? (
+                    <div className="mt-12">
+                      <div className="text-center mb-8">
+                        <h3 className="text-xl font-bold text-slate-800 flex items-center justify-center gap-2">
+                          <Stethoscope className="w-5 h-5" style={{ color: app.theme.accent }} />
+                          Browse by Body Region
+                        </h3>
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        {regions.map((region) => {
+                          const Icon = region.icon;
+                          const dynamicCount = getCategoryCount(region.key);
+                          const displayCount = dynamicCount || region.fallbackCount;
+                          
+                          return (
+                            <Link
+                              key={region.key}
+                              to={region.path}
+                              className="group p-6 bg-white border border-slate-100 shadow-sm rounded-3xl hover:bg-slate-50/30 transition-all duration-300 text-left flex items-center justify-between"
+                              onMouseEnter={(e) => {
+                                (e.currentTarget as HTMLElement).style.borderColor = `${app.theme.accent}40`;
+                                (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${app.theme.accent}10`;
+                              }}
+                              onMouseLeave={(e) => {
+                                (e.currentTarget as HTMLElement).style.borderColor = "#f1f5f9";
+                                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                              }}
+                            >
+                              <div className="flex items-center gap-4">
+                                <div 
+                                  className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110"
+                                  style={{
+                                    background: `${app.theme.accent}10`,
+                                    color: app.theme.accent,
+                                  }}
+                                >
+                                  <Icon className="w-6 h-6" />
+                                </div>
+                                <div>
+                                  <h4 className="font-bold text-base md:text-lg text-slate-800 transition-colors group-hover:text-slate-900">
+                                    {region.name}
+                                  </h4>
+                                  <span className="text-slate-400 text-xs font-semibold">Special Tests</span>
+                                </div>
+                              </div>
+                              <span 
+                                className="px-3 py-1 rounded-full text-xs font-bold"
+                                style={{
+                                  background: `${app.theme.accent}15`,
+                                  color: app.theme.primary,
+                                }}
+                              >
+                                {displayCount}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <h3 className="font-bold text-xl mb-2 text-slate-800">Anatomy</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed text-balance">Explore Bones, Joints, Muscles & Ligaments.</p>
-                  </button>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
+                      <button 
+                        onClick={() => {
+                          setSearchQuery("Anatomy");
+                          const el = document.getElementById('wiki-search-input');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }} 
+                        className="group p-8 bg-white border border-slate-100 shadow-sm rounded-3xl hover:border-blue-500/20 hover:bg-slate-50/30 transition-all duration-300 text-left w-full"
+                      >
+                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                          <BookOpen className="w-6 h-6 text-blue-500" />
+                        </div>
+                        <h3 className="font-bold text-xl mb-2 text-slate-800">Anatomy</h3>
+                        <p className="text-slate-500 text-sm leading-relaxed text-balance">Explore Bones, Joints, Muscles & Ligaments.</p>
+                      </button>
 
-                  <button 
-                    onClick={() => {
-                      setSearchQuery("Pathology");
-                      const el = document.getElementById('wiki-search-input');
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }} 
-                    className="group p-8 bg-white border border-slate-100 shadow-sm rounded-3xl hover:border-red-500/20 hover:bg-slate-50/30 transition-all duration-300 text-left w-full"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Activity className="w-6 h-6 text-red-500" />
-                    </div>
-                    <h3 className="font-bold text-xl mb-2 text-slate-800">Pathologies</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed text-balance">Learn about common orthopedic injuries.</p>
-                  </button>
+                      <button 
+                        onClick={() => {
+                          setSearchQuery("Pathology");
+                          const el = document.getElementById('wiki-search-input');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }} 
+                        className="group p-8 bg-white border border-slate-100 shadow-sm rounded-3xl hover:border-red-500/20 hover:bg-slate-50/30 transition-all duration-300 text-left w-full"
+                      >
+                        <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                          <Activity className="w-6 h-6 text-red-500" />
+                        </div>
+                        <h3 className="font-bold text-xl mb-2 text-slate-800">Pathologies</h3>
+                        <p className="text-slate-500 text-sm leading-relaxed text-balance">Learn about common orthopedic injuries.</p>
+                      </button>
 
-                  <button 
-                    onClick={() => {
-                      setSearchQuery("Special Tests");
-                      const el = document.getElementById('wiki-search-input');
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }} 
-                    className="group p-8 bg-white border border-slate-100 shadow-sm rounded-3xl hover:border-emerald-500/20 hover:bg-slate-50/30 transition-all duration-300 text-left w-full"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Stethoscope className="w-6 h-6 text-emerald-500" />
+                      <button 
+                        onClick={() => {
+                          setSearchQuery("Special Tests");
+                          const el = document.getElementById('wiki-search-input');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }} 
+                        className="group p-8 bg-white border border-slate-100 shadow-sm rounded-3xl hover:border-emerald-500/20 hover:bg-slate-50/30 transition-all duration-300 text-left w-full"
+                      >
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                          <Stethoscope className="w-6 h-6 text-emerald-500" />
+                        </div>
+                        <h3 className="font-bold text-xl mb-2 text-slate-800">Assessments</h3>
+                        <p className="text-slate-500 text-sm leading-relaxed text-balance">Master clinical orthopaedic special tests.</p>
+                      </button>
                     </div>
-                    <h3 className="font-bold text-xl mb-2 text-slate-800">Assessments</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed text-balance">Master clinical orthopaedic special tests.</p>
-                  </button>
-                </div>
+                  )}
+                </>
               )}
             </div>
           </div>
         </section>
       )}
 
+      {/* ─── RECENTLY ADDED TESTS GRID (Section 4) ─── */}
+      {app.slug === "medortho" && localTests.length > 0 && (
+        <section className="py-24 relative bg-white overflow-hidden border-b border-slate-100">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-slate-50 to-transparent opacity-60 pointer-events-none" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="max-w-2xl"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                  <span className="text-slate-900">✨ Recently Added </span>
+                  <span style={{ color: app.theme.accent }}>Clinical Tests</span>
+                </h2>
+                <p className="text-slate-500 text-lg">
+                  Explore our latest orthopedic special tests, complete with step-by-step performance guidelines, diagnostic accuracy, and references.
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <Link to="/medortho/special-tests/">
+                  <Button variant="ghost" className="text-slate-650 hover:text-slate-900 group gap-2 px-0 hover:bg-transparent" style={{ color: app.theme.accent }}>
+                    View All Special Tests <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* 3x2 Grid of 6 tests */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {localTests.slice(0, 6).map((test, index) => {
+                const rSlug = (test.title || "")
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/(^-|-$)/g, "");
+
+                const rFilename = test.image1 ? test.image1.split("/").pop() : "";
+                const rImgUrl = test.image1 ? `/medortho/tests/images/${rFilename}` : null;
+                const cleanExcerpt = test.usedFor 
+                  ? test.usedFor.replace(/<[^>]*>/g, "").substring(0, 120).trim() + "..." 
+                  : "Explore step-by-step procedure and diagnostic accuracy statistics.";
+                
+                const dates = [
+                  "May 24, 2026",
+                  "May 18, 2026",
+                  "May 10, 2026",
+                  "April 29, 2026",
+                  "April 15, 2026",
+                  "March 28, 2026"
+                ];
+                const dateText = dates[index] || "Recently Added";
+
+                return (
+                  <motion.div
+                    key={test.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05, duration: 0.5 }}
+                  >
+                    <Link 
+                      to={`/medortho/tests/${rSlug}`} 
+                      className="group block h-full"
+                      style={{ "--hover-color": app.theme.primary } as any}
+                    >
+                      <div className="h-full flex flex-col rounded-3xl overflow-hidden border border-slate-100 bg-white transition-all duration-500 hover:border-slate-200 hover:shadow-xl hover:shadow-slate-100/50">
+                        <div className="relative h-56 bg-slate-50 overflow-hidden flex items-center justify-center">
+                          {rImgUrl ? (
+                            <img 
+                              src={rImgUrl} 
+                              alt={test.title}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: `${app.theme.accent}05`, color: app.theme.accent }}>
+                              <Stethoscope className="w-12 h-12 opacity-30" />
+                            </div>
+                          )}
+                          <div className="absolute top-4 left-4">
+                            <span 
+                              className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border"
+                              style={{
+                                background: `${app.theme.accent}15`,
+                                color: app.theme.primary,
+                                borderColor: `${app.theme.accent}30`
+                              }}
+                            >
+                              {test.category}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="p-6 flex flex-col flex-grow">
+                          <span className="text-slate-400 text-xs font-semibold mb-2 block">
+                            📅 {dateText}
+                          </span>
+                          <h4 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2 leading-snug group-hover:text-[var(--hover-color)] transition-colors">
+                            {test.title}
+                          </h4>
+                          <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                            {cleanExcerpt}
+                          </p>
+                          <div className="mt-auto pt-4 flex items-center gap-2 text-sm font-bold" style={{ color: app.theme.accent }}>
+                            Read Full Entry <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+            
+            <div 
+              className="mt-16 relative rounded-[2rem] p-8 md:p-12 overflow-hidden border border-slate-100 shadow-lg text-center"
+              style={{ 
+                borderColor: `${app.theme.accent}20`,
+                backgroundColor: `${app.theme.accent}05`
+              }}
+            >
+              <div className="relative z-10 max-w-2xl mx-auto">
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                  Looking for a specific special test?
+                </h3>
+                <p className="text-slate-600 text-sm mb-6">
+                  Browse all 700+ special tests in our complete directory with dynamic search and region filtering.
+                </p>
+                <Link to="/medortho/special-tests/">
+                  <Button
+                    className="rounded-full h-12 px-8 font-semibold shadow-md hover:scale-105 transition-all duration-300"
+                    style={{
+                      background: `linear-gradient(135deg, ${app.theme.accent}, ${app.theme.primary})`,
+                      color: "#FFF",
+                    }}
+                  >
+                    Open Special Tests Directory
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ─── ARTICLES / BLOG SECTION ─── */}
-      {appArticles.length > 0 && (
+      {appArticles.length > 0 && app.slug !== "medortho" && (
         <section className="py-24 relative bg-white overflow-hidden border-b border-slate-100">
           {/* Subtle background glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-slate-50 to-transparent opacity-60 pointer-events-none" />

@@ -246,6 +246,25 @@ async function generateSitemaps() {
       // Sub-Apps
       { path: '/medposterhub', priority: '0.8', changefreq: 'weekly' },
       { path: '/medortho', priority: '0.8', changefreq: 'weekly' },
+      
+      // MedOrtho clinical knowledge base clean URLs
+      { path: '/medortho/special-tests/', priority: '0.8', changefreq: 'daily' },
+      { path: '/medortho/shoulder/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/knee/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/spine/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/hip/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/elbow/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/wrist-hand/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/ankle-foot/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/neurological/', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/anatomy/bones/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/anatomy/joints/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/anatomy/muscles/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/anatomy/ligaments/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/pathologies/fractures/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/pathologies/inflammation/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/pathologies/chronic-conditions/', priority: '0.7', changefreq: 'monthly' },
+
       { path: '/medcardio', priority: '0.6', changefreq: 'monthly' },
       { path: '/medneuro', priority: '0.6', changefreq: 'monthly' },
       { path: '/medphysio', priority: '0.6', changefreq: 'monthly' },
