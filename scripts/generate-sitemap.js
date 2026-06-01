@@ -208,10 +208,20 @@ async function generateSitemaps() {
         const path = `/${art.app_id}/tests/${art.slug}`;
         if (!seenWikiPaths.has(path)) {
           seenWikiPaths.add(path);
+          
+          let imageMarkup = '';
+          const localMatch = localWikiTests.find(l => l.app_id === art.app_id && l.slug === art.slug);
+          if (localMatch && localMatch.image1) {
+            const imageFilename = localMatch.image1.split('/').pop();
+            const cleanTitle = localMatch.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            const cleanDesc = localMatch.usedFor ? localMatch.usedFor.replace(/<[^>]*>/g, '').substring(0, 100).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
+            imageMarkup = `\n    <image:image>\n      <image:loc>${DOMAIN}/${art.app_id}/tests/images/${imageFilename}</image:loc>\n      <image:title>${cleanTitle} Orthopedic Special Test</image:title>\n      <image:caption>Diagnostic guide and procedure for ${cleanTitle}: ${cleanDesc}</image:caption>\n    </image:image>`;
+          }
+
           allWikiArticles.push({
             loc: `${DOMAIN}${path}`,
             lastmod: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : today,
-            imageMarkup: ''
+            imageMarkup: imageMarkup
           });
         }
       });
@@ -263,22 +273,22 @@ async function generateSitemaps() {
       { path: '/medortho', priority: '0.8', changefreq: 'weekly' },
       
       // MedOrtho clinical knowledge base clean URLs
-      { path: '/medortho/special-tests/', priority: '0.8', changefreq: 'daily' },
-      { path: '/medortho/shoulder/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/knee/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/spine/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/hip/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/elbow/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/wrist-hand/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/ankle-foot/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/neurological/', priority: '0.8', changefreq: 'weekly' },
-      { path: '/medortho/anatomy/bones/', priority: '0.7', changefreq: 'monthly' },
-      { path: '/medortho/anatomy/joints/', priority: '0.7', changefreq: 'monthly' },
-      { path: '/medortho/anatomy/muscles/', priority: '0.7', changefreq: 'monthly' },
-      { path: '/medortho/anatomy/ligaments/', priority: '0.7', changefreq: 'monthly' },
-      { path: '/medortho/pathologies/fractures/', priority: '0.7', changefreq: 'monthly' },
-      { path: '/medortho/pathologies/inflammation/', priority: '0.7', changefreq: 'monthly' },
-      { path: '/medortho/pathologies/chronic-conditions/', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/special-tests', priority: '0.8', changefreq: 'daily' },
+      { path: '/medortho/shoulder', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/knee', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/spine', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/hip', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/elbow', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/wrist-hand', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/ankle-foot', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/neurological', priority: '0.8', changefreq: 'weekly' },
+      { path: '/medortho/anatomy/bones', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/anatomy/joints', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/anatomy/muscles', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/anatomy/ligaments', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/pathologies/fractures', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/pathologies/inflammation', priority: '0.7', changefreq: 'monthly' },
+      { path: '/medortho/pathologies/chronic-conditions', priority: '0.7', changefreq: 'monthly' },
 
       { path: '/medcardio', priority: '0.6', changefreq: 'monthly' },
       { path: '/medneuro', priority: '0.6', changefreq: 'monthly' },

@@ -1,11 +1,31 @@
 import fs from 'fs';
 import path from 'path';
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const distDir = path.resolve(process.cwd(), 'dist');
 const indexHtmlPath = path.join(distDir, 'index.html');
 const testsDataPath = path.resolve(process.cwd(), 'public/medortho/tests/tests_data.json');
 
 const DOMAIN = 'https://examessentials.in';
+
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
+
+const PROXIED_URL = "https://examessentials.in/supabase-api";
+const isLocal = !process.env.VERCEL_ENV; // Vercel environment checks this
+const baseUrlToUse = isLocal ? PROXIED_URL : SUPABASE_URL;
+
+let supabase = null;
+if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+  supabase = createClient(baseUrlToUse, SUPABASE_ANON_KEY, {
+    global: {
+      fetch: (...args) => fetch(...args)
+    }
+  });
+}
 
 // Helper to escape HTML characters for safe insertion into tags/attributes
 function escapeHtml(string) {
@@ -221,6 +241,24 @@ async function runPrerender() {
   const testsList = JSON.parse(fs.readFileSync(testsDataPath, 'utf8'));
 
   console.log(`✅ Loaded template HTML and ${testsList.length} special tests.`);
+
+  let dbBlogPosts = [];
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('published', true);
+      if (error) {
+        console.warn('⚠️ Could not fetch blog posts from Supabase for pre-rendering:', error.message);
+      } else {
+        dbBlogPosts = data || [];
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not fetch blog posts for pre-rendering:', e.message);
+    }
+  }
+  console.log(`✅ Loaded ${dbBlogPosts.length} blog posts from DB for pre-rendering.`);
 
   // 1. Pre-render MedOrtho Landing Page (/medortho)
   const medOrthoLandingOptions = {
@@ -571,6 +609,354 @@ async function runPrerender() {
   });
 
   console.log(`✅ Pre-rendered ${testsList.length} individual special tests.`);
+
+  // 5. Pre-render Blog index and individual blog posts
+  if (dbBlogPosts.length > 0) {
+    const blogListContent = dbBlogPosts.map(post => {
+      const postDate = post.created_at?.split("T")[0] || new Date().toISOString().split("T")[0];
+      return `
+        <article class="flex flex-col p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <div class="aspect-[16/9] overflow-hidden rounded-xl bg-slate-800 mb-6">
+            <img src="${post.image_url || 'https://images.unsplash.com/photo-1559757175-9e351c9a1301?w=800&q=80'}" alt="${escapeHtml(post.title)}" class="w-full h-full object-cover" />
+          </div>
+          <div class="flex items-center gap-4 text-xs text-slate-400 mb-3">
+            <span>${postDate}</span>
+            <span>${escapeHtml(post.read_time || '5 min read')}</span>
+          </div>
+          <h3 class="font-bold text-2xl text-white mb-3">
+            <a href="/blog/${post.slug}" class="hover:underline text-blue-400">${escapeHtml(post.title)}</a>
+          </h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-6">${escapeHtml(post.excerpt || '')}</p>
+          <a href="/blog/${post.slug}" class="text-blue-400 text-sm font-semibold hover:underline">Read Article &rarr;</a>
+        </article>
+      `;
+    }).join('\n');
+
+    const blogDirectoryOptions = {
+      title: 'Medical Resources & Articles Blog | Exam Essentials',
+      description: 'Premium educational articles for medical students and professionals. Read about orthopedic tests, neurology exams, and more.',
+      keywords: 'medical blog, orthopedic test, neurology exam, medical students',
+      canonical: `${DOMAIN}/blog`,
+      ogImage: `${DOMAIN}/og-image.png`,
+      bodyContent: `
+        <div class="max-w-6xl mx-auto px-4 py-16 text-left">
+          <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">Latest Articles</h1>
+          <p class="text-lg text-slate-300 mb-12 max-w-3xl leading-relaxed">
+            Demystifying complex medical concepts. Discover simplified clinical explanations, premium study guides, and actionable techniques for students.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            ${blogListContent}
+          </div>
+        </div>
+      `
+    };
+    writePage('blog', generatePageHtml(templateHtml, blogDirectoryOptions));
+    console.log('✅ Pre-rendered /blog');
+
+    dbBlogPosts.forEach(post => {
+      const postDate = post.created_at?.split("T")[0] || new Date().toISOString().split("T")[0];
+      const postContentHtml = post.content
+        .split('\n')
+        .map(line => {
+          if (line.startsWith('## ')) return `<h2 class="text-2xl font-bold text-white mt-8 mb-4">${escapeHtml(line.slice(3))}</h2>`;
+          if (line.startsWith('### ')) return `<h3 class="text-xl font-bold text-white mt-6 mb-3">${escapeHtml(line.slice(4))}</h3>`;
+          if (line.trim() === '---') return '<hr class="border-slate-800 my-8"/>';
+          if (line.trim().startsWith('> [!IMPORTANT]')) return `<div class="p-4 border-l-4 border-red-500 bg-slate-800/50 text-white rounded-r-xl my-6"><strong>Important:</strong>`;
+          if (line.trim().startsWith('> ')) return `<blockquote class="border-l-4 border-blue-400 bg-slate-800/50 p-4 pl-6 rounded-r-xl text-slate-300 my-6 italic">${escapeHtml(line.trim().slice(2))}</blockquote>`;
+          
+          let processed = escapeHtml(line);
+          processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+          processed = processed.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-400 hover:underline">$1</a>');
+          
+          if (processed.trim().startsWith('- ')) return `<li class="text-slate-300 my-2">${processed.trim().slice(2)}</li>`;
+          if (/^\d+\.\s/.test(processed.trim())) return `<li class="text-slate-300 my-2">${processed.trim().replace(/^\d+\.\s/, '')}</li>`;
+          if (processed.trim() === '') return '<br/>';
+          return `<p class="text-slate-300 text-lg leading-relaxed mb-6">${processed}</p>`;
+        })
+        .join('\n');
+
+      const blogPostOptions = {
+        title: `${post.title} | Exam Essentials`,
+        description: post.excerpt || '',
+        keywords: `${post.category?.toLowerCase() || 'medical'}, exam essentials, ${post.title.toLowerCase().split(' ').join(', ')}`,
+        canonical: `${DOMAIN}/blog/${post.slug}`,
+        ogImage: post.image_url || `${DOMAIN}/og-image.png`,
+        bodyContent: `
+          <article class="max-w-4xl mx-auto px-4 py-16 text-left">
+            <header class="mb-12">
+              <span class="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-semibold rounded-full border border-blue-500/20 mb-6">${escapeHtml(post.category || 'Blog')}</span>
+              <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">${escapeHtml(post.title)}</h1>
+              <div class="flex flex-wrap gap-6 text-sm text-slate-400 pb-6 border-b border-slate-800">
+                <span>Author: ${escapeHtml(post.author || 'Exam Essentials')}</span>
+                <span>Date: ${postDate}</span>
+                <span>Read Time: ${escapeHtml(post.read_time || '5 min read')}</span>
+              </div>
+            </header>
+            <div class="prose prose-invert max-w-none">
+              ${postContentHtml}
+            </div>
+          </article>
+        `
+      };
+      writePage(`blog/${post.slug}`, generatePageHtml(templateHtml, blogPostOptions));
+    });
+    console.log(`✅ Pre-rendered ${dbBlogPosts.length} individual blog posts.`);
+  }
+
+  // 6. Pre-render Static Pages
+  const extraStaticPages = [
+    {
+      route: 'medposterhub',
+      title: "MedPosterHub – Buy Medical Anatomy Posters Online | Clinic & Hospital Charts India",
+      description: "Shop 20+ premium medical anatomy posters for hospitals, clinics & students. High-resolution Anatomy, Orthopedics & Neurology charts on 250gsm matte paper. Sizes A3, A2, A1 starting ₹299. Trusted by 100+ clinics across India.",
+      keywords: "medical posters, anatomy posters for clinic, buy medical charts online India, anatomy chart A1 A2 A3, ortho clinic posters, neuro anatomy poster, muscular system poster, skeletal system chart, physiotherapy clinic posters, hospital wall charts, medical education posters, dermatomes poster, spine anatomy chart, knee anatomy poster, shoulder anatomy poster, medical posters for students, clinic decoration, OPD posters India, MedPosterHub",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">MedPosterHub</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Shop premium medical anatomy posters for clinics, hospitals, and students. High-resolution, medically accurate charts covering Anatomy, Orthopedics, and Neurology.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'about',
+      title: "About Us - India's #1 Handwritten Notes Provider | Exam Essentials",
+      description: "Exam Essentials creates premium handwritten notes that simplify complex topics for Class 11 & 12 students. Trusted by thousands for CBSE Boards, NEET & JEE preparation.",
+      keywords: "about exam essentials, handwritten notes company India, best study materials, CBSE notes provider, NEET notes, JEE notes, topper notes",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">About Exam Essentials</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Exam Essentials creates premium handwritten notes that simplify complex topics for Class 11 & 12 students. Trusted by thousands of students for CBSE Board exams, NEET, and JEE preparation.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'contact',
+      title: "Contact Us - Exam Essentials | Customer Support",
+      description: "Contact Exam Essentials for questions about handwritten notes for Class 11 & 12. WhatsApp: +91 9460970342. Email: examessentials.info@gmail.com. We're here to help!",
+      keywords: "contact exam essentials, customer support study notes, buy handwritten notes, CBSE notes enquiry, notes help India",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Contact Us</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Have questions about our study materials or custom orders? Reach out to us via WhatsApp at +91 9460970342 or email us at examessentials.info@gmail.com. We're here to help!
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'class-11-notes',
+      title: "Class 11 Handwritten Notes — Physics, Chemistry, Maths, Biology | By Toppers",
+      description: "India's #1 topper-handwritten notes for Class 11 Science. CBSE-aligned Physics, Chemistry, Maths & Biology notes. Exam-focused, easy to revise. Order now.",
+      keywords: "class 11 handwritten notes, class 11 notes, class 11 physics notes, class 11 chemistry notes, class 11 maths notes, class 11 biology notes, CBSE class 11 notes, handwritten notes class 11, topper notes class 11, NEET class 11, JEE class 11 notes, class 11th handwritten notes",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Class 11 Handwritten Notes</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Premium handwritten notes for CBSE Class 11 science students. Complete Physics, Chemistry, Maths & Biology notes by toppers to help build a strong foundation for Board exams, NEET & JEE.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'class-12-notes',
+      title: "Class 12 Notes - Physics, Chemistry, Maths, Biology | Handwritten Notes PDF",
+      description: "Buy premium Class 12 handwritten notes for Physics, Chemistry, Maths & Biology. CBSE board exam focused content by 95%+ scorers. Essential for NEET & JEE 2025. Instant PDF delivery.",
+      keywords: "class 12 notes, class 12 physics notes, class 12 chemistry notes, class 12 maths notes, class 12 biology notes, CBSE class 12 notes, handwritten notes class 12, topper notes class 12, NEET notes, JEE notes, board exam notes",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Class 12 Handwritten Notes</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Buy premium topper-handwritten Class 12 notes for Physics, Chemistry, Maths & Biology. Highly optimized for CBSE Board exams and competitive entrances like NEET & JEE.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'neet-notes',
+      title: "NEET Notes 2025 - Biology, Physics, Chemistry | Best Handwritten Notes PDF",
+      description: "Buy premium NEET handwritten notes for Biology, Physics & Chemistry. Complete NCERT-based content for Class 11 & 12. Created by NEET qualifiers. Score 600+ with our study material. Instant PDF.",
+      keywords: "NEET notes, NEET biology notes, NEET physics notes, NEET chemistry notes, NEET preparation, NEET study material, NEET 2025 notes, handwritten notes NEET, NCERT notes NEET, best NEET notes, NEET topper notes",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">NEET Handwritten Notes</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Buy premium NEET handwritten notes for Biology, Physics & Chemistry. Complete NCERT-based content covering Class 11 & 12 syllabus, written by top NEET scorers.
+          </p>
+        </div>
+      `
+    },
+    // Anatomy
+    {
+      route: 'medortho/anatomy/bones',
+      title: "Osteology (Bones) Study Guides & Clinical Notes | MedOrtho",
+      description: "Detailed anatomical notes on human skeletal structure, bony landmarks, ossification, and blood supply for orthopedic reference.",
+      keywords: "orthopedic anatomy, bones, human skeleton, osteology study guide",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Osteology (Bones) Study Guides</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Detailed anatomical notes on human skeletal structure, bony landmarks, ossification, and blood supply for orthopedic reference.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'medortho/anatomy/joints',
+      title: "Arthrology (Joints) Study Guides & Clinical Notes | MedOrtho",
+      description: "Comprehensive clinical guides covering joint types, biomechanics, range of motion limits, and articular structures.",
+      keywords: "orthopedic anatomy, joints, arthrology study guide, joint biomechanics",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Arthrology (Joints) Study Guides</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Comprehensive clinical guides covering joint types, biomechanics, range of motion limits, and articular structures.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'medortho/anatomy/muscles',
+      title: "Myology (Muscles) Clinical Notes & Study Guide | MedOrtho",
+      description: "Explanations of muscle groups, origins, insertions, nerve innervations, and testing procedures for orthopedic evaluation.",
+      keywords: "orthopedic anatomy, muscles, myology guide, muscle testing",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Myology (Muscles) Clinical Notes</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Explanations of muscle groups, origins, insertions, nerve innervations, and testing procedures for orthopedic evaluation.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'medortho/anatomy/ligaments',
+      title: "Syndesmology (Ligaments) Reference & Guides | MedOrtho",
+      description: "In-depth clinical reviews of ligamentous structures, attachments, biomechanical functions, and stability parameters.",
+      keywords: "orthopedic anatomy, ligaments, syndesmology guide, ligament stability",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Syndesmology (Ligaments) Reference</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            In-depth clinical reviews of ligamentous structures, attachments, biomechanical functions, and stability parameters.
+          </p>
+        </div>
+      `
+    },
+    // Pathologies
+    {
+      route: 'medortho/pathologies/fractures',
+      title: "Fractures & Dislocations Guide & Clinical Notes | MedOrtho",
+      description: "Classification, mechanism of injury, clinical features, and management guidelines for orthopedic fractures and joint dislocations.",
+      keywords: "orthopedic pathology, fractures, joint dislocation guide",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Fractures & Dislocations Guide</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Classification, mechanism of injury, clinical features, and management guidelines for orthopedic fractures and joint dislocations.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'medortho/pathologies/inflammation',
+      title: "Inflammatory Joint Conditions & Guides | MedOrtho",
+      description: "Clinical insights on osteomyelitis, septic arthritis, rheumatoid arthritis, bursitis, and tendinitis.",
+      keywords: "orthopedic pathology, inflammation, arthritis, tendinitis, bursitis",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Inflammatory Joint Conditions</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Clinical insights on osteomyelitis, septic arthritis, rheumatoid arthritis, bursitis, and tendinitis.
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'medortho/pathologies/chronic-conditions',
+      title: "Chronic Orthopedic Pathologies & Guides | MedOrtho",
+      description: "Diagnostic and treatment strategies for chronic conditions like osteoarthritis, osteoporosis, avascular necrosis (AVN), and spinal stenosis.",
+      keywords: "orthopedic pathology, chronic conditions, osteoarthritis, osteoporosis, AVN",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Chronic Orthopedic Pathologies</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            Diagnostic and treatment strategies for chronic conditions like osteoarthritis, osteoporosis, avascular necrosis (AVN), and spinal stenosis.
+          </p>
+        </div>
+      `
+    }
+  ];
+
+  extraStaticPages.forEach(page => {
+    const pageOptions = {
+      title: page.title,
+      description: page.description,
+      keywords: page.keywords,
+      canonical: `${DOMAIN}/${page.route}`,
+      ogImage: `${DOMAIN}/og-image.png`,
+      bodyContent: page.bodyContent
+    };
+    writePage(page.route, generatePageHtml(templateHtml, pageOptions));
+  });
+  console.log(`✅ Pre-rendered ${extraStaticPages.length} extra static and sub-sections pages.`);
+
+  // 7. Pre-render MedPosterHub detail pages
+  try {
+    const postersDataPath = path.resolve(process.cwd(), 'src/apps/medposterhub/data/posters.ts');
+    if (fs.existsSync(postersDataPath)) {
+      const postersContent = fs.readFileSync(postersDataPath, 'utf8');
+      const blocks = postersContent.split(/\{\s*id:\s*/).slice(1);
+      let posterCount = 0;
+      
+      blocks.forEach(block => {
+        const getVal = (key) => {
+          const regex = new RegExp(key + ':\\s*["\']([^\'"]+)["\']');
+          const matchResult = block.match(regex);
+          return matchResult ? matchResult[1] : null;
+        };
+        
+        const slug = getVal('slug');
+        const title = getVal('title');
+        const description = getVal('description') || `High-quality medical poster for clinics, classrooms, and study.`;
+        const category = getVal('category') || 'Medical';
+        const seoTitle = getVal('seoTitle');
+        const seoDescription = getVal('seoDescription');
+        
+        if (slug && title) {
+          posterCount++;
+          const pageOptions = {
+            title: seoTitle || `${title} Poster | MedPosterHub`,
+            description: seoDescription || description,
+            keywords: `${title.toLowerCase()}, medical poster, anatomy chart, ${category.toLowerCase()}`,
+            canonical: `${DOMAIN}/medposterhub/${slug}`,
+            ogImage: `${DOMAIN}/og-image.png`,
+            bodyContent: `
+              <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+                <nav class="text-sm text-slate-400 mb-6">
+                  <a href="/medposterhub" class="hover:underline">MedPosterHub</a> &gt; 
+                  <span class="text-white">${escapeHtml(title)}</span>
+                </nav>
+                <h1 class="text-4xl font-extrabold mb-6">${escapeHtml(title)}</h1>
+                <p class="text-lg text-slate-300 leading-relaxed mb-6">
+                  ${escapeHtml(description)}
+                </p>
+              </div>
+            `
+          };
+          writePage(`medposterhub/${slug}`, generatePageHtml(templateHtml, pageOptions));
+        }
+      });
+      console.log(`✅ Pre-rendered ${posterCount} MedPosterHub detail pages.`);
+    }
+  } catch (e) {
+    console.warn('⚠️ Could not pre-render MedPosterHub detail pages:', e.message);
+  }
+
   console.log('🎉 Static pre-rendering completed successfully!');
 }
 
