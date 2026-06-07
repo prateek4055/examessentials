@@ -162,8 +162,11 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
         "url": DOMAIN,
       },
       "inLanguage": "en-IN",
-    },
-    {
+    }
+  ];
+
+  if (appSlug === "medortho") {
+    schemas.push({
       "@context": "https://schema.org",
       "@type": "MedicalPhysicalExam",
       "name": article.title,
@@ -177,48 +180,49 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
         "@type": "MedicalCondition",
         "name": cleanUsedFor.length > 100 ? cleanUsedFor.substring(0, 97) + "..." : cleanUsedFor
       }
-    }
-  ];
-  // Compile FAQs
-  const faqs = [];
-  if (article.usedFor) {
-    faqs.push({
-      question: `What is the ${article.title} used for?`,
-      answer: cleanUsedFor
     });
-  }
-  if (article.howTo) {
-    faqs.push({
-      question: `How do you perform the ${article.title}?`,
-      answer: cleanHowTo
-    });
-  }
-  if (article.result) {
-    faqs.push({
-      question: `What is a positive result for the ${article.title}?`,
-      answer: cleanResult
-    });
-  }
-  if (cleanAccuracy && cleanAccuracy.trim() !== "") {
-    faqs.push({
-      question: `What is the diagnostic accuracy of the ${article.title}?`,
-      answer: cleanAccuracy
-    });
-  }
 
-  if (faqs.length > 0) {
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map((faq) => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer,
-        },
-      })),
-    });
+    // Compile FAQs
+    const faqs = [];
+    if (article.usedFor) {
+      faqs.push({
+        question: `What is the ${article.title} used for?`,
+        answer: cleanUsedFor
+      });
+    }
+    if (article.howTo) {
+      faqs.push({
+        question: `How do you perform the ${article.title}?`,
+        answer: cleanHowTo
+      });
+    }
+    if (article.result) {
+      faqs.push({
+        question: `What is a positive result for the ${article.title}?`,
+        answer: cleanResult
+      });
+    }
+    if (cleanAccuracy && cleanAccuracy.trim() !== "") {
+      faqs.push({
+        question: `What is the diagnostic accuracy of the ${article.title}?`,
+        answer: cleanAccuracy
+      });
+    }
+
+    if (faqs.length > 0) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
+          },
+        })),
+      });
+    }
   }
 
   return schemas;
@@ -243,6 +247,7 @@ async function runPrerender() {
   console.log(`✅ Loaded template HTML and ${testsList.length} special tests.`);
 
   let dbBlogPosts = [];
+  let dbArticles = [];
   if (supabase) {
     try {
       const { data, error } = await supabase
@@ -257,8 +262,23 @@ async function runPrerender() {
     } catch (e) {
       console.warn('⚠️ Could not fetch blog posts for pre-rendering:', e.message);
     }
+
+    try {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('published', true);
+      if (error) {
+        console.warn('⚠️ Could not fetch wiki articles from Supabase for pre-rendering:', error.message);
+      } else {
+        dbArticles = data || [];
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not fetch wiki articles for pre-rendering:', e.message);
+    }
   }
   console.log(`✅ Loaded ${dbBlogPosts.length} blog posts from DB for pre-rendering.`);
+  console.log(`✅ Loaded ${dbArticles.length} wiki articles from DB for pre-rendering.`);
 
   // 1. Pre-render MedOrtho Landing Page (/medortho)
   const medOrthoLandingOptions = {
@@ -609,6 +629,69 @@ async function runPrerender() {
   });
 
   console.log(`✅ Pre-rendered ${testsList.length} individual special tests.`);
+
+  // 4b. Pre-render every individual database-driven wiki article page (/[app_id]/tests/[slug])
+  if (dbArticles.length > 0) {
+    dbArticles.forEach(art => {
+      if (!art.slug || !art.app_id || !art.title) return;
+
+      const cleanContent = stripHtml(art.content || '');
+      const cleanDesc = art.content 
+        ? cleanContent.substring(0, 155).trim() + "..."
+        : `Learn about ${art.title} in the ${art.app_id === 'medortho' ? 'MedOrtho' : art.app_id} Wiki.`;
+
+      const schemas = buildWikiArticleStructuredData(art.app_id, {
+        title: art.title,
+        description: cleanDesc,
+        lastUpdated: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        category: art.category || 'Special Tests',
+        evidence: art.evidence,
+        subCategory: art.subCategory,
+        accuracy: art.accuracy,
+        usedFor: art.usedFor,
+        howTo: art.howTo,
+        result: art.result
+      }, art.slug);
+
+      const bodyContent = `
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          <nav class="text-sm text-gray-500 mb-6">
+            <a href="/${art.app_id}" class="hover:underline">${art.app_id === 'medortho' ? 'MedOrtho' : art.app_id}</a> &gt; 
+            <a href="/${art.app_id}/special-tests" class="hover:underline">Special Tests</a> &gt; 
+            <span class="text-gray-900">${art.title}</span>
+          </nav>
+          
+          <article class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <header class="mb-8">
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full">${art.category || 'Special Tests'}</span>
+                ${art.subCategory ? `<span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full">${art.subCategory}</span>` : ''}
+              </div>
+              <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">${art.title}</h1>
+              <p class="text-gray-500 text-sm">Clinical Reference & Assessment Guide</p>
+            </header>
+
+            <div class="prose max-w-none">
+              ${art.content ? `<div class="text-gray-600 leading-relaxed">${art.content}</div>` : ''}
+            </div>
+          </article>
+        </div>
+      `;
+
+      const pageOptions = {
+        title: `${art.title} | ${art.app_id === 'medortho' ? 'MedOrtho' : art.app_id}`,
+        description: cleanDesc,
+        keywords: `${art.title}, ${art.category || 'test'}, ${art.app_id} wiki`,
+        canonical: `${DOMAIN}/${art.app_id}/tests/${art.slug}`,
+        ogImage: `${DOMAIN}/og-image.png`,
+        schemas: schemas,
+        bodyContent: bodyContent
+      };
+
+      writePage(`${art.app_id}/tests/${art.slug}`, generatePageHtml(templateHtml, pageOptions));
+    });
+    console.log(`✅ Pre-rendered ${dbArticles.length} database-driven wiki articles.`);
+  }
 
   // 5. Pre-render Blog index and individual blog posts
   if (dbBlogPosts.length > 0) {
