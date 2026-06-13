@@ -56,6 +56,9 @@ function generatePageHtml(templateHtml, options) {
   const { title, description, keywords, canonical, ogImage, schemas, bodyContent } = options;
   let content = templateHtml;
   
+  // Remove existing canonical tag if it exists (e.g. from index.html template)
+  content = content.replace(/<link\s+[^>]*?rel=["']canonical["'][^>]*?\/?>/gi, '');
+  
   // Replace Title
   content = content.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
   
@@ -543,6 +546,46 @@ async function runPrerender() {
 
     const schemas = buildWikiArticleStructuredData('medortho', t, slug);
 
+    // Find related tests in the same category
+    const related = testsList
+      .filter(rt => rt.category === t.category && rt.id !== t.id && rt.title)
+      .slice(0, 4);
+
+    let relatedHtml = '';
+    if (related.length > 0) {
+      const relatedCards = related.map(rt => {
+        const rtSlug = rt.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        const rtFilename = rt.image1 ? rt.image1.split('/').pop() : null;
+        const rtImgUrl = rtFilename ? `/medortho/tests/images/${rtFilename}` : 'https://examessentials.in/og-image.png';
+        return `
+          <a href="/medortho/tests/${rtSlug}" class="group flex flex-col h-full bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="relative h-28 bg-slate-50 overflow-hidden flex items-center justify-center">
+              <img src="${rtImgUrl}" alt="${escapeHtml(rt.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div class="p-4 flex-grow flex flex-col">
+              <span class="text-[10px] font-bold uppercase tracking-wider mb-1.5 block text-blue-500">
+                ${escapeHtml(rt.category)} Examination
+              </span>
+              <h4 class="font-bold text-sm text-gray-800 line-clamp-2 leading-snug">
+                ${escapeHtml(rt.title)}
+              </h4>
+            </div>
+          </a>
+        `;
+      }).join('\n');
+
+      relatedHtml = `
+        <div class="mt-20 pt-10 border-t border-gray-100">
+          <h2 class="text-2xl font-bold mb-8 text-slate-800 font-sans flex items-center gap-2">
+            Further Clinical Exploration
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            ${relatedCards}
+          </div>
+        </div>
+      `;
+    }
+
     const bodyContent = `
       <div class="max-w-4xl mx-auto px-4 py-8">
         <nav class="text-sm text-gray-500 mb-6">
@@ -612,6 +655,7 @@ async function runPrerender() {
             ` : ''}
           </div>
         </article>
+        ${relatedHtml}
       </div>
     `
 
@@ -1038,6 +1082,70 @@ async function runPrerender() {
     }
   } catch (e) {
     console.warn('⚠️ Could not pre-render MedPosterHub detail pages:', e.message);
+  }
+
+  // 8. Pre-render the Home page / and overwrite dist/index.html
+  console.log('🔄 Pre-rendering homepage (index.html)...');
+  try {
+    const rootDivMatch = templateHtml.match(/<div\s+id=["']root["'][^>]*>([\s\S]*?)<\/div>/i);
+    const rootDivContent = rootDivMatch ? rootDivMatch[1] : '';
+
+    const homePageOptions = {
+      title: "Exam Essentials — Topper Handwritten Notes for Class 11, 12, NEET & JEE",
+      description: "Buy India's best topper-handwritten notes for CBSE Class 11 & 12, NEET and JEE. Physics, Chemistry, Maths & Biology. Also: medical anatomy posters for MBBS students. Order now.",
+      keywords: "exam essentials, board exam essentials, best handwritten notes India, topper notes class 11, topper notes class 12, CBSE board exam notes, NEET notes PDF, JEE notes PDF, physics handwritten notes, chemistry handwritten notes, biology handwritten notes, maths handwritten notes, study material for boards, medical posters",
+      canonical: `${DOMAIN}/`,
+      ogImage: `${DOMAIN}/og-image.png`,
+      schemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Exam Essentials",
+          "alternateName": "ExamEssentials",
+          "url": DOMAIN,
+          "logo": `${DOMAIN}/logo.png`,
+          "image": `${DOMAIN}/og-image.png`,
+          "description": "India's #1 premium handwritten notes for Class 11 & 12 students. Exam-focused study materials for CBSE Boards, NEET & JEE preparation.",
+          "foundingDate": "2024",
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-9460970342",
+            "contactType": "customer service",
+            "email": "examessentials.info@gmail.com",
+            "availableLanguage": ["English", "Hindi"]
+          },
+          "sameAs": [
+            "https://wa.me/919460970342"
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Exam Essentials",
+          "alternateName": "ExamEssentials Notes",
+          "url": DOMAIN,
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": `${DOMAIN}/products?search={search_term_string}`
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ],
+      bodyContent: rootDivContent
+    };
+
+    const preRenderedHomeHtml = generatePageHtml(templateHtml, homePageOptions);
+    fs.writeFileSync(indexHtmlPath, preRenderedHomeHtml);
+    console.log('✅ Overwrote dist/index.html with pre-rendered homepage.');
+  } catch (homeErr) {
+    console.warn('⚠️ Could not pre-render homepage:', homeErr.message);
   }
 
   console.log('🎉 Static pre-rendering completed successfully!');

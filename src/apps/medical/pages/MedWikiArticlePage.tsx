@@ -217,8 +217,10 @@ const MedWikiArticlePage: React.FC = () => {
   // Define unique title and descriptions for category/topic pages
   let pageTitle = `${app.name} Wiki - Medical Education`;
   let pageDescription = `Search and read medical special tests and articles in the ${app.name} Wiki.`;
-  let pageCanonical = `/${app.slug}/${pathId || ""}`;
+  const cleanPathId = pathId ? pathId.replace(/\/$/, "") : "";
+  let pageCanonical = `/${app.slug}${cleanPathId ? `/${cleanPathId}` : ""}`;
   let pageKeywords = `${app.name}, medical education, wiki, special tests`;
+  let pageNoIndex = false;
 
   if (isSpecialTestsIndex) {
     pageTitle = `Orthopedic Special Tests Directory | MedOrtho`;
@@ -251,11 +253,22 @@ const MedWikiArticlePage: React.FC = () => {
     pageCanonical = `/${app.slug}/tests/${slug}`;
     pageKeywords = `${article.title}, ${article.category} test, orthopedic special test, medortho wiki, ${app.name} education`;
   } else if (slug && slug !== "tests") {
-    const fallbackTitle = getFallbackTitle(slug);
-    pageTitle = `${fallbackTitle} – Special Test | ${app.name}`;
-    pageDescription = `Read details of the ${fallbackTitle} assessment on ${app.name} Wiki.`;
-    pageCanonical = `/${app.slug}/tests/${slug}`;
-    pageKeywords = `${fallbackTitle}, special test, ${app.name} wiki, medical education`;
+    if (!loading && !article) {
+      pageTitle = "Article Not Found | Exam Essentials";
+      pageDescription = "The requested medical article or special test was not found.";
+      pageCanonical = `/${app.slug}/tests/${slug}`;
+      pageNoIndex = true;
+    } else {
+      const fallbackTitle = getFallbackTitle(slug);
+      pageTitle = `${fallbackTitle} – Special Test | ${app.name}`;
+      pageDescription = `Read details of the ${fallbackTitle} assessment on ${app.name} Wiki.`;
+      pageCanonical = `/${app.slug}/tests/${slug}`;
+      pageKeywords = `${fallbackTitle}, special test, ${app.name} wiki, medical education`;
+    }
+  } else if (!loading && !article) {
+    pageTitle = "Page Not Found | Exam Essentials";
+    pageDescription = "The requested page was not found.";
+    pageNoIndex = true;
   }
 
   const pageStructuredData = article 
@@ -273,6 +286,7 @@ const MedWikiArticlePage: React.FC = () => {
         structuredData={pageStructuredData}
         skipDefaultKeywords={true}
         keywords={pageKeywords}
+        noIndex={pageNoIndex}
       />
       <MedWikiLayout app={app}>
       {loading ? (

@@ -254,6 +254,7 @@ const ProductDetail = () => {
         keywords={pageKeywords}
         structuredData={productStructuredData}
         productPrice={product?.price}
+        noIndex={!isLoading && !product}
       />
 
       <Navbar />

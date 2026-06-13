@@ -262,6 +262,7 @@ const BlogPostPage = () => {
         ogImage={ogImage}
         keywords={pageKeywords}
         structuredData={blogStructuredData.length > 0 ? blogStructuredData : undefined}
+        noIndex={!isLoading && !post}
       />
 
       <Navbar />

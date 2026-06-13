@@ -1,12 +1,14 @@
 {
-    "rewrites": [
-        {
-            "source": "/supabase-api/:match*",
-            "destination": "https://jfqjeqgwbpnnzdgcpbzw.supabase.co/:match*"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
-    ]
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/supabase-api/:match*",
+      "destination": "https://jfqjeqgwbpnnzdgcpbzw.supabase.co/:match*"
+    },
+    {
+      "source": "/((?!.*\\.).*)",
+      "destination": "/index.html"
+    }
+  ]
 }

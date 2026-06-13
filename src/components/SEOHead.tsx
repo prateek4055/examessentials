@@ -33,13 +33,16 @@ const SEOHead = ({
   // Default to current pathname if no canonical is provided
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
   const cleanCanonical = (canonical || currentPath).split('?')[0];
+  const normalizedCanonical = cleanCanonical.length > 1 && cleanCanonical.endsWith('/')
+    ? cleanCanonical.slice(0, -1)
+    : cleanCanonical;
   
   let fullCanonical = "";
-  if (cleanCanonical) {
-    if (cleanCanonical.startsWith('http://') || cleanCanonical.startsWith('https://')) {
-      fullCanonical = cleanCanonical;
+  if (normalizedCanonical) {
+    if (normalizedCanonical.startsWith('http://') || normalizedCanonical.startsWith('https://')) {
+      fullCanonical = normalizedCanonical;
     } else {
-      const prefixedPath = cleanCanonical.startsWith('/') ? cleanCanonical : `/${cleanCanonical}`;
+      const prefixedPath = normalizedCanonical.startsWith('/') ? normalizedCanonical : `/${normalizedCanonical}`;
       fullCanonical = `${baseUrl}${prefixedPath === '/' ? '' : prefixedPath}`;
     }
   }
