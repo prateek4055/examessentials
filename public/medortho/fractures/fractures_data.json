@@ -1,0 +1,372 @@
+[
+  {
+    "id": "clavicle_fracture",
+    "title": "Clavicle Fracture",
+    "subtitle": "Collarbone fracture, most common in young active adults.",
+    "type": "fracture",
+    "limbType": "upper",
+    "region": "Shoulder",
+    "category": "Upper Limb",
+    "overview": "Fractures of the clavicle are highly common, accounting for 2-5% of all adult fractures. It most frequently occurs in the middle third (midshaft) due to a direct blow to the shoulder or a fall on an outstretched hand (FOOSH).",
+    "presentation": "• Severe pain localized to the collarbone region.\n• Swelling, bruising, and visible tenting of the skin.\n• The patient typically supports the affected arm with the opposite hand.",
+    "diagnosticScans": "• Plain Radiograph (X-Ray): AP View of the clavicle.\n• Clavicle 15-degree cephalic tilt view to rule out displacement and overlapping.",
+    "management": "• Conservative: Sling immobilization for 3-6 weeks, pain control, and early progressive range-of-motion exercises.\n• Surgical (Open Reduction Internal Fixation - ORIF): Indicated for severe displacement (>100%), shortening (>2cm), skin tenting, or open fractures.",
+    "imageName": "assets/images/asst/shoulder.webp",
+    "classifications": [
+      {
+        "systemName": "Allman Classification",
+        "description": "Based on the anatomical location of the clavicle fracture.",
+        "types": [
+          {
+            "typeName": "Group I (Midshaft)",
+            "description": "Middle third of the clavicle. Most common (approx. 80%)."
+          },
+          {
+            "typeName": "Group II (Distal)",
+            "description": "Lateral / outer third of the clavicle (approx. 15%)."
+          },
+          {
+            "typeName": "Group III (Proximal)",
+            "description": "Medial / inner third of the clavicle (approx. 5%)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rotator_cuff_tear",
+    "title": "Rotator Cuff Tear",
+    "subtitle": "Tear in one or more of the rotator cuff muscles/tendons.",
+    "type": "condition",
+    "limbType": "upper",
+    "region": "Shoulder",
+    "category": "Sports Injuries",
+    "overview": "A rotator cuff tear involves damage to the tendons of the supraspinatus, infraspinatus, teres minor, or subscapularis. Supraspinatus is by far the most commonly torn. Tears can be degenerative (older patients) or traumatic.",
+    "presentation": "• Dull ache deep in the shoulder.\n• Difficulty sleeping on the affected side.\n• Weakness when raising or rotating the arm (especially abduction).\n• Positive Drop Arm and Empty Can tests.",
+    "diagnosticScans": "• MRI of the shoulder: Gold standard to identify tear thickness, size, and muscle retraction.\n• Ultrasound: Cost-effective alternative for assessing dynamic tears.",
+    "management": "• Non-Surgical: Physical therapy, NSAIDs, and subacromial corticosteroid injections.\n• Surgical Repair: Recommended for acute traumatic tears, full-thickness tears in active patients, or failure of conservative management for 3-6 months.",
+    "imageName": "assets/images/asst/shoulder.webp",
+    "classifications": null
+  },
+  {
+    "id": "humerus_shaft_fracture",
+    "title": "Humerus Shaft Fracture",
+    "subtitle": "Fracture of the midshaft humerus bone.",
+    "type": "fracture",
+    "limbType": "upper",
+    "region": "Elbow",
+    "category": "Upper Limb",
+    "overview": "Fractures of the humeral shaft typically result from direct trauma or twisting injuries. A critical complication is injury to the radial nerve as it winds around the spiral groove of the humerus.",
+    "presentation": "• Severe pain, swelling, and deformity in the upper arm.\n• Inability to extend the wrist or fingers (Wrist Drop indicates Radial Nerve Palsy).\n• Crepitus on movement of the arm.",
+    "diagnosticScans": "• Plain Radiograph (X-Ray): AP and Lateral views of the entire humerus, including shoulder and elbow joints.",
+    "management": "• Conservative: Coaptation splint initially, transitioned to a functional brace (Sarmiento brace) for 8-12 weeks (successful in >90% of cases).\n• Surgical (ORIF with plates/screws or intramedullary nail): Indicated for open fractures, radial nerve injury after closed reduction, or non-union.",
+    "imageName": "assets/images/asst/elbow.webp",
+    "classifications": [
+      {
+        "systemName": "AO Foundation / OTA Classification",
+        "description": "Based on location and fracture patterns.",
+        "types": [
+          {
+            "typeName": "Type A",
+            "description": "Simple fractures (spiral, oblique, or transverse)."
+          },
+          {
+            "typeName": "Type B",
+            "description": "Wedge fractures (bending wedge or fragmentary wedge)."
+          },
+          {
+            "typeName": "Type C",
+            "description": "Complex fractures with multiple fragments."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tennis_elbow",
+    "title": "Lateral Epicondylitis",
+    "subtitle": "Tennis Elbow, an overuse injury of the extensor tendons.",
+    "type": "condition",
+    "limbType": "upper",
+    "region": "Elbow",
+    "category": "Sports Injuries",
+    "overview": "Lateral epicondylitis is an overuse syndrome causing degeneration of the origin of the extensor carpi radialis brevis (ECRB) tendon at the lateral epicondyle. It is highly common in laborers and racket sport players.",
+    "presentation": "• Pain and tenderness over the lateral epicondyle.\n• Weakness in grip strength.\n• Pain exacerbated by resisted wrist extension and forearm supination (Positive Cozen's / Mill's test).",
+    "diagnosticScans": "• Plain X-Rays: Usually normal, done to rule out arthritis.\n• MRI/Ultrasound: May show micro-tearing and tendinosis at the ECRB origin.",
+    "management": "• Non-Surgical: Rest, ice, NSAIDs, counter-force bracing (tennis elbow strap), eccentric strengthening exercises, and corticosteroid or PRP injections.\n• Surgical: Tenotomy and debridement of the ECRB origin (rarely needed).",
+    "imageName": "assets/images/asst/elbow.webp",
+    "classifications": null
+  },
+  {
+    "id": "colles_fracture",
+    "title": "Colles' Fracture",
+    "subtitle": "Distal radius fracture with dorsal displacement.",
+    "type": "fracture",
+    "limbType": "upper",
+    "region": "Wrist & Hand",
+    "category": "Upper Limb",
+    "overview": "A Colles' fracture is an extra-articular fracture of the distal radius characterized by dorsal (posterior) displacement of the distal fragment, commonly resulting from a FOOSH.",
+    "presentation": "• Classic \"Dinner Fork\" deformity of the wrist.\n• Exquisite pain and swelling at the wrist joint.\n• Limited active and passive range of motion of the wrist and fingers.",
+    "diagnosticScans": "• Radiographs: AP and Lateral views of the wrist showing dorsal tilt, radial shortening, and radial inclination loss.",
+    "management": "• Conservative: Closed reduction under hematoma block, followed by sugar-tong or short-arm plaster cast for 6 weeks.\n• Surgical: Percutaneous pinning or volar lock-plating for unstable, intra-articular, or highly comminuted fractures.",
+    "imageName": "assets/images/asst/hand.webp",
+    "classifications": [
+      {
+        "systemName": "Frykman Classification",
+        "description": "Based on intra-articular extension and involvement of the distal ulna.",
+        "types": [
+          {
+            "typeName": "Type I",
+            "description": "Extra-articular Distal Radius fracture."
+          },
+          {
+            "typeName": "Type II",
+            "description": "Extra-articular Distal Radius fracture with Ulnar Styloid fracture."
+          },
+          {
+            "typeName": "Type III",
+            "description": "Intra-articular (Radiocarpal joint) fracture."
+          },
+          {
+            "typeName": "Type IV",
+            "description": "Intra-articular (Radiocarpal joint) fracture with Ulnar Styloid fracture."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "carpal_tunnel_syndrome",
+    "title": "Carpal Tunnel Syndrome",
+    "subtitle": "Compression of the Median Nerve at the wrist.",
+    "type": "condition",
+    "limbType": "upper",
+    "region": "Wrist & Hand",
+    "category": "Upper Limb",
+    "overview": "Carpal Tunnel Syndrome (CTS) is the most common entrapment neuropathy. It is caused by increased pressure in the carpal tunnel, leading to compression of the median nerve.",
+    "presentation": "• Numbness, tingling, or burning in the thumb, index, and middle fingers.\n• Symptoms typically worsen at night.\n• Hand clumsiness and eventual wasting of the Thenar muscles.\n• Positive Phalen's and Tinel's sign.",
+    "diagnosticScans": "• Electromyography (EMG) / Nerve Conduction Velocity (NCV): Demonstrates delayed median nerve sensory/motor conduction across the wrist.",
+    "management": "• Conservative: Night-time wrist splinting in neutral, activity modification, NSAIDs, and corticosteroid injection into the carpal tunnel.\n• Surgical: Carpal Tunnel Release (CTR) by transecting the transverse carpal ligament.",
+    "imageName": "assets/images/asst/hand.webp",
+    "classifications": null
+  },
+  {
+    "id": "neck_of_femur_fracture",
+    "title": "Neck of Femur Fracture",
+    "subtitle": "Hip fracture, highly critical in elderly osteoporotic patients.",
+    "type": "fracture",
+    "limbType": "lower",
+    "region": "Hip",
+    "category": "Lower Limb",
+    "overview": "Femoral neck fractures are intracapsular hip fractures that carry a high risk of avascular necrosis (AVN) of the femoral head due to disruption of the retrograde blood supply (medial femoral circumflex artery).",
+    "presentation": "• The injured leg is classicially shortened, abducted, and externally rotated.\n• Groin pain and total inability to bear weight on the affected limb.",
+    "diagnosticScans": "• Radiographs: AP pelvis and cross-table lateral view of the hip.\n• MRI: If radiographs are negative but clinical suspicion of occult fracture remains high.",
+    "management": "• Young Patients: Emergent anatomical closed/open reduction and internal fixation (using Cannulated Screws or Dynamic Hip Screw) to preserve the femoral head.\n• Elderly Patients: Hemiarthroplasty (replacement of the femoral head) or Total Hip Arthroplasty (THA).",
+    "imageName": "assets/images/asst/hip.webp",
+    "classifications": [
+      {
+        "systemName": "Garden Classification",
+        "description": "Based on the degree of displacement of the femoral neck fracture.",
+        "types": [
+          {
+            "typeName": "Garden Stage I",
+            "description": "Incomplete / valgus-impacted fracture."
+          },
+          {
+            "typeName": "Garden Stage II",
+            "description": "Complete, but non-displaced fracture."
+          },
+          {
+            "typeName": "Garden Stage III",
+            "description": "Complete, partially displaced fracture (varus tilt)."
+          },
+          {
+            "typeName": "Garden Stage IV",
+            "description": "Complete, fully displaced fracture (total dislocation)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hip_avn",
+    "title": "Avascular Necrosis (AVN)",
+    "subtitle": "Osteonecrosis of the femoral head due to blood supply loss.",
+    "type": "condition",
+    "limbType": "lower",
+    "region": "Hip",
+    "category": "Hip & Pelvis",
+    "overview": "AVN of the hip is the death of bone tissue in the femoral head caused by interrupted blood flow. Risk factors include trauma, corticosteroid abuse, alcoholism, and sickle cell disease.",
+    "presentation": "• Deep, throbbing groin pain worse during weight-bearing.\n• Progressive restriction of internal rotation and abduction.\n• Antalgic gait (limping).",
+    "diagnosticScans": "• MRI: The most sensitive diagnostic tool, showing early double-line sign.\n• Plain Radiographs: May show \"crescent sign\" (subchondral collapse) in late stages.",
+    "management": "• Early Stage: Core decompression, vascularized bone grafting, and limited weight-bearing.\n• Late Stage (Collapse): Total Hip Arthroplasty (THA).",
+    "imageName": "assets/images/asst/hip.webp",
+    "classifications": null
+  },
+  {
+    "id": "tibial_shaft_fracture",
+    "title": "Tibial Shaft Fracture",
+    "subtitle": "Most common long bone fracture, high risk of compartment syndrome.",
+    "type": "fracture",
+    "limbType": "lower",
+    "region": "Knee",
+    "category": "Lower Limb",
+    "overview": "The tibia is highly prone to fractures due to its subcutaneous anterior border. High-energy trauma can lead to open fractures, non-union, or acute compartment syndrome.",
+    "presentation": "• Severe local pain, swelling, deformity, and immediate inability to bear weight.\n• Tense, swollen leg compartments with pain out of proportion to passive stretching (indicates Compartment Syndrome).",
+    "diagnosticScans": "• Plain Radiograph (X-Ray): AP and Lateral views of the tibia and fibula, including knee and ankle joints.",
+    "management": "• Non-Surgical: Long-leg cast followed by patellar tendon-bearing (PTB) cast for low-energy, stable fractures.\n• Surgical: Intramedullary (IM) Nailing is the gold standard for displaced adult fractures; external fixation for severe open injuries.",
+    "imageName": "assets/images/asst/knee.webp",
+    "classifications": null
+  },
+  {
+    "id": "osteoarthritis_knee",
+    "title": "Osteoarthritis of the Knee",
+    "subtitle": "Degenerative joint disease leading to articular cartilage loss.",
+    "type": "condition",
+    "limbType": "lower",
+    "region": "Knee",
+    "category": "Joint Disorders",
+    "overview": "Knee OA is a chronic degenerative condition characterized by loss of articular cartilage, osteophyte formation, and subchondral sclerosis, primarily affecting the medial compartment.",
+    "presentation": "• Gradual onset of joint pain worse with activity and relieved by rest.\n• Morning stiffness lasting less than 30 minutes.\n• Joint crepitus, varus (bow-legged) deformity, and joint line tenderness.",
+    "diagnosticScans": "• Weight-bearing X-Rays of the knee: Shows joint space narrowing, osteophytes, subchondral sclerosis, and subchondral cysts.",
+    "management": "• Non-Surgical: Weight loss, physical therapy (quadriceps strengthening), NSAIDs, intra-articular steroid or hyaluronic acid injections.\n• Surgical: High tibial osteotomy (young patients) or Total Knee Arthroplasty (TKA).",
+    "imageName": "assets/images/asst/knee.webp",
+    "classifications": [
+      {
+        "systemName": "Kellgren & Lawrence System",
+        "description": "Radiographic classification of osteoarthritis severity.",
+        "types": [
+          {
+            "typeName": "Grade 1",
+            "description": "Doubtful narrowing of joint space and possible osteophytic lipping."
+          },
+          {
+            "typeName": "Grade 2",
+            "description": "Definite osteophytes and possible joint space narrowing."
+          },
+          {
+            "typeName": "Grade 3",
+            "description": "Moderate osteophytes, definite joint space narrowing, some sclerosis."
+          },
+          {
+            "typeName": "Grade 4",
+            "description": "Large osteophytes, severe joint space narrowing, severe sclerosis, bone deformity."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ankle_fracture",
+    "title": "Bimalleolar Ankle Fracture",
+    "subtitle": "Fracture involving both the lateral and medial malleolus.",
+    "type": "fracture",
+    "limbType": "lower",
+    "region": "Ankle & Foot",
+    "category": "Lower Limb",
+    "overview": "Ankle fractures commonly result from twisting mechanisms. A bimalleolar fracture destabilizes the mortise joint, meaning it is considered an unstable injury requiring anatomic reduction.",
+    "presentation": "• Extreme pain, massive swelling, deformity, and bruising around the ankle.\n• Inability to bear weight.\n• Tenderness along the syndesmosis and both malleoli.",
+    "diagnosticScans": "• Radiographs: AP, Lateral, and Mortise views of the ankle. A mortise view is essential to assess joint clear spaces.",
+    "management": "• Conservative: Cast immobilization (rarely, only for stable non-displaced fractures in non-ambulatory patients).\n• Surgical (ORIF): Open reduction and internal fixation with plates and screws to restore mortise congruency.",
+    "imageName": "assets/images/asst/foot.webp",
+    "classifications": [
+      {
+        "systemName": "Danis-Weber Classification",
+        "description": "Based on the level of the lateral fibular fracture relative to the syndesmosis.",
+        "types": [
+          {
+            "typeName": "Weber A",
+            "description": "Fracture below the level of the syndesmosis. Typically stable."
+          },
+          {
+            "typeName": "Weber B",
+            "description": "Fracture at the level of the syndesmosis. Oblique fibular line. Can be unstable."
+          },
+          {
+            "typeName": "Weber C",
+            "description": "Fracture above the level of the syndesmosis. Associated with syndesmotic disruption."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "plantar_fasciitis",
+    "title": "Plantar Fasciitis",
+    "subtitle": "Microtears and inflammation at the plantar fascia insertion.",
+    "type": "condition",
+    "limbType": "lower",
+    "region": "Ankle & Foot",
+    "category": "Sports Injuries",
+    "overview": "Plantar fasciitis is a degenerative overuse condition causing heel pain. It is caused by chronic micro-trauma at the origin of the plantar fascia on the medial tubercle of the calcaneus.",
+    "presentation": "• Sharp heel pain on the first steps in the morning or after rest.\n• Pain decreases with initial walking, but worsens at the end of the day.\n• Maximal tenderness over the anteromedial aspect of the heel.",
+    "diagnosticScans": "• Radiographs: May show a calcaneal heel spur (unrelated to the cause of pain, but a common finding).\n• Ultrasound: Shows thickening of the plantar fascia (>4mm).",
+    "management": "• Conservative: Calf/plantar fascia stretching, night splints, orthotic heel cups, NSAIDs, and local corticosteroid injections.\n• Surgical: Endoscopic plantar fascia release (indicated only after 12 months of conservative treatment failure).",
+    "imageName": "assets/images/asst/foot.webp",
+    "classifications": null
+  },
+  {
+    "id": "compression_fracture",
+    "title": "Vertebral Compression Fracture",
+    "subtitle": "Collapse of a vertebra, common in osteoporotic elderly.",
+    "type": "fracture",
+    "limbType": "spine_pelvis",
+    "region": "Spine",
+    "category": "Spine",
+    "overview": "Vertebral compression fractures (VCFs) are highly prevalent in patients with osteoporosis. They involve axial collapse of the anterior column of the vertebra, often triggered by minor slips or lifting.",
+    "presentation": "• Sudden onset of localized back pain, often radiating around the ribs.\n• Tenderness to percussion over the affected spinous process.\n• Progressive loss of height and development of kyphosis (Dowager's hump).",
+    "diagnosticScans": "• Radiographs: Lateral spine film showing loss of anterior vertebral body height.\n• MRI/CT: Done to assess for acute vs. chronic status and to rule out retropulsion (spinal canal compromise).",
+    "management": "• Conservative: Short term bed rest, bracing (TLSO), analgesics (calcitonin), and osteoporosis medical management.\n• Minimally Invasive Surgery: Kyphoplasty or vertebroplasty (cement injection) for persistent severe pain.",
+    "imageName": "assets/images/asst/spine.webp",
+    "classifications": null
+  },
+  {
+    "id": "lumbar_herniation",
+    "title": "Lumbar Disc Herniation",
+    "subtitle": "Protrusion of the nucleus pulposus causing nerve root compression.",
+    "type": "condition",
+    "limbType": "spine_pelvis",
+    "region": "Spine",
+    "category": "Spine",
+    "overview": "Lumbar disc herniation involves displacement of the nucleus pulposus through a tear in the annulus fibrosus, compressing adjacent lumbar nerve roots (most commonly L4-L5 or L5-S1).",
+    "presentation": "• Sharp, shooting pain radiating down the leg (Sciatica).\n• Numbness, tingling, or weakness in specific dermatomes/myotomes.\n• Positive Straight Leg Raise (SLR) test.\n• Red Flags: Saddle anesthesia or bowel/bladder incontinence (Cauda Equina Syndrome).",
+    "diagnosticScans": "• MRI of the Lumbar Spine: Diagnostic study of choice, showing the location and size of disc herniation.",
+    "management": "• Conservative: Activity modification, NSAIDs, physical therapy, and lumbar epidural steroid injections (resolves in >80% within 6-12 weeks).\n• Surgical: Microdiscectomy (recommended for progressive neurological deficits or Cauda Equina Syndrome).",
+    "imageName": "assets/images/asst/spine.webp",
+    "classifications": null
+  },
+  {
+    "id": "pelvic_ring_fracture",
+    "title": "Pelvic Ring Fracture",
+    "subtitle": "High-energy pelvic disruption, high risk of hemodynamic shock.",
+    "type": "fracture",
+    "limbType": "spine_pelvis",
+    "region": "Pelvis",
+    "category": "Pelvis & Acetabulum",
+    "overview": "Pelvic ring fractures range from low-energy stable fractures in elderly to high-energy polytrauma fractures. Disruption of the ring (especially \"Open Book\" fractures) carries a major threat of pelvic arterial hemorrhage.",
+    "presentation": "• Severe pelvis and groin pain with pelvic instability on physical examination.\n• Local hematoma, perineal bruising, or urethral bleeding.\n• Signs of hemorrhagic shock (hypotension, tachycardia).",
+    "diagnosticScans": "• Radiographs: AP Pelvis, Inlet and Outlet views.\n• CT Scan of the Pelvis: Gold standard for mapping fracture geometry and checking for retroperitoneal hematoma.",
+    "management": "• Acute Resuscitation: Pelvic binder (wrap) to reduce pelvic volume and control venous bleeding; fluid resuscitation.\n• Surgical: External fixation (ex-fix) in emergency settings, followed by definitive internal fixation (ORIF).",
+    "imageName": "assets/images/asst/spine.webp",
+    "classifications": [
+      {
+        "systemName": "Young-Burgess Classification",
+        "description": "Based on the direction of force vector causing the pelvic disruption.",
+        "types": [
+          {
+            "typeName": "APC (Anterior-Posterior Compression)",
+            "description": "Open-book pelvic fracture. Pubic symphysis separation."
+          },
+          {
+            "typeName": "LC (Lateral Compression)",
+            "description": "Internal rotation of hemipelvis. Most common (windswept pelvis)."
+          },
+          {
+            "typeName": "VS (Vertical Shear)",
+            "description": "Vertical displacement of hemipelvis due to high energy axial force."
+          }
+        ]
+      }
+    ]
+  }
+]
