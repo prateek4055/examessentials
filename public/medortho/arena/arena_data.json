@@ -1,0 +1,238 @@
+[
+  {
+    "id": "world_1",
+    "title": "Bones & Anatomy",
+    "description": "Master the skeletal fundamentals",
+    "levels": [
+      {
+        "id": "w1_l1",
+        "title": "Introduction to Joints",
+        "description": "Basic structural joint questions",
+        "xpReward": 50,
+        "questions": [
+          {
+            "id": "w1_l1_q1",
+            "question": "Which type of joint is the glenohumeral joint?",
+            "options": [
+              "Ball and socket",
+              "Hinge",
+              "Pivot",
+              "Saddle"
+            ],
+            "correctAnswer": "Ball and socket",
+            "explanation": "The shoulder (glenohumeral) joint is a multiaxial ball and socket synovial joint allowing wide range of movement.",
+            "imageAsset": null,
+            "type": "mcq",
+            "matchPairs": null
+          },
+          {
+            "id": "w1_l1_q2",
+            "question": "The anatomical neck of the humerus is the most common site of humeral fractures.",
+            "options": [
+              "True",
+              "False"
+            ],
+            "correctAnswer": "False",
+            "explanation": "False! Humeral fractures most frequently occur at the surgical neck, which is distal to the anatomical neck.",
+            "imageAsset": null,
+            "type": "trueFalse",
+            "matchPairs": null
+          },
+          {
+            "id": "w1_l1_q3",
+            "question": "Name the major bony landmark on the proximal ulna that forms the point of the elbow:",
+            "options": [],
+            "correctAnswer": "Olecranon",
+            "explanation": "The olecranon process of the ulna projects behind the humerus, serving as the insertion for the triceps tendon.",
+            "imageAsset": null,
+            "type": "fillBlank",
+            "matchPairs": null
+          }
+        ]
+      },
+      {
+        "id": "w1_l2",
+        "title": "Nerve Pathways",
+        "description": "Upper limb neurology checkpoints",
+        "xpReward": 50,
+        "questions": [
+          {
+            "id": "w1_l2_q1",
+            "question": "Fracture of the humerus shaft is most likely to injure which nerve?",
+            "options": [
+              "Radial nerve",
+              "Median nerve",
+              "Ulnar nerve",
+              "Axillary nerve"
+            ],
+            "correctAnswer": "Radial nerve",
+            "explanation": "The radial nerve runs in the spiral groove directly against the humeral shaft, making it highly vulnerable in shaft fractures.",
+            "imageAsset": null,
+            "type": "mcq",
+            "matchPairs": null
+          },
+          {
+            "id": "w1_l2_q2",
+            "question": "Ape hand deformity is caused by injury to the ulnar nerve.",
+            "options": [
+              "True",
+              "False"
+            ],
+            "correctAnswer": "False",
+            "explanation": "False! Ape hand deformity (loss of thumb opposition) is caused by median nerve injury.",
+            "imageAsset": null,
+            "type": "trueFalse",
+            "matchPairs": null
+          }
+        ]
+      },
+      {
+        "id": "w1_l3",
+        "title": "Wrist Ossification",
+        "description": "Carpals and chronological order",
+        "xpReward": 50,
+        "questions": [
+          {
+            "id": "w1_l3_q1",
+            "question": "Arrange the carpal bones in order from lateral to medial in the proximal row:",
+            "options": [
+              "Scaphoid",
+              "Lunate",
+              "Triquetrum",
+              "Pisiform"
+            ],
+            "correctAnswer": "Scaphoid, Lunate, Triquetrum, Pisiform",
+            "explanation": "The proximal row of carpal bones from lateral (thumb side) to medial (pinky side) is: Scaphoid, Lunate, Triquetrum, Pisiform.",
+            "imageAsset": null,
+            "type": "sequence",
+            "matchPairs": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "world_2",
+    "title": "Special Tests",
+    "description": "Physical exam maneuvers",
+    "levels": [
+      {
+        "id": "w2_l1",
+        "title": "Knee Instability Tests",
+        "description": "ACL, PCL, and Meniscus diagnostic tests",
+        "xpReward": 50,
+        "questions": [
+          {
+            "id": "w2_l1_q1",
+            "question": "What is the most sensitive clinical test for diagnosing an acute ACL tear?",
+            "options": [
+              "Lachman Test",
+              "Anterior Drawer Test",
+              "Pivot Shift Test",
+              "McMurray Test"
+            ],
+            "correctAnswer": "Lachman Test",
+            "explanation": "The Lachman test, done at 20-30 degrees of knee flexion, is widely considered the most sensitive clinical exam for ACL integrity.",
+            "imageAsset": null,
+            "type": "mcq",
+            "matchPairs": null
+          },
+          {
+            "id": "w2_l1_q2",
+            "question": "Match the special test with its target anatomy:",
+            "options": [],
+            "correctAnswer": "matched",
+            "explanation": "Correct matches: Lachman tests ACL, McMurray tests Meniscus, Valgus tests MCL, Posterior Sag tests PCL.",
+            "imageAsset": null,
+            "type": "matchColumn",
+            "matchPairs": {
+              "Lachman Test": "ACL",
+              "McMurray Test": "Meniscus",
+              "Valgus Stress Test": "MCL",
+              "Posterior Sag Sign": "PCL"
+            }
+          },
+          {
+            "id": "w2_l1_q3",
+            "question": "A positive Thompson test is indicative of an Achilles tendon rupture.",
+            "options": [
+              "True",
+              "False"
+            ],
+            "correctAnswer": "True",
+            "explanation": "True! Squeezing the calf normally causes plantarflexion. Lack of plantarflexion (positive test) signifies a rupture.",
+            "imageAsset": null,
+            "type": "trueFalse",
+            "matchPairs": null
+          }
+        ]
+      },
+      {
+        "id": "w2_l2",
+        "title": "Shoulder Impingement",
+        "description": "Rotator cuff exam tests",
+        "xpReward": 50,
+        "questions": [
+          {
+            "id": "w2_l2_q1",
+            "question": "Pain on passive internal rotation of an abducted and forward-flexed shoulder describes which test?",
+            "options": [
+              "Hawkins-Kennedy Test",
+              "Neer Impingement Test",
+              "Empty Can Test",
+              "Speed Test"
+            ],
+            "correctAnswer": "Hawkins-Kennedy Test",
+            "explanation": "Hawkins-Kennedy pushes the supraspinatus tendon against the coracoacromial ligament, triggering impingement pain.",
+            "imageAsset": null,
+            "type": "mcq",
+            "matchPairs": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "world_3",
+    "title": "Fractures & Systems",
+    "description": "Classifications and Eponyms",
+    "levels": [
+      {
+        "id": "w3_l1",
+        "title": "Eponymous Upper Limb Fractures",
+        "description": "Colles, Smith, Monteggia, Galeazzi",
+        "xpReward": 50,
+        "questions": [
+          {
+            "id": "w3_l1_q1",
+            "question": "Which fracture is characterized by a fracture of the distal radius with dorsal displacement of the distal fragment?",
+            "options": [
+              "Colles' Fracture",
+              "Smith's Fracture",
+              "Galeazzi Fracture",
+              "Monteggia Fracture"
+            ],
+            "correctAnswer": "Colles' Fracture",
+            "explanation": "Colles' fracture shows classic 'dinner fork' deformity due to dorsal displacement. Smith's fracture has volar displacement.",
+            "imageAsset": null,
+            "type": "mcq",
+            "matchPairs": null
+          },
+          {
+            "id": "w3_l1_q2",
+            "question": "A Galeazzi fracture involves a fracture of the shaft of the radius with dislocation of the distal radioulnar joint (DRUJ).",
+            "options": [
+              "True",
+              "False"
+            ],
+            "correctAnswer": "True",
+            "explanation": "True! Remember GRIM: Galeazzi = Radius fracture + DRUJ dislocation. Monteggia = Ulna fracture + PRUJ dislocation.",
+            "imageAsset": null,
+            "type": "trueFalse",
+            "matchPairs": null
+          }
+        ]
+      }
+    ]
+  }
+]
