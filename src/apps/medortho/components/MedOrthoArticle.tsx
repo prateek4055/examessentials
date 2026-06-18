@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import googlePlayBadge from "@/assets/google-play-badge.png";
 import appStoreBadge from "@/assets/app-store-badge.png";
 import { getAppBySlug } from "../../medical/data/medicalAppsData";
+import AdSensePlaceholder from "./AdSensePlaceholder";
 
 export interface MedOrthoWikiArticle {
   id: string;
@@ -237,6 +238,7 @@ export const renderWikiContent = (content: string, accuracyHtml?: string, title?
   };
 
   let elementKey = 0;
+  let h2Count = 0;
   
   lines.forEach((line) => {
     // Intercept See Also Box
@@ -272,6 +274,15 @@ export const renderWikiContent = (content: string, accuracyHtml?: string, title?
       flushParagraph(elementKey++);
       const hTitle = h2Match[1];
       const id = hTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      
+      h2Count++;
+      // Dynamically inject an in-article ad unit right before the second major H2 heading
+      if (h2Count === 2) {
+        elements.push(
+          <AdSensePlaceholder key={`ad-in-article-${elementKey++}`} layout="in-article" />
+        );
+      }
+
       elements.push(
         <h2 key={`h2-${elementKey++}`} id={id} className="text-2xl font-bold mt-12 mb-6 pb-2.5 border-b scroll-mt-24 text-slate-800 dark:text-white font-sans flex items-center gap-2" style={{ borderBottomColor: appAccent ? `${appAccent}30` : "#4AADE430" }}>
           {hTitle}
@@ -562,6 +573,9 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
           </div>
         </div>
 
+        {/* Top Banner Ad Unit */}
+        <AdSensePlaceholder layout="banner" className="mb-8" />
+
         {/* Hero Image Demonstration */}
         {heroImageUrl && (
           <div className="my-8">
@@ -587,6 +601,9 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
         <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-slate-800 dark:prose-headings:text-white">
           {renderWikiContent(article.content, article.accuracy, article.title, article.category, app?.theme.primary, app?.theme.accent)}
         </div>
+
+        {/* Bottom Horizontal Ad Unit */}
+        <AdSensePlaceholder layout="multiplex" className="my-10" />
 
         {/* Dynamic App CTA Banner */}
         <div 
