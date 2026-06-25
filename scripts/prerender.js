@@ -283,104 +283,242 @@ async function runPrerender() {
   console.log(`✅ Loaded ${dbBlogPosts.length} blog posts from DB for pre-rendering.`);
   console.log(`✅ Loaded ${dbArticles.length} wiki articles from DB for pre-rendering.`);
 
-  // 1. Pre-render MedOrtho Landing Page (/medortho)
-  const medOrthoLandingOptions = {
-    title: 'MedOrtho — Orthopedic Special Tests & Clinical Learning App | Exam Essentials',
-    description: 'Master 700+ orthopedic special tests, surgical instruments, and clinical MCQs. The ultimate study and revision app for MBBS, BPT, NEET PG & FMGE students.',
-    keywords: 'orthopedic learning app, orthopedic special tests app, MBBS orthopedic app, physiotherapy orthopedic app, orthopedic MCQs, surgical instruments app, orthopedic examination app',
-    canonical: `${DOMAIN}/medortho`,
-    ogImage: `${DOMAIN}/og-image.png`,
-    schemas: [
-      {
-        "@context": "https://schema.org",
-        "@type": "MobileApplication",
-        "name": "MedOrtho",
-        "description": "Master 700+ orthopedic special tests, surgical instruments, and clinical MCQs.",
-        "applicationCategory": "HealthApplication",
-        "operatingSystem": "Android",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "INR"
-        }
+  // Define all medical apps to pre-render their landing pages
+  const appsList = [
+    {
+      id: "medortho",
+      slug: "medortho",
+      name: "MedOrtho",
+      tagline: "The Ultimate Orthopedic Learning Platform for Medical & Physiotherapy Students",
+      description: "Learn orthopedic special tests, surgical instruments, MCQs, image-based notes, and clinical concepts — all in one fast, modern, student-friendly app.",
+      longDescription: "MedOrtho is an advanced orthopedic learning app built for medical and physiotherapy students. It combines orthopedic special tests, surgical instruments, MCQs, image-based notes, and clinical revision tools into one clean and student-friendly platform.",
+      features: [
+        { icon: "Search", title: "Special Tests Database", description: "700+ orthopedic special tests with step-by-step procedures, positive findings, and clinical significance" },
+        { icon: "Bone", title: "Surgical Instruments Library", description: "700+ orthopedic and general surgery instruments with visual recognition support" },
+        { icon: "GraduationCap", title: "MCQs & Quiz System", description: "Topic-wise MCQs with clinical reasoning-based explanations for MBBS, BPT, NEET PG, FMGE, and USMLE" },
+        { icon: "BookOpen", title: "Image-Based Notes", description: "Fast revision notes covering fractures, dislocations, anatomy, and ligament injuries" },
+      ],
+      targetAudience: ["MBBS Students", "BPT & Physiotherapy Students", "Medical Interns", "Orthopedic Residents", "NEET PG & FMGE Aspirants", "USMLE Students"],
+      faqs: [
+        { question: "What is MedOrtho?", answer: "MedOrtho is an advanced orthopedic learning app built for medical and physiotherapy students that combines 700+ special tests, 700+ surgical instruments, MCQs, and image-based notes." },
+        { question: "Does the app cover both tests and instruments?", answer: "Yes! MedOrtho includes one of the largest collections on Android: 700+ orthopedic special tests and 700+ surgical instruments with high-resolution visual guides." }
+      ],
+      seo: {
+        title: "MedOrtho — Orthopedic Special Tests & Clinical Learning App | Exam Essentials",
+        description: "Master 700+ orthopedic special tests, surgical instruments, and clinical MCQs. The ultimate study and revision app for MBBS, BPT, NEET PG & FMGE students.",
+        keywords: "orthopedic learning app, orthopedic special tests app, MBBS orthopedic app, physiotherapy orthopedic app, orthopedic MCQs, surgical instruments app, orthopedic examination app"
       }
-    ],
-    bodyContent: `
+    },
+    {
+      id: "medcardio",
+      slug: "medcardio",
+      name: "MedCardio",
+      tagline: "Cardiology Education & ECG Interpretation Made Simple",
+      description: "Learn cardiology concepts, master ECG interpretation, and understand cardiac pathologies with interactive visuals.",
+      longDescription: "MedCardio brings cardiology education to your fingertips. From basic cardiac anatomy to advanced ECG interpretation, arrhythmia recognition, and heart sound auscultation — everything you need to excel in cardiology exams.",
+      features: [
+        { icon: "Heart", title: "ECG Mastery", description: "Learn to read and interpret ECGs with interactive tracing guides and clinical correlations" },
+        { icon: "Activity", title: "Heart Sounds", description: "Audio-visual guide to normal and abnormal heart sounds with phonocardiograms" },
+        { icon: "BookOpen", title: "Cardiac Pathology", description: "Comprehensive notes on valvular diseases, cardiomyopathies, and congenital defects" },
+        { icon: "Stethoscope", title: "Clinical Cases", description: "Real-world case studies with differential diagnosis and management plans" }
+      ],
+      targetAudience: ["Medical Students", "Cardiology Residents", "Nursing Students", "Emergency Medicine Professionals"],
+      faqs: [
+        { question: "What is MedCardio?", answer: "MedCardio is an upcoming cardiology education app that teaches ECG interpretation, heart sounds auscultation, and cardiac pathology through interactive visuals and clinical case studies." },
+        { question: "Will MedCardio help with ECG interpretation?", answer: "Absolutely! MedCardio features an interactive ECG library with tracing guides, arrhythmia recognition tools, and clinical correlations to help you master ECG reading." }
+      ],
+      seo: {
+        title: "MedCardio – Cardiology Education & ECG Interpretation App | Exam Essentials",
+        description: "Master ECG interpretation, heart sounds & cardiac pathology. The ultimate cardiology learning app for medical students, coming soon from Exam Essentials.",
+        keywords: "cardiology app, ECG interpretation, heart sounds app, cardiac education, medical student cardiology"
+      }
+    },
+    {
+      id: "medneuro",
+      slug: "medneuro",
+      name: "MedNeuro",
+      tagline: "Neuroscience & Neurological Examination Simplified",
+      description: "Explore neuroanatomy, master neurological examinations, and understand neurological conditions with clarity.",
+      longDescription: "MedNeuro is your gateway to neurological sciences. From cranial nerve examination to reflex testing, from stroke localization to neuropharmacology — every concept is broken down into easy-to-understand visual guides.",
+      features: [
+        { icon: "Brain", title: "Neuroanatomy Atlas", description: "Interactive brain anatomy with labeled structures, pathways, and clinical correlations" },
+        { icon: "Eye", title: "Cranial Nerves", description: "Complete guide to all 12 cranial nerves — examination techniques, lesions, and testing" },
+        { icon: "Zap", title: "Reflex Testing", description: "Step-by-step guide to superficial and deep tendon reflex examination and grading" },
+        { icon: "FileText", title: "Case-Based Learning", description: "Neurological case scenarios with localization exercises and diagnosis practice" }
+      ],
+      targetAudience: ["Medical Students", "Neurology Residents", "Physiotherapy Students", "Occupational Therapists"],
+      faqs: [
+        { question: "What is MedNeuro?", answer: "MedNeuro is an upcoming neuroscience education app that covers neuroanatomy, cranial nerve examination, reflex testing, and neurological case studies with interactive visual guides." },
+        { question: "Does MedNeuro cover cranial nerve examination?", answer: "Yes! MedNeuro includes a complete guide to all 12 cranial nerves with examination techniques, common lesion patterns, and bedside testing methods." }
+      ],
+      seo: {
+        title: "MedNeuro — Neurology Anatomy Poster | Brain, Nerves, CNS Chart PDF | Exam Essentials",
+        description: "Crystal-clear neurology poster covering CNS, PNS, brain anatomy, cranial nerves & dermatomes. Perfect for MBBS, NEET & medical students. Digital download — instant PDF delivery worldwide.",
+        keywords: "neurology app, neuroanatomy, cranial nerve examination, neurological tests, brain anatomy app, neuro education, medical student neurology"
+      }
+    },
+    {
+      id: "medphysio",
+      slug: "medphysio",
+      name: "MedPhysio",
+      tagline: "Physiotherapy Techniques & Rehabilitation Excellence",
+      description: "Master physiotherapy techniques, exercise prescriptions, and rehabilitation protocols with evidence-based content.",
+      longDescription: "MedPhysio is the ultimate physiotherapy companion app. From manual therapy techniques to therapeutic exercises, from electrotherapy modalities to rehabilitation protocols — everything is organized for quick clinical reference and exam preparation.",
+      features: [
+        { icon: "Dumbbell", title: "Exercise Library", description: "500+ therapeutic exercises with proper form, sets, reps, and progression guidelines" },
+        { icon: "Hand", title: "Manual Therapy", description: "Techniques for joint mobilization, soft tissue manipulation, and myofascial release" },
+        { icon: "Waves", title: "Electrotherapy", description: "Complete guide to IFT, TENS, ultrasound, SWD, and other electrotherapy modalities" },
+        { icon: "ClipboardList", title: "Rehab Protocols", description: "Evidence-based rehabilitation protocols for common musculoskeletal conditions" }
+      ],
+      targetAudience: ["Physiotherapy Students", "BPT Interns", "Sports Physiotherapists", "Rehabilitation Specialists"],
+      faqs: [
+        { question: "What is MedPhysio?", answer: "MedPhysio is an upcoming physiotherapy education app featuring 500+ therapeutic exercises, manual therapy techniques, electrotherapy guides, and evidence-based rehabilitation protocols." },
+        { question: "Is MedPhysio useful for BPT students?", answer: "Absolutely! MedPhysio is specifically designed for BPT students, interns, sports physiotherapists, and rehabilitation specialists with content aligned to university curricula." }
+      ],
+      seo: {
+        title: "MedPhysio – Physiotherapy Techniques & Rehabilitation App | Exam Essentials",
+        description: "Master physiotherapy exercises, manual therapy & rehab protocols. The #1 physiotherapy education app for BPT students, coming soon.",
+        keywords: "physiotherapy app, BPT study app, exercise prescription, manual therapy techniques, rehabilitation protocols"
+      }
+    },
+    {
+      id: "medradio",
+      slug: "medradio",
+      name: "MedRadio",
+      tagline: "Radiology Learning & Medical Imaging Interpretation",
+      description: "Learn to read X-rays, CT scans, and MRIs with structured approach and clinical correlations.",
+      longDescription: "MedRadio transforms radiology learning with a systematic approach to medical imaging. Learn to identify normal anatomy on various imaging modalities, spot common pathologies, and write radiological reports.",
+      features: [
+        { icon: "Scan", title: "X-ray Reading", description: "Systematic approach to reading chest, skeletal, and abdominal X-rays with annotated examples" },
+        { icon: "Layers", title: "CT & MRI Guide", description: "Learn cross-sectional anatomy and common pathology findings on CT and MRI scans" },
+        { icon: "FileImage", title: "Image Library", description: "Curated collection of radiological images with diagnosis and discussion" },
+        { icon: "PenTool", title: "Report Writing", description: "Templates and guidelines for writing structured radiological reports" }
+      ],
+      targetAudience: ["Radiology Residents", "Medical Students", "Emergency Medicine", "Orthopedic Surgeons"],
+      faqs: [
+        { question: "What is MedRadio?", answer: "MedRadio is an upcoming radiology education app that teaches systematic X-ray, CT, and MRI interpretation with annotated images, report templates, and a quiz mode for practice." },
+        { question: "Does MedRadio cover X-ray interpretation?", answer: "Yes! MedRadio includes a systematic approach to reading chest X-rays, skeletal X-rays, and abdominal X-rays with annotated examples." }
+      ],
+      seo: {
+        title: "MedRadio – Radiology Learning & Medical Imaging App | Exam Essentials",
+        description: "Learn X-ray, CT & MRI interpretation with annotated images. The comprehensive radiology education app for medical students, coming soon.",
+        keywords: "radiology app, X-ray interpretation, CT scan learning, MRI reading, medical imaging app"
+      }
+    },
+    {
+      id: "medpharma",
+      slug: "medpharma",
+      name: "MedPharma",
+      tagline: "Pharmacology Made Easy — Drugs, Mechanisms & Clinical Use",
+      description: "Simplify pharmacology with organized drug classifications, mechanisms of action, and clinical applications.",
+      longDescription: "MedPharma takes the complexity out of pharmacology. Every drug class is organized with clear mechanisms of action, indications, contraindications, side effects, and drug interactions.",
+      features: [
+        { icon: "Pill", title: "Drug Database", description: "Comprehensive database of drugs organized by class with dosages and interactions" },
+        { icon: "GitBranch", title: "Mechanism Maps", description: "Visual flowcharts showing drug mechanisms of action at receptor and molecular level" },
+        { icon: "Table", title: "Comparison Tables", description: "Side-by-side drug comparisons for quick revision and exam preparation" },
+        { icon: "Lightbulb", title: "Visual Mnemonics", description: "Memory aids and mnemonics for remembering drug names, side effects, and classes" }
+      ],
+      targetAudience: ["Medical Students", "Pharmacy Students", "Nursing Students", "NEET PG Aspirants"],
+      faqs: [
+        { question: "What is MedPharma?", answer: "MedPharma is an upcoming pharmacology app that simplifies drug learning with organized classifications, visual mechanism maps, comparison tables, and mnemonics for easy memorization." },
+        { question: "Does MedPharma include drug mnemonics?", answer: "Yes! MedPharma features visual mnemonics and memory aids for drug names, side effects, drug interactions, and pharmacological classifications." }
+      ],
+      seo: {
+        title: "MedPharma – Pharmacology Education & Drug Reference App | Exam Essentials",
+        description: "Master pharmacology with organized drug data, visual mnemonics & mechanism maps. The easy pharmacology app for medical & pharmacy students, coming soon.",
+        keywords: "pharmacology app, drug reference app, pharmacology mnemonics, drug mechanism of action"
+      }
+    }
+  ];
+
+  function buildAppLandingHtml(app) {
+    const featuresHtml = app.features.map(f => `
+      <li class="flex items-start gap-3">
+        <span class="text-green-600 font-bold text-lg">&check;</span>
+        <div>
+          <strong class="text-gray-900">${escapeHtml(f.title)}</strong>
+          <p class="text-gray-500 text-sm leading-relaxed">${escapeHtml(f.description)}</p>
+        </div>
+      </li>
+    `).join('\n');
+
+    const audienceHtml = app.targetAudience.map(a => `
+      <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">${escapeHtml(a)}</span>
+    `).join('\n');
+
+    const faqsHtml = app.faqs.map(faq => `
+      <div>
+        <h4 class="font-bold text-gray-800">${escapeHtml(faq.question)}</h4>
+        <p class="text-gray-500 text-sm mt-1 leading-relaxed">${escapeHtml(faq.answer)}</p>
+      </div>
+    `).join('\n');
+
+    return `
       <div class="max-w-4xl mx-auto px-4 py-8">
         <div class="text-center py-12 md:py-20 border-b border-gray-100 mb-12">
-          <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">MedOrtho</h1>
+          <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">${escapeHtml(app.name)}</h1>
           <p class="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed mb-6">
-            The Ultimate Orthopedic Learning Platform for Medical & Physiotherapy Students
+            ${escapeHtml(app.tagline)}
           </p>
+          ${app.slug === 'medortho' ? `
           <div class="flex justify-center gap-4">
             <a href="/medortho/special-tests" class="px-6 py-3 bg-blue-900 text-white rounded-full font-bold shadow-md hover:bg-blue-800 transition-colors">Open Special Tests Directory</a>
           </div>
+          ` : ''}
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           <div>
             <h2 class="text-2xl font-bold mb-6 text-gray-900">Key Features</h2>
             <ul class="space-y-4">
-              <li class="flex items-start gap-3">
-                <span class="text-green-600 font-bold text-lg">&check;</span>
-                <div>
-                  <strong class="text-gray-900">Special Tests Database</strong>
-                  <p class="text-gray-500 text-sm leading-relaxed">700+ orthopedic special tests with step-by-step procedures, positive findings, and clinical significance.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-green-600 font-bold text-lg">&check;</span>
-                <div>
-                  <strong class="text-gray-900">Surgical Instruments Library</strong>
-                  <p class="text-gray-500 text-sm leading-relaxed">700+ orthopedic and general surgery instruments with visual recognition support.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-green-600 font-bold text-lg">&check;</span>
-                <div>
-                  <strong class="text-gray-900">MCQs & Quiz System</strong>
-                  <p class="text-gray-500 text-sm leading-relaxed">Topic-wise MCQs with clinical reasoning-based explanations for MBBS, BPT, NEET PG, FMGE, and USMLE.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-green-600 font-bold text-lg">&check;</span>
-                <div>
-                  <strong class="text-gray-900">Image-Based Notes</strong>
-                  <p class="text-gray-500 text-sm leading-relaxed">Fast revision notes covering fractures, dislocations, anatomy, and ligament injuries.</p>
-                </div>
-              </li>
+              ${featuresHtml}
             </ul>
           </div>
 
           <div>
             <h2 class="text-2xl font-bold mb-6 text-gray-900">Target Audience</h2>
             <div class="flex flex-wrap gap-2 mb-8">
-              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">MBBS Students</span>
-              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">BPT & Physiotherapy Students</span>
-              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">Medical Interns</span>
-              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">Orthopedic Residents</span>
-              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">NEET PG & FMGE Aspirants</span>
-              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">USMLE Students</span>
+              ${audienceHtml}
             </div>
 
             <h2 class="text-2xl font-bold mb-6 text-gray-900">Frequently Asked Questions</h2>
             <div class="space-y-4">
-              <div>
-                <h4 class="font-bold text-gray-800">What is MedOrtho?</h4>
-                <p class="text-gray-500 text-sm mt-1 leading-relaxed">MedOrtho is an advanced orthopedic learning app built for medical and physiotherapy students that combines 700+ special tests, 700+ surgical instruments, MCQs, and image-based notes.</p>
-              </div>
-              <div>
-                <h4 class="font-bold text-gray-800">Does the app cover both tests and instruments?</h4>
-                <p class="text-gray-500 text-sm mt-1 leading-relaxed">Yes! MedOrtho includes one of the largest collections on Android: 700+ orthopedic special tests and 700+ surgical instruments with high-resolution visual guides.</p>
-              </div>
+              ${faqsHtml}
             </div>
           </div>
         </div>
       </div>
-    `
-  };
-  writePage('medortho', generatePageHtml(templateHtml, medOrthoLandingOptions));
-  console.log('✅ Pre-rendered /medortho');
+    `;
+  }
+
+  // Loop through all apps to pre-render their landing pages
+  appsList.forEach(app => {
+    const pageOptions = {
+      title: app.seo.title,
+      description: app.seo.description,
+      keywords: app.seo.keywords,
+      canonical: `${DOMAIN}/${app.slug}`,
+      ogImage: `${DOMAIN}/og-image.png`,
+      schemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "MobileApplication",
+          "name": app.name,
+          "description": app.description,
+          "applicationCategory": "HealthApplication",
+          "operatingSystem": "Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          }
+        }
+      ],
+      bodyContent: buildAppLandingHtml(app)
+    };
+    writePage(app.slug, generatePageHtml(templateHtml, pageOptions));
+    console.log(`✅ Pre-rendered /${app.slug}`);
+  });
 
   // 2. Pre-render Special Tests Directory Page (/medortho/special-tests)
   const allTestsContent = testsList.map(t => {
