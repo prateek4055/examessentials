@@ -6,6 +6,7 @@ import DOMPurify from "dompurify";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import AdSensePlaceholder from "@/components/AdSensePlaceholder";
 import { blogPosts, BlogPost, getCategoryColor } from "@/lib/blogData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -371,6 +372,9 @@ const BlogPostPage = () => {
               </div>
             </motion.header>
 
+            {/* AdSense Top Banner Ad */}
+            <AdSensePlaceholder layout="banner" className="mb-12" />
+
             {/* Article Content */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -390,7 +394,15 @@ const BlogPostPage = () => {
                 prose-hr:border-white/10 prose-hr:my-16"
               dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
             />
+
+            {/* AdSense In-Article Ad */}
+            <AdSensePlaceholder layout="in-article" className="my-12" />
           </article>
+
+          {/* AdSense Bottom Multiplex Ad */}
+          <div className="container mx-auto px-4 max-w-4xl">
+            <AdSensePlaceholder layout="multiplex" className="my-10" />
+          </div>
 
           {/* Related Posts */}
             <div className="container mx-auto px-4 mt-24 border-t border-white/10 pt-16">

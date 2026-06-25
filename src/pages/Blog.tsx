@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { blogPosts as staticBlogPosts, BlogPost, categories, getCategoryColor } from "@/lib/blogData";
 import { supabase } from "@/integrations/supabase/client";
+import AdSensePlaceholder from "@/components/AdSensePlaceholder";
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -122,6 +123,9 @@ const Blog = () => {
           ))}
         </div>
 
+        {/* AdSense Banner Ad */}
+        <AdSensePlaceholder layout="banner" className="mb-12" />
+
         {/* Blog Post Grid */}
         {filteredPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-12">
@@ -204,6 +208,9 @@ const Blog = () => {
             </button>
           </div>
         )}
+
+        {/* AdSense Multiplex Ad at bottom */}
+        <AdSensePlaceholder layout="multiplex" className="my-8" />
       </main>
 
       <Footer />
