@@ -1,0 +1,11 @@
+[
+  {
+    "id": "epidural_hematoma",
+    "description": "Spot the lenticular hyperdense region characteristic of an Epidural Hematoma.",
+    "imageUrl": "https://raw.githubusercontent.com/prateek4055/examessentials/main/public/medneuro/games/images/epidural.png",
+    "localAsset": "assets/images/asst/medortho.webp",
+    "targetX": 0.5,
+    "targetY": 0.35,
+    "tapTolerance": 0.12
+  }
+]

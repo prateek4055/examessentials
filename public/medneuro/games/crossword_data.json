@@ -1,0 +1,21 @@
+{
+  "gridSize": 8,
+  "clues": [
+    {
+      "number": "1",
+      "direction": "ACROSS",
+      "text": "Extension of the big toe upon stimulation of the sole of the foot (8)",
+      "answer": "BABINSKI",
+      "row": 0,
+      "col": 0
+    },
+    {
+      "number": "2",
+      "direction": "DOWN",
+      "text": "Cranial nerve responsible for mastication and facial sensation (10)",
+      "answer": "TRIGEMINAL",
+      "row": 0,
+      "col": 2
+    }
+  ]
+}

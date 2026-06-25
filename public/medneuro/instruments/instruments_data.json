@@ -1,0 +1,12 @@
+{
+  "instruments": [
+    {
+      "id": "reflex_hammer",
+      "name": "Tromner Reflex Hammer",
+      "groupName": "Diagnostic Tools",
+      "description": "Dual-headed mallet designed for eliciting myotatic and cutaneous reflexes.",
+      "use": "Used in general neurological examinations to test muscle reflexes.",
+      "imageName": "tromner_hammer.png"
+    }
+  ]
+}

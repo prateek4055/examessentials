@@ -1,0 +1,6 @@
+[
+  {"text1": "Babinski Sign", "text2": "UMN Lesion", "pairId": 1},
+  {"text1": "Broca's Area", "text2": "Expressive Aphasia", "pairId": 2},
+  {"text1": "CN VII Palsy", "text2": "Bell's Palsy", "pairId": 3},
+  {"text1": "Romberg Test", "text2": "Proprioception", "pairId": 4}
+]

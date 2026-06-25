@@ -1,0 +1,12 @@
+[
+  {
+    "id": "babinski_sign",
+    "name": "Babinski Sign",
+    "category": "Reflexes",
+    "description": "Stimulate the lateral aspect of the sole of the foot from heel to toe to assess for upper motor neuron lesions.",
+    "indication": "Suspected pyramidal tract pathology.",
+    "positiveSign": "Dorsiflexion of the great toe and fanning of other toes.",
+    "image1": "",
+    "image2": ""
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "brown_sequard",
+    "name": "Brown-Séquard Syndrome",
+    "type": "Spine",
+    "region": "Cervical/Thoracic",
+    "category": "Incomplete Cord Injury",
+    "description": "Hemisection of the spinal cord resulting in ipsilateral motor loss and contralateral pain/temperature loss.",
+    "clinicalFeatures": "Ipsilateral spastic paresis, loss of proprioception, contralateral loss of pain and temperature sensation.",
+    "management": "Surgical stabilization, steroid therapy, and intense rehabilitation."
+  }
+]
