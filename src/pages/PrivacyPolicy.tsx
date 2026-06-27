@@ -199,7 +199,17 @@ const PrivacyPolicy = () => {
             <div className="bg-muted/50 p-4 rounded-lg border border-border mt-4">
               <p className="font-medium text-foreground">Data Deletion Request</p>
               <p className="mt-2">
-                If you wish to delete your account and all associated data, please contact us at{" "}
+                If you wish to delete your account and all associated data, you can do so directly from within the <strong>MedOrtho</strong> application:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-2">
+                <li>Open the app and navigate to the <strong>About Us</strong> page (available in the side navigation drawer).</li>
+                <li>Tap on the <strong>Delete Account</strong> option (this option is visible only when you are signed in).</li>
+              </ul>
+              <div className="bg-destructive/10 border border-destructive/20 p-4 rounded-xl text-destructive-foreground mt-4">
+                <strong>Warning:</strong> Deleting your account will permanently delete all your progress, profile, and winnings across all MedApps (MedOrtho, MedNeuro, MedPhysio, MedCardio, etc.). This action is irreversible.
+              </div>
+              <p className="mt-4">
+                Alternatively, you can request account deletion by emailing us at{" "}
                 <a href="mailto:examessentials.info@gmail.com" className="text-primary hover:underline">
                   examessentials.info@gmail.com
                 </a>{" "}

@@ -1000,6 +1000,23 @@ async function runPrerender() {
       `
     },
     {
+      route: 'privacy-policy',
+      title: "Privacy Policy | Exam Essentials",
+      description: "Privacy Policy for Exam Essentials - Learn how we collect, use, and protect your personal information including account deletion instructions.",
+      keywords: "privacy policy, data protection, personal information, exam essentials privacy, medortho privacy",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Privacy Policy & Account Deletion</h1>
+          <p class="text-lg text-slate-300 leading-relaxed mb-6">
+            We value your privacy and provide a simple way to delete your account. If you want to delete your account, please open the MedOrtho app, navigate to the <strong>About Us</strong> page, and select the <strong>Delete Account</strong> option.
+          </p>
+          <div class="bg-amber-500/10 border border-amber-500/20 p-4 rounded-xl text-amber-200 mb-6">
+            <strong>Warning:</strong> Deleting your account will permanently delete all your progress, profile, and winnings across all MedApps (MedOrtho, MedNeuro, MedPhysio, MedCardio, etc.). This action is irreversible.
+          </div>
+        </div>
+      `
+    },
+    {
       route: 'contact',
       title: "Contact Us - Exam Essentials | Customer Support",
       description: "Contact Exam Essentials for questions about handwritten notes for Class 11 & 12. WhatsApp: +91 9460970342. Email: examessentials.info@gmail.com. We're here to help!",
