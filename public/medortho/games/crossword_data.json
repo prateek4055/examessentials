@@ -1,0 +1,37 @@
+{
+  "gridSize": 8,
+  "clues": [
+    {
+      "number": "1",
+      "direction": "ACROSS",
+      "text": "Gold standard clinical test for acute ACL tears (7)",
+      "answer": "LACHMAN",
+      "row": 0,
+      "col": 0
+    },
+    {
+      "number": "2",
+      "direction": "ACROSS",
+      "text": "Primary ligament preventing anterior translation of the tibia (3)",
+      "answer": "ACL",
+      "row": 3,
+      "col": 2
+    },
+    {
+      "number": "1",
+      "direction": "DOWN",
+      "text": "Sharp instrument used for joint aspiration or injections (6)",
+      "answer": "NEEDLE",
+      "row": 0,
+      "col": 6
+    },
+    {
+      "number": "2",
+      "direction": "DOWN",
+      "text": "Joint consisting of the talus, tibia, and fibula (5)",
+      "answer": "ANKLE",
+      "row": 3,
+      "col": 2
+    }
+  ]
+}
