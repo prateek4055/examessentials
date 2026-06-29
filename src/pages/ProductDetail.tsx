@@ -556,6 +556,25 @@ const ProductDetail = () => {
                   <MessageCircle className="w-5 h-5 text-emerald-500" />
                   Enquire on WhatsApp
                 </a>
+
+                {/* Physics Wallah Promotion Card */}
+                <div className="mt-6 p-4 rounded-xl border border-dashed border-primary/40 bg-gradient-to-r from-primary/5 to-purple-500/5">
+                  <h4 className="font-display font-bold text-sm text-foreground flex items-center gap-1.5">
+                    <span>🎓 Get Physics Wallah Batch Discounts!</span>
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    Planning to join a PW Batch? Chat with us to get exclusive discount codes + free notes.
+                  </p>
+                  <a
+                    href="https://api.whatsapp.com/send?phone=919460970342&text=Hi%20Prateek%2C%20I%27m%20interested%20in%20buying%20a%20PW%20batch%20and%20want%20to%20claim%20my%20discount!"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-primary/10 border border-primary/20 rounded-lg text-primary text-xs font-body font-medium hover:bg-primary/20 transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Claim PW Discount via Chat
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>

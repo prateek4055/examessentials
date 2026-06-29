@@ -396,6 +396,29 @@ const Cart = () => {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Physics Wallah Promotion Banner */}
+                <Card className="mt-4 border-dashed border-primary/40 bg-gradient-to-r from-primary/5 to-purple-500/5">
+                  <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <h4 className="font-display font-bold text-lg text-foreground flex items-center gap-2">
+                        <span>🎓 Get Physics Wallah (PW) Batch Discounts!</span>
+                      </h4>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Planning to enroll in a PW Batch? Chat with us directly on WhatsApp to get exclusive discounts + free notes on your purchase!
+                      </p>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground flex-shrink-0"
+                      onClick={() => {
+                        window.open("https://api.whatsapp.com/send?phone=919460970342&text=Hi%20Prateek%2C%20I%27m%20interested%20in%20buying%20a%20PW%20batch%20and%20want%20to%20claim%20my%20discount!", "_blank");
+                      }}
+                    >
+                      Chat on WhatsApp
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             )}
           </div>
