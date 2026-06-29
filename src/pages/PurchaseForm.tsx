@@ -21,7 +21,7 @@ import {
 import { fetchProductById, Product } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { clearCart, comboConfigs } from "@/lib/cartUtils";
+import { clearCart, comboConfigs, mindMapsComboConfigs, formulaSheetComboConfigs, ComboConfig } from "@/lib/cartUtils";
 import PaymentSuccessModal from "@/components/PaymentSuccessModal";
 
 declare global {
@@ -96,7 +96,18 @@ const PurchaseForm = () => {
   const cartTotal = parseInt(searchParams.get("total") || "0");
   const appliedComboId = searchParams.get("combo") || "";
   const appliedPromo = searchParams.get("promo") || "";
-  const appliedCombo = comboConfigs.find(c => c.id === appliedComboId);
+  
+  // Find all combos applied to the cart
+  const appliedComboIds = appliedComboId ? appliedComboId.split(",") : [];
+  const allCombos = [...mindMapsComboConfigs, ...formulaSheetComboConfigs];
+  const appliedCombos = appliedComboIds
+    .map(cId => {
+      const baseId = cId.replace(/-\d+$/, ""); // Strip class suffix if present
+      return allCombos.find(c => c.id === baseId);
+    })
+    .filter((c): c is ComboConfig => !!c);
+
+  const appliedCombo = appliedCombos[0] || null; // for backward compatibility/single checks
 
   // Legacy single product combo support
   const comboType = searchParams.get("combo") || "single";
@@ -170,7 +181,7 @@ const PurchaseForm = () => {
   };
 
   const getDiscount = () => {
-    if (isCartCheckout && appliedCombo) {
+    if (isCartCheckout && (appliedCombos.length > 0 || appliedPromo)) {
       return getSubtotal() - cartTotal;
     }
     if (!isCartCheckout && comboType !== "single" && comboPrice > 0) {
@@ -599,12 +610,14 @@ const PurchaseForm = () => {
                 </h2>
 
                 {/* Combo Applied Badge */}
-                {appliedCombo && (
-                  <div className="mb-4 p-3 rounded-lg bg-accent/10 border border-accent/20">
-                    <div className="flex items-center gap-2 text-accent">
-                      <Sparkles className="w-4 h-4" />
-                      <span className="font-body font-semibold text-sm">{appliedCombo.label} Applied!</span>
-                    </div>
+                {appliedCombos.length > 0 && (
+                  <div className="mb-4 p-3 rounded-lg bg-accent/10 border border-accent/20 space-y-1.5">
+                    {appliedCombos.map((combo, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-accent">
+                        <Sparkles className="w-4 h-4" />
+                        <span className="font-body font-semibold text-sm">{combo.label} Applied!</span>
+                      </div>
+                    ))}
                   </div>
                 )}
 
@@ -621,7 +634,7 @@ const PurchaseForm = () => {
                             {cartProduct.subject} • Class {cartProduct.class}
                           </p>
                         </div>
-                        <span className={`font-body ${appliedCombo ? "text-muted-foreground line-through text-sm" : "font-medium text-foreground"}`}>
+                        <span className={`font-body ${appliedCombos.length > 0 ? "text-muted-foreground line-through text-sm" : "font-medium text-foreground"}`}>
                           ₹{cartProduct.price}
                         </span>
                       </div>
@@ -656,7 +669,7 @@ const PurchaseForm = () => {
                     <div className="flex justify-between items-center text-sm">
                       <span className="font-body text-accent flex items-center gap-1">
                         <Tag className="w-3 h-3" />
-                        {appliedCombo?.label || "Combo"} Discount
+                        {appliedCombos.length > 0 ? appliedCombos.map(c => c.label).join(" & ") : "Combo"} Discount
                       </span>
                       <span className="font-body text-accent">
                         -₹{getDiscount()}

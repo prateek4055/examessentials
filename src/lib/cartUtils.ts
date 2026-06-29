@@ -128,6 +128,7 @@ export interface ProductForCalculation {
   subject: string;
   price: number;
   category?: string;
+  class?: string;
 }
 
 // Calculate combo for a single category
@@ -202,39 +203,61 @@ export const calculateCartTotal = (
   products: ProductForCalculation[],
   promoCode?: string
 ): CartCalculation => {
-  // Group products by category
-  const mindmapProducts = products.filter(p => p.category === "mindmaps");
-  const formulaSheetProducts = products.filter(p => p.category === "formula-sheet" || !p.category);
-  const otherProducts = products.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet" && p.category);
+  // Group products by class first
+  const productsByClass: { [key: string]: ProductForCalculation[] } = {};
+  products.forEach(p => {
+    const cls = p.class || "default";
+    if (!productsByClass[cls]) {
+      productsByClass[cls] = [];
+    }
+    productsByClass[cls].push(p);
+  });
 
-  // Calculate combos for each category separately
-  const mindmapResult = mindmapProducts.length > 0
-    ? calculateCategoryCombo(mindmapProducts, "mindmaps")
-    : { items: [], combos: [], comboTotal: 0, originalTotal: 0 };
-
-  const formulaResult = formulaSheetProducts.length > 0
-    ? calculateCategoryCombo(formulaSheetProducts, "formula-sheet")
-    : { items: [], combos: [], comboTotal: 0, originalTotal: 0 };
-
-  // Other products have no combos
-  const otherItems = otherProducts.map(p => ({
-    productId: p.id,
-    subject: p.subject,
-    originalPrice: p.price,
-    finalPrice: p.price,
-    inCombo: false,
-    comboCategory: undefined,
-  }));
-  const otherTotal = otherProducts.reduce((sum, p) => sum + p.price, 0);
-
-  // Combine all results
-  const allItems = [...mindmapResult.items, ...formulaResult.items, ...otherItems];
+  const allItems: CartCalculation['items'] = [];
   const appliedCombos: ComboConfig[] = [];
-  appliedCombos.push(...mindmapResult.combos);
-  appliedCombos.push(...formulaResult.combos);
+  let subtotal = 0;
+  let total = 0;
 
-  let subtotal = mindmapResult.originalTotal + formulaResult.originalTotal + otherTotal;
-  let total = mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
+  Object.entries(productsByClass).forEach(([classLevel, classProducts]) => {
+    const mindmapProducts = classProducts.filter(p => p.category === "mindmaps");
+    const formulaSheetProducts = classProducts.filter(p => p.category === "formula-sheet" || !p.category);
+    const otherProducts = classProducts.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet" && p.category);
+
+    const mindmapResult = mindmapProducts.length > 0
+      ? calculateCategoryCombo(mindmapProducts, "mindmaps")
+      : { items: [], combos: [], comboTotal: 0, originalTotal: 0 };
+
+    const formulaResult = formulaSheetProducts.length > 0
+      ? calculateCategoryCombo(formulaSheetProducts, "formula-sheet")
+      : { items: [], combos: [], comboTotal: 0, originalTotal: 0 };
+
+    const otherItems = otherProducts.map(p => ({
+      productId: p.id,
+      subject: p.subject,
+      originalPrice: p.price,
+      finalPrice: p.price,
+      inCombo: false,
+      comboCategory: undefined,
+    }));
+    const otherTotal = otherProducts.reduce((sum, p) => sum + p.price, 0);
+    const otherOriginalTotal = otherProducts.reduce((sum, p) => sum + p.price, 0);
+
+    // Dynamic labelling of combos to include class if available
+    const processedCombos = [...mindmapResult.combos, ...formulaResult.combos].map(combo => {
+      const displayClass = classLevel !== "default" ? ` (Class ${classLevel})` : "";
+      return {
+        ...combo,
+        id: `${combo.id}-${classLevel}`,
+        label: `${combo.label}${displayClass}`,
+      };
+    });
+
+    allItems.push(...mindmapResult.items, ...formulaResult.items, ...otherItems);
+    appliedCombos.push(...processedCombos);
+    subtotal += mindmapResult.originalTotal + formulaResult.originalTotal + otherOriginalTotal;
+    total += mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
+  });
+
   let discount = subtotal - total;
 
   // Apply Promo Code discount AFTER combo discount
