@@ -104,7 +104,7 @@ const ProductDetail = () => {
   };
 
   // Check if product is a Mind Map
-  const isMindMap = product?.category === "mindmaps";
+  const isMindMap = product?.category === "mindmaps" || product?.title.toLowerCase().includes("mindmap");
 
   // Handle Mind Maps combo selection from the dedicated section
   const handleMindMapsComboSelect = (comboProductIds: string[]) => {
