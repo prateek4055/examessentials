@@ -129,6 +129,7 @@ export interface ProductForCalculation {
   price: number;
   category?: string;
   class?: string;
+  title?: string;
 }
 
 // Calculate combo for a single category
@@ -203,9 +204,32 @@ export const calculateCartTotal = (
   products: ProductForCalculation[],
   promoCode?: string
 ): CartCalculation => {
-  // Group products by class first
+  // Normalize categories based on category field and title keyword fallback
+  const normalizedProducts = products.map(p => {
+    let normCat = p.category;
+    if (!normCat || normCat === "null" || normCat === "undefined") {
+      const titleLower = p.title?.toLowerCase() || "";
+      if (titleLower.includes("mindmap")) {
+        normCat = "mindmaps";
+      } else if (titleLower.includes("formula") || titleLower.includes("handwritten")) {
+        normCat = "formula-sheet";
+      } else {
+        normCat = "formula-sheet"; // default fallback for examessentials notes
+      }
+    }
+    // Handle "handwritten-notes" as formula-sheet combos
+    if (normCat === "handwritten-notes") {
+      normCat = "formula-sheet";
+    }
+    return {
+      ...p,
+      category: normCat
+    };
+  });
+
+  // Group products by class first using normalizedProducts
   const productsByClass: { [key: string]: ProductForCalculation[] } = {};
-  products.forEach(p => {
+  normalizedProducts.forEach(p => {
     const cls = p.class || "default";
     if (!productsByClass[cls]) {
       productsByClass[cls] = [];

@@ -373,7 +373,7 @@ const Admin = () => {
   // Calculate combo pricing for selected products
   const selectedProductsForCalc = products
     .filter((p) => mailForm.productIds.includes(p.id))
-    .map((p) => ({ id: p.id, subject: p.subject, price: p.price, category: p.category, class: p.class }));
+    .map((p) => ({ id: p.id, subject: p.subject, price: p.price, category: p.category, class: p.class, title: p.title }));
   const cartCalc = calculateCartTotal(selectedProductsForCalc);
   const detectedCombos = cartCalc.appliedCombos;
 
@@ -388,6 +388,7 @@ const Admin = () => {
           price: p.price,
           category: p.category,
           class: p.class,
+          title: p.title,
         }))
       );
 

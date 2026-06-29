@@ -75,9 +75,9 @@ const Cart = () => {
       const fetchedProducts = (data || []) as CartProduct[];
       setProducts(fetchedProducts);
 
-      // Calculate totals with auto-discount (pass category and class for correct pricing)
+      // Calculate totals with auto-discount (pass category, title and class for correct pricing)
       const calc = calculateCartTotal(
-        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category, class: p.class })),
+        fetchedProducts.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category, class: p.class, title: p.title })),
         appliedPromo
       );
       setCalculation(calc);
@@ -91,7 +91,7 @@ const Cart = () => {
   useEffect(() => {
     if (products.length > 0) {
       const calc = calculateCartTotal(
-        products.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category, class: p.class })),
+        products.map(p => ({ id: p.id, subject: p.subject, price: p.price, category: p.category, class: p.class, title: p.title })),
         appliedPromo
       );
       setCalculation(calc);
