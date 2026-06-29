@@ -134,49 +134,68 @@ export interface ProductForCalculation {
 const calculateCategoryCombo = (
   products: ProductForCalculation[],
   category: string
-): { items: CartCalculation['items']; combo: ComboConfig | null; comboTotal: number; originalTotal: number } => {
-  const subjects = products.map(p => p.subject);
-  const bestCombo = detectBestCombo(subjects, category);
+): { items: CartCalculation['items']; combos: ComboConfig[]; comboTotal: number; originalTotal: number } => {
+  const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
 
-  if (bestCombo) {
+  // Clone products list to keep track of remaining items
+  let remaining = [...products];
+  const combos: ComboConfig[] = [];
+  const finalItems: CartCalculation['items'] = [];
+
+  while (true) {
+    const subjects = remaining.map(p => p.subject);
+    const bestCombo = detectBestCombo(subjects, category);
+    if (!bestCombo) break;
+
+    // We found a combo. We need to consume exactly one product for each subject in bestCombo
     const comboSubjectsLower = bestCombo.subjects.map(s => s.toLowerCase());
-    const comboProducts = products.filter(p =>
-      comboSubjectsLower.includes(p.subject.toLowerCase())
-    );
-    const nonComboProducts = products.filter(p =>
-      !comboSubjectsLower.includes(p.subject.toLowerCase())
-    );
+    const matchedProducts: ProductForCalculation[] = [];
 
-    const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
-    const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
-    const comboTotal = bestCombo.price + nonComboTotal;
+    // For each subject in the combo, pick the first product that matches
+    for (const sub of comboSubjectsLower) {
+      const idx = remaining.findIndex(p => p.subject.toLowerCase() === sub);
+      if (idx !== -1) {
+        matchedProducts.push(remaining[idx]);
+        remaining.splice(idx, 1);
+      }
+    }
 
-    const items = products.map(p => ({
+    // Add the combo to our list
+    combos.push(bestCombo);
+
+    // Add matched products to final items
+    matchedProducts.forEach(p => {
+      finalItems.push({
+        productId: p.id,
+        subject: p.subject,
+        originalPrice: p.price,
+        finalPrice: Math.round(bestCombo.price / matchedProducts.length),
+        inCombo: true,
+        comboCategory: category,
+      });
+    });
+  }
+
+  // Any remaining products are not in any combo
+  remaining.forEach(p => {
+    finalItems.push({
       productId: p.id,
       subject: p.subject,
       originalPrice: p.price,
-      finalPrice: comboSubjectsLower.includes(p.subject.toLowerCase())
-        ? Math.round(bestCombo.price / comboProducts.length)
-        : p.price,
-      inCombo: comboSubjectsLower.includes(p.subject.toLowerCase()),
-      comboCategory: comboSubjectsLower.includes(p.subject.toLowerCase()) ? category : undefined,
-    }));
+      finalPrice: p.price,
+      inCombo: false,
+      comboCategory: undefined,
+    });
+  });
 
-    return { items, combo: bestCombo, comboTotal, originalTotal };
-  }
+  const comboTotal = combos.reduce((sum, c) => sum + c.price, 0) + remaining.reduce((sum, p) => sum + p.price, 0);
 
-  // No combo applicable for this category
-  const originalTotal = products.reduce((sum, p) => sum + p.price, 0);
-  const items = products.map(p => ({
-    productId: p.id,
-    subject: p.subject,
-    originalPrice: p.price,
-    finalPrice: p.price,
-    inCombo: false,
-    comboCategory: undefined,
-  }));
-
-  return { items, combo: null, comboTotal: originalTotal, originalTotal };
+  return {
+    items: finalItems,
+    combos,
+    comboTotal,
+    originalTotal
+  };
 };
 
 export const calculateCartTotal = (
@@ -191,11 +210,11 @@ export const calculateCartTotal = (
   // Calculate combos for each category separately
   const mindmapResult = mindmapProducts.length > 0
     ? calculateCategoryCombo(mindmapProducts, "mindmaps")
-    : { items: [], combo: null, comboTotal: 0, originalTotal: 0 };
+    : { items: [], combos: [], comboTotal: 0, originalTotal: 0 };
 
   const formulaResult = formulaSheetProducts.length > 0
     ? calculateCategoryCombo(formulaSheetProducts, "formula-sheet")
-    : { items: [], combo: null, comboTotal: 0, originalTotal: 0 };
+    : { items: [], combos: [], comboTotal: 0, originalTotal: 0 };
 
   // Other products have no combos
   const otherItems = otherProducts.map(p => ({
@@ -211,8 +230,8 @@ export const calculateCartTotal = (
   // Combine all results
   const allItems = [...mindmapResult.items, ...formulaResult.items, ...otherItems];
   const appliedCombos: ComboConfig[] = [];
-  if (mindmapResult.combo) appliedCombos.push(mindmapResult.combo);
-  if (formulaResult.combo) appliedCombos.push(formulaResult.combo);
+  appliedCombos.push(...mindmapResult.combos);
+  appliedCombos.push(...formulaResult.combos);
 
   let subtotal = mindmapResult.originalTotal + formulaResult.originalTotal + otherTotal;
   let total = mindmapResult.comboTotal + formulaResult.comboTotal + otherTotal;
