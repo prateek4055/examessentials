@@ -15,7 +15,8 @@ import {
   clearCart,
   calculateCartTotal,
   CartCalculation,
-  CartItem
+  CartItem,
+  PromoConfig
 } from "@/lib/cartUtils";
 
 import { getProxiedImageUrl } from "@/lib/utils";
@@ -36,7 +37,7 @@ const Cart = () => {
   const [calculation, setCalculation] = useState<CartCalculation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [promoCode, setPromoCode] = useState("");
-  const [appliedPromo, setAppliedPromo] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState<PromoConfig | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -98,14 +99,33 @@ const Cart = () => {
     }
   }, [appliedPromo, products]);
 
-  const handleApplyPromo = () => {
+  const handleApplyPromo = async () => {
     if (!promoCode.trim()) return;
-    if (promoCode.trim().toUpperCase() === "WELCOME30") {
-      setAppliedPromo("WELCOME30");
+    const cleanCode = promoCode.trim().toUpperCase();
+
+    if (cleanCode === "WELCOME15" || cleanCode === "WELCOME30") {
+      setAppliedPromo({ code: cleanCode, discountPercent: 15 });
       toast.success("Promo code applied!");
-    } else {
-      toast.error("Invalid promo code");
-      setAppliedPromo("");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from("coupons")
+        .select("discount_percent")
+        .eq("code", cleanCode)
+        .maybeSingle();
+
+      if (error || !data) {
+        toast.error("Invalid promo code");
+        setAppliedPromo(null);
+      } else {
+        setAppliedPromo({ code: cleanCode, discountPercent: data.discount_percent });
+        toast.success(`Promo code applied! (${data.discount_percent}% OFF)`);
+      }
+    } catch (err) {
+      console.error("Promo verification failed:", err);
+      toast.error("Error verifying promo code");
     }
   };
 
@@ -126,7 +146,7 @@ const Cart = () => {
     const productIds = products.map(p => p.id).join(",");
     const total = calculation?.total || 0;
     const comboIds = calculation?.appliedCombos?.map(c => c.id).join(",") || "";
-    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${comboIds}&promo=${appliedPromo}`);
+    navigate(`/purchase/cart?products=${productIds}&total=${total}&combo=${comboIds}&promo=${appliedPromo?.code || ""}`);
   };
 
   const getProductImage = (product: CartProduct) => {

@@ -137,7 +137,7 @@ def create_invoice_pdf(order_id, student_name, email, phone, products, total_amo
     
     return packet.getvalue()
 
-def get_html_template(student_name, phone, products, email, total_amount, clean_password):
+def get_html_template(student_name, phone, products, email, total_amount, clean_password, coupon_code="WELCOME15", first_name="Student"):
     # Calculate GST
     subtotal = float(total_amount) / 1.05
     gst_amount = float(total_amount) - subtotal
@@ -221,10 +221,10 @@ def get_html_template(student_name, phone, products, email, total_amount, clean_
                 </div>
                 
                 <div class="discount-banner">
-                    <h4>Exclusive Discount for You!</h4>
-                    <p style="font-size: 14px; color: #666; margin: 0 0 10px 0;">Get 30% OFF on your next Combo purchase</p>
-                    <div class="code">WELCOME30</div>
-                    <p style="font-size: 11px; color: #999; margin: 10px 0 0 0;">Applicable for all Notes packs only</p>
+                    <h4>Exclusive Discount for You, {first_name}!</h4>
+                    <p style="font-size: 14px; color: #666; margin: 0 0 10px 0;">Get 15% OFF on your next purchase</p>
+                    <div class="code">{coupon_code}</div>
+                    <p style="font-size: 11px; color: #999; margin: 10px 0 0 0;">Use this code at checkout on your next purchase</p>
                 </div>
                 
                 <h3 class="downloads-title">Order Summary</h3>
@@ -312,6 +312,25 @@ async def process_pdf(request: Request):
         supabase_url = os.getenv("SUPABASE_URL")
         supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
         supabase: Client = create_client(supabase_url, supabase_key) if supabase_url and supabase_key else None
+
+        # Generate personalized coupon code (e.g. PRATEEK15)
+        coupon_code = "WELCOME15"
+        first_name = "Student"
+        if student_name:
+            import re
+            parts = student_name.strip().split()
+            if parts:
+                name_part = re.sub(r'[^A-Za-z]', '', parts[0])
+                if name_part:
+                    first_name = name_part.upper()
+            coupon_code = f"{first_name}15"
+            
+            if supabase:
+                try:
+                    supabase.table("coupons").upsert({"code": coupon_code, "discount_percent": 15}).execute()
+                    print(f"[DEBUG] Coupon {coupon_code} upserted successfully via python client")
+                except Exception as db_err:
+                    print(f"[DEBUG] Failed to upsert coupon {coupon_code}: {db_err}")
 
         processed_products = []
 
@@ -460,7 +479,7 @@ async def process_pdf(request: Request):
             invoice_attachment = base64.b64encode(invoice_pdf).decode()
             
             # Compose HTML
-            html_content = get_html_template(student_name, phone, processed_products, email, total_amount, clean_password)
+            html_content = get_html_template(student_name, phone, processed_products, email, total_amount, clean_password, coupon_code, first_name)
             
             resend.Emails.send({
                 "from": "Exam Essentials <contact@examessentials.in>",

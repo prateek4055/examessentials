@@ -222,6 +222,25 @@ serve(async (req) => {
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+        // Generate personalized coupon code (e.g. PRATEEK15)
+        const namePart = order.student_name ? order.student_name.trim().split(/\s+/)[0].replace(/[^A-Za-z]/g, "") : "";
+        const firstName = namePart.toUpperCase() || "STUDENT";
+        const couponCode = `${firstName}15`;
+
+        // Save coupon code in the database
+        try {
+            const { error: couponError } = await supabase
+                .from("coupons")
+                .upsert({ code: couponCode, discount_percent: 15 });
+            if (couponError) {
+                console.error(`[DEBUG] Error saving coupon ${couponCode}:`, couponError);
+            } else {
+                console.log(`[DEBUG] Coupon ${couponCode} saved successfully!`);
+            }
+        } catch (e) {
+            console.error("[DEBUG] Failed to save coupon:", e);
+        }
+
         // Parse custom prices from razorpay_payment_id if present
         let customPriceMap: Record<string, number> | null = null;
         const paymentId = order.razorpay_payment_id || "";
@@ -466,12 +485,12 @@ serve(async (req) => {
             </div>
 
             <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); margin: 20px; padding: 18px; border-radius: 8px; text-align: center; border: 1px dashed #f59e0b;">
-                <p style="margin: 0 0 6px 0; font-size: 14px; color: #92400e;"><strong>Exclusive Discount for You!</strong></p>
-                <p style="margin: 0 0 10px 0; font-size: 12px; color: #a16207;">Get 30% OFF on your next Combo purchase</p>
+                <p style="margin: 0 0 6px 0; font-size: 14px; color: #92400e;"><strong>Exclusive Discount for You, ${firstName}!</strong></p>
+                <p style="margin: 0 0 10px 0; font-size: 12px; color: #a16207;">Get 15% OFF on your next purchase</p>
                 <div style="display: inline-block; background: #ffffff; border: 2px dashed #f59e0b; padding: 8px 24px; border-radius: 6px;">
-                    <span style="font-size: 20px; font-weight: bold; color: #d97706; letter-spacing: 3px;">WELCOME30</span>
+                    <span style="font-size: 20px; font-weight: bold; color: #d97706; letter-spacing: 3px;">${couponCode}</span>
                 </div>
-                <p style="margin: 8px 0 0 0; font-size: 10px; color: #b45309;">*Applicable on Combo packs only</p>
+                <p style="margin: 8px 0 0 0; font-size: 10px; color: #b45309;">*Use this code at checkout on your next purchase</p>
             </div>
 
             ${orderSummaryHtml}

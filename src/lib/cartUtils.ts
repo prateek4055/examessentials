@@ -200,9 +200,14 @@ const calculateCategoryCombo = (
   };
 };
 
+export interface PromoConfig {
+  code: string;
+  discountPercent: number;
+}
+
 export const calculateCartTotal = (
   products: ProductForCalculation[],
-  promoCode?: string
+  promo?: PromoConfig | string
 ): CartCalculation => {
   // Normalize categories based on category field and title keyword fallback
   const normalizedProducts = products.map(p => {
@@ -285,16 +290,28 @@ export const calculateCartTotal = (
   let discount = subtotal - total;
 
   // Apply Promo Code discount AFTER combo discount
-  const isPromoValid = promoCode?.trim().toUpperCase() === "WELCOME30";
+  let discountPercent = 0;
+  let promoCodeString = "";
+  if (promo) {
+    if (typeof promo === "string") {
+      promoCodeString = promo.trim().toUpperCase();
+      if (promoCodeString === "WELCOME15" || promoCodeString === "WELCOME30") {
+        discountPercent = 15; // Limit to 15% discount
+      }
+    } else {
+      promoCodeString = promo.code.trim().toUpperCase();
+      discountPercent = promo.discountPercent;
+    }
+  }
 
-  if (isPromoValid) {
-    const promoDiscount = Math.round(total * 0.30);
+  if (discountPercent > 0) {
+    const promoDiscount = Math.round(total * (discountPercent / 100));
     const priceAfterPromo = total - promoDiscount;
 
     // Add promo as an additional stacked discount
     appliedCombos.push({
-      id: "promo-welcome30",
-      label: "WELCOME30 Promo (30% OFF)",
+      id: `promo-${promoCodeString.toLowerCase()}`,
+      label: `${promoCodeString} Promo (${discountPercent}% OFF)`,
       subjects: [],
       price: priceAfterPromo,
       originalPrice: total,
@@ -305,7 +322,7 @@ export const calculateCartTotal = (
 
     // Update individual item final prices proportionally
     allItems.forEach(item => {
-      item.finalPrice = Math.round(item.finalPrice * 0.70);
+      item.finalPrice = Math.round(item.finalPrice * ((100 - discountPercent) / 100));
     });
   }
 

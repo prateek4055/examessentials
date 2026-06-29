@@ -68,79 +68,123 @@ function getCorsHeaders(origin: string | null): Record<string, string> {
   };
 }
 
-// Combo configurations - must match frontend exactly
-const comboConfigs = [
-  { id: "phy-chem", subjects: ["Physics", "Chemistry"], price: 99 },
-  { id: "pcm", subjects: ["Physics", "Chemistry", "Maths"], price: 139 },
-  { id: "pcb", subjects: ["Physics", "Chemistry", "Biology"], price: 149 },
-  { id: "pcmb", subjects: ["Physics", "Chemistry", "Maths", "Biology"], price: 179 },
+// Mind Maps combo configs
+const mindMapsComboConfigs = [
+  { id: "phy-chem-mindmaps", subjects: ["Physics", "Chemistry"], price: 249, originalPrice: 298, category: "mindmaps" },
+  { id: "pcb-mindmaps", subjects: ["Physics", "Chemistry", "Biology"], price: 299, originalPrice: 447, category: "mindmaps" },
 ];
 
-interface VerifyPaymentRequest {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-  orderData: {
-    product_id: string | null;
-    student_name: string;
-    email: string;
-    phone: string;
-    class: string;
-    amount: number;
-  };
-  isCartCheckout?: boolean;
-  productIds?: string[];
-  comboId?: string;
-  promoCode?: string;
-  totalAmount?: number;
-}
+// Formula Sheets / Handwritten Notes combo configs
+const formulaSheetComboConfigs = [
+  { id: "phy-chem", subjects: ["Physics", "Chemistry"], price: 99, originalPrice: 149, category: "formula-sheet" },
+  { id: "pcm", subjects: ["Physics", "Chemistry", "Maths"], price: 139, originalPrice: 199, category: "formula-sheet" },
+  { id: "pcb", subjects: ["Physics", "Chemistry", "Biology"], price: 149, originalPrice: 209, category: "formula-sheet" },
+  { id: "pcmb", subjects: ["Physics", "Chemistry", "Maths", "Biology"], price: 179, originalPrice: 259, category: "formula-sheet" },
+];
 
-// Detect best combo for given subjects (server-side validation)
-function detectBestCombo(subjects: string[]): { id: string; price: number } | null {
+function detectBestCombo(subjects: string[], category?: string) {
   const uniqueSubjects = [...new Set(subjects.map(s => s.toLowerCase()))];
-
-  const sortedCombos = [...comboConfigs].sort((a, b) =>
-    (b.price) - (a.price)
-  ).reverse();
+  const applicableCombos = category === "mindmaps" ? mindMapsComboConfigs : formulaSheetComboConfigs;
+  
+  const sortedCombos = [...applicableCombos].sort((a, b) =>
+    (b.originalPrice - b.price) - (a.originalPrice - a.price)
+  );
 
   for (const combo of sortedCombos) {
     const comboSubjectsLower = combo.subjects.map(s => s.toLowerCase());
     const hasAllSubjects = comboSubjectsLower.every(sub =>
       uniqueSubjects.includes(sub)
     );
-
-    if (hasAllSubjects) {
-      return { id: combo.id, price: combo.price };
-    }
+    if (hasAllSubjects) return combo;
   }
-
   return null;
 }
 
-// Calculate expected price for cart
-function calculateExpectedCartTotal(products: { price: number; subject: string }[], comboId?: string, promoCode?: string): number {
-  const subjects = products.map(p => p.subject);
-  const bestCombo = detectBestCombo(subjects);
-
-  let total = products.reduce((sum, p) => sum + p.price, 0);
-  let subtotal = total;
-
-  if (bestCombo && (!comboId || comboId === bestCombo.id)) {
-    const comboConfig = comboConfigs.find(c => c.id === bestCombo.id);
-    if (comboConfig) {
-      const comboSubjectsLower = comboConfig.subjects.map(s => s.toLowerCase());
-      const nonComboProducts = products.filter(p =>
-        !comboSubjectsLower.includes(p.subject.toLowerCase())
-      );
-      const nonComboTotal = nonComboProducts.reduce((sum, p) => sum + p.price, 0);
-      total = comboConfig.price + nonComboTotal;
+function calculateCategoryCombo(products: any[], category: string) {
+  let remaining = [...products];
+  const combos: any[] = [];
+  while (true) {
+    const subjects = remaining.map(p => p.subject);
+    const bestCombo = detectBestCombo(subjects, category);
+    if (!bestCombo) break;
+    const comboSubjectsLower = bestCombo.subjects.map(s => s.toLowerCase());
+    for (const sub of comboSubjectsLower) {
+      const idx = remaining.findIndex(p => p.subject.toLowerCase() === sub);
+      if (idx !== -1) remaining.splice(idx, 1);
     }
+    combos.push(bestCombo);
   }
+  return combos.reduce((sum, c) => sum + c.price, 0) + remaining.reduce((sum, p) => sum + p.price, 0);
+}
 
-  // Apply Promo Code discount AFTER combo discount
-  if (promoCode?.trim().toUpperCase() === "WELCOME30") {
-    const promoDiscount = Math.round(total * 0.30);
-    total = total - promoDiscount;
+// Calculate expected price for cart
+async function calculateExpectedCartTotal(
+  supabaseClient: any,
+  products: any[],
+  promoCode?: string
+): Promise<number> {
+  // Normalize categories based on category field and title keyword fallback
+  const normalizedProducts = products.map(p => {
+    let normCat = p.category;
+    if (!normCat || normCat === "null" || normCat === "undefined") {
+      const titleLower = p.title?.toLowerCase() || "";
+      if (titleLower.includes("mindmap")) {
+        normCat = "mindmaps";
+      } else if (titleLower.includes("formula") || titleLower.includes("handwritten")) {
+        normCat = "formula-sheet";
+      } else {
+        normCat = "formula-sheet";
+      }
+    }
+    if (normCat === "handwritten-notes") {
+      normCat = "formula-sheet";
+    }
+    return { ...p, category: normCat };
+  });
+
+  // Group by class
+  const productsByClass: { [key: string]: any[] } = {};
+  normalizedProducts.forEach(p => {
+    const cls = p.class || "default";
+    if (!productsByClass[cls]) productsByClass[cls] = [];
+    productsByClass[cls].push(p);
+  });
+
+  let total = 0;
+  Object.entries(productsByClass).forEach(([classLevel, classProducts]) => {
+    const mindmapProducts = classProducts.filter(p => p.category === "mindmaps");
+    const formulaSheetProducts = classProducts.filter(p => p.category === "formula-sheet" || !p.category);
+    const otherProducts = classProducts.filter(p => p.category !== "mindmaps" && p.category !== "formula-sheet" && p.category);
+
+    const mindmapTotal = mindmapProducts.length > 0 ? calculateCategoryCombo(mindmapProducts, "mindmaps") : 0;
+    const formulaTotal = formulaSheetProducts.length > 0 ? calculateCategoryCombo(formulaSheetProducts, "formula-sheet") : 0;
+    const otherTotal = otherProducts.reduce((sum, p) => sum + p.price, 0);
+
+    total += mindmapTotal + formulaTotal + otherTotal;
+  });
+
+  // Apply promo discount
+  if (promoCode) {
+    const cleanPromo = promoCode.trim().toUpperCase();
+    let discountPercent = 0;
+    if (cleanPromo === "WELCOME15") {
+      discountPercent = 15;
+    } else if (cleanPromo === "WELCOME30") {
+      discountPercent = 15; // changed 30% to 15%
+    } else {
+      const { data, error } = await supabaseClient
+        .from("coupons")
+        .select("discount_percent")
+        .eq("code", cleanPromo)
+        .maybeSingle();
+      if (!error && data) {
+        discountPercent = data.discount_percent;
+      }
+    }
+    if (discountPercent > 0) {
+      const promoDiscount = Math.round(total * (discountPercent / 100));
+      total = total - promoDiscount;
+    }
   }
 
   return total;
@@ -274,7 +318,7 @@ serve(async (req) => {
     if (isCartCheckout && productIds && productIds.length > 0) {
       const { data: products, error: productsError } = await supabase
         .from("products")
-        .select("id, price, subject")
+        .select("id, price, subject, category, class, title")
         .in("id", productIds)
         .eq("published", true);
 
@@ -283,7 +327,7 @@ serve(async (req) => {
         throw new Error("Invalid products in cart");
       }
 
-      const expectedTotal = calculateExpectedCartTotal(products, comboId, promoCode);
+      const expectedTotal = await calculateExpectedCartTotal(supabase, products, promoCode);
       const providedTotal = totalAmount || orderData.amount;
 
       console.log(`Cart validation - Expected: ${expectedTotal}, Provided: ${providedTotal}`);

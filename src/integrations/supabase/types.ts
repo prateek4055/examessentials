@@ -62,6 +62,24 @@ export type Database = {
         }
         Relationships: []
       }
+      coupons: {
+        Row: {
+          code: string
+          discount_percent: number
+          created_at: string
+        }
+        Insert: {
+          code: string
+          discount_percent?: number
+          created_at?: string
+        }
+        Update: {
+          code?: string
+          discount_percent?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           amount: number
