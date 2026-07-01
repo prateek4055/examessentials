@@ -1,0 +1,34 @@
+{
+  "id": 5,
+  "name": "CT or MRI",
+  "gameType": "ct_mri",
+  "description": "Analyze medical scans for pathologies.",
+  "levels": [
+    {
+      "id": 1,
+      "challenges": [
+        {
+          "chief_complaint": "Sharp, shooting pain radiating down the posterior thigh to the lateral foot.",
+          "case": "Sagittal T2-weighted lumbar spine MRI showing disc protrusion compressing the nerve root.",
+          "options": ["Spondylolisthesis", "Lumbar Disc Herniation", "Spinal Stenosis", "Scoliosis"],
+          "answerIndex": 1,
+          "imagePath": "assets/images/xrays/spine_mri.png"
+        },
+        {
+          "chief_complaint": "Sudden sharp pop in the heel during sprint, inability to plantarflex.",
+          "case": "Sagittal ankle MRI displaying high signal intensity and discontinuity in tendon fibers.",
+          "options": ["Achilles Tendinopathy", "Complete Achilles Tear", "Ankle Sprain", "Bursitis"],
+          "answerIndex": 1,
+          "imagePath": "assets/images/xrays/achilles_mri.png"
+        },
+        {
+          "chief_complaint": "Severe locking and catching sensation when flexing the knee.",
+          "case": "Coronal knee MRI displaying double-posterior cruciate ligament (double PCL) sign.",
+          "options": ["Bucket-handle Meniscal Tear", "ACL Tear", "PCL Tear", "Patellar Dislocation"],
+          "answerIndex": 0,
+          "imagePath": "assets/images/xrays/meniscus_mri.png"
+        }
+      ]
+    }
+  ]
+}

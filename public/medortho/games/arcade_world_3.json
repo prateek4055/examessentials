@@ -1,0 +1,37 @@
+{
+  "id": 3,
+  "name": "X-Ray Spotter",
+  "gameType": "xray_spotter",
+  "description": "Spot fractures and pathologies on X-Ray plates.",
+  "levels": [
+    {
+      "id": 1,
+      "challenges": [
+        {
+          "chief_complaint": "Deformity and severe pain in mid-thigh after high-impact road traffic accident.",
+          "desc": "Tap the clear transverse fracture line located in the mid-shaft of the femur.",
+          "imagePath": "assets/images/xrays/femur_fracture.png",
+          "targetX": 0.5,
+          "targetY": 0.55,
+          "tapTolerance": 0.15
+        },
+        {
+          "chief_complaint": "Chronic mechanical knee pain, stiffness, and crepitus upon weight bearing.",
+          "desc": "Tap the narrow joint space of the medial knee compartment showing severe osteophytes.",
+          "imagePath": "assets/images/xrays/knee_arthritis.png",
+          "targetX": 0.45,
+          "targetY": 0.50,
+          "tapTolerance": 0.15
+        },
+        {
+          "chief_complaint": "Acute shoulder pain, loss of round contour, and arm held in slight abduction after fall.",
+          "desc": "Tap the dislocated humeral head sitting anteriorly relative to the glenoid cavity.",
+          "imagePath": "assets/images/xrays/shoulder_dislocation.png",
+          "targetX": 0.60,
+          "targetY": 0.45,
+          "tapTolerance": 0.18
+        }
+      ]
+    }
+  ]
+}

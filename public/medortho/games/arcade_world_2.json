@@ -1,0 +1,31 @@
+{
+  "id": 2,
+  "name": "Anatomy Matcher",
+  "gameType": "anatomy_matcher",
+  "description": "Match orthopaedic terms to their definitions.",
+  "levels": [
+    {
+      "id": 1,
+      "challenges": [
+        {
+          "pairs": [
+            {"text1": "Patella", "text2": "Knee Cap"},
+            {"text1": "Femur", "text2": "Thigh Bone"}
+          ]
+        },
+        {
+          "pairs": [
+            {"text1": "Clavicle", "text2": "Collar Bone"},
+            {"text1": "Scapula", "text2": "Shoulder Blade"}
+          ]
+        },
+        {
+          "pairs": [
+            {"text1": "Tibia", "text2": "Shin Bone"},
+            {"text1": "Humerus", "text2": "Upper Arm Bone"}
+          ]
+        }
+      ]
+    }
+  ]
+}

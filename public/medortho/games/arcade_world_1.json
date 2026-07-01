@@ -1,0 +1,248 @@
+{
+  "id": 1,
+  "name": "Crossword",
+  "gameType": "crossword",
+  "description": "Spell the orthopaedic terms matching the clues.",
+  "levels": [
+    {
+      "id": 1,
+      "challenges": [
+        {"clue": "Longest and strongest bone in the human body, located in the thigh", "answer": "FEMUR"},
+        {"clue": "Bone forming the heel", "answer": "CALCANEUS"},
+        {"clue": "S-shaped bone connecting the sternum to the scapula", "answer": "CLAVICLE"}
+      ]
+    },
+    {
+      "id": 2,
+      "challenges": [
+        {"clue": "Triangular flat bone at the back of the shoulder, also called the shoulder blade", "answer": "SCAPULA"},
+        {"clue": "Bone of the upper arm, between shoulder and elbow", "answer": "HUMERUS"},
+        {"clue": "Medial bone of the forearm, in line with the little finger", "answer": "ULNA"}
+      ]
+    },
+    {
+      "id": 3,
+      "challenges": [
+        {"clue": "Lateral bone of the forearm, in line with the thumb", "answer": "RADIUS"},
+        {"clue": "Weight-bearing bone of the lower leg, also called the shin bone", "answer": "TIBIA"},
+        {"clue": "Thin outer bone of the lower leg that does not bear much body weight", "answer": "FIBULA"}
+      ]
+    },
+    {
+      "id": 4,
+      "challenges": [
+        {"clue": "Small triangular bone embedded in the quadriceps tendon at the front of the knee", "answer": "PATELLA"},
+        {"clue": "Cup-shaped socket of the hip bone that receives the head of the femur", "answer": "ACETABULUM"},
+        {"clue": "Bony prominence on the posterior forearm that forms the point of the elbow", "answer": "OLECRANON"}
+      ]
+    },
+    {
+      "id": 5,
+      "challenges": [
+        {"clue": "Ring of eight small carpal bones connecting the hand to the forearm", "answer": "CARPUS"},
+        {"clue": "Five long bones of the palm, between the carpals and the fingers", "answer": "METACARPALS"},
+        {"clue": "Bones of the fingers and toes", "answer": "PHALANGES"}
+      ]
+    },
+    {
+      "id": 6,
+      "challenges": [
+        {"clue": "Flat, curved bones that form the protective cage around the heart and lungs", "answer": "RIBS"},
+        {"clue": "Flat bone in the center of the chest where the ribs attach via cartilage", "answer": "STERNUM"},
+        {"clue": "Backbone made up of 33 stacked bones from the neck to the tailbone", "answer": "VERTEBRAE"}
+      ]
+    },
+    {
+      "id": 7,
+      "challenges": [
+        {"clue": "Dome-shaped bone forming the roof of the skull", "answer": "CRANIUM"},
+        {"clue": "Only movable bone of the skull, forming the lower jaw", "answer": "MANDIBLE"},
+        {"clue": "Bony ridge on the shoulder blade that you can feel at the tip of the shoulder", "answer": "ACROMION"}
+      ]
+    },
+    {
+      "id": 8,
+      "challenges": [
+        {"clue": "Hook-like projection of the scapula that curves toward the front of the shoulder", "answer": "CORACOID"},
+        {"clue": "Shallow socket on the scapula that articulates with the head of the humerus", "answer": "GLENOID"},
+        {"clue": "Rounded bony bump at the end of a bone near a joint, such as at the elbow or knee", "answer": "CONDYLE"}
+      ]
+    },
+    {
+      "id": 9,
+      "challenges": [
+        {"clue": "Ankle bone that sits atop the calcaneus and articulates with the tibia and fibula", "answer": "TALUS"},
+        {"clue": "Bony bump on the inner or outer side of the ankle, formed by the tibia or fibula", "answer": "MALLEOLUS"},
+        {"clue": "Boat-shaped tarsal bone on the medial side of the foot, between the talus and cuneiforms", "answer": "NAVICULAR"}
+      ]
+    },
+    {
+      "id": 10,
+      "challenges": [
+        {"clue": "Bony process felt on the greater trochanter side of the hip where gluteal muscles attach", "answer": "TROCHANTER"},
+        {"clue": "Rough projection on a bone where a tendon or ligament firmly attaches, e.g. the tibial one below the knee", "answer": "TUBEROSITY"},
+        {"clue": "Rounded bump above a bone's condyle where ligaments attach, found on the femur and humerus", "answer": "EPICONDYLE"}
+      ]
+    },
+  {
+  "id": 11,
+  "challenges": [
+    {"clue": "Thin membrane lining the inner surface of a joint capsule that secretes lubricating fluid", "answer": "SYNOVIUM"},
+    {"clue": "Smooth connective tissue covering the ends of bones inside a joint, reducing friction during movement", "answer": "CARTILAGE"},
+    {"clue": "C-shaped fibrocartilage disc that cushions and stabilizes the knee joint between femur and tibia", "answer": "MENISCUS"}
+  ]
+},
+{
+  "id": 12,
+  "challenges": [
+    {"clue": "Fibrous band of tissue connecting bone to bone, providing joint stability", "answer": "LIGAMENT"},
+    {"clue": "Tough cord of fibrous tissue connecting muscle to bone", "answer": "TENDON"},
+    {"clue": "Small fluid-filled sac that reduces friction between tendon, bone, and skin near a joint", "answer": "BURSA"}
+  ]
+},
+{
+  "id": 13,
+  "challenges": [
+    {"clue": "Ring of fibrocartilage that deepens a shallow socket joint, as seen in the shoulder and hip", "answer": "LABRUM"},
+    {"clue": "Fibrous sac enclosing a synovial joint and its cavity", "answer": "CAPSULE"},
+    {"clue": "General term for the point where two or more bones meet, forming a joint", "answer": "ARTICULATION"}
+  ]
+},
+{
+  "id": 14,
+  "challenges": [
+    {"clue": "Freely movable joint type that allows a wide range of motion, such as the shoulder or knee", "answer": "DIARTHROSIS"},
+    {"clue": "Immovable joint type where bones are firmly united, such as the sutures of the skull", "answer": "SYNARTHROSIS"},
+    {"clue": "Slightly movable joint type, such as the joints between vertebral bodies", "answer": "AMPHIARTHROSIS"}
+  ]
+},
+{
+  "id": 15,
+  "challenges": [
+    {"clue": "Cartilaginous joint where bones are joined by fibrocartilage, as seen at the pubic bones", "answer": "SYMPHYSIS"},
+    {"clue": "Immovable fibrous joint found between the flat bones of the skull", "answer": "SUTURE"},
+    {"clue": "Fibrous joint where bones are bound by a sheet of connective tissue, as between the tibia and fibula", "answer": "SYNDESMOSIS"}
+  ]
+},
+{
+  "id": 16,
+  "challenges": [
+    {"clue": "Tough fibrous membrane covering the outer surface of a bone, rich in nerve and blood supply", "answer": "PERIOSTEUM"},
+    {"clue": "Thin membrane lining the inner cavity of a bone, facing the marrow", "answer": "ENDOSTEUM"},
+    {"clue": "Long shaft-like middle section of a long bone, between the two ends", "answer": "DIAPHYSIS"}
+  ]
+},
+{
+  "id": 17,
+  "challenges": [
+    {"clue": "Rounded end of a long bone, typically the site of joint formation and growth plate closure", "answer": "EPIPHYSIS"},
+    {"clue": "Flared region of a long bone between the shaft and the end, containing the growth plate in children", "answer": "METAPHYSIS"},
+    {"clue": "Bone-forming cell responsible for laying down new bone matrix", "answer": "OSTEOBLAST"}
+  ]
+},
+{
+  "id": 18,
+  "challenges": [
+    {"clue": "Large multinucleated cell that breaks down and resorbs old bone tissue", "answer": "OSTEOCLAST"},
+    {"clue": "Mature bone cell embedded within the bone matrix that maintains bone tissue", "answer": "OSTEOCYTE"},
+    {"clue": "Mature cartilage-producing cell found within the lacunae of cartilage tissue", "answer": "CHONDROCYTE"}
+  ]
+},
+{
+  "id": 19,
+  "challenges": [
+    {"clue": "Spongy, porous inner bone tissue found at the ends of long bones and inside flat bones", "answer": "CANCELLOUS"},
+    {"clue": "Dense, compact outer layer of bone that gives long bones their strength", "answer": "CORTICAL"},
+    {"clue": "Microscopic canal running through compact bone that carries blood vessels and nerves", "answer": "HAVERSIAN"}
+  ]
+},
+{
+  "id": 20,
+  "challenges": [
+    {"clue": "Smooth, glassy type of cartilage found on articular joint surfaces and the trachea", "answer": "HYALINE"},
+    {"clue": "Tough cartilage rich in collagen fibers, found in the intervertebral discs and menisci", "answer": "FIBROCARTILAGE"},
+    {"clue": "Fibrous joint that anchors a tooth into its socket in the jawbone", "answer": "GOMPHOSIS"}
+  ]
+},
+{
+  "id": 21,
+  "challenges": [
+    {"clue": "Type of ligament that crosses another within a joint cavity, e.g. the anterior and posterior ones stabilizing the knee", "answer": "CRUCIATE"},
+    {"clue": "Ligament running along the side of a joint (medial or lateral) that resists sideways bending stress", "answer": "COLLATERAL"},
+    {"clue": "Ligament continuing from the quadriceps tendon, connecting the patella to the tibial tuberosity", "answer": "PATELLAR"}
+  ]
+},
+{
+  "id": 22,
+  "challenges": [
+    {"clue": "Ligament spanning from the coracoid process to the acromion, forming an arch over the shoulder joint", "answer": "CORACOACROMIAL"},
+    {"clue": "Strong ligament connecting the coracoid process of the scapula to the clavicle", "answer": "CORACOCLAVICULAR"},
+    {"clue": "Ligament reinforcing the joint between the acromion and the outer end of the clavicle", "answer": "ACROMIOCLAVICULAR"}
+  ]
+},
+{
+  "id": 23,
+  "challenges": [
+    {"clue": "Strongest ligament of the hip, running from ilium to femur and preventing over-extension", "answer": "ILIOFEMORAL"},
+    {"clue": "Hip ligament running from the pubic bone to the femur, resisting excessive abduction", "answer": "PUBOFEMORAL"},
+    {"clue": "Hip ligament arising from the ischium that spirals around the femoral neck", "answer": "ISCHIOFEMORAL"}
+  ]
+},
+{
+  "id": 24,
+  "challenges": [
+    {"clue": "Ankle ligament connecting the talus to the fibula, most commonly sprained in an inversion injury", "answer": "TALOFIBULAR"},
+    {"clue": "Ankle ligament running from the calcaneus to the fibula, part of the lateral ankle ligament complex", "answer": "CALCANEOFIBULAR"},
+    {"clue": "Thick band of connective tissue on the sole of the foot supporting the arch, often inflamed in fasciitis", "answer": "PLANTAR"}
+  ]
+},
+{
+  "id": 25,
+  "challenges": [
+    {"clue": "Triangular muscle capping the shoulder that abducts the arm, a common site for intramuscular injections", "answer": "DELTOID"},
+    {"clue": "Large flat muscle of the upper back and neck involved in shrugging and rotating the scapula", "answer": "TRAPEZIUS"},
+    {"clue": "Broad, flat muscle of the back nicknamed the 'lat', a strong extensor and adductor of the arm", "answer": "LATISSIMUS"}
+  ]
+},
+{
+  "id": 26,
+  "challenges": [
+    {"clue": "Rotator cuff muscle running along the top of the scapula that initiates arm abduction", "answer": "SUPRASPINATUS"},
+    {"clue": "Rotator cuff muscle below the scapular spine that externally rotates the shoulder", "answer": "INFRASPINATUS"},
+    {"clue": "Rotator cuff muscle on the front surface of the scapula that internally rotates the shoulder", "answer": "SUBSCAPULARIS"}
+  ]
+},
+{
+  "id": 27,
+  "challenges": [
+    {"clue": "Two-headed muscle on the front of the upper arm that flexes the elbow and supinates the forearm", "answer": "BICEPS"},
+    {"clue": "Three-headed muscle on the back of the upper arm responsible for elbow extension", "answer": "TRICEPS"},
+    {"clue": "Muscle lying deep to the biceps that is the primary flexor of the elbow joint", "answer": "BRACHIALIS"}
+  ]
+},
+{
+  "id": 28,
+  "challenges": [
+    {"clue": "Four-headed muscle group on the front of the thigh that extends the knee", "answer": "QUADRICEPS"},
+    {"clue": "Group of posterior thigh muscles that flex the knee and extend the hip", "answer": "HAMSTRING"},
+    {"clue": "Calf muscle with two heads that forms the bulk of the calf and plantarflexes the ankle", "answer": "GASTROCNEMIUS"}
+  ]
+},
+{
+  "id": 29,
+  "challenges": [
+    {"clue": "Flat calf muscle lying deep to the gastrocnemius, important for standing posture", "answer": "SOLEUS"},
+    {"clue": "Longest muscle in the human body, running obliquely across the thigh from hip to knee", "answer": "SARTORIUS"},
+    {"clue": "Thin, strap-like muscle on the inner thigh that adducts the leg and flexes the knee", "answer": "GRACILIS"}
+  ]
+},
+{
+  "id": 30,
+  "challenges": [
+    {"clue": "Group of three buttock muscles responsible for hip extension and abduction", "answer": "GLUTEUS"},
+    {"clue": "Small hip muscle deep to gluteus maximus that externally rotates the thigh, near the sciatic nerve", "answer": "PIRIFORMIS"},
+    {"clue": "Combined hip flexor muscle formed by the psoas major and iliacus", "answer": "ILIOPSOAS"}
+  ]
+    }
+  ]
+}
