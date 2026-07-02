@@ -1017,6 +1017,315 @@ async function runPrerender() {
       `
     },
     {
+      route: 'terms-and-conditions',
+      title: "Terms and Conditions | Exam Essentials",
+      description: "Terms and Conditions for Exam Essentials - Read our terms of service for using our platform and purchasing study materials.",
+      keywords: "terms and conditions, terms of service, exam essentials terms, user agreement",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Terms and Conditions</h1>
+          <p class="text-sm text-slate-400 mb-6">Last updated: December 28, 2025</p>
+          
+          <h2 class="text-2xl font-bold mt-8 mb-4">1. Acceptance of Terms</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            By accessing and using Exam Essentials website and purchasing our products, you agree to be bound by these Terms and Conditions. 
+            If you do not agree with any part of these terms, please do not use our services.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">2. Products and Services</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Exam Essentials provides digital study materials, including handwritten notes for Class 11 and Class 12 students 
+            covering subjects such as Physics, Chemistry, Mathematics, and Biology.
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li>All products are digital downloads in PDF format</li>
+            <li>Products are delivered via email after successful payment</li>
+            <li>Product descriptions and samples are provided for reference before purchase</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">3. User Accounts</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            You may create an account to access our services. You are responsible for:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li>Maintaining the confidentiality of your account credentials</li>
+            <li>All activities that occur under your account</li>
+            <li>Providing accurate and current information</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">4. Intellectual Property</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            All content on this website, including study materials, notes, images, and text, are the intellectual property of Exam Essentials. 
+            You are granted a personal, non-transferable license to use purchased materials for your own educational purposes only.
+          </p>
+          <p class="text-slate-300 leading-relaxed mb-4"><strong>You may not:</strong></p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li>Reproduce, distribute, or share purchased materials</li>
+            <li>Resell or commercially exploit our products</li>
+            <li>Remove any copyright notices from our materials</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">5. Payment Terms</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            All payments are processed securely through Razorpay. Prices are displayed in Indian Rupees (INR). 
+            By making a purchase, you agree to pay the listed price plus any applicable taxes.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">6. Limitation of Liability</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Exam Essentials is not liable for any indirect, incidental, or consequential damages arising from the use of our products or services. 
+            Our total liability shall not exceed the amount paid for the purchased product.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">7. Modifications</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on the website. 
+            Continued use of our services constitutes acceptance of the modified terms.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">8. Governing Law</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            These Terms and Conditions are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in India.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">9. Contact Information</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            For any questions regarding these Terms and Conditions, please contact us at:
+          </p>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Email: <a href="mailto:examessentials.info@gmail.com" class="text-blue-400 hover:underline">examessentials.info@gmail.com</a><br />
+            Phone: <a href="tel:+919460970342" class="text-blue-400 hover:underline">+91 94609 70342</a>
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'terms',
+      title: "Redirecting... | Exam Essentials",
+      description: "Redirecting to Terms and Conditions",
+      keywords: "terms and conditions",
+      bodyContent: `
+        <div class="min-h-screen flex items-center justify-center text-white">
+          <p class="text-lg">Redirecting to Terms and Conditions...</p>
+          <script>
+            window.location.replace("/terms-and-conditions");
+          </script>
+        </div>
+      `
+    },
+    {
+      route: 'refund-policy',
+      title: "Cancellation and Refund Policy | Exam Essentials",
+      description: "Cancellation and Refund Policy for Exam Essentials - Learn about our refund policy for digital study materials and how to request a refund.",
+      keywords: "refund policy, cancellation policy, exam essentials refund, digital products refund",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Cancellation and Refund Policy</h1>
+          <p class="text-sm text-slate-400 mb-6">Last updated: December 28, 2025</p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">1. Digital Product Nature</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Exam Essentials sells digital products (PDF study notes) that are delivered electronically immediately after purchase. 
+            Due to the nature of digital products, we have specific policies regarding cancellations and refunds.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">2. Cancellation Policy</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Since our products are digital and delivered instantly upon payment confirmation, 
+            orders cannot be cancelled once the payment has been processed successfully.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">3. Refund Policy</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            We offer refunds in the following circumstances:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li><strong>Technical Issues:</strong> If you are unable to download or access the purchased material due to technical issues on our end.</li>
+            <li><strong>Wrong Product:</strong> If you received a different product than what you ordered.</li>
+            <li><strong>Duplicate Payment:</strong> If you were charged multiple times for the same order.</li>
+            <li><strong>Non-Delivery:</strong> If you did not receive the product within 24 hours of successful payment.</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">4. Refund Request Process</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            To request a refund, please follow these steps:
+          </p>
+          <ol class="list-decimal pl-6 text-slate-300 space-y-2 mb-6">
+            <li>Email us at <a href="mailto:examessentials.info@gmail.com" class="text-blue-400 hover:underline">examessentials.info@gmail.com</a> within 7 days of purchase.</li>
+            <li>Include your order details: Order ID, email used for purchase, and product name.</li>
+            <li>Describe the issue you encountered.</li>
+            <li>Attach any relevant screenshots if applicable.</li>
+          </ol>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">5. Refund Timeline</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Once your refund request is approved:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li>Refunds will be processed within 5-7 business days.</li>
+            <li>The refund will be credited to the original payment method used during purchase.</li>
+            <li>Bank processing times may vary; please allow additional time for the amount to reflect in your account.</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">6. Non-Refundable Cases</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Refunds will NOT be provided in the following cases:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li>Change of mind after purchase and successful download.</li>
+            <li>Inability to use the product due to your device compatibility issues.</li>
+            <li>Requests made after 7 days of purchase.</li>
+            <li>If the product has been successfully downloaded and accessed.</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">7. Contact Us</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            For any questions regarding our Cancellation and Refund Policy, please contact us:
+          </p>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Email: <a href="mailto:examessentials.info@gmail.com" class="text-blue-400 hover:underline">examessentials.info@gmail.com</a><br />
+            WhatsApp: <a href="https://wa.me/919460970342" class="text-blue-400 hover:underline">+91 94609 70342</a>
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'shipping-policy',
+      title: "Shipping Policy | Exam Essentials",
+      description: "Shipping Policy for Exam Essentials - Learn about our digital product delivery process. All products are delivered instantly via email.",
+      keywords: "shipping policy, delivery policy, digital delivery, instant download, exam essentials delivery",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
+          <h1 class="text-4xl font-extrabold mb-6">Shipping Policy</h1>
+          <p class="text-sm text-slate-400 mb-6">Last updated: December 28, 2025</p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">1. Digital Products Only</h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Exam Essentials exclusively sells digital products. We do not sell or ship any physical products. 
+            All our study materials are provided in digital format (PDF) and are delivered electronically.
+          </p>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">2. Delivery Method</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Upon successful payment, your purchased digital products will be delivered via:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li><strong>Email Delivery:</strong> A download link will be sent to the email address provided during purchase.</li>
+            <li><strong>Instant Access:</strong> Products are available for download immediately after payment confirmation.</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">3. Delivery Timeline</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Digital products are delivered instantly. You should receive your download link within:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li><strong>Immediate:</strong> Most orders are delivered within seconds of payment confirmation.</li>
+            <li><strong>Maximum:</strong> In rare cases, delivery may take up to 15 minutes due to email server delays.</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">4. Delivery Issues</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            If you haven't received your product within 24 hours of purchase:
+          </p>
+          <ol class="list-decimal pl-6 text-slate-300 space-y-2 mb-6">
+            <li>Check your spam/junk email folder.</li>
+            <li>Verify that you provided the correct email address during purchase.</li>
+            <li>Contact us at <a href="mailto:examessentials.info@gmail.com" class="text-blue-400 hover:underline">examessentials.info@gmail.com</a> with your order details.</li>
+          </ol>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">5. No Physical Shipping</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Since all our products are digital:
+          </p>
+          <ul class="list-disc pl-6 text-slate-300 space-y-2 mb-6">
+            <li>No physical address is required for delivery.</li>
+            <li>No shipping charges apply.</li>
+            <li>Products are available worldwide with no geographic restrictions.</li>
+            <li>No waiting time for physical delivery.</li>
+          </ul>
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">6. Contact Us</h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            For any questions regarding product delivery, please contact us:
+          </p>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Email: <a href="mailto:examessentials.info@gmail.com" class="text-blue-400 hover:underline">examessentials.info@gmail.com</a><br />
+            WhatsApp: <a href="https://wa.me/919460970342" class="text-blue-400 hover:underline">+91 94609 70342</a>
+          </p>
+        </div>
+      `
+    },
+    {
+      route: 'medposterhub/shipping',
+      title: "Shipping Policy | MedPosterHub",
+      description: "Learn about our shipping times, packaging methods, and delivery partners for medical posters across India.",
+      keywords: "medical posters, anatomy posters, shipping policy, medposterhub",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-slate-800">
+          <h1 class="text-4xl font-extrabold mb-6">Shipping Policy</h1>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Delivery Timeline</h2>
+          <p class="leading-relaxed mb-6">We process and print all posters to order. Standard dispatch takes 2-3 business days for single-sided prints and 5 business days for custom double-sided prints. Once dispatched, delivery across India takes 3 to 5 business days.</p>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Premium Protective Packaging</h2>
+          <p class="leading-relaxed mb-4">Since our posters are printed on high-quality 250gsm matte paper, we take extreme care in packaging to prevent any creases or damage during transit.</p>
+          <ul class="list-disc pl-6 space-y-2 mb-6">
+            <li>All posters are carefully rolled (never folded).</li>
+            <li>They are placed inside heavy-duty, crush-proof cardboard mailing tubes.</li>
+            <li>Both ends are securely sealed with plastic end caps.</li>
+          </ul>
+          <h2 class="text-2xl font-bold mt-8 mb-4">No Cash on Delivery (COD)</h2>
+          <p class="leading-relaxed mb-6">To ensure priority printing and the fastest possible shipping for your clinical charts, we only accept Prepaid Orders on our official website via Razorpay.</p>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Tracking Your Order</h2>
+          <p class="leading-relaxed mb-6">Once your order is shipped, we will share the tracking link and courier details with you directly via WhatsApp on the number you used to place the order.</p>
+        </div>
+      `
+    },
+    {
+      route: 'medposterhub/returns',
+      title: "Returns & Refunds | MedPosterHub",
+      description: "Read our hassle-free return and replacement policy for damaged medical posters.",
+      keywords: "returns, refund policy, replacement, medposterhub",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-slate-800">
+          <h1 class="text-4xl font-extrabold mb-6">Returns & Replacements</h1>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Damaged in Transit</h2>
+          <p class="leading-relaxed mb-4">While we use crush-proof cardboard tubes for all shipments, transit accidents can occasionally happen. <strong>If your poster arrives damaged, creased, or torn, we will replace it entirely free of charge.</strong></p>
+          <p class="leading-relaxed mb-6">Simply send us a clear video or photo of the damaged poster and the unboxing process via WhatsApp within 48 hours of delivery.</p>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Replacement Process</h2>
+          <ol class="list-decimal pl-6 space-y-2 mb-6">
+            <li>Message us on WhatsApp at <strong>+91 94609 70342</strong>.</li>
+            <li>Share your order details and photos/videos of the damage.</li>
+            <li>Once verified, we will dispatch a fresh replacement poster within 24 hours via express shipping at no extra cost to you.</li>
+          </ol>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Refunds and Cancellations</h2>
+          <p class="leading-relaxed mb-6">Each medical poster is custom-printed to order in the specific size you requested. <strong>Due to the nature of custom printing, we do not offer refunds or accept returns for any reason (change of mind, size error, etc.).</strong></p>
+        </div>
+      `
+    },
+    {
+      route: 'medposterhub/privacy-terms',
+      title: "Privacy Policy & Terms | MedPosterHub",
+      description: "Privacy policy and terms of service for MedPosterHub.",
+      keywords: "privacy policy, terms of service, medposterhub",
+      bodyContent: `
+        <div class="max-w-4xl mx-auto px-4 py-16 text-left text-slate-800">
+          <h1 class="text-4xl font-extrabold mb-6">Privacy Policy & Terms</h1>
+          <h2 class="text-2xl font-bold mt-8 mb-4">Terms of Service</h2>
+          <p class="leading-relaxed mb-4">Welcome to MedPosterHub, a division of Exam Essentials. By accessing our website, you agree to be bound by these Terms and Conditions.</p>
+          <h3 class="text-xl font-semibold mt-4 mb-2">Intellectual Property</h3>
+          <p class="leading-relaxed mb-4">All poster designs, illustrations, and content on this website are the intellectual property of Exam Essentials and our creators.</p>
+          <h3 class="text-xl font-semibold mt-4 mb-2">Medical Disclaimer</h3>
+          <p class="leading-relaxed mb-6">While we partner with anatomists to ensure our posters are medically accurate, they are intended for educational and reference purposes only. They do not constitute professional medical advice or diagnosis.</p>
+          <hr class="my-8" />
+          <h2 class="text-2xl font-bold mt-8 mb-4">Privacy Policy</h2>
+          <p class="leading-relaxed mb-4">We take your privacy seriously. This policy explains how we handle your personal information.</p>
+          <h3 class="text-xl font-semibold mt-4 mb-2">Information Collection</h3>
+          <p class="leading-relaxed mb-4">We collect information necessary to process your orders, such as your name, shipping address, and phone number (primarily via WhatsApp for order fulfillment).</p>
+          <h3 class="text-xl font-semibold mt-4 mb-2">Data Sharing</h3>
+          <p class="leading-relaxed mb-6">We do not sell, trade, or rent your personal identification information to others. We only share necessary details with trusted courier partners specifically for delivering your order.</p>
+        </div>
+      `
+    },
+    {
       route: 'contact',
       title: "Contact Us - Exam Essentials | Customer Support",
       description: "Contact Exam Essentials for questions about handwritten notes for Class 11 & 12. WhatsApp: +91 9460970342. Email: examessentials.info@gmail.com. We're here to help!",
