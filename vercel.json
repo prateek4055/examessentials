@@ -1,6 +1,18 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/medortho/wrist",
+      "destination": "/medortho/wrist-hand",
+      "permanent": true
+    },
+    {
+      "source": "/medortho/ankle",
+      "destination": "/medortho/ankle-foot",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/supabase-api/:match*",

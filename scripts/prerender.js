@@ -601,9 +601,7 @@ async function runPrerender() {
     { raw: "spine", dbName: "Spine", formatted: "Spine" },
     { raw: "elbow", dbName: "Elbow", formatted: "Elbow" },
     { raw: "wrist-hand", dbName: "Wrist & Hand", formatted: "Wrist & Hand" },
-    { raw: "wrist", dbName: "Wrist & Hand", formatted: "Wrist & Hand" },
     { raw: "ankle-foot", dbName: "Ankle & Foot", formatted: "Ankle & Foot" },
-    { raw: "ankle", dbName: "Ankle & Foot", formatted: "Ankle & Foot" },
     { raw: "neurological", dbName: "Neurological", formatted: "Neurological" }
   ];
 
