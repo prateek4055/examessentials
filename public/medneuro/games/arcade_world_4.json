@@ -1,0 +1,28 @@
+{
+  "id": 4,
+  "name": "Condition Finder",
+  "gameType": "condition_finder",
+  "description": "Identify clinical conditions from symptoms.",
+  "levels": [
+    {
+      "id": 1,
+      "challenges": [
+        {
+          "case": "A patient felt a 'pop' in the knee with immediate swelling during soccer. Lachman test is positive.",
+          "options": ["ACL Tear", "Meniscus Tear", "Patellar Tendonitis", "MCL Sprain"],
+          "answerIndex": 0
+        },
+        {
+          "case": "An elderly woman fell on an outstretched hand, showing a 'dinner fork deformity' of the wrist.",
+          "options": ["Scaphoid Fracture", "Colles Fracture", "Smiths Fracture", "Greenstick Fracture"],
+          "answerIndex": 1
+        },
+        {
+          "case": "An athlete has pin-point tenderness over the lateral epicondyle, worsened by wrist extension.",
+          "options": ["Golfers Elbow", "Tennis Elbow", "Carpal Tunnel", "De Quervain"],
+          "answerIndex": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,25 +1,896 @@
 {
-  "id": "world_1",
-  "title": "Neuroanatomy Basics",
-  "description": "Master the fundamentals of the nervous system",
+  "id": 1,
+  "name": "Crossword",
+  "gameType": "crossword",
+  "description": "Spell the orthopaedic terms matching the clues.",
   "levels": [
     {
-      "id": "w1_l1",
-      "title": "Cranial Nerves",
-      "description": "Basic cranial nerve functions",
-      "xpReward": 50,
-      "questions": [
+      "id": 1,
+      "challenges": [
+        {"clue": "Longest and strongest bone in the human body, located in the thigh", "answer": "FEMUR"},
+        {"clue": "Bone forming the heel", "answer": "CALCANEUS"},
+        {"clue": "S-shaped bone connecting the sternum to the scapula", "answer": "CLAVICLE"}
+      ]
+    },
+    {
+      "id": 2,
+      "challenges": [
+        {"clue": "Triangular flat bone at the back of the shoulder, also called the shoulder blade", "answer": "SCAPULA"},
+        {"clue": "Bone of the upper arm, between shoulder and elbow", "answer": "HUMERUS"},
+        {"clue": "Medial bone of the forearm, in line with the little finger", "answer": "ULNA"}
+      ]
+    },
+    {
+      "id": 3,
+      "challenges": [
+        {"clue": "Lateral bone of the forearm, in line with the thumb", "answer": "RADIUS"},
+        {"clue": "Weight-bearing bone of the lower leg, also called the shin bone", "answer": "TIBIA"},
+        {"clue": "Thin outer bone of the lower leg that does not bear much body weight", "answer": "FIBULA"}
+      ]
+    },
+    {
+      "id": 4,
+      "challenges": [
+        {"clue": "Small triangular bone embedded in the quadriceps tendon at the front of the knee", "answer": "PATELLA"},
+        {"clue": "Cup-shaped socket of the hip bone that receives the head of the femur", "answer": "ACETABULUM"},
+        {"clue": "Bony prominence on the posterior forearm that forms the point of the elbow", "answer": "OLECRANON"}
+      ]
+    },
+    {
+      "id": 5,
+      "challenges": [
+        {"clue": "Ring of eight small carpal bones connecting the hand to the forearm", "answer": "CARPUS"},
+        {"clue": "Five long bones of the palm, between the carpals and the fingers", "answer": "METACARPALS"},
+        {"clue": "Bones of the fingers and toes", "answer": "PHALANGES"}
+      ]
+    },
+    {
+      "id": 6,
+      "challenges": [
+        {"clue": "Flat, curved bones that form the protective cage around the heart and lungs", "answer": "RIBS"},
+        {"clue": "Flat bone in the center of the chest where the ribs attach via cartilage", "answer": "STERNUM"},
+        {"clue": "Backbone made up of 33 stacked bones from the neck to the tailbone", "answer": "VERTEBRAE"}
+      ]
+    },
+    {
+      "id": 7,
+      "challenges": [
+        {"clue": "Dome-shaped bone forming the roof of the skull", "answer": "CRANIUM"},
+        {"clue": "Only movable bone of the skull, forming the lower jaw", "answer": "MANDIBLE"},
+        {"clue": "Bony ridge on the shoulder blade that you can feel at the tip of the shoulder", "answer": "ACROMION"}
+      ]
+    },
+    {
+      "id": 8,
+      "challenges": [
+        {"clue": "Hook-like projection of the scapula that curves toward the front of the shoulder", "answer": "CORACOID"},
+        {"clue": "Shallow socket on the scapula that articulates with the head of the humerus", "answer": "GLENOID"},
+        {"clue": "Rounded bony bump at the end of a bone near a joint, such as at the elbow or knee", "answer": "CONDYLE"}
+      ]
+    },
+    {
+      "id": 9,
+      "challenges": [
+        {"clue": "Ankle bone that sits atop the calcaneus and articulates with the tibia and fibula", "answer": "TALUS"},
+        {"clue": "Bony bump on the inner or outer side of the ankle, formed by the tibia or fibula", "answer": "MALLEOLUS"},
+        {"clue": "Boat-shaped tarsal bone on the medial side of the foot, between the talus and cuneiforms", "answer": "NAVICULAR"}
+      ]
+    },
+    {
+      "id": 10,
+      "challenges": [
+        {"clue": "Bony process felt on the greater trochanter side of the hip where gluteal muscles attach", "answer": "TROCHANTER"},
+        {"clue": "Rough projection on a bone where a tendon or ligament firmly attaches, e.g. the tibial one below the knee", "answer": "TUBEROSITY"},
+        {"clue": "Rounded bump above a bone's condyle where ligaments attach, found on the femur and humerus", "answer": "EPICONDYLE"}
+      ]
+    },
+  {
+  "id": 11,
+  "challenges": [
+    {"clue": "Thin membrane lining the inner surface of a joint capsule that secretes lubricating fluid", "answer": "SYNOVIUM"},
+    {"clue": "Smooth connective tissue covering the ends of bones inside a joint, reducing friction during movement", "answer": "CARTILAGE"},
+    {"clue": "C-shaped fibrocartilage disc that cushions and stabilizes the knee joint between femur and tibia", "answer": "MENISCUS"}
+  ]
+},
+{
+  "id": 12,
+  "challenges": [
+    {"clue": "Fibrous band of tissue connecting bone to bone, providing joint stability", "answer": "LIGAMENT"},
+    {"clue": "Tough cord of fibrous tissue connecting muscle to bone", "answer": "TENDON"},
+    {"clue": "Small fluid-filled sac that reduces friction between tendon, bone, and skin near a joint", "answer": "BURSA"}
+  ]
+},
+{
+  "id": 13,
+  "challenges": [
+    {"clue": "Ring of fibrocartilage that deepens a shallow socket joint, as seen in the shoulder and hip", "answer": "LABRUM"},
+    {"clue": "Fibrous sac enclosing a synovial joint and its cavity", "answer": "CAPSULE"},
+    {"clue": "General term for the point where two or more bones meet, forming a joint", "answer": "ARTICULATION"}
+  ]
+},
+{
+  "id": 14,
+  "challenges": [
+    {"clue": "Freely movable joint type that allows a wide range of motion, such as the shoulder or knee", "answer": "DIARTHROSIS"},
+    {"clue": "Immovable joint type where bones are firmly united, such as the sutures of the skull", "answer": "SYNARTHROSIS"},
+    {"clue": "Slightly movable joint type, such as the joints between vertebral bodies", "answer": "AMPHIARTHROSIS"}
+  ]
+},
+{
+  "id": 15,
+  "challenges": [
+    {"clue": "Cartilaginous joint where bones are joined by fibrocartilage, as seen at the pubic bones", "answer": "SYMPHYSIS"},
+    {"clue": "Immovable fibrous joint found between the flat bones of the skull", "answer": "SUTURE"},
+    {"clue": "Fibrous joint where bones are bound by a sheet of connective tissue, as between the tibia and fibula", "answer": "SYNDESMOSIS"}
+  ]
+},
+{
+  "id": 16,
+  "challenges": [
+    {"clue": "Tough fibrous membrane covering the outer surface of a bone, rich in nerve and blood supply", "answer": "PERIOSTEUM"},
+    {"clue": "Thin membrane lining the inner cavity of a bone, facing the marrow", "answer": "ENDOSTEUM"},
+    {"clue": "Long shaft-like middle section of a long bone, between the two ends", "answer": "DIAPHYSIS"}
+  ]
+},
+{
+  "id": 17,
+  "challenges": [
+    {"clue": "Rounded end of a long bone, typically the site of joint formation and growth plate closure", "answer": "EPIPHYSIS"},
+    {"clue": "Flared region of a long bone between the shaft and the end, containing the growth plate in children", "answer": "METAPHYSIS"},
+    {"clue": "Bone-forming cell responsible for laying down new bone matrix", "answer": "OSTEOBLAST"}
+  ]
+},
+{
+  "id": 18,
+  "challenges": [
+    {"clue": "Large multinucleated cell that breaks down and resorbs old bone tissue", "answer": "OSTEOCLAST"},
+    {"clue": "Mature bone cell embedded within the bone matrix that maintains bone tissue", "answer": "OSTEOCYTE"},
+    {"clue": "Mature cartilage-producing cell found within the lacunae of cartilage tissue", "answer": "CHONDROCYTE"}
+  ]
+},
+{
+  "id": 19,
+  "challenges": [
+    {"clue": "Spongy, porous inner bone tissue found at the ends of long bones and inside flat bones", "answer": "CANCELLOUS"},
+    {"clue": "Dense, compact outer layer of bone that gives long bones their strength", "answer": "CORTICAL"},
+    {"clue": "Microscopic canal running through compact bone that carries blood vessels and nerves", "answer": "HAVERSIAN"}
+  ]
+},
+{
+  "id": 20,
+  "challenges": [
+    {"clue": "Smooth, glassy type of cartilage found on articular joint surfaces and the trachea", "answer": "HYALINE"},
+    {"clue": "Tough cartilage rich in collagen fibers, found in the intervertebral discs and menisci", "answer": "FIBROCARTILAGE"},
+    {"clue": "Fibrous joint that anchors a tooth into its socket in the jawbone", "answer": "GOMPHOSIS"}
+  ]
+},
+{
+  "id": 21,
+  "challenges": [
+    {"clue": "Type of ligament that crosses another within a joint cavity, e.g. the anterior and posterior ones stabilizing the knee", "answer": "CRUCIATE"},
+    {"clue": "Ligament running along the side of a joint (medial or lateral) that resists sideways bending stress", "answer": "COLLATERAL"},
+    {"clue": "Ligament continuing from the quadriceps tendon, connecting the patella to the tibial tuberosity", "answer": "PATELLAR"}
+  ]
+},
+{
+  "id": 22,
+  "challenges": [
+    {"clue": "Ligament spanning from the coracoid process to the acromion, forming an arch over the shoulder joint", "answer": "CORACOACROMIAL"},
+    {"clue": "Strong ligament connecting the coracoid process of the scapula to the clavicle", "answer": "CORACOCLAVICULAR"},
+    {"clue": "Ligament reinforcing the joint between the acromion and the outer end of the clavicle", "answer": "ACROMIOCLAVICULAR"}
+  ]
+},
+{
+  "id": 23,
+  "challenges": [
+    {"clue": "Strongest ligament of the hip, running from ilium to femur and preventing over-extension", "answer": "ILIOFEMORAL"},
+    {"clue": "Hip ligament running from the pubic bone to the femur, resisting excessive abduction", "answer": "PUBOFEMORAL"},
+    {"clue": "Hip ligament arising from the ischium that spirals around the femoral neck", "answer": "ISCHIOFEMORAL"}
+  ]
+},
+{
+  "id": 24,
+  "challenges": [
+    {"clue": "Ankle ligament connecting the talus to the fibula, most commonly sprained in an inversion injury", "answer": "TALOFIBULAR"},
+    {"clue": "Ankle ligament running from the calcaneus to the fibula, part of the lateral ankle ligament complex", "answer": "CALCANEOFIBULAR"},
+    {"clue": "Thick band of connective tissue on the sole of the foot supporting the arch, often inflamed in fasciitis", "answer": "PLANTAR"}
+  ]
+},
+{
+  "id": 25,
+  "challenges": [
+    {"clue": "Triangular muscle capping the shoulder that abducts the arm, a common site for intramuscular injections", "answer": "DELTOID"},
+    {"clue": "Large flat muscle of the upper back and neck involved in shrugging and rotating the scapula", "answer": "TRAPEZIUS"},
+    {"clue": "Broad, flat muscle of the back nicknamed the 'lat', a strong extensor and adductor of the arm", "answer": "LATISSIMUS"}
+  ]
+},
+{
+  "id": 26,
+  "challenges": [
+    {"clue": "Rotator cuff muscle running along the top of the scapula that initiates arm abduction", "answer": "SUPRASPINATUS"},
+    {"clue": "Rotator cuff muscle below the scapular spine that externally rotates the shoulder", "answer": "INFRASPINATUS"},
+    {"clue": "Rotator cuff muscle on the front surface of the scapula that internally rotates the shoulder", "answer": "SUBSCAPULARIS"}
+  ]
+},
+{
+  "id": 27,
+  "challenges": [
+    {"clue": "Two-headed muscle on the front of the upper arm that flexes the elbow and supinates the forearm", "answer": "BICEPS"},
+    {"clue": "Three-headed muscle on the back of the upper arm responsible for elbow extension", "answer": "TRICEPS"},
+    {"clue": "Muscle lying deep to the biceps that is the primary flexor of the elbow joint", "answer": "BRACHIALIS"}
+  ]
+},
+{
+  "id": 28,
+  "challenges": [
+    {"clue": "Four-headed muscle group on the front of the thigh that extends the knee", "answer": "QUADRICEPS"},
+    {"clue": "Group of posterior thigh muscles that flex the knee and extend the hip", "answer": "HAMSTRING"},
+    {"clue": "Calf muscle with two heads that forms the bulk of the calf and plantarflexes the ankle", "answer": "GASTROCNEMIUS"}
+  ]
+},
+{
+  "id": 29,
+  "challenges": [
+    {"clue": "Flat calf muscle lying deep to the gastrocnemius, important for standing posture", "answer": "SOLEUS"},
+    {"clue": "Longest muscle in the human body, running obliquely across the thigh from hip to knee", "answer": "SARTORIUS"},
+    {"clue": "Thin, strap-like muscle on the inner thigh that adducts the leg and flexes the knee", "answer": "GRACILIS"}
+  ]
+},
+    {
+      "id": 30,
+      "challenges": [
+        {"clue": "Group of three buttock muscles responsible for hip extension and abduction", "answer": "GLUTEUS"},
+        {"clue": "Small hip muscle deep to gluteus maximus that externally rotates the thigh, near the sciatic nerve", "answer": "PIRIFORMIS"},
+        {"clue": "Combined hip flexor muscle formed by the psoas major and iliacus", "answer": "ILIOPSOAS"}
+      ]
+    },
+    {
+      "id": 31,
+      "challenges": [
+        {"clue": "Fracture where the bone is broken into multiple fragments", "answer": "COMMINUTED"},
+        {"clue": "Fracture line is perpendicular to the long axis of the bone", "answer": "TRANSVERSE"},
+        {"clue": "Fracture line runs diagonally across the bone", "answer": "OBLIQUE"}
+      ]
+    },
+    {
+      "id": 32,
+      "challenges": [
+        {"clue": "Fracture pattern caused primarily by a twisting force", "answer": "SPIRAL"},
+        {"clue": "Fracture where the overlying skin is breached, also called a compound fracture", "answer": "OPEN"},
+        {"clue": "Fracture that does not communicate with the external environment", "answer": "CLOSED"}
+      ]
+    },
+    {
+      "id": 33,
+      "challenges": [
+        {"clue": "Fracture occurring in a bone weakened by an underlying disease", "answer": "PATHOLOGICAL"},
+        {"clue": "Type of fracture in children where the outer cortex breaks but the inner cortex only bends", "answer": "GREENSTICK"},
+        {"clue": "Fatigue fracture caused by chronic, repetitive trauma", "answer": "STRESS"}
+      ]
+    },
+    {
+      "id": 34,
+      "challenges": [
+        {"clue": "Complete loss of contact between the articulating surfaces of a joint", "answer": "DISLOCATION"},
+        {"clue": "Partial or incomplete displacement of the articular surfaces within a joint", "answer": "SUBLUXATION"},
+        {"clue": "A tear or stretch in a ligament connecting bone to bone", "answer": "SPRAIN"}
+      ]
+    },
+    {
+      "id": 35,
+      "challenges": [
+        {"clue": "An injury to a muscle or its tendinous attachment due to overstretching", "answer": "STRAIN"},
+        {"clue": "Fracture of the proximal third of the ulna with dislocation of the radial head", "answer": "MONTEGGIA"},
+        {"clue": "Fracture of the distal third of the radius with dislocation of the distal radio-ulnar joint", "answer": "GALEAZZI"}
+      ]
+    },
+    {
+      "id": 36,
+      "challenges": [
+        {"clue": "Fracture of the distal radius with dorsal tilt, common in older adults", "answer": "COLLES"},
+        {"clue": "Fracture of the distal radius with ventral tilt, also known as a reverse Colles fracture", "answer": "SMITHS"},
+        {"clue": "Intra-articular fracture of the distal radius involving the dorsal or volar rim", "answer": "BARTONS"}
+      ]
+    },
+    {
+      "id": 37,
+      "challenges": [
+        {"clue": "Intra-articular fracture-dislocation of the base of the first metacarpal", "answer": "BENNETTS"},
+        {"clue": "Extra-articular fracture of the base of the first metacarpal", "answer": "ROLANDO"},
+        {"clue": "Oblique fracture of the styloid process of the radius", "answer": "CHAUFFEUR"}
+      ]
+    },
+    {
+      "id": 38,
+      "challenges": [
+        {"clue": "Bimalleolar fracture of the ankle", "answer": "POTT"},
+        {"clue": "Trimalleolar fracture of the ankle", "answer": "COTTON"},
+        {"clue": "Comminuted intra-articular fracture of the distal tibia", "answer": "PILON"}
+      ]
+    },
+    {
+      "id": 39,
+      "challenges": [
+        {"clue": "Fracture of the first cervical vertebra (atlas)", "answer": "JEFFERSON"},
+        {"clue": "Fracture through the pedicle and lamina of the C2 vertebra", "answer": "HANGMAN"},
+        {"clue": "Horizontal fracture through the vertebral body and posterior elements", "answer": "CHANCE"}
+      ]
+    },
+    {
+      "id": 40,
+      "challenges": [
+        {"clue": "Avulsion fracture of the base of the fifth metatarsal", "answer": "JONES"},
+        {"clue": "Fatigue fracture of the shaft of the second or third metatarsal", "answer": "MARCH"},
+        {"clue": "Comminuted, depressed fracture of the lateral condyle of the tibia", "answer": "BUMPER"}
+      ]
+    },
+    {
+      "id": 41,
+      "challenges": [
+        {"clue": "Abnormal lateral curvature of the spine", "answer": "SCOLIOSIS"},
+        {"clue": "Abnormal backward or hunchback curvature of the spine", "answer": "KYPHOSIS"},
+        {"clue": "Forward slipping of one vertebra over another", "answer": "SPONDYLOLISTHESIS"}
+      ]
+    },
+    {
+      "id": 42,
+      "challenges": [
+        {"clue": "Knock knees deformity, clinically known as Genu ___", "answer": "VALGUM"},
+        {"clue": "Bow legs deformity, clinically known as Genu ___", "answer": "VARUM"},
+        {"clue": "Lateral deviation of the great toe, known as ___ valgus", "answer": "HALLUX"}
+      ]
+    },
+    {
+      "id": 43,
+      "challenges": [
+        {"clue": "Gun stock deformity of the elbow, known as ___ varus", "answer": "CUBITUS"},
+        {"clue": "Deformity of the hip involving a decreased neck-shaft angle, known as ___ vara", "answer": "COXA"},
+        {"clue": "Wry neck deformity caused by shortened neck muscles", "answer": "TORTICOLLIS"}
+      ]
+    },
+    {
+      "id": 44,
+      "challenges": [
+        {"clue": "Congenital Talipes ___, commonly known as clubfoot", "answer": "EQUINOVARUS"},
+        {"clue": "Main-en-griffe deformity with hyperextended MP and flexed IP joints", "answer": "CLAW"},
+        {"clue": "Thumb deformity seen in median nerve palsy where it lies in the same plane as the wrist", "answer": "APE"}
+      ]
+    },
+    {
+      "id": 45,
+      "challenges": [
+        {"clue": "Prominence of the medial border of the scapula due to serratus anterior paralysis", "answer": "WINGING"},
+        {"clue": "Wrist or foot deformity resulting from extensor muscle paralysis", "answer": "DROP"},
+        {"clue": "Index finger deformity seen when asked to make a fist in high median nerve palsy", "answer": "POINTING"}
+      ]
+    },
+    {
+      "id": 46,
+      "challenges": [
+        {"clue": "Contracture of the palmar aponeurosis pulling the fingers into flexion", "answer": "DUPUYTREN"},
+        {"clue": "Ischaemic contracture of the forearm flexor muscles leading to wrist and finger deformity", "answer": "VOLKMANN"},
+        {"clue": "Flexion deformity of the distal interphalangeal joint due to extensor tendon avulsion", "answer": "MALLET"}
+      ]
+    },
+    {
+      "id": 47,
+      "challenges": [
+        {"clue": "Operation involving cutting a bone to correct its angular deformity", "answer": "OSTEOTOMY"},
+        {"clue": "Procedure of refracturing a malunited bone to correct a mild angular deformity in children", "answer": "OSTEOCLASIS"},
+        {"clue": "Surgical operation to fuse a damaged and deformed joint", "answer": "ARTHRODESIS"}
+      ]
+    },
+    {
+      "id": 48,
+      "challenges": [
+        {"clue": "Deformity or malformation that is present at birth", "answer": "CONGENITAL"},
+        {"clue": "Deformity that develops later in life due to trauma or disease", "answer": "ACQUIRED"},
+        {"clue": "Deformity resulting from the habitual keeping of a joint in an abnormal position", "answer": "POSTURAL"}
+      ]
+    },
+    {
+      "id": 49,
+      "challenges": [
+        {"clue": "Tip deformity seen in upper brachial plexus injury where the arm hangs internally rotated", "answer": "POLICEMAN"},
+        {"clue": "Overactivity of muscles, such as in cerebral palsy, causing joint deformity", "answer": "SPASTICITY"},
+        {"clue": "Muscle ___, a cause of joint deformity due to weakness or paralysis of an opposing muscle group", "answer": "IMBALANCE"}
+      ]
+    },
+    {
+      "id": 50,
+      "challenges": [
+        {"clue": "Unequal growth at this cartilaginous plate is a common cause of bone deformity in children", "answer": "EPIPHYSEAL"},
+        {"clue": "Metabolic bone disease in children leading to the softening and bending of bones", "answer": "RICKETS"},
+        {"clue": "Metabolic bone softening in adults that can lead to acquired bone deformities", "answer": "OSTEOMALACIA"}
+      ]
+    },
+    {
+      "id": 51,
+      "challenges": [
+        {"clue": "Bending a joint to decrease the angle between two bones", "answer": "FLEXION"},
+        {"clue": "Straightening a joint to increase the angle between two bones", "answer": "EXTENSION"},
+        {"clue": "Moving a limb away from the midline of the body", "answer": "ABDUCTION"}
+      ]
+    },
+    {
+      "id": 52,
+      "challenges": [
+        {"clue": "Moving a limb toward the midline of the body", "answer": "ADDUCTION"},
+        {"clue": "Turning a bone around its own longitudinal axis", "answer": "ROTATION"},
+        {"clue": "Circular movement combining flexion, extension, abduction, and adduction", "answer": "CIRCUMDUCTION"}
+      ]
+    },
+    {
+      "id": 53,
+      "challenges": [
+        {"clue": "Turning the forearm so the palm faces upward or forward", "answer": "SUPINATION"},
+        {"clue": "Turning the forearm so the palm faces downward or backward", "answer": "PRONATION"},
+        {"clue": "Upward movement of the foot towards the shin", "answer": "DORSIFLEXION"}
+      ]
+    },
+    {
+      "id": 54,
+      "challenges": [
+        {"clue": "Downward movement of the foot away from the shin", "answer": "PLANTARFLEXION"},
+        {"clue": "Turning the sole of the foot inward toward the midline", "answer": "INVERSION"},
+        {"clue": "Turning the sole of the foot outward away from the midline", "answer": "EVERSION"}
+      ]
+    },
+    {
+      "id": 55,
+      "challenges": [
+        {"clue": "Lifting or raising a body part, such as shrugging the shoulders", "answer": "ELEVATION"},
+        {"clue": "Lowering a body part, such as dropping the shoulders", "answer": "DEPRESSION"},
+        {"clue": "Moving a body part forward, such as jutting the jaw out", "answer": "PROTRACTION"}
+      ]
+    },
+    {
+      "id": 56,
+      "challenges": [
+        {"clue": "Moving a body part backward, such as pulling the jaw in", "answer": "RETRACTION"},
+        {"clue": "Movement of the thumb across the palm to touch the fingertips", "answer": "OPPOSITION"},
+        {"clue": "Returning the thumb to its anatomical position from across the palm", "answer": "REPOSITION"}
+      ]
+    },
+    {
+      "id": 57,
+      "challenges": [
+        {"clue": "The study of motion without regard to the forces causing it", "answer": "KINEMATICS"},
+        {"clue": "The study of forces that cause, arrest, or modify body motion", "answer": "KINETICS"},
+        {"clue": "Force that acts parallel to a surface, causing internal sliding of tissues", "answer": "SHEAR"}
+      ]
+    },
+    {
+      "id": 58,
+      "challenges": [
+        {"clue": "Force that pulls or stretches a material apart", "answer": "TENSION"},
+        {"clue": "Force that pushes materials together", "answer": "COMPRESSION"},
+        {"clue": "Twisting force applied to an object or bone", "answer": "TORSION"}
+      ]
+    },
+    {
+      "id": 59,
+      "challenges": [
+        {"clue": "Muscle contraction where the muscle shortens while generating force", "answer": "CONCENTRIC"},
+        {"clue": "Muscle contraction where the muscle lengthens while under tension", "answer": "ECCENTRIC"},
+        {"clue": "Muscle contraction where length remains constant without joint movement", "answer": "ISOMETRIC"}
+      ]
+    },
+    {
+      "id": 60,
+      "challenges": [
+        {"clue": "The primary muscle responsible for a specific joint movement", "answer": "AGONIST"},
+        {"clue": "A muscle that opposes the action of the primary mover", "answer": "ANTAGONIST"},
+        {"clue": "A muscle that assists the primary mover in performing an action", "answer": "SYNERGIST"}
+      ]
+    },
+    {
+      "id": 61,
+      "challenges": [
+        {"clue": "Most sensitive clinical test for diagnosing an anterior cruciate ligament (ACL) tear", "answer": "LACHMAN"},
+        {"clue": "Test assessing ACL or PCL integrity by pulling or pushing the tibia at 90 degrees of knee flexion", "answer": "DRAWER"},
+        {"clue": "Dynamic subluxation test used to evaluate anterolateral rotary instability of the knee", "answer": "PIVOT"}
+      ]
+    },
+    {
+      "id": 62,
+      "challenges": [
+        {"clue": "Meniscal tear test involving rotation of the flexed knee, often producing a palpable click", "answer": "MCMURRAY"},
+        {"clue": "Prone compression and distraction test used to distinguish between meniscal and ligamentous knee injuries", "answer": "APLEY"},
+        {"clue": "Test for patellofemoral pain syndrome involving downward pressure on the patella during quadriceps contraction", "answer": "CLARKE"}
+      ]
+    },
+    {
+      "id": 63,
+      "challenges": [
+        {"clue": "Shoulder test for anterior instability where the abducted and externally rotated arm induces fear of dislocation", "answer": "APPREHENSION"},
+        {"clue": "Impingement test involving passive forward flexion of the internally rotated arm causing pain", "answer": "NEER"},
+        {"clue": "Impingement test where the arm is flexed to 90 degrees and forcefully internally rotated", "answer": "HAWKINS"}
+      ]
+    },
+    {
+      "id": 64,
+      "challenges": [
+        {"clue": "Alternative name for the Empty Can test, evaluating supraspinatus tendon pathology", "answer": "JOBE"},
+        {"clue": "Test for a massive rotator cuff tear where the patient cannot smoothly lower a fully abducted arm", "answer": "DROP"},
+        {"clue": "Test for biceps tendon pathology involving resisted supination of the forearm", "answer": "YERGASON"}
+      ]
+    },
+    {
+      "id": 65,
+      "challenges": [
+        {"clue": "Pediatric test attempting to dislocate an unstable hip by adduction and posterior pressure", "answer": "BARLOW"},
+        {"clue": "Pediatric test confirming hip dislocation by reducing it via abduction and anterior pressure", "answer": "ORTOLANI"},
+        {"clue": "Test for fixed flexion deformity of the hip involving maximum flexion of the contralateral hip", "answer": "THOMAS"}
+      ]
+    },
+    {
+      "id": 66,
+      "challenges": [
+        {"clue": "Sign indicating weakness of the gluteus medius, causing the pelvis to drop on the unsupported side", "answer": "TRENDELENBURG"},
+        {"clue": "Test to assess iliotibial (IT) band tightness by extending and dropping the abducted hip", "answer": "OBER"},
+        {"clue": "Acronym test (Flexion, Abduction, External Rotation) for sacroiliac or hip joint pathology", "answer": "FABER"}
+      ]
+    },
+    {
+      "id": 67,
+      "challenges": [
+        {"clue": "Sign elicited by the straight leg raise test indicating sciatic nerve root irritation", "answer": "LASEGUE"},
+        {"clue": "Test measuring lumbar spine flexion, frequently limited in ankylosing spondylitis", "answer": "SCHOBER"},
+        {"clue": "Maneuver applying downward pressure on a laterally flexed head to provoke cervical radiculopathy symptoms", "answer": "SPURLING"}
+      ]
+    },
+    {
+      "id": 68,
+      "challenges": [
+        {"clue": "Neurological sign presenting as a tingling sensation when tapping over a regenerating or compressed nerve", "answer": "TINEL"},
+        {"clue": "Provocative test for carpal tunnel syndrome involving unresisted maximum wrist flexion for 60 seconds", "answer": "PHALEN"},
+        {"clue": "Test for de Quervain's tenosynovitis involving ulnar deviation of the wrist with the thumb enclosed in a fist", "answer": "FINKELSTEIN"}
+      ]
+    },
+    {
+      "id": 69,
+      "challenges": [
+        {"clue": "Test for lateral epicondylitis (tennis elbow) involving resisted wrist extension", "answer": "COZEN"},
+        {"clue": "Calf squeeze test used to clinically evaluate the integrity of the Achilles tendon", "answer": "THOMPSON"},
+        {"clue": "Clinical sign evaluating ulnar nerve palsy where the thumb flexes to grip a piece of paper", "answer": "FROMENT"}
+      ]
+    },
+    {
+      "id": 70,
+      "challenges": [
+        {"clue": "Test for a massive knee effusion where the patella is tapped against the femur", "answer": "BALLOTTEMENT"},
+        {"clue": "Clinical sign for apparent leg length discrepancy assessed with the patient supine and knees flexed", "answer": "GALEAZZI"},
+        {"clue": "Test checking collateral blood flow to the hand by compressing both the radial and ulnar arteries", "answer": "ALLEN"}
+      ]
+    },
+    {
+      "id": 71,
+      "challenges": [
+        {"clue": "Infection of the bone and bone marrow, most commonly caused by Staphylococcus aureus", "answer": "OSTEOMYELITIS"},
+        {"clue": "A chronic localized bone abscess, often found in the metaphysis of long bones", "answer": "BRODIE"},
+        {"clue": "A chronic non-suppurative sclerosing form of osteomyelitis named after a Swiss surgeon", "answer": "GARRE"}
+      ]
+    },
+    {
+      "id": 72,
+      "challenges": [
+        {"clue": "Tuberculosis of the spine is classically known as this disease", "answer": "POTT"},
+        {"clue": "A sharp, angular deformity of the spine resulting from collapsed vertebrae in spinal tuberculosis", "answer": "GIBBUS"},
+        {"clue": "Neurological deficit or paralysis of the lower limbs occurring secondary to tuberculosis of the spine", "answer": "PARAPLEGIA"}
+      ]
+    },
+    {
+      "id": 73,
+      "challenges": [
+        {"clue": "Degenerative joint disease characterized by progressive loss of articular cartilage and osteophyte formation", "answer": "OSTEOARTHRITIS"},
+        {"clue": "Systemic autoimmune inflammatory disease leading to symmetric polyarthritis and joint destruction", "answer": "RHEUMATOID"},
+        {"clue": "Seronegative inflammatory arthropathy leading to eventual fusion of the spine, known as ankylosing ", "answer": "SPONDYLITIS"}
+      ]
+    },
+    {
+      "id": 74,
+      "challenges": [
+        {"clue": "Metabolic disease characterized by low bone mass and microarchitectural deterioration, increasing fracture risk", "answer": "OSTEOPOROSIS"},
+        {"clue": "Defective mineralization of osteoid in children, primarily due to Vitamin D deficiency", "answer": "RICKETS"},
+        {"clue": "The adult equivalent of rickets, involving the softening of mature bones", "answer": "OSTEOMALACIA"}
+      ]
+    },
+    {
+      "id": 75,
+      "challenges": [
+        {"clue": "The most common benign bone tumour, characterized by a cartilage-capped bony outgowth", "answer": "OSTEOCHONDROMA"},
+        {"clue": "Benign but locally aggressive tumour characterized by multinucleated giant cells", "answer": "OSTEOCLASTOMA"},
+        {"clue": "Benign cartilage-forming tumour that develops within the medullary cavity of a bone", "answer": "ENCHONDROMA"}
+      ]
+    },
+    {
+      "id": 76,
+      "challenges": [
+        {"clue": "Highly malignant primary bone tumour characterized by the production of osteoid by malignant cells", "answer": "OSTEOSARCOMA"},
+        {"clue": "Malignant round cell tumour of bone common in children, characterized by an 'onion-peel' periosteal reaction", "answer": "EWING"},
+        {"clue": "Malignant primary bone tumour composed of cartilage-producing cells, typically affecting older adults", "answer": "CHONDROSARCOMA"}
+      ]
+    },
+    {
+      "id": 77,
+      "challenges": [
+        {"clue": "A common fluid-filled synovial cyst frequently found on the dorsal aspect of the wrist", "answer": "GANGLION"},
+        {"clue": "Entrapment neuropathy of the median nerve at the wrist, known as ___ tunnel syndrome", "answer": "CARPAL"},
+        {"clue": "A synovial cyst found in the popliteal space behind the knee is called a ___ cyst", "answer": "BAKER"}
+      ]
+    },
+    {
+      "id": 78,
+      "challenges": [
+        {"clue": "Idiopathic avascular necrosis of the capital femoral epiphysis in children, known as Legg-Calve- disease", "answer": "PERTHES"},
+        {"clue": "Inflammation of the plantar fascia causing heel pain, known as plantar ___", "answer": "FASCIITIS"},
+        {"clue": "Deformity involving inflammation of the extensor pollicis brevis and abductor pollicis longus tendons, known as de Quervain's ___", "answer": "TENOSYNOVITIS"}
+      ]
+    },
+    {
+      "id": 79,
+      "challenges": [
+        {"clue": "Degenerative changes in the spine leading to narrowing of disc spaces and osteophytosis", "answer": "SPONDYLOSIS"},
+        {"clue": "A defect or stress fracture in the pars interarticularis of the vertebral arch", "answer": "SPONDYLOLYSIS"},
+        {"clue": "Radiating leg pain caused by compression or irritation of the lumbosacral nerve roots", "answer": "SCIATICA"}
+      ]
+    },
+    {
+      "id": 80,
+      "challenges": [
+        {"clue": "Cellular death of bone components due to interruption of the blood supply, known as ___ necrosis", "answer": "AVASCULAR"},
+        {"clue": "Condition where a segment of bone and cartilage loses its blood supply and separates from the joint surface, Osteochondritis ___", "answer": "DISSECANS"},
+        {"clue": "Chronic disorder resulting in enlarged and misshapen bones due to excessive abnormal bone remodeling, known as ___ disease", "answer": "PAGET"}
+      ]
+    },
+    {
+      "id": 81,
+      "challenges": [
+        {"clue": "Surgical operation to fuse a joint, eliminating motion to relieve pain", "answer": "ARTHRODESIS"},
+        {"clue": "Surgical reconstruction or replacement of a damaged joint", "answer": "ARTHROPLASTY"},
+        {"clue": "Surgical procedure involving the cutting of a bone to correct its alignment", "answer": "OSTEOTOMY"}
+      ]
+    },
+    {
+      "id": 82,
+      "challenges": [
+        {"clue": "The clinical term for the internal fixation of a fracture (AO principle)", "answer": "OSTEOSYNTHESIS"},
+        {"clue": "External frame device used to hold pins passed through bone for fracture stabilization", "answer": "FIXATOR"},
+        {"clue": "A special bone cut preserving its blood supply, pioneered by Ilizarov for lengthening", "answer": "CORTICOTOMY"}
+      ]
+    },
+    {
+      "id": 83,
+      "challenges": [
+        {"clue": "A permanent or prolonged external support appliance for a disabled limb", "answer": "ORTHOSIS"},
+        {"clue": "An artificial component or device replacing a missing body part or joint surface", "answer": "PROSTHESIS"},
+        {"clue": "A functional cast or splint that supports a fracture while allowing joint mobility", "answer": "BRACE"}
+      ]
+    },
+    {
+      "id": 84,
+      "challenges": [
+        {"clue": "Thin stainless steel wire (K-wire) used for internal fixation of small bones", "answer": "KIRSCHNER"},
+        {"clue": "A stout, smooth pin passed through bone for applying skeletal traction", "answer": "STEINMANN"},
+        {"clue": "A specific hollow intramedullary nail used for femur shaft fractures", "answer": "KUNTSCHER"}
+      ]
+    },
+    {
+      "id": 85,
+      "challenges": [
+        {"clue": "Russian surgeon's name associated with a circular ring fixator for limb lengthening", "answer": "ILIZAROV"},
+        {"clue": "Threaded implant used to compress bone fragments together", "answer": "SCREW"},
+        {"clue": "Thick metallic strip fixed to the bone surface to splint or compress a fracture", "answer": "PLATE"}
+      ]
+    },
+    {
+      "id": 86,
+      "challenges": [
+        {"clue": "Plaster cast extending to the head, used for cervical spine disease immobilization", "answer": "MINERVA"},
+        {"clue": "A cast incorporating both a limb and a portion of the trunk", "answer": "SPICA"},
+        {"clue": "A plaster application that covers only a part of the limb's circumference", "answer": "SLAB"}
+      ]
+    },
+    {
+      "id": 87,
+      "challenges": [
+        {"clue": "Surgical slitting of deep fascia to decompress a compartment", "answer": "FASCIOTOMY"},
+        {"clue": "Surgical procedure freeing a nerve from enveloping scar tissue", "answer": "NEUROLYSIS"},
+        {"clue": "The surgical removal of an entire limb or part of a limb", "answer": "AMPUTATION"}
+      ]
+    },
+    {
+      "id": 88,
+      "challenges": [
+        {"clue": "Bone graft harvested from the patient's own body, such as the iliac crest", "answer": "AUTOGRAFT"},
+        {"clue": "Bone graft taken from another human donor or cadaver", "answer": "ALLOGRAFT"},
+        {"clue": "Bone graft derived from a completely different species, such as bovine", "answer": "XENOGRAFT"}
+      ]
+    },
+    {
+      "id": 89,
+      "challenges": [
+        {"clue": "Instrument used to visually examine the interior of a joint during minimally invasive surgery", "answer": "ARTHROSCOPE"},
+        {"clue": "Device tightly applied to a limb to temporarily arrest blood flow during surgery", "answer": "TOURNIQUET"},
+        {"clue": "Surgical instrument used for scraping the interior of a bone cavity or cyst", "answer": "CURETTE"}
+      ]
+    },
+    {
+      "id": 90,
+      "challenges": [
+        {"clue": "Famous knee-bed splint featuring a ring, widely used for femur fractures", "answer": "THOMAS"},
+        {"clue": "Skin traction setup utilizing a sling under the knee, commonly for trochanteric fractures", "answer": "RUSSELL"},
+        {"clue": "Overhead traction method used for femur fractures in children under two years of age", "answer": "GALLOWS"}
+      ]
+    },
+    {
+      "id": 91,
+      "challenges": [
         {
-          "id": "w1_l1_q1",
-          "question": "Which cranial nerve is responsible for vision?",
-          "options": [
-            "Optic Nerve (CN II)",
-            "Olfactory Nerve (CN I)",
-            "Oculomotor Nerve (CN III)",
-            "Trochlear Nerve (CN IV)"
-          ],
-          "correctAnswerIndex": 0,
-          "explanation": "The Optic Nerve (CN II) transmits visual information from the retina to the brain."
+          "clue": "Pelvis fracture combining anterior pubic rami breaks with posterior sacroiliac disruption",
+          "answer": "MALGAIGNE"
+        },
+        {
+          "clue": "Fracture-dislocation occurring through the inter-tarsal joints of the foot",
+          "answer": "CHOPART"
+        },
+        {
+          "clue": "Isolated fracture of the ulnar shaft sustained while trying to ward off a blow",
+          "answer": "NIGHTSTICK"
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "challenges": [
+        {
+          "clue": "Avulsion fracture of the spinous process of a lower cervical or upper thoracic vertebra",
+          "answer": "CLAYSHOVELLER"
+        },
+        {
+          "clue": "Fracture of the posterior lip of the acetabulum, often causing posterior hip dislocation",
+          "answer": "DASHBOARD"
+        },
+        {
+          "clue": "Bilateral fractures involving both the superior and inferior pubic rami",
+          "answer": "STRADDLE"
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "challenges": [
+        {
+          "clue": "Reflex sympathetic dystrophy causing vague, extreme pain and spotty bone rarefaction post-trauma",
+          "answer": "SUDECK"
+        },
+        {
+          "clue": "Syndrome resulting from massive muscle trauma leading to acute renal tubular necrosis",
+          "answer": "CRUSH"
+        },
+        {
+          "clue": "Syndrome caused by elevated pressure within an osteofascial space, threatening limb viability",
+          "answer": "COMPARTMENT"
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "challenges": [
+        {
+          "clue": "Physiological interruption of nerve conduction without any structural damage to the axons",
+          "answer": "NEURAPRAXIA"
+        },
+        {
+          "clue": "Nerve injury where axons are broken but the surrounding internal architecture is preserved",
+          "answer": "AXONOTMESIS"
+        },
+        {
+          "clue": "Complete anatomical severance or scarring of a nerve, requiring surgical repair",
+          "answer": "NEUROTMESIS"
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "challenges": [
+        {
+          "clue": "A piece of dead, devascularized bone separated from healthy bone in chronic osteomyelitis",
+          "answer": "SEQUESTRUM"
+        },
+        {
+          "clue": "A thick layer of new bone growth surrounding dead bone in chronic pyogenic infections",
+          "answer": "INVOLUCRUM"
+        },
+        {
+          "clue": "An opening in the involucrum allowing pus to discharge into surrounding soft tissues",
+          "answer": "CLOACA"
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "challenges": [
+        {
+          "clue": "The formation of a mobile 'false joint' at the site of a chronic fracture non-union",
+          "answer": "PSEUDOARTHROSIS"
+        },
+        {
+          "clue": "Rapid accumulation of blood within a joint cavity following a severe joint injury",
+          "answer": "HAEMARTHROSIS"
+        },
+        {
+          "clue": "The process of distal axon degeneration following a nerve cut or injury",
+          "answer": "WALLERIAN"
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "challenges": [
+        {
+          "clue": "Bony outgrowths or nodes found specifically on the distal interphalangeal (DIP) joints in osteoarthritis",
+          "answer": "HEBERDEN"
+        },
+        {
+          "clue": "Bony outgrowths or nodes found specifically on the proximal interphalangeal (PIP) joints in osteoarthritis",
+          "answer": "BOUCHARD"
+        },
+        {
+          "clue": "Juvenile osteochondrosis of the spine leading to wedge-shaped vertebrae and a rigid kyphosis",
+          "answer": "SCHEUERMANN"
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "challenges": [
+        {
+          "clue": "Rare hereditary disorder causing abnormally dense, marble-like bones prone to fracture",
+          "answer": "OSTEOPETROSIS"
+        },
+        {
+          "clue": "Diaphyseal : a hereditary condition characterized by the formation of multiple exostoses",
+          "answer": "ACLASIS"
+        },
+        {
+          "clue": "Eponymous disease characterized by the presence of multiple enchondromas within bones",
+          "answer": "OLLIER"
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "challenges": [
+        {
+          "clue": "French clinical term for the severe claw hand deformity seen in ulnar or combined nerve palsies",
+          "answer": "MAINENGRIFFE"
+        },
+        {
+          "clue": "Eponymous osteotomy commonly used to correct the alignment of ununited femoral neck fractures",
+          "answer": "PAUWEL"
+        },
+        {
+          "clue": "Eponymous resection arthroplasty of the hip often used as a salvage procedure for severe joint infection",
+          "answer": "GIRDLESTONE"
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "challenges": [
+        {
+          "clue": "Severe congenital malformation where the proximal limbs are absent and hands/feet attach near the trunk",
+          "answer": "PHOCOMELIA"
+        },
+        {
+          "clue": "Congenital musculoskeletal deformity where two or more digits fail to separate and remain webbed",
+          "answer": "SYNDACTYLY"
+        },
+        {
+          "clue": " imperfecta: a genetic disorder causing defective collagen, resulting in extremely brittle bones",
+          "answer": "OSTEOGENESIS"
         }
       ]
     }
