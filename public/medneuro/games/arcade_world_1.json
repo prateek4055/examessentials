@@ -1,0 +1,27 @@
+{
+  "id": "world_1",
+  "title": "Neuroanatomy Basics",
+  "description": "Master the fundamentals of the nervous system",
+  "levels": [
+    {
+      "id": "w1_l1",
+      "title": "Cranial Nerves",
+      "description": "Basic cranial nerve functions",
+      "xpReward": 50,
+      "questions": [
+        {
+          "id": "w1_l1_q1",
+          "question": "Which cranial nerve is responsible for vision?",
+          "options": [
+            "Optic Nerve (CN II)",
+            "Olfactory Nerve (CN I)",
+            "Oculomotor Nerve (CN III)",
+            "Trochlear Nerve (CN IV)"
+          ],
+          "correctAnswerIndex": 0,
+          "explanation": "The Optic Nerve (CN II) transmits visual information from the retina to the brain."
+        }
+      ]
+    }
+  ]
+}
