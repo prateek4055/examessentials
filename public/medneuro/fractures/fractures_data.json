@@ -11,7 +11,7 @@
     "presentation": "<ul><li>Weakness in shoulder abduction (deltoid muscle).</li><li>Sensory loss over the lateral aspect of the shoulder (regimental badge area).</li></ul>",
     "diagnosticScans": "<p>Electromyography (EMG) and nerve conduction studies. MRI of the shoulder to rule out structural damage or compression.</p>",
     "management": "<p>Conservative treatment including physical therapy. Surgical exploration or nerve grafting if no recovery is observed within 3-6 months.</p>",
-    "imageName": "",
+    "imageName": "images/axillary_nerve.webp",
     "classifications": []
   },
   {
@@ -26,7 +26,7 @@
     "presentation": "<ul><li>Optic neuritis (painful vision loss).</li><li>Sensory disturbances, fatigue, spasticity, and gait imbalance.</li><li>Lhermitte's sign (electric shock sensation down the spine with neck flexion).</li></ul>",
     "diagnosticScans": "<p>MRI of brain and spine showing demyelinating plaques (McDonald criteria). Lumbar puncture showing oligoclonal bands in CSF.</p>",
     "management": "<p>Disease-modifying therapies (DMTs) to reduce relapses and slow disability progression. Corticosteroids for acute relapses.</p>",
-    "imageName": "",
+    "imageName": "images/multiple_sclerosis.webp",
     "classifications": []
   }
 ]
