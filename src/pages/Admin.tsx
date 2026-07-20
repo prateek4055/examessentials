@@ -293,9 +293,10 @@ const Admin = () => {
           p_class: mailForm.class,
           p_amount: itemPrice,
           p_payment_status: "completed",
-          p_razorpay_payment_id: "admin_manual_" + paymentId,
+          p_razorpay_payment_id: "admin_manual_" + paymentId + "_" + p.id,
           p_razorpay_order_id: "admin_order_" + crypto.randomUUID(),
         });
+
 
         if (orderError) {
           toast({ title: "Step 1 Failed: Order Creation", description: orderError.message, variant: "destructive" });
