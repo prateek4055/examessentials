@@ -7,7 +7,9 @@ import json
 import jwt
 from datetime import datetime, timedelta, timezone
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response, BackgroundTasks
+from fastapi.responses import FileResponse
+
 
 # Load .env file manually if it exists (for local development)
 if os.path.exists(".env"):
@@ -100,9 +102,16 @@ def get_r2_presigned_url(object_key: str, expires_in: int = 604800) -> str:
         return url
     except Exception as e:
         print(f"[R2] Error generating presigned URL: {e}")
-        return None
+def cleanup_temp_files(*paths):
+    for path in paths:
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+                print(f"Cleaned up temp file: {path}")
+        except Exception as e:
+            print(f"Error removing temp file {path}: {e}")
 
-def download_github_release_asset(repo: str, token: str, filename: str) -> bytes:
+def download_github_release_asset(repo: str, token: str, filename: str, target_path: str) -> bool:
     tag = "v1.0.0"
     # 1. Fetch release info to get asset list
     release_url = f"https://api.github.com/repos/{repo}/releases/tags/{tag}"
@@ -111,38 +120,46 @@ def download_github_release_asset(repo: str, token: str, filename: str) -> bytes
         "Accept": "application/vnd.github.v3+json"
     }
     
-    resp = requests.get(release_url, headers=headers)
-    if resp.status_code != 200:
-        print(f"[GitHub] Failed to get release info: {resp.status_code} {resp.text[:200]}")
-        return None
-        
-    release_data = resp.json()
-    assets = release_data.get("assets", [])
-    
-    # 2. Find matching asset by name
-    asset_id = None
-    for asset in assets:
-        if asset.get("name") == filename:
-            asset_id = asset.get("id")
-            break
+    try:
+        resp = requests.get(release_url, headers=headers)
+        if resp.status_code != 200:
+            print(f"[GitHub] Failed to get release info: {resp.status_code} {resp.text[:200]}")
+            return False
             
-    if not asset_id:
-        print(f"[GitHub] Asset not found in release: {filename}")
-        return None
+        release_data = resp.json()
+        assets = release_data.get("assets", [])
         
-    # 3. Download the asset using octet-stream
-    asset_url = f"https://api.github.com/repos/{repo}/releases/assets/{asset_id}"
-    download_headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/octet-stream"
-    }
-    
-    download_resp = requests.get(asset_url, headers=download_headers)
-    if download_resp.status_code != 200:
-        print(f"[GitHub] Failed to download asset {asset_id}: {download_resp.status_code} {download_resp.text[:200]}")
-        return None
+        # 2. Find matching asset by name
+        asset_id = None
+        for asset in assets:
+            if asset.get("name") == filename:
+                asset_id = asset.get("id")
+                break
+                
+        if not asset_id:
+            print(f"[GitHub] Asset not found in release: {filename}")
+            return False
+            
+        # 3. Stream download the asset using octet-stream directly to disk
+        asset_url = f"https://api.github.com/repos/{repo}/releases/assets/{asset_id}"
+        download_headers = {
+            "Authorization": f"token {token}",
+            "Accept": "application/octet-stream"
+        }
         
-    return download_resp.content
+        with requests.get(asset_url, headers=download_headers, stream=True) as download_resp:
+            if download_resp.status_code != 200:
+                print(f"[GitHub] Failed to download asset {asset_id}: {download_resp.status_code}")
+                return False
+            with open(target_path, 'wb') as f:
+                for chunk in download_resp.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+        return True
+    except Exception as e:
+        print(f"[GitHub] Download Exception: {e}")
+        return False
+
 
 
 
@@ -738,7 +755,7 @@ async def watermark_pdf(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/download")
-async def download_pdf(token: str):
+async def download_pdf(token: str, background_tasks: BackgroundTasks):
     if not token:
         raise HTTPException(status_code=400, detail="Missing download token.")
 
@@ -764,23 +781,28 @@ async def download_pdf(token: str):
     if not GITHUB_TOKEN or not GITHUB_REPO:
         raise HTTPException(status_code=500, detail="GitHub configuration is missing on the server.")
 
-    # Download original PDF from GitHub Private Release Assets
-    pdf_content = download_github_release_asset(GITHUB_REPO, GITHUB_TOKEN, pdf_filename)
-    if not pdf_content:
-        raise HTTPException(status_code=404, detail="Original PDF file not found in the repository release.")
-
-
     # Process PDF on local disk to stay well within Render 512MB RAM limit
     import tempfile
     temp_input_fd, temp_input_path = tempfile.mkstemp(suffix=".pdf")
     temp_output_fd, temp_output_path = tempfile.mkstemp(suffix=".pdf")
 
+    # Close file descriptors to avoid leaks
+    os.close(temp_input_fd)
+    os.close(temp_output_fd)
+
+    # Download original PDF directly to disk from GitHub Private Release Assets
+    success = download_github_release_asset(GITHUB_REPO, GITHUB_TOKEN, pdf_filename, temp_input_path)
+    if not success:
+        try:
+            if os.path.exists(temp_input_path): os.remove(temp_input_path)
+            if os.path.exists(temp_output_path): os.remove(temp_output_path)
+        except Exception:
+            pass
+        raise HTTPException(status_code=404, detail="Original PDF file not found in the repository release.")
+
     try:
-        with os.fdopen(temp_input_fd, 'wb') as tmp_in:
-            tmp_in.write(pdf_content)
-
-
         reader = PdfReader(temp_input_path)
+
         writer = PdfWriter()
         watermark_text = f"Licensed to: {student_name} ({phone})"
         clean_password = get_clean_password(phone)
@@ -820,30 +842,27 @@ async def download_pdf(token: str):
         with os.fdopen(temp_output_fd, 'wb') as tmp_out:
             writer.write(tmp_out)
 
-        with open(temp_output_path, 'rb') as f:
-            pdf_bytes = f.read()
-
     finally:
-        # Clean up temp files immediately to free disk space
+        # Clean up input temp file immediately to free disk space
         try:
             if os.path.exists(temp_input_path):
                 os.remove(temp_input_path)
-            if os.path.exists(temp_output_path):
-                os.remove(temp_output_path)
         except Exception as cleanup_err:
-            print(f"Error cleaning up temp files: {cleanup_err}")
+            print(f"Error cleaning up temp input file: {cleanup_err}")
+
+    # Register output file cleanup after response ends
+    background_tasks.add_task(cleanup_temp_files, temp_output_path)
 
     # Generate a download-friendly filename
     safe_filename = "".join(c for c in title if c.isalnum() or c in (" ", "_", "-")).strip() or "Notes"
     safe_filename = safe_filename.replace(" ", "_") + ".pdf"
 
-    return Response(
-        content=pdf_bytes,
+    return FileResponse(
+        temp_output_path,
         media_type="application/pdf",
-        headers={
-            "Content-Disposition": f'attachment; filename="{safe_filename}"'
-        }
+        filename=safe_filename
     )
+
 
 
 if __name__ == "__main__":
