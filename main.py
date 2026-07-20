@@ -8,6 +8,18 @@ import jwt
 from datetime import datetime, timedelta, timezone
 
 from fastapi import FastAPI, HTTPException, Request, Response
+
+# Load .env file manually if it exists (for local development)
+if os.path.exists(".env"):
+    with open(".env") as f:
+        for line in f:
+            if line.strip() and not line.startswith("#") and "=" in line:
+                try:
+                    key, val = line.strip().split("=", 1)
+                    os.environ[key.strip()] = val.strip().strip('"').strip("'")
+                except Exception:
+                    pass
+
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
@@ -608,9 +620,16 @@ async def process_pdf(request: Request):
                     break
             
             if not active_key:
-                raise Exception("Missing RESEND API Key")
+                links = [p["secure_download_url"] for p in processed_products]
+                print(f"\n[LOCAL TEST] Generated secure download links: {links}\n")
+                return {
+                    "status": "success",
+                    "message": f"Dev Mode (No Resend Key): Generated links successfully: {', '.join(links)}",
+                    "links": links
+                }
                 
             resend.api_key = active_key
+
             
             # Generate Invoice PDF
             invoice_pdf = create_invoice_pdf(order_id, student_name, email, phone, processed_products, total_amount)
