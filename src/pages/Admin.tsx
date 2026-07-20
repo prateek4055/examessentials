@@ -276,23 +276,38 @@ const Admin = () => {
         }
       }
 
-      // Step 1: Create admin order via RPC (bypasses PostgREST schema cache)
-      const { data: orderId, error: orderError } = await supabase.rpc("create_admin_order" as any, {
-        p_product_id: productIdStr,
-        p_student_name: mailForm.studentName.trim(),
-        p_email: mailForm.email.trim().toLowerCase(),
-        p_phone: mailForm.phone.trim(),
-        p_class: mailForm.class,
-        p_amount: orderAmount,
-        p_payment_status: "completed",
-        p_razorpay_payment_id: "admin_manual_" + paymentId, // Trigger will ignore this prefix
-        p_razorpay_order_id: "admin_order_" + crypto.randomUUID(),
-      });
+      // Step 1: Create admin orders via RPC (bypasses PostgREST schema cache)
+      let primaryOrderId: string | null = null;
+      for (const p of selectedProducts) {
+        const itemPrice = isFreeDelivery ? 0 : (
+          detectedCombos.length > 0 
+            ? (cartCalc.items.find(i => i.productId === p.id)?.finalPrice || p.price)
+            : (parseFloat(customPrices[p.id]) || p.price)
+        );
 
-      if (orderError) {
-        toast({ title: "Step 1 Failed: Order Creation", description: orderError.message, variant: "destructive" });
-        return;
+        const { data: oId, error: orderError } = await supabase.rpc("create_admin_order" as any, {
+          p_product_id: p.id,
+          p_student_name: mailForm.studentName.trim(),
+          p_email: mailForm.email.trim().toLowerCase(),
+          p_phone: mailForm.phone.trim(),
+          p_class: mailForm.class,
+          p_amount: itemPrice,
+          p_payment_status: "completed",
+          p_razorpay_payment_id: "admin_manual_" + paymentId,
+          p_razorpay_order_id: "admin_order_" + crypto.randomUUID(),
+        });
+
+        if (orderError) {
+          toast({ title: "Step 1 Failed: Order Creation", description: orderError.message, variant: "destructive" });
+          setIsSendingMail(false);
+          return;
+        }
+
+        if (!primaryOrderId) {
+          primaryOrderId = oId;
+        }
       }
+
 
       // Step 2: Direct Synchronous Delivery via Worker
       // Calling the worker directly from the UI allows us to show a real loading spinner
@@ -318,10 +333,12 @@ const Admin = () => {
         student_name: mailForm.studentName.trim(),
         phone: mailForm.phone.trim(),
         email: mailForm.email.trim().toLowerCase(),
-        order_id: orderId,
+        order_id: primaryOrderId,
         total_amount: orderAmount,
         payment_id: "admin_manual_" + paymentId
       };
+
+
 
       const workerUrl = import.meta.env.DEV
         ? "http://localhost:7860/process-pdf"
