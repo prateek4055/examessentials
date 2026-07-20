@@ -801,46 +801,59 @@ async def download_pdf(token: str, background_tasks: BackgroundTasks):
         raise HTTPException(status_code=404, detail="Original PDF file not found in the repository release.")
 
     try:
-        reader = PdfReader(temp_input_path)
+        import pikepdf
+        import secrets
 
-        writer = PdfWriter()
         watermark_text = f"Licensed to: {student_name} ({phone})"
         clean_password = get_clean_password(phone)
 
-        for page in reader.pages:
-            width = float(page.mediabox.width)
-            height = float(page.mediabox.height)
-            
-            packet = io.BytesIO()
-            can = canvas.Canvas(packet, pagesize=(width, height))
-            font_size = min(24, max(10, int(width / 25)))
-            can.setFont("Helvetica-Bold", font_size)
-            can.setFillGray(0.5, 0.4)
-            
-            can.saveState()
-            can.translate(width / 2.0, height / 2.0)
-            can.rotate(45)
-            can.drawCentredString(0, 0, watermark_text)
-            can.restoreState()
-            can.save()
-            
-            packet.seek(0)
-            watermark_reader = PdfReader(packet)
-            watermark_page = watermark_reader.pages[0]
-            
-            page.merge_page(watermark_page)
-            writer.add_page(page)
+        # Read only first page dimensions to size the stamp — almost no RAM
+        with open(temp_input_path, 'rb') as _f:
+            _first_reader = PdfReader(_f)
+            _first_page = _first_reader.pages[0]
+            stamp_width = float(_first_page.mediabox.width)
+            stamp_height = float(_first_page.mediabox.height)
 
-        if clean_password:
-            import secrets
-            writer.encrypt(
-                user_password=clean_password,
-                owner_password=secrets.token_hex(16),
-                permissions_flag=0
-            )
+        # Generate a single watermark stamp PDF (~10KB in RAM)
+        stamp_buf = io.BytesIO()
+        font_size = min(24, max(10, int(stamp_width / 25)))
+        can = canvas.Canvas(stamp_buf, pagesize=(stamp_width, stamp_height))
+        can.setFont("Helvetica-Bold", font_size)
+        can.setFillGray(0.5, 0.4)
+        can.saveState()
+        can.translate(stamp_width / 2.0, stamp_height / 2.0)
+        can.rotate(45)
+        can.drawCentredString(0, 0, watermark_text)
+        can.restoreState()
+        can.save()
+        stamp_buf.seek(0)
 
-        with os.fdopen(temp_output_fd, 'wb') as tmp_out:
-            writer.write(tmp_out)
+        # Overlay the stamp on every page using pikepdf.add_overlay — confirmed working, minimal RAM
+        with pikepdf.open(temp_input_path, suppress_warnings=True) as pdf_in:
+            with pikepdf.open(stamp_buf) as stamp_pdf:
+                sp = stamp_pdf.pages[0]
+                for page in pdf_in.pages:
+                    page.add_overlay(sp)
+
+            save_kwargs = {}
+            if clean_password:
+                encryption = pikepdf.Encryption(
+                    user=clean_password,
+                    owner=secrets.token_hex(16),
+                    R=6,
+                    allow=pikepdf.Permissions(
+                        print_lowres=False,
+                        print_highres=False,
+                        modify_annotation=False,
+                        modify_assembly=False,
+                        modify_form=False,
+                        modify_other=False,
+                        extract=False,
+                    )
+                )
+                save_kwargs["encryption"] = encryption
+
+            pdf_in.save(temp_output_path, **save_kwargs)
 
     finally:
         # Clean up input temp file immediately to free disk space

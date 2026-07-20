@@ -9,5 +9,6 @@ supabase
 Pillow
 boto3
 PyJWT
+pikepdf
 
 
