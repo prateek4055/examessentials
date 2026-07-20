@@ -4,6 +4,9 @@ import requests
 import resend
 import base64
 import json
+import jwt
+from datetime import datetime, timedelta, timezone
+
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader, PdfWriter
@@ -27,6 +30,109 @@ app.add_middleware(
 
 # Access secrets from environment variables
 WORKER_SECRET = os.getenv("WORKER_SECRET", "ExamNotes@2026")
+
+# GitHub configuration for private PDF storage
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GITHUB_REPO = os.getenv("GITHUB_REPO")  # e.g., "prateek4055/examessentials-pdfs"
+DOWNLOAD_BASE_URL = os.getenv("DOWNLOAD_BASE_URL", "https://pdf-workerdf-workerpdf.onrender.com")
+
+
+# Cloudflare R2 Credentials
+R2_ACCOUNT_ID = os.getenv("R2_ACCOUNT_ID")
+R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+R2_BUCKET_NAME = os.getenv("R2_BUCKET_NAME")
+
+r2_client = None
+if R2_ACCOUNT_ID and R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY:
+    try:
+        import boto3
+        from botocore.config import Config
+        r2_client = boto3.client(
+            "s3",
+            endpoint_url=f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com",
+            aws_access_key_id=R2_ACCESS_KEY_ID,
+            aws_secret_access_key=R2_SECRET_ACCESS_KEY,
+            config=Config(signature_version="s3v4"),
+            region_name="auto"
+        )
+        print("[R2] Cloudflare R2 client initialized successfully.")
+    except Exception as e:
+        print(f"[R2] Failed to initialize Cloudflare R2 client: {e}")
+
+def upload_to_r2(data: bytes, object_key: str, content_type: str = "application/pdf") -> bool:
+    if not r2_client or not R2_BUCKET_NAME:
+        print("[R2] Client or bucket name not configured.")
+        return False
+    try:
+        r2_client.put_object(
+            Bucket=R2_BUCKET_NAME,
+            Key=object_key,
+            Body=data,
+            ContentType=content_type
+        )
+        return True
+    except Exception as e:
+        print(f"[R2] Error uploading to R2: {e}")
+        return False
+
+def get_r2_presigned_url(object_key: str, expires_in: int = 604800) -> str:
+    if not r2_client or not R2_BUCKET_NAME:
+        return None
+    try:
+        url = r2_client.generate_presigned_url(
+            ClientMethod="get_object",
+            Params={"Bucket": R2_BUCKET_NAME, "Key": object_key},
+            ExpiresIn=expires_in
+        )
+        return url
+    except Exception as e:
+        print(f"[R2] Error generating presigned URL: {e}")
+        return None
+
+def download_github_release_asset(repo: str, token: str, filename: str) -> bytes:
+    tag = "v1.0.0"
+    # 1. Fetch release info to get asset list
+    release_url = f"https://api.github.com/repos/{repo}/releases/tags/{tag}"
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    resp = requests.get(release_url, headers=headers)
+    if resp.status_code != 200:
+        print(f"[GitHub] Failed to get release info: {resp.status_code} {resp.text[:200]}")
+        return None
+        
+    release_data = resp.json()
+    assets = release_data.get("assets", [])
+    
+    # 2. Find matching asset by name
+    asset_id = None
+    for asset in assets:
+        if asset.get("name") == filename:
+            asset_id = asset.get("id")
+            break
+            
+    if not asset_id:
+        print(f"[GitHub] Asset not found in release: {filename}")
+        return None
+        
+    # 3. Download the asset using octet-stream
+    asset_url = f"https://api.github.com/repos/{repo}/releases/assets/{asset_id}"
+    download_headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/octet-stream"
+    }
+    
+    download_resp = requests.get(asset_url, headers=download_headers)
+    if download_resp.status_code != 200:
+        print(f"[GitHub] Failed to download asset {asset_id}: {download_resp.status_code} {download_resp.text[:200]}")
+        return None
+        
+    return download_resp.content
+
+
 
 def create_diagonal_watermark_buffer(text: str):
     packet = io.BytesIO()
@@ -342,115 +448,147 @@ async def process_pdf(request: Request):
 
             # Override price if provided in custom mapping (for combos/admin custom prices)
             # Use string ID for mapping lookup
-            p_price = custom_prices.get(str(p_id), p.get("price"))
+            p_price = custom_prices.get(str(p_id), p.get("price"))            # If GITHUB_TOKEN is set, we bypass heavy on-the-spot processing/uploading
+            # and instead generate a signed JWT link for secure on-the-fly streaming download.
+            secure_download_url = p_pdf_url  # Fallback
+            use_github_streaming = False
 
-            # 1. Download source PDF using secure Bearer authentication
-            headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
-            # Ensure URL uses authenticated endpoint if bucket is private
-            auth_pdf_url = p_pdf_url
-            if supabase_key and "/object/public/" in auth_pdf_url:
-                auth_pdf_url = auth_pdf_url.replace("/object/public/", "/object/authenticated/")
-
-            resp = requests.get(auth_pdf_url, headers=headers)
-            if resp.status_code != 200:
-                print(f"Failed to download PDF for {p.get('title')}: {resp.status_code}")
-                continue
-
-            reader = PdfReader(io.BytesIO(resp.content))
-            writer = PdfWriter()
-
-            # 2. & 3. Create and Apply dynamic centered watermark
-            watermark_text = f"Licensed to: {student_name} ({phone})"
-            
-            for page in reader.pages:
-                width = float(page.mediabox.width)
-                height = float(page.mediabox.height)
-                
-                packet = io.BytesIO()
-                can = canvas.Canvas(packet, pagesize=(width, height))
-                
-                # Dynamic font size: much smaller than before, scales nicely
-                font_size = min(24, max(10, int(width / 25)))
-                
-                can.setFont("Helvetica-Bold", font_size)
-                can.setFillGray(0.5, 0.4)
-                
-                can.saveState()
-                # Translate origin to exact center of the current page
-                can.translate(width / 2.0, height / 2.0)
-                can.rotate(45)
-                can.drawCentredString(0, 0, watermark_text)
-                can.restoreState()
-                can.save()
-                
-                packet.seek(0)
-                watermark_reader = PdfReader(packet)
-                watermark_page = watermark_reader.pages[0]
-                
-                page.merge_page(watermark_page)
-                writer.add_page(page)
-
-
-            # 4. Password Protection
-            if clean_password:
-                writer.encrypt(
-                    user_password=clean_password,
-                    owner_password=os.urandom(16).hex(),
-                    permissions_flag=0
-                )
-
-            output_buffer = io.BytesIO()
-            writer.write(output_buffer)
-            processed_data = output_buffer.getvalue()
-
-            secure_download_url = p_pdf_url # Fallback
-            
-            # 5. Upload to Supabase Storage via REST
-            if supabase_url and supabase_key:
+            if GITHUB_TOKEN and GITHUB_REPO:
                 try:
-                    safe_phone = clean_password if clean_password else "000"
-                    upload_filename = f"orders/{order_id}/{p.get('id')}_{safe_phone}.pdf"
-                    # Correct bucket for processed PDFs is 'purchased_pdfs'
-                    upload_url = f"{supabase_url}/storage/v1/object/purchased_pdfs/{upload_filename}"
-                    
-                    upload_headers = {
-                        "Authorization": f"Bearer {supabase_key}",
-                        "apikey": supabase_key,
-                        "Content-Type": "application/pdf"
+                    exp_time = datetime.now(timezone.utc) + timedelta(days=7)
+                    token_payload = {
+                        "student_name": student_name,
+                        "phone": phone,
+                        "pdf_url": p_pdf_url,
+                        "title": p.get("title", "Study Material"),
+                        "exp": int(exp_time.timestamp())
                     }
+                    token_str = jwt.encode(token_payload, WORKER_SECRET, algorithm="HS256")
+                    secure_download_url = f"{DOWNLOAD_BASE_URL.rstrip('/')}/download?token={token_str}"
+                    use_github_streaming = True
+                    debug_log.append("GitHub Streaming Link: SUCCESS")
+                except Exception as jwt_err:
+                    print(f"Failed to generate JWT: {jwt_err}")
+                    debug_log.append(f"JWT Exception: {str(jwt_err)}")
+
+            if not use_github_streaming:
+                # 1. Download source PDF using secure Bearer authentication
+                headers = {"Authorization": f"Bearer {supabase_key}"} if supabase_key else {}
+                # Ensure URL uses authenticated endpoint if bucket is private
+                auth_pdf_url = p_pdf_url
+                if supabase_key and "/object/public/" in auth_pdf_url:
+                    auth_pdf_url = auth_pdf_url.replace("/object/public/", "/object/authenticated/")
+
+                resp = requests.get(auth_pdf_url, headers=headers)
+                if resp.status_code != 200:
+                    print(f"Failed to download PDF for {p.get('title')}: {resp.status_code}")
+                    continue
+
+                reader = PdfReader(io.BytesIO(resp.content))
+                writer = PdfWriter()
+
+                # 2. & 3. Create and Apply dynamic centered watermark
+                watermark_text = f"Licensed to: {student_name} ({phone})"
+                
+                for page in reader.pages:
+                    width = float(page.mediabox.width)
+                    height = float(page.mediabox.height)
                     
-                    upload_resp = requests.post(upload_url, headers=upload_headers, data=processed_data)
-                    debug_log.append(f"Upload: {upload_resp.status_code} {upload_resp.text[:50]}")
+                    packet = io.BytesIO()
+                    can = canvas.Canvas(packet, pagesize=(width, height))
+                    
+                    # Dynamic font size: much smaller than before, scales nicely
+                    font_size = min(24, max(10, int(width / 25)))
+                    
+                    can.setFont("Helvetica-Bold", font_size)
+                    can.setFillGray(0.5, 0.4)
+                    
+                    can.saveState()
+                    # Translate origin to exact center of the current page
+                    can.translate(width / 2.0, height / 2.0)
+                    can.rotate(45)
+                    can.drawCentredString(0, 0, watermark_text)
+                    can.restoreState()
+                    can.save()
+                    
+                    packet.seek(0)
+                    watermark_reader = PdfReader(packet)
+                    watermark_page = watermark_reader.pages[0]
+                    
+                    page.merge_page(watermark_page)
+                    writer.add_page(page)
+
+                # 4. Password Protection
+                if clean_password:
+                    writer.encrypt(
+                        user_password=clean_password,
+                        owner_password=os.urandom(16).hex(),
+                        permissions_flag=0
+                    )
+
+                output_buffer = io.BytesIO()
+                writer.write(output_buffer)
+                processed_data = output_buffer.getvalue()
+
+                # 5. Upload to Cloudflare R2 (preferred) or fallback to Supabase Storage
+                uploaded_to_r2 = False
+                if r2_client and R2_BUCKET_NAME:
+                    try:
+                        safe_phone = clean_password if clean_password else "000"
+                        upload_filename = f"orders/{order_id}/{p.get('id')}_{safe_phone}.pdf"
+                        if upload_to_r2(processed_data, upload_filename, "application/pdf"):
+                            r2_url = get_r2_presigned_url(upload_filename, 604800)
+                            if r2_url:
+                                secure_download_url = r2_url
+                                uploaded_to_r2 = True
+                                debug_log.append("R2: SUCCESS")
+                    except Exception as r2_err:
+                        debug_log.append(f"R2 Exception: {str(r2_err)}")
+
+                if not uploaded_to_r2 and supabase_url and supabase_key:
+                    try:
+                        safe_phone = clean_password if clean_password else "000"
+                        upload_filename = f"orders/{order_id}/{p.get('id')}_{safe_phone}.pdf"
+                        # Correct bucket for processed PDFs is 'purchased_pdfs'
+                        upload_url = f"{supabase_url}/storage/v1/object/purchased_pdfs/{upload_filename}"
                         
-                    sign_url = f"{supabase_url}/storage/v1/object/sign/purchased_pdfs/{upload_filename}"
-                    sign_resp = requests.post(sign_url, headers={
-                        "Authorization": f"Bearer {supabase_key}",
-                        "apikey": supabase_key,
-                        "Content-Type": "application/json"
-                    }, json={"expiresIn": 604800})
-                    
-                    if sign_resp.status_code == 200:
-                        signed_data = sign_resp.json()
-                        val = signed_data.get("signedURL") or signed_data.get("signedUrl")
-                        if val:
-                            # Robust URL repair: Ensure /storage/v1/ prefix is present for relative paths
-                            if val.startswith("http"):
-                                secure_download_url = val
-                            else:
-                                clean_path = val if val.startswith("/") else f"/{val}"
-                                if not clean_path.startswith("/storage/v1/"):
-                                    clean_path = f"/storage/v1{clean_path}"
-                                secure_download_url = f"{supabase_url}{clean_path}"
+                        upload_headers = {
+                            "Authorization": f"Bearer {supabase_key}",
+                            "apikey": supabase_key,
+                            "Content-Type": "application/pdf"
+                        }
+                        
+                        upload_resp = requests.post(upload_url, headers=upload_headers, data=processed_data)
+                        debug_log.append(f"Upload: {upload_resp.status_code} {upload_resp.text[:50]}")
                             
-                            debug_log.append("Sign: SUCCESS")
+                        sign_url = f"{supabase_url}/storage/v1/object/sign/purchased_pdfs/{upload_filename}"
+                        sign_resp = requests.post(sign_url, headers={
+                            "Authorization": f"Bearer {supabase_key}",
+                            "apikey": supabase_key,
+                            "Content-Type": "application/json"
+                        }, json={"expiresIn": 604800})
+                        
+                        if sign_resp.status_code == 200:
+                            signed_data = sign_resp.json()
+                            val = signed_data.get("signedURL") or signed_data.get("signedUrl")
+                            if val:
+                                # Robust URL repair: Ensure /storage/v1/ prefix is present for relative paths
+                                if val.startswith("http"):
+                                    secure_download_url = val
+                                else:
+                                    clean_path = val if val.startswith("/") else f"/{val}"
+                                    if not clean_path.startswith("/storage/v1/"):
+                                        clean_path = f"/storage/v1{clean_path}"
+                                    secure_download_url = f"{supabase_url}{clean_path}"
+                                
+                                debug_log.append("Sign: SUCCESS")
+                            else:
+                                debug_log.append(f"Sign Payload Error: {signed_data}")
+
                         else:
-                            debug_log.append(f"Sign Payload Error: {signed_data}")
-
-                    else:
-                        debug_log.append(f"Sign HTTP Error: {sign_resp.status_code} {sign_resp.text[:50]}")
-                except Exception as upload_err:
-                    debug_log.append(f"REST Exception: {str(upload_err)}")
-
+                            debug_log.append(f"Sign HTTP Error: {sign_resp.status_code} {sign_resp.text[:50]}")
+                    except Exception as upload_err:
+                        debug_log.append(f"REST Exception: {str(upload_err)}")
 
 
             processed_products.append({
@@ -579,6 +717,115 @@ async def watermark_pdf(request: Request):
     except Exception as e:
         print(f"Watermark Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/download")
+async def download_pdf(token: str):
+    if not token:
+        raise HTTPException(status_code=400, detail="Missing download token.")
+
+    try:
+        # Decode and verify the JWT token
+        payload = jwt.decode(token, WORKER_SECRET, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        return Response(content="<h3>Link Expired</h3><p>Your download link has expired (valid for 7 days). Please contact support.</p>", media_type="text/html", status_code=403)
+    except jwt.InvalidTokenError:
+        return Response(content="<h3>Invalid Link</h3><p>This download link is invalid.</p>", media_type="text/html", status_code=403)
+
+    student_name = payload.get("student_name", "Student")
+    phone = payload.get("phone", "")
+    pdf_url = payload.get("pdf_url")
+    title = payload.get("title", "Notes")
+
+    if not pdf_url:
+        raise HTTPException(status_code=400, detail="Invalid token payload: missing pdf_url.")
+
+    # Extract filename only to avoid directory traversal
+    pdf_filename = os.path.basename(pdf_url)
+
+    if not GITHUB_TOKEN or not GITHUB_REPO:
+        raise HTTPException(status_code=500, detail="GitHub configuration is missing on the server.")
+
+    # Download original PDF from GitHub Private Release Assets
+    pdf_content = download_github_release_asset(GITHUB_REPO, GITHUB_TOKEN, pdf_filename)
+    if not pdf_content:
+        raise HTTPException(status_code=404, detail="Original PDF file not found in the repository release.")
+
+
+    # Process PDF on local disk to stay well within Render 512MB RAM limit
+    import tempfile
+    temp_input_fd, temp_input_path = tempfile.mkstemp(suffix=".pdf")
+    temp_output_fd, temp_output_path = tempfile.mkstemp(suffix=".pdf")
+
+    try:
+        with os.fdopen(temp_input_fd, 'wb') as tmp_in:
+            tmp_in.write(pdf_content)
+
+
+        reader = PdfReader(temp_input_path)
+        writer = PdfWriter()
+        watermark_text = f"Licensed to: {student_name} ({phone})"
+        clean_password = get_clean_password(phone)
+
+        for page in reader.pages:
+            width = float(page.mediabox.width)
+            height = float(page.mediabox.height)
+            
+            packet = io.BytesIO()
+            can = canvas.Canvas(packet, pagesize=(width, height))
+            font_size = min(24, max(10, int(width / 25)))
+            can.setFont("Helvetica-Bold", font_size)
+            can.setFillGray(0.5, 0.4)
+            
+            can.saveState()
+            can.translate(width / 2.0, height / 2.0)
+            can.rotate(45)
+            can.drawCentredString(0, 0, watermark_text)
+            can.restoreState()
+            can.save()
+            
+            packet.seek(0)
+            watermark_reader = PdfReader(packet)
+            watermark_page = watermark_reader.pages[0]
+            
+            page.merge_page(watermark_page)
+            writer.add_page(page)
+
+        if clean_password:
+            import secrets
+            writer.encrypt(
+                user_password=clean_password,
+                owner_password=secrets.token_hex(16),
+                permissions_flag=0
+            )
+
+        with os.fdopen(temp_output_fd, 'wb') as tmp_out:
+            writer.write(tmp_out)
+
+        with open(temp_output_path, 'rb') as f:
+            pdf_bytes = f.read()
+
+    finally:
+        # Clean up temp files immediately to free disk space
+        try:
+            if os.path.exists(temp_input_path):
+                os.remove(temp_input_path)
+            if os.path.exists(temp_output_path):
+                os.remove(temp_output_path)
+        except Exception as cleanup_err:
+            print(f"Error cleaning up temp files: {cleanup_err}")
+
+    # Generate a download-friendly filename
+    safe_filename = "".join(c for c in title if c.isalnum() or c in (" ", "_", "-")).strip() or "Notes"
+    safe_filename = safe_filename.replace(" ", "_") + ".pdf"
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{safe_filename}"'
+        }
+    )
+
 
 if __name__ == "__main__":
     import uvicorn
