@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import MedOrthoSidebar from "../components/MedOrthoSidebar";
 import MedOrthoPromoBanner from "../components/MedOrthoPromoBanner";
 import AdSensePlaceholder from "../components/AdSensePlaceholder";
+import AnchorAd from "../components/AnchorAd";
 
 interface MedOrthoLayoutProps {
   children: React.ReactNode;
@@ -50,24 +51,44 @@ const MedOrthoLayout: React.FC<MedOrthoLayoutProps> = ({ children }) => {
         </aside>
 
         {/* Center Main Content */}
-        <main className="flex-1 flex flex-col min-w-0 pb-32 lg:pb-10">
+        {/* pb-36 on mobile = space for anchor ad + app promo bar stacked */}
+        <main className="flex-1 flex flex-col min-w-0 pb-36 lg:pb-10">
           <div className="px-4 py-8 md:px-8 lg:px-12 max-w-4xl mx-auto w-full">
             {children}
           </div>
         </main>
 
-        {/* Desktop Right Sidebar (Sticky Monetization) */}
-        <aside className="hidden xl:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 space-y-8 bg-gray-50/50 dark:bg-gray-900/50">
-          <MedOrthoPromoBanner />
-          
-          <div className="sticky top-6">
-            <h4 className="text-xs uppercase font-bold text-gray-500 mb-3 tracking-wider text-center">Sponsored</h4>
-            <AdSensePlaceholder layout="sidebar" />
+        {/* Desktop Right Sidebar — truly sticky while scrolling */}
+        <aside className="hidden xl:flex xl:flex-col w-72 flex-shrink-0 border-l border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
+          {/* Sticky inner container */}
+          <div className="sticky top-6 p-6 space-y-6">
+            <MedOrthoPromoBanner />
+            
+            {/* Sidebar ad — compact 300×250 rectangle */}
+            <div>
+              <p className="text-[9px] uppercase font-bold text-gray-400 mb-2 tracking-widest text-center">
+                Sponsored
+              </p>
+              <AdSensePlaceholder layout="sidebar" />
+            </div>
+
+            {/* Second smaller ad unit below — earns passively without blocking content */}
+            <div className="pt-2">
+              <p className="text-[9px] uppercase font-bold text-gray-400 mb-2 tracking-widest text-center">
+                Sponsored
+              </p>
+              <AdSensePlaceholder layout="banner" className="!my-0 !min-h-[90px]" />
+            </div>
           </div>
         </aside>
       </div>
 
-      {/* Mobile Sticky Bottom App Promo */}
+      {/* ── Sticky Bottom Anchor Ad (Mobile / Tablet only) ── */}
+      {/* Appears BELOW the content, ABOVE the app promo bar.  */}
+      {/* Tiny 320×50, user can dismiss with X button.         */}
+      <AnchorAd />
+
+      {/* Mobile Sticky Bottom App Promo — stays at absolute bottom */}
       <div className="xl:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
         <div className="flex items-center justify-between max-w-md mx-auto">
           <div className="flex items-center gap-3 cursor-pointer">

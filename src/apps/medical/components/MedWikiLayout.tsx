@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import MedWikiSidebar from "./MedWikiSidebar";
 import { MedAppData } from "../data/medicalAppsData";
+import AnchorAd from "../../medortho/components/AnchorAd";
 
 interface MedWikiLayoutProps {
   app: MedAppData;
@@ -55,7 +56,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
         </aside>
 
         {/* Center Main Content */}
-        <main className="flex-1 flex flex-col min-w-0 pb-32 lg:pb-10">
+        <main className="flex-1 flex flex-col min-w-0 pb-36 lg:pb-10">
           <div className="px-4 py-8 md:px-8 lg:px-12 max-w-4xl mx-auto w-full">
             <div className="mb-6 flex items-center justify-between hidden lg:flex">
                 <Link to={`/${app.slug}`} className="text-sm font-medium text-muted-foreground hover:text-primary flex items-center gap-2">
@@ -67,7 +68,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
           </div>
         </main>
 
-        {/* Desktop Right Sidebar (Optional placeholder for ads or promo) */}
+        {/* Desktop Right Sidebar (Clean Promo & Sticky Resource Cards) */}
         <aside className="hidden xl:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 bg-gray-50/50 dark:bg-gray-900/50">
           <style dangerouslySetInnerHTML={{__html: `
             #wiki-right-sidebar-target:has(> div:not(.default-sidebar-content)) .default-sidebar-content {
@@ -100,6 +101,9 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
           </div>
         </aside>
       </div>
+
+      {/* Non-intrusive dismissible bottom anchor ad for mobile / tablet */}
+      <AnchorAd />
 
       {/* Mobile Sticky Bottom App Promo */}
       <div className="xl:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
