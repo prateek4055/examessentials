@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 interface AdSensePlaceholderProps {
   layout: "sidebar" | "banner" | "in-article" | "multiplex";
@@ -6,100 +7,97 @@ interface AdSensePlaceholderProps {
   adSlot?: string;
 }
 
-const AdSensePlaceholder: React.FC<AdSensePlaceholderProps> = ({ 
-  layout, 
-  className = "", 
-  adSlot 
+const AD_CLIENT = "ca-pub-4205476272781282";
+
+const SLOT_MAP: Record<string, string> = {
+  sidebar: "5310841463",
+  banner: "2988806161",
+  multiplex: "2684678128",
+  "in-article": "2988806161",
+};
+
+const FORMAT_MAP: Record<string, string> = {
+  sidebar: "auto",
+  banner: "auto",
+  multiplex: "autorelaxed",
+  "in-article": "fluid",
+};
+
+const SIZE_MAP: Record<string, React.CSSProperties> = {
+  sidebar: { display: "block", minWidth: "160px", minHeight: "250px", width: "100%" },
+  banner: { display: "block", minWidth: "320px", minHeight: "90px", width: "100%" },
+  multiplex: { display: "block", minWidth: "300px", minHeight: "250px", width: "100%" },
+  "in-article": { display: "block", textAlign: "center", minWidth: "300px", minHeight: "250px", width: "100%" },
+};
+
+const AdSensePlaceholder: React.FC<AdSensePlaceholderProps> = ({
+  layout,
+  className = "",
+  adSlot,
 }) => {
+  const insRef = useRef<HTMLModElement | null>(null);
+  const location = useLocation();
+
   useEffect(() => {
-    try {
-      // Initialize the AdSense ad unit
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch (e) {
-      // Catch errors in local development where AdSense script might block or fail
-      console.warn("AdSense script initialization warning:", e);
-    }
-  }, [layout]);
+    const timer = setTimeout(() => {
+      try {
+        if (!insRef.current) return;
+        const status = insRef.current.getAttribute("data-adsbygoogle-status");
+        if (!status) {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        }
+      } catch (e) {
+        console.warn("AdSense push error:", e);
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [location.pathname, layout]);
 
-  // Client ID from index.html
-  const adClient = "ca-pub-4205476272781282";
-
-  // Production ad slots from Google AdSense
-  const getSlotId = () => {
-    if (adSlot) return adSlot;
-    switch (layout) {
-      case "sidebar":
-        return "5310841463"; // medortho_sidebar
-      case "banner":
-        return "2988806161"; // medortho_banner
-      case "multiplex":
-        return "2684678128"; // medortho_multiplex (autorelaxed)
-      case "in-article":
-        return "2988806161"; // Fallback to medortho_banner Display layout or your preferred unit
-      default:
-        return "2988806161";
-    }
+  const containerStyles: Record<string, string> = {
+    sidebar: "w-full min-h-[250px] my-4",
+    banner: "w-full min-h-[90px] my-6",
+    multiplex: "w-full min-h-[280px] my-8",
+    "in-article": "w-full min-h-[250px] my-8",
   };
 
-  const getLayoutStyles = () => {
-    switch (layout) {
-      case "sidebar":
-        return "w-full min-h-[250px] my-4"; 
-      case "banner":
-        return "w-full min-h-[90px] md:min-h-[100px] my-6";
-      case "multiplex":
-        return "w-full min-h-[280px] my-8";
-      case "in-article":
-        return "w-full min-h-[250px] my-8";
-      default:
-        return "w-full min-h-[250px]";
-    }
-  };
-
-  const getAdFormat = () => {
-    switch (layout) {
-      case "sidebar":
-        return "vertical, rectangle";
-      case "banner":
-        return "horizontal";
-      case "multiplex":
-        return "autorelaxed";
-      case "in-article":
-        return "fluid";
-      default:
-        return "auto";
-    }
-  };
+  const slot = adSlot || SLOT_MAP[layout] || SLOT_MAP.banner;
+  const format = FORMAT_MAP[layout] || "auto";
+  const inlineStyle = SIZE_MAP[layout] || SIZE_MAP.banner;
 
   return (
-    <div className={`adsense-container text-center overflow-hidden flex flex-col items-center justify-center ${getLayoutStyles()} ${className}`}>
-      <span className="block text-[9px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 font-semibold">
+    <div
+      className={`adsense-container text-center overflow-hidden flex flex-col items-center justify-center ${containerStyles[layout] || ""} ${className}`}
+    >
+      <span className="block text-[9px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1 font-semibold">
         Advertisement
       </span>
       {layout === "in-article" ? (
         <ins
+          ref={insRef}
           className="adsbygoogle"
-          style={{ display: "block", textAlign: "center" }}
+          style={inlineStyle}
           data-ad-layout="in-article"
-          data-ad-format={getAdFormat()}
-          data-ad-client={adClient}
-          data-ad-slot={getSlotId()}
+          data-ad-format={format}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={slot}
         />
       ) : layout === "multiplex" ? (
         <ins
+          ref={insRef}
           className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client={adClient}
-          data-ad-slot={getSlotId()}
-          data-ad-format={getAdFormat()}
+          style={inlineStyle}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={slot}
+          data-ad-format={format}
         />
       ) : (
         <ins
+          ref={insRef}
           className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client={adClient}
-          data-ad-slot={getSlotId()}
-          data-ad-format={getAdFormat()}
+          style={inlineStyle}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={slot}
+          data-ad-format={format}
           data-full-width-responsive="true"
         />
       )}
