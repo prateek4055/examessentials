@@ -722,30 +722,73 @@ async function runPrerender() {
       `;
     }
 
+    // Build SEO intro + clinical context paragraph (ensures 300+ words visible to Googlebot)
+    const categoryContext = {
+      'Shoulder': 'shoulder joint pathology including rotator cuff tears, subacromial impingement, labral injuries (SLAP), and shoulder instability',
+      'Knee': 'knee joint conditions including anterior cruciate ligament (ACL) tears, posterior cruciate ligament (PCL) injuries, meniscal tears, and patellofemoral disorders',
+      'Hip': 'hip joint disorders including femoroacetabular impingement (FAI), acetabular labral tears, trochanteric bursitis, and hip osteoarthritis',
+      'Spine': 'spinal pathology including cervical and lumbar disc herniation, nerve root compression, radiculopathy, and sacroiliac joint dysfunction',
+      'Elbow': 'elbow conditions including lateral epicondylitis (tennis elbow), medial epicondylitis (golfer\'s elbow), and ulnar collateral ligament instability',
+      'Wrist & Hand': 'wrist and hand conditions including carpal tunnel syndrome, De Quervain tenosynovitis, triangular fibrocartilage complex (TFCC) tears, and ulnar nerve entrapment',
+      'Ankle & Foot': 'ankle and foot pathology including Achilles tendon rupture, lateral ankle instability, syndesmosis injury, and plantar fasciitis',
+      'Neurological': 'neurological and nerve entrapment conditions including thoracic outlet syndrome (TOS), tarsal tunnel syndrome, and peripheral nerve injuries',
+    };
+    const catContext = categoryContext[t.category] || `${t.category.toLowerCase()} musculoskeletal pathology`;
+    const evidenceDesc = t.evidence === 'strong'
+      ? 'strong scientific evidence with validated diagnostic accuracy'
+      : t.evidence === 'moderate'
+      ? 'moderate evidence and widespread acceptance in clinical practice'
+      : 'clinical utility supported by expert consensus and routine clinical use';
+    const sensitivityMatch = (t.accuracy || '').match(/[Ss]ensitivity[:\s]+([0-9]+)/i);
+    const specificityMatch = (t.accuracy || '').match(/[Ss]pecificity[:\s]+([0-9]+)/i);
+    const sensPct = sensitivityMatch ? sensitivityMatch[1] + '%' : null;
+    const specPct = specificityMatch ? specificityMatch[1] + '%' : null;
+    const accuracyNote = (sensPct && specPct)
+      ? `Studies report a sensitivity of ${sensPct} and a specificity of ${specPct}, making it a valuable screening and confirmatory tool.`
+      : sensPct ? `Studies report a sensitivity of ${sensPct} when the test is performed with correct technique.` : '';
+
+    const introHtml = `
+      <section class="mb-8 p-5 bg-blue-50 border border-blue-100 rounded-xl">
+        <h2 class="text-lg font-bold text-blue-900 mb-3">Clinical Overview</h2>
+        <p class="text-blue-800 leading-relaxed text-[15px] mb-3">
+          The <strong>${escapeHtml(t.title)}</strong> is a validated orthopedic special test used in the physical examination and clinical assessment of ${catContext}.
+          This musculoskeletal examination maneuver is routinely performed by physiotherapists, orthopedic surgeons, sports medicine physicians, and allied health practitioners as part of a structured ${escapeHtml(t.category)} evaluation protocol.
+        </p>
+        <p class="text-blue-800 leading-relaxed text-[15px] mb-3">
+          The ${escapeHtml(t.title)} carries ${evidenceDesc}. ${accuracyNote}
+          As with all clinical special tests, findings must be interpreted alongside patient history, imaging studies, and other physical examination findings to guide diagnosis and management.
+        </p>
+        <p class="text-blue-800 leading-relaxed text-[15px]">
+          Accurate execution of this test requires a thorough understanding of the relevant anatomy, biomechanics, and joint kinematics of the ${escapeHtml(t.category)} region. Correct patient positioning, appropriate force application, and assessment of end-feel are essential for reliable and reproducible results in both clinical and research settings.
+        </p>
+      </section>
+    `;
+
     const bodyContent = `
       <div class="max-w-4xl mx-auto px-4 py-8">
         <nav class="text-sm text-gray-500 mb-6">
           <a href="/medortho" class="hover:underline">MedOrtho</a> &gt; 
           <a href="/medortho/special-tests" class="hover:underline">Special Tests</a> &gt; 
-          <span class="text-gray-900">${t.title}</span>
+          <a href="/medortho/${escapeHtml(t.category.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}" class="hover:underline">${escapeHtml(t.category)}</a> &gt; 
+          <span class="text-gray-900">${escapeHtml(t.title)}</span>
         </nav>
         
         <article class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
           <header class="mb-8">
             <div class="flex flex-wrap gap-2 mb-4">
-              <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full">${t.category}</span>
-              ${t.subCategory ? `<span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full">${t.subCategory}</span>` : ''}
-              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-full capitalize">Evidence: ${t.evidence || 'suggestive'}</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full">${escapeHtml(t.category)}</span>
+              ${t.subCategory ? `<span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full">${escapeHtml(t.subCategory)}</span>` : ''}
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-full capitalize">Evidence: ${escapeHtml(t.evidence || 'suggestive')}</span>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">${t.title} Special Test</h1>
-            <p class="text-gray-500 text-sm">Orthopedic Physical Examination & Clinical Assessment Guide</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">${escapeHtml(t.title)} Special Test</h1>
+            <p class="text-gray-500 text-sm">Orthopedic Physical Examination &amp; Clinical Assessment Guide</p>
           </header>
-
           ${imageFilename ? `
           <div class="mb-8 rounded-xl overflow-hidden bg-slate-50 border border-slate-100 flex justify-center">
-            <img src="/medortho/tests/images/${imageFilename}" alt="${t.title} Orthopedic Special Test" class="max-h-[400px] object-contain" />
+            <img src="/medortho/tests/images/${imageFilename}" alt="${escapeHtml(t.title)} Orthopedic Special Test" class="max-h-[400px] object-contain" />
           </div>
           ` : ''}
+          ${introHtml}
 
           <div class="prose max-w-none">
             ${t.usedFor ? `
@@ -778,10 +821,20 @@ async function runPrerender() {
 
             ${t.extra && t.extra.trim() !== "" ? `
             <section class="mb-8">
-              <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4">Clinical Tips & Notes</h2>
+              <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4">Clinical Tips &amp; Notes</h2>
               <div class="text-gray-600 leading-relaxed">${t.extra}</div>
             </section>
             ` : ''}
+
+            <section class="mb-8 p-5 bg-slate-50 border border-slate-100 rounded-xl">
+              <h2 class="text-lg font-bold text-slate-800 mb-3">Clinical Context &amp; Limitations</h2>
+              <p class="text-slate-600 leading-relaxed text-[15px] mb-2">
+                The ${escapeHtml(t.title)} should be considered as one component of a comprehensive musculoskeletal assessment. No single special test has perfect diagnostic accuracy; thus, clinical decision-making should integrate test results with patient-reported symptoms, mechanism of injury, functional impairment, and relevant imaging.
+              </p>
+              <p class="text-slate-600 leading-relaxed text-[15px]">
+                Clinicians should be aware of potential false-positive results in patients with pain sensitisation, muscle guarding, or poor relaxation. For the ${escapeHtml(t.category)} region, combining the ${escapeHtml(t.title)} with complementary examination tests significantly improves overall diagnostic confidence.
+              </p>
+            </section>
 
             ${t.references ? `
             <section class="mb-8">
