@@ -2,21 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://examessentials.in/products</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://examessentials.in/product/44da155e-81e6-4c38-ae54-9839fdc17e36</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://examessentials.in/product/8846b3dc-a774-4800-8a59-9ccda767c235</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://examessentials.in/product/5bb3bc4b-15e3-4d23-85c0-4916c85ffc89</loc>
@@ -25,7 +13,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://examessentials.in/product/44da155e-81e6-4c38-ae54-9839fdc17e36</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://examessentials.in/product/8598ac04-0d9b-42b2-8024-de5150206c20</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://examessentials.in/product/8846b3dc-a774-4800-8a59-9ccda767c235</loc>
     <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

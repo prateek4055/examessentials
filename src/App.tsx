@@ -50,6 +50,7 @@ import MedNeuroPage from "./apps/medical/pages/MedNeuroPage";
 import MedPhysioPage from "./apps/medical/pages/MedPhysioPage";
 import MedRadioPage from "./apps/medical/pages/MedRadioPage";
 import MedPharmaPage from "./apps/medical/pages/MedPharmaPage";
+import NeetAppPage from "./apps/neet/pages/NeetAppPage";
 
 const queryClient = new QueryClient();
 
@@ -111,8 +112,10 @@ const App = () => (
                 <Route path="/medradio/*" element={<MedWikiArticlePage />} />
                 <Route path="/medpharma" element={<MedPharmaPage />} />
                 <Route path="/medpharma/*" element={<MedWikiArticlePage />} />
+                <Route path="/neet-app" element={<NeetAppPage />} />
 
                 <Route path="*" element={<NotFound />} />
+
               </Routes>
               <WhatsAppButton />
               <SocialProofPopup />

@@ -111,12 +111,14 @@ const apps: AppCard[] = [
   },
   {
     name: "NEET Essentials",
-    description: "Medical entrance prep",
+    description: "NCERT Cockpit & 720M CBT Mocks",
     image: neetLogo,
     category: "exam",
     comingSoon: true,
+    internalLink: "/neet-app",
   },
 ];
+
 
 const EcosystemSection = () => {
   const parentApp = apps.find((app) => app.category === "parent");
@@ -144,199 +146,212 @@ const EcosystemSection = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
-            One Parent Brand.{" "}
-            <span className="text-gradient-purple">Multiple Specialized Apps.</span>
-          </h2>
-          <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-            Building the future of education with focused, specialized applications
-          </p>
-        </motion.div>
-
-        {/* Parent App - Center Card */}
-        {parentApp && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-16"
-          >
-            <div
-              className="ecosystem-card-parent relative group cursor-default transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1"
-            >
-              {/* Static glow — no animation */}
-              <div
-                className="absolute -inset-1 rounded-3xl"
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--gradient-purple)), hsl(var(--gradient-blue)), hsl(var(--gradient-pink)))",
-                  opacity: 0.2,
-                  filter: "blur(20px)",
-                  zIndex: -1
-                }}
-              />
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-gradient-purple/20 to-gradient-blue/20 mb-4">
-                <Sparkles className="w-12 h-12 text-foreground" />
-              </div>
-              <h3 className="font-display text-2xl font-bold text-foreground mb-2">
-                {parentApp.name}
-              </h3>
-              <p className="font-body text-muted-foreground">
-                {parentApp.description}
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Medical Apps */}
-        <div className="mb-16">
-          <motion.h3
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="font-body text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-8 text-center"
-          >
-            Medical Education Apps
-          </motion.h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {medicalApps.map((app, index) => (
-              <motion.div
-                key={app.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.08,
-                }}
-                whileHover={{
-                  y: -8,
-                  scale: 1.03,
-                }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="h-full flex flex-col"
-              >
-                {app.internalLink ? (
-                  <Link to={app.internalLink} className="ecosystem-card group relative overflow-hidden block no-underline h-full flex flex-col items-center justify-start">
-                    <div className="mb-4 flex justify-center flex-shrink-0">
-                      {app.image && (
-                        <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
-                      )}
-                    </div>
-                    {app.comingSoon && (
-                      <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
-                        Coming Soon
-                      </span>
-                    )}
-                    <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">{app.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground mt-auto">{app.description}</p>
-                  </Link>
-                ) : app.link ? (
-                  <a href={app.link} target="_blank" rel="noopener noreferrer" className="ecosystem-card group relative overflow-hidden block no-underline h-full flex flex-col items-center justify-start">
-                    <div className="mb-4 flex justify-center flex-shrink-0">
-                      {app.image && (
-                        <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
-                      )}
-                    </div>
-                    {app.comingSoon && (
-                      <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
-                        Coming Soon
-                      </span>
-                    )}
-                    <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">{app.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground mt-auto">{app.description}</p>
-                  </a>
-                ) : (
-                  <div className="ecosystem-card group relative overflow-hidden h-full flex flex-col items-center justify-start">
-                    <div className="mb-4 flex justify-center flex-shrink-0">
-                      {app.image ? (
-                        <img src={app.image} alt={app.name} className="w-24 h-24 min-w-[96px] min-h-[96px] object-cover rounded-xl drop-shadow-lg" loading="lazy" />
-                      ) : (
-                        <div className="p-3 rounded-xl bg-gradient-to-br from-brand-blue/20 to-gradient-purple/20">
-                          <Sparkles className="w-8 h-8 text-brand-blue" />
-                        </div>
-                      )}
-                    </div>
-                    {app.comingSoon && (
-                      <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
-                        Coming Soon
-                      </span>
-                    )}
-                    <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">{app.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground mt-auto">{app.description}</p>
-                  </div>
-                )}
-              </motion.div>
-            ))}
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">Exam Essentials Ecosystem</span>
           </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            Our Growing Family of{" "}
+            <span className="gradient-text">Educational Apps</span>
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Dedicated applications designed to simplify complex subjects with visual learning,
+            clinical tests, and comprehensive exam preparation.
+          </p>
         </div>
 
-        {/* Exam Apps */}
-        <div>
-          <motion.h3
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="font-body text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-8 text-center"
-          >
-            Exam Preparation Apps
-          </motion.h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {examApps.map((app, index) => (
-              <motion.div
-                key={app.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.08,
-                }}
-                whileHover={{
-                  y: -8,
-                  scale: 1.03,
-                }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="h-full flex flex-col"
-              >
-                <div className="ecosystem-card group relative overflow-hidden h-full flex flex-col items-center justify-start">
-                  <div className="mb-4 flex justify-center flex-shrink-0 w-full">
+        {/* Parent App Showcase */}
+        {parentApp && (
+          <div className="mb-16">
+            <div className="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden border border-primary/20">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10" />
+              <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="space-y-4 text-center md:text-left">
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-primary/20 text-primary">
+                    Flagship Platform
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-bold">{parentApp.name}</h3>
+                  <p className="text-muted-foreground max-w-xl">
+                    The central hub for all high-yield handwritten medical notes, study material,
+                    and foundation for our specialized app ecosystem.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.prateek.orthoexam"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-glow px-6 py-3 rounded-xl font-medium text-sm inline-flex items-center gap-2"
+                  >
+                    <span>View on Play Store</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Medical Apps Grid */}
+        <div className="mb-16">
+          <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary" />
+            Medical & Clinical Apps
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {medicalApps.map((app) => {
+              const CardContent = (
+                <div className="glass-card p-4 rounded-2xl text-center flex flex-col items-center group relative overflow-hidden h-full">
+                  {/* Glow effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                  {/* App Icon */}
+                  <div className="relative w-16 h-16 mb-3 rounded-2xl overflow-hidden bg-muted/50 p-1 group-hover:scale-105 transition-transform duration-300">
                     {app.image ? (
                       <img
                         src={app.image}
                         alt={app.name}
-                        className="w-full h-32 object-contain drop-shadow-lg"
-                        loading="lazy"
+                        className="w-full h-full object-cover rounded-xl"
                       />
                     ) : (
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-brand-orange/20 to-gradient-pink/20">
-                        <Sparkles className="w-8 h-8 text-brand-orange" />
+                      <div className="w-full h-full rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center font-bold text-primary">
+                        {app.name.slice(0, 2)}
                       </div>
                     )}
                   </div>
 
-                  {app.comingSoon && (
-                    <span className="px-2.5 py-1 text-[10px] font-body font-bold uppercase tracking-wider bg-purple-500/10 text-[#9067F9] border border-purple-500/20 rounded-full mb-3">
-                      Coming Soon
-                    </span>
-                  )}
+                  {/* App Name */}
+                  <h4 className="font-semibold text-sm mb-1 line-clamp-1">{app.name}</h4>
 
-                  <h4 className="font-display text-base font-semibold text-foreground mb-1 flex-shrink-0">
-                    {app.name}
-                  </h4>
-                  <p className="font-body text-xs text-muted-foreground mt-auto">
-                    {app.description}
-                  </p>
+                  {/* App Description */}
+                  <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{app.description}</p>
+
+                  {/* Status / Link Button */}
+                  <div className="mt-auto pt-2 w-full">
+                    {app.comingSoon ? (
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-muted/80 text-muted-foreground block text-center">
+                        Coming Soon
+                      </span>
+                    ) : app.internalLink ? (
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary block text-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        Learn More
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary block text-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        Get App
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              );
+
+              return (
+                <motion.div
+                  key={app.name}
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {app.internalLink ? (
+                    <Link to={app.internalLink} className="block h-full cursor-pointer">
+                      {CardContent}
+                    </Link>
+                  ) : app.link ? (
+                    <a
+                      href={app.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full cursor-pointer"
+                    >
+                      {CardContent}
+                    </a>
+                  ) : (
+                    <div className="h-full">{CardContent}</div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Competitive Exam Apps Grid */}
+        <div>
+          <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-accent" />
+            Competitive Exam Apps
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {examApps.map((app) => {
+              const CardContent = (
+                <div className="glass-card p-4 rounded-2xl text-center flex flex-col items-center group relative overflow-hidden h-full">
+                  {/* Glow effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                  {/* App Icon */}
+                  <div className="relative w-16 h-16 mb-3 rounded-2xl overflow-hidden bg-muted/50 p-1 group-hover:scale-105 transition-transform duration-300">
+                    {app.image ? (
+                      <img
+                        src={app.image}
+                        alt={app.name}
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-xl bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center font-bold text-accent">
+                        {app.name.slice(0, 2)}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* App Name */}
+                  <h4 className="font-semibold text-sm mb-1 line-clamp-1">{app.name}</h4>
+
+                  {/* App Description */}
+                  <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{app.description}</p>
+
+                  {/* Status / Link Button */}
+                  <div className="mt-auto pt-2 w-full">
+                    {app.comingSoon ? (
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-muted/80 text-muted-foreground block text-center">
+                        Coming Soon
+                      </span>
+                    ) : app.internalLink ? (
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-500 font-semibold block text-center group-hover:bg-emerald-500 group-hover:text-black transition-colors">
+                        Launch Web App
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-accent/10 text-accent block text-center group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                        Get App
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+
+              return (
+                <motion.div
+                  key={app.name}
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {app.internalLink ? (
+                    <Link to={app.internalLink} className="block h-full cursor-pointer">
+                      {CardContent}
+                    </Link>
+                  ) : app.link ? (
+                    <a
+                      href={app.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full cursor-pointer"
+                    >
+                      {CardContent}
+                    </a>
+                  ) : (
+                    <div className="h-full">{CardContent}</div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
