@@ -1,50 +1,27 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, ShieldCheck, Star, BookOpen, Layers } from "lucide-react";
+import { ArrowRight, BookOpen, Star, ShieldCheck, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import InteractiveDotGrid from "@/components/InteractiveDotGrid";
-
-// Import 3D doodle images for subtle ambient floaters
-import lungsDoodle from "@/assets/doodles/lungs.webp";
-import heartDoodle from "@/assets/doodles/heart.webp";
-import brainDoodle from "@/assets/doodles/brain.webp";
-import prismDoodle from "@/assets/doodles/prism.webp";
+import AstraMorphHero from "@/components/AstraMorphHero";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-20 bg-background">
-      {/* 1. Interactive ChatGPT Astra Dot Grid with Physics & Cursor Ripples */}
-      <InteractiveDotGrid
-        className="opacity-90"
-        dotColor="rgba(148, 163, 184, 0.28)"
-        activeColor="rgba(99, 102, 241, 0.95)"
-        spacing={26}
-        radius={1.4}
-      />
+    <section className="relative min-h-[94vh] flex items-center justify-center overflow-hidden pt-28 pb-20 bg-background">
+      {/* 
+        ChatGPT Astra Interactive Particle Morph Engine:
+        900 dynamic glowing particles forming Brain -> Heart -> Lungs -> DNA Helix.
+        Cursor repulsion physics & spring return. Zero static PNG/WebP doodles.
+      */}
+      <AstraMorphHero />
 
-      {/* 2. Apple Ambient Light Cones & Gradient Blobs */}
+      {/* Apple Ambient Lighting - Smooth radial depth */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top subtle radial glow */}
         <div 
-          className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[850px] h-[550px] rounded-full blur-[120px] pointer-events-none opacity-45"
+          className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[850px] h-[550px] rounded-full blur-[130px] pointer-events-none opacity-40"
           style={{
             background: "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.12), transparent 70%)"
           }}
         />
-
-        {/* Floating subtle doodles with gentle Apple-style blur */}
-        <div className="hidden lg:block absolute left-[5%] top-[22%] w-24 h-24 opacity-35 doodle-float pointer-events-none">
-          <img src={brainDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" />
-        </div>
-        <div className="hidden lg:block absolute right-[6%] top-[18%] w-24 h-24 opacity-35 doodle-float pointer-events-none" style={{ animationDelay: "-2.5s" }}>
-          <img src={heartDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" />
-        </div>
-        <div className="hidden lg:block absolute left-[8%] bottom-[12%] w-20 h-20 opacity-30 doodle-float pointer-events-none" style={{ animationDelay: "-4s" }}>
-          <img src={prismDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" />
-        </div>
-        <div className="hidden lg:block absolute right-[8%] bottom-[15%] w-20 h-20 opacity-30 doodle-float pointer-events-none" style={{ animationDelay: "-1.5s" }}>
-          <img src={lungsDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" />
-        </div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -55,7 +32,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: -16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 backdrop-blur-xl bg-white/75 dark:bg-black/40 border border-black/[0.08] dark:border-white/[0.12] shadow-[0_2px_12px_-2px_rgba(0,0,0,0.06)] hover:border-primary/40 transition-all cursor-pointer group"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 backdrop-blur-xl bg-white/75 dark:bg-black/50 border border-black/[0.08] dark:border-white/[0.12] shadow-[0_2px_12px_-2px_rgba(0,0,0,0.06)] hover:border-primary/40 transition-all cursor-pointer group"
           >
             <span className="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
             <span className="text-xs font-semibold tracking-wide text-foreground/85 uppercase">
@@ -131,7 +108,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="inline-flex flex-wrap items-center justify-center gap-6 sm:gap-10 py-3 px-6 rounded-2xl backdrop-blur-md bg-white/40 dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.08]"
+            className="inline-flex flex-wrap items-center justify-center gap-6 sm:gap-10 py-3 px-6 rounded-2xl backdrop-blur-md bg-white/50 dark:bg-white/[0.04] border border-black/[0.05] dark:border-white/[0.08]"
           >
             <div className="flex items-center gap-2">
               <div className="flex -space-x-1">
