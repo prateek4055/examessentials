@@ -2,17 +2,17 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, BookOpen, Star, ShieldCheck, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import AstraMorphHero from "@/components/AstraMorphHero";
+import Astra3DNeuralCanvas from "@/components/Astra3DNeuralCanvas";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-[94vh] flex items-center justify-center overflow-hidden pt-28 pb-20 bg-background">
       {/* 
-        ChatGPT Astra Interactive Particle Morph Engine:
-        900 dynamic glowing particles forming Brain -> Heart -> Lungs -> DNA Helix.
-        Cursor repulsion physics & spring return. Zero static PNG/WebP doodles.
+        3D Bioluminescent Neural Point Cloud:
+        1,450 3D particles with cortical sulcal streams, concentric cerebellum rings, 
+        smooth yaw/pitch 3D perspective rotation, and real-time cursor physics.
       */}
-      <AstraMorphHero />
+      <Astra3DNeuralCanvas />
 
       {/* Apple Ambient Lighting - Smooth radial depth */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
