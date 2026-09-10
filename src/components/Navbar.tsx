@@ -58,7 +58,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-panel rounded-none border-b-0" style={{ borderBottom: '1px solid hsl(0 0% 100% / 0.5)' }}>
+    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl bg-white/75 dark:bg-black/70 border-b border-black/[0.06] dark:border-white/[0.08] transition-colors duration-200">
       {/* Main Navbar */}
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
