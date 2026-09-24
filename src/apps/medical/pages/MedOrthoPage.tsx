@@ -15,6 +15,7 @@ const MedOrthoPage = () => (
       keywords={app.seo.keywords}
       skipDefaultKeywords
       structuredData={structuredData}
+      isInternational={true}
     />
     <MedAppPage app={app} />
   </>
