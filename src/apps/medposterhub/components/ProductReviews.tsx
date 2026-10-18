@@ -43,14 +43,12 @@ export const ProductReviews = () => {
             transition={{ delay: idx * 0.1 }}
             className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-4 mb-4">
-              <img 
-                src={review.avatar} 
-                alt={review.name}
-                className="w-12 h-12 rounded-full object-cover shadow-sm bg-slate-100"
-              />
+            <div className="flex items-center gap-3.5 mb-4">
+              <div className="w-11 h-11 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm shadow-xs border border-blue-200">
+                {review.name.replace("Dr. ", "").split(" ").map(n => n[0]).join("")}
+              </div>
               <div>
-                <h4 className="font-bold text-slate-900 leading-tight">{review.name}</h4>
+                <h4 className="font-bold text-slate-900 leading-tight text-sm sm:text-base">{review.name}</h4>
                 <p className="text-xs text-blue-600 font-semibold uppercase">{review.role}</p>
               </div>
             </div>

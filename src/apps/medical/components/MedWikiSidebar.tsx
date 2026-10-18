@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Search, ChevronDown, ChevronRight, BookOpen, Activity, Stethoscope } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { MedAppData } from "../data/medicalAppsData";
@@ -153,6 +153,8 @@ interface MedWikiSidebarProps {
 }
 
 const MedWikiSidebar: React.FC<MedWikiSidebarProps> = ({ app, className = "" }) => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   return (
     <div className={`flex flex-col h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto ${className}`}>
       <div className="mb-6">
@@ -161,13 +163,16 @@ const MedWikiSidebar: React.FC<MedWikiSidebarProps> = ({ app, className = "" }) 
         }}>
           {app.name} Wiki
         </h2>
-        <div className="relative">
+        <form role="search" className="relative" onSubmit={(event) => {
+          event.preventDefault();
+          navigate(`/${app.slug}/special-tests${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""}`);
+        }}>
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <Input 
+          <Input name="q" aria-label={`Search ${app.name} tests`} value={query} onChange={event => setQuery(event.target.value)}
             placeholder={`Search ${app.name} Wiki...`} 
             className="pl-9 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
           />
-        </div>
+        </form>
       </div>
 
       <nav className="flex-1">

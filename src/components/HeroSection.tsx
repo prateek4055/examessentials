@@ -2,26 +2,49 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, BookOpen, Star, ShieldCheck, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Astra3DNeuralCanvas from "@/components/Astra3DNeuralCanvas";
+
+import lungsDoodle from "@/assets/doodles/lungs.webp";
+import heartDoodle from "@/assets/doodles/heart.webp";
+import brainDoodle from "@/assets/doodles/brain.webp";
+import prismDoodle from "@/assets/doodles/prism.webp";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[94vh] flex items-center justify-center overflow-hidden pt-28 pb-20 bg-background">
-      {/* 
-        3D Bioluminescent Neural Point Cloud:
-        1,450 3D particles with cortical sulcal streams, concentric cerebellum rings, 
-        smooth yaw/pitch 3D perspective rotation, and real-time cursor physics.
-      */}
-      <Astra3DNeuralCanvas />
-
-      {/* Apple Ambient Lighting - Smooth radial depth */}
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-28 pb-20 bg-background">
+      {/* Clean Ambient Lighting & Soft Background Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div 
           className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[850px] h-[550px] rounded-full blur-[130px] pointer-events-none opacity-40"
           style={{
-            background: "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.12), transparent 70%)"
+            background: "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.12), transparent 70%)"
           }}
         />
+        <div 
+          className="absolute top-1/2 -left-20 w-[450px] h-[450px] rounded-full blur-[120px] pointer-events-none opacity-20"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.25), transparent 70%)"
+          }}
+        />
+        <div 
+          className="absolute bottom-10 -right-20 w-[450px] h-[450px] rounded-full blur-[120px] pointer-events-none opacity-20"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(236, 72, 153, 0.2), transparent 70%)"
+          }}
+        />
+
+        {/* Elegant Floating Doodles */}
+        <div className="hidden lg:block absolute left-[6%] top-[22%] w-24 h-24 opacity-35 doodle-float pointer-events-none">
+          <img src={brainDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" loading="lazy" />
+        </div>
+        <div className="hidden lg:block absolute right-[7%] top-[18%] w-24 h-24 opacity-35 doodle-float pointer-events-none" style={{ animationDelay: "-2.5s" }}>
+          <img src={heartDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" loading="lazy" />
+        </div>
+        <div className="hidden lg:block absolute left-[8%] bottom-[12%] w-20 h-20 opacity-30 doodle-float pointer-events-none" style={{ animationDelay: "-4s" }}>
+          <img src={prismDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" loading="lazy" />
+        </div>
+        <div className="hidden lg:block absolute right-[8%] bottom-[15%] w-20 h-20 opacity-30 doodle-float pointer-events-none" style={{ animationDelay: "-1.5s" }}>
+          <img src={lungsDoodle} alt="" className="w-full h-full object-contain filter drop-shadow-sm" loading="lazy" />
+        </div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

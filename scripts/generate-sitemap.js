@@ -1,3 +1,4 @@
+import { buildWikiSitemap } from "./medortho-seo-utils.js";
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
@@ -111,7 +112,7 @@ async function generateSitemaps() {
             localWikiTests.push({
               app_id: 'medortho',
               slug: cleanSlug,
-              updated_at: today,
+              updated_at: t.lastUpdated || null,
               image1: t.image1,
               title: t.title,
               usedFor: t.usedFor
@@ -194,71 +195,8 @@ async function generateSitemaps() {
 
     blogSitemap += `\n</urlset>`;
 
-    // 4b. Generate Wiki Sitemap (sitemap-wiki.xml)
-    let wikiSitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`;
-
-    // Combine Supabase articles and local articles, deduplicating by unique path
-    const allWikiArticles = [];
-    const seenWikiPaths = new Set();
-
-    if (dbArticles && dbArticles.length > 0) {
-      dbArticles.forEach(art => {
-        const path = `/${art.app_id}/tests/${art.slug}`;
-        if (!seenWikiPaths.has(path)) {
-          seenWikiPaths.add(path);
-          
-          let imageMarkup = '';
-          const localMatch = localWikiTests.find(l => l.app_id === art.app_id && l.slug === art.slug);
-          if (localMatch && localMatch.image1) {
-            const imageFilename = localMatch.image1.split('/').pop();
-            const cleanTitle = localMatch.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            const cleanDesc = localMatch.usedFor ? localMatch.usedFor.replace(/<[^>]*>/g, '').substring(0, 100).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
-            imageMarkup = `\n    <image:image>\n      <image:loc>${DOMAIN}/${art.app_id}/tests/images/${imageFilename}</image:loc>\n      <image:title>${cleanTitle} Orthopedic Special Test</image:title>\n      <image:caption>Diagnostic guide and procedure for ${cleanTitle}: ${cleanDesc}</image:caption>\n    </image:image>`;
-          }
-
-          allWikiArticles.push({
-            loc: `${DOMAIN}${path}`,
-            lastmod: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : today,
-            imageMarkup: imageMarkup
-          });
-        }
-      });
-    }
-
-    localWikiTests.forEach(art => {
-      const path = `/${art.app_id}/tests/${art.slug}`;
-      if (!seenWikiPaths.has(path)) {
-        seenWikiPaths.add(path);
-        
-        let imageMarkup = '';
-        if (art.image1) {
-          const imageFilename = art.image1.split('/').pop();
-          const cleanTitle = art.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-          const cleanDesc = art.usedFor ? art.usedFor.replace(/<[^>]*>/g, '').substring(0, 100).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
-          imageMarkup = `\n    <image:image>\n      <image:loc>${DOMAIN}/medortho/tests/images/${imageFilename}</image:loc>\n      <image:title>${cleanTitle} Orthopedic Special Test</image:title>\n      <image:caption>Diagnostic guide and procedure for ${cleanTitle}: ${cleanDesc}</image:caption>\n    </image:image>`;
-        }
-
-        allWikiArticles.push({
-          loc: `${DOMAIN}${path}`,
-          lastmod: today,
-          imageMarkup: imageMarkup
-        });
-      }
-    });
-
-    allWikiArticles.forEach(item => {
-      wikiSitemap += `
-  <url>
-    <loc>${item.loc}</loc>
-    <lastmod>${item.lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>${item.imageMarkup || ''}
-  </url>`;
-    });
-
-    wikiSitemap += `\n</urlset>`;
+    // Local article images and real update dates; no synthetic freshness.
+    const wikiSitemap = buildWikiSitemap(dbArticles, localWikiTests);
 
     // 5. Generate Static Pages Sitemap (sitemap-pages.xml)
     const staticPages = [

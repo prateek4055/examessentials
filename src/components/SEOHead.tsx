@@ -115,7 +115,7 @@ const SEOHead = ({
 
       {/* ── Robots ──────────────────────────────────────────────── */}
       {noIndex ? (
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="noindex, follow" />
       ) : (
         <meta
           name="robots"

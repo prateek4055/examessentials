@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/generate-sitemap.js",
+    "prebuild": "node scripts/medortho-image-metadata.js && node scripts/generate-sitemap.js",
     "build": "vite build",
     "postbuild": "node scripts/prerender.js",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:medortho-seo": "node scripts/medortho-image-metadata.js && vite build && node scripts/prerender.js --local-only && node --test scripts/tests/medortho-seo.test.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -1,3 +1,4 @@
+import imageMetadata from "../../medortho/data/imageMetadata.json";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import MedWikiLayout from "../components/MedWikiLayout";
@@ -46,7 +47,7 @@ const MedWikiArticlePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const isSpecialTestsIndex = pathId?.toLowerCase().replace(/\/$/, "") === "special-tests";
-  const isCategoryPage = ["shoulder", "knee", "hip", "spine", "elbow", "wrist-hand", "wrist", "ankle-foot", "ankle", "neurological"].includes(segments[0]?.toLowerCase().replace(/\/$/, ""));
+  const isCategoryPage = segments.filter(Boolean).length === 1 && ["shoulder", "knee", "hip", "spine", "elbow", "wrist-hand", "wrist", "ankle-foot", "ankle", "neurological"].includes(segments[0]?.toLowerCase().replace(/\/$/, ""));
   const isAnatomyPage = segments[0]?.toLowerCase() === "anatomy" && segments[1];
   const isPathologyPage = segments[0]?.toLowerCase() === "pathologies" && segments[1];
 
@@ -136,7 +137,7 @@ const MedWikiArticlePage: React.FC = () => {
                 title: match.title || "",
                 content: content,
                 references: references,
-                lastUpdated: new Date().toISOString().split("T")[0],
+                lastUpdated: match.lastUpdated || "",
                 app_id: "medortho",
                 description: cleanDescription,
                 image: imageUrl,
@@ -177,7 +178,7 @@ const MedWikiArticlePage: React.FC = () => {
             title: data.title,
             content: data.content,
             references: data.references || [],
-            lastUpdated: new Date(data.updated_at || data.created_at).toLocaleDateString(),
+            lastUpdated: new Date(data.updated_at || data.created_at).toISOString().split("T")[0],
             app_id: data.app_id,
             description: cleanDesc,
           });
@@ -220,14 +221,13 @@ const MedWikiArticlePage: React.FC = () => {
   const cleanPathId = pathId ? pathId.replace(/\/$/, "") : "";
   let pageCanonical = `/${app.slug}${cleanPathId ? `/${cleanPathId}` : ""}`;
   let pageKeywords = `${app.name}, medical education, wiki, special tests`;
-  let pageNoIndex = false;
+  let pageNoIndex = new URLSearchParams(location.search).has("q");
   let pageArticleSection: string | undefined = undefined;
-  const today = new Date().toISOString().split("T")[0];
   let pageStructuredData: object[] | undefined = undefined;
 
   if (isSpecialTestsIndex) {
     pageTitle = `Orthopedic Special Tests — Complete Clinical Reference | MedOrtho`;
-    pageDescription = `Browse 700+ orthopedic special tests for physiotherapists and medical professionals. Shoulder, knee, hip, spine, elbow, ankle assessments with sensitivity & specificity data.`;
+    pageDescription = `Browse orthopedic special tests for physiotherapists and medical professionals. Shoulder, knee, hip, spine, elbow, ankle assessments with sensitivity & specificity data.`;
     pageKeywords = `orthopedic special tests, physiotherapy assessment, musculoskeletal examination, clinical orthopedics, shoulder tests, knee tests, hip tests, spine tests`;
     pageStructuredData = [
       {
@@ -296,6 +296,7 @@ const MedWikiArticlePage: React.FC = () => {
     pageNoIndex = true;
   }
 
+  const imageSize = imageMetadata[article?.image?.split("/").pop() as keyof typeof imageMetadata];
   return (
     <>
       <SEOHead
@@ -309,11 +310,10 @@ const MedWikiArticlePage: React.FC = () => {
         keywords={pageKeywords}
         noIndex={pageNoIndex}
         isInternational={true}
-        articlePublishedTime={article?.lastUpdated && article.lastUpdated !== "Today" ? article.lastUpdated : today}
-        articleModifiedTime={today}
+        articleModifiedTime={article?.lastUpdated || undefined}
         articleSection={pageArticleSection}
-        ogImageWidth={article?.image ? "800" : "1200"}
-        ogImageHeight={article?.image ? "600" : "630"}
+        ogImageWidth={imageSize ? String(imageSize.width) : "1200"}
+        ogImageHeight={imageSize ? String(imageSize.height) : "630"}
       />
       <MedWikiLayout app={app}>
       {loading ? (

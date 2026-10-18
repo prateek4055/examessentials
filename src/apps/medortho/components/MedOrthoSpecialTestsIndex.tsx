@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Search, ChevronLeft, ChevronRight, Stethoscope, Heart, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -55,7 +55,11 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
 }) => {
   const app = getAppBySlug("medortho");
   const [tests, setTests] = useState<TestItem[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q") || "";
+  const setSearchQuery = (query: string) => {
+    setSearchParams(query ? { q: query } : {}, { replace: true });
+  };
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -66,6 +70,8 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
     setSelectedCategory(initialCategory);
     setCurrentPage(1);
   }, [initialCategory]);
+
+  useEffect(() => setCurrentPage(1), [searchQuery]);
 
   // Load tests from json database
   useEffect(() => {
@@ -264,8 +270,9 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
                       <img
                         src={imgUrl}
                         alt={t.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           // Fallback to illustration card
                           (e.target as HTMLImageElement).style.display = "none";

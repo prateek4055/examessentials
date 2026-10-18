@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import MedWikiSidebar from "./MedWikiSidebar";
 import { MedAppData } from "../data/medicalAppsData";
-import AnchorAd from "../../medortho/components/AnchorAd";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 interface MedWikiLayoutProps {
   app: MedAppData;
@@ -14,50 +14,43 @@ interface MedWikiLayoutProps {
 const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  useEffect(() => setIsSidebarOpen(false), [pathname]);
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] dark:bg-[#0A0A0F] text-gray-900 dark:text-white flex flex-col font-sans">
       
+      <a href="#medical-main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-slate-900">Skip to content</a>
       {/* Mobile Top Header */}
       <div className="lg:hidden sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(true)}>
+          <Button aria-label="Open navigation" variant="ghost" size="icon" onClick={() => setIsSidebarOpen(true)}>
             <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </Button>
           <span className="font-bold text-lg" style={{ color: app.theme.primary }}>{app.name} Wiki</span>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => navigate(`/${app.slug}`)}>
+        <Button aria-label={`Back to ${app.name}`} variant="ghost" size="icon" onClick={() => navigate(`/${app.slug}`)}>
             <ArrowLeft className="w-5 h-5" />
         </Button>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-50 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      {/* Mobile Sidebar Drawer */}
-      <div className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-900 z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <div className="absolute top-4 right-4 z-10">
-          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)}>
-            <X className="w-5 h-5" />
-          </Button>
-        </div>
-        <MedWikiSidebar app={app} className="h-full pt-16 lg:pt-4" />
-      </div>
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetContent side="left" className="w-72 p-0 lg:hidden">
+          <SheetTitle className="sr-only">{app.name} navigation</SheetTitle>
+          <SheetDescription className="sr-only">Browse clinical topics and special tests.</SheetDescription>
+          <MedWikiSidebar app={app} className="h-full pt-12" />
+        </SheetContent>
+      </Sheet>
 
       <div className="flex flex-1 max-w-[1600px] w-full mx-auto relative">
         {/* Desktop Left Sidebar (Sticky) */}
-        <aside className="hidden lg:block w-72 flex-shrink-0 sticky top-0 h-screen">
+        <aside className="hidden lg:block w-60 flex-shrink-0 sticky top-0 h-screen">
           <MedWikiSidebar app={app} />
         </aside>
 
         {/* Center Main Content */}
-        <main className="flex-1 flex flex-col min-w-0 pb-36 lg:pb-10">
-          <div className="px-4 py-8 md:px-8 lg:px-12 max-w-4xl mx-auto w-full">
+        <main id="medical-main" tabIndex={-1} className={`flex-1 flex flex-col min-w-0 ${app.id === "medortho" ? "pb-10" : "pb-36 lg:pb-10"}`}>
+          <div className="px-5 py-8 md:px-10 lg:px-12 max-w-4xl mx-auto w-full">
             <div className="mb-6 flex items-center justify-between hidden lg:flex">
                 <Link to={`/${app.slug}`} className="text-sm font-medium text-muted-foreground hover:text-primary flex items-center gap-2">
                     <ArrowLeft className="w-4 h-4" />
@@ -65,11 +58,18 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
                 </Link>
             </div>
             {children}
+            <footer className="mt-16 border-t border-slate-200 pt-6 dark:border-slate-800">
+              <nav aria-label="Reference links" className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-500">
+                <Link to={`/${app.slug}/special-tests`}>Special tests</Link>
+                <Link to="/about">About</Link><Link to="/contact">Contact</Link>
+                <Link to="/privacy-policy">Privacy</Link><Link to="/terms-and-conditions">Terms</Link>
+              </nav>
+            </footer>
           </div>
         </main>
 
         {/* Desktop Right Sidebar (Clean Promo & Sticky Resource Cards) */}
-        <aside className="hidden xl:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 bg-gray-50/50 dark:bg-gray-900/50">
+        <aside className="hidden 2xl:block w-72 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 bg-gray-50/50 dark:bg-gray-900/50">
           <style dangerouslySetInnerHTML={{__html: `
             #wiki-right-sidebar-target:has(> div:not(.default-sidebar-content)) .default-sidebar-content {
               display: none;
@@ -103,10 +103,10 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
       </div>
 
       {/* Non-intrusive dismissible bottom anchor ad for mobile / tablet */}
-      <AnchorAd />
+
 
       {/* Mobile Sticky Bottom App Promo */}
-      <div className="xl:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+      {app.id !== "medortho" && <div className="xl:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
         <div className="flex items-center justify-between max-w-md mx-auto">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md" style={{ background: app.theme.heroBg }}>
@@ -121,7 +121,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
             Open App
           </Button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

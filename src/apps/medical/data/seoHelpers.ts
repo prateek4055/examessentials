@@ -138,7 +138,6 @@ export function buildAppStructuredData(app: MedAppData): object[] {
       },
       isAccessibleForFree: true,
       inLanguage: "en",
-      dateModified: new Date().toISOString().split("T")[0],
       isPartOf: {
         "@type": "WebSite",
         name: "Exam Essentials",
@@ -193,9 +192,7 @@ export function buildWikiArticleStructuredData(
   slug: string
 ): object[] {
   const url = `${BASE_URL}/${appSlug}/tests/${slug}`;
-  const today = new Date().toISOString().split("T")[0];
-  const lastReviewed =
-    article.lastUpdated === "Today" || !article.lastUpdated ? today : article.lastUpdated;
+  const modifiedDate = /^\d{4}-\d{2}-\d{2}$/.test(article.lastUpdated) ? article.lastUpdated : undefined;
 
   const cleanUsedFor = stripHtml(article.usedFor);
   const cleanHowTo = stripHtml(article.howTo);
@@ -225,7 +222,7 @@ export function buildWikiArticleStructuredData(
   ];
 
   if (article.category) {
-    const catSlug = article.category.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and");
+    const catSlug = article.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     breadcrumbs.push({
       "@type": "ListItem",
       position: 4,
@@ -260,8 +257,7 @@ export function buildWikiArticleStructuredData(
     name: `${article.title} — Orthopedic Special Test`,
     description: cleanDescription,
     url,
-    lastReviewed,
-    dateModified: today,
+    ...(modifiedDate ? { dateModified: modifiedDate } : {}),
     specialty: {
       "@type": "MedicalSpecialty",
       name: "Orthopedic Surgery",
@@ -313,6 +309,7 @@ export function buildWikiArticleStructuredData(
       description: `${article.title} orthopedic special test demonstration`,
       name: `${article.title} - Clinical Test Image`,
     };
+    medWebPage.primaryImageOfPage = medWebPage.image;
     medWebPage.thumbnailUrl = article.image;
   }
 
@@ -340,7 +337,7 @@ export function buildWikiArticleStructuredData(
       }),
     });
 
-    // ── 4. HowTo schema — gives Google "steps" rich result ────────
+    // ── 4. HowTo schema describing the supplied procedure ────────
     if (cleanHowTo && cleanHowTo.trim().length > 20) {
       // Split how-to text into numbered steps if possible, else treat as single step block
       const rawSteps = cleanHowTo
@@ -377,12 +374,7 @@ export function buildWikiArticleStructuredData(
             url: article.image,
           },
         }),
-        supply: [
-          { "@type": "HowToSupply", name: "Examination table" },
-          { "@type": "HowToSupply", name: "Goniometer (if applicable)" },
-        ],
-        tool: [{ "@type": "HowToTool", name: "Clinical knowledge of anatomy" }],
-        totalTime: "PT2M",
+
       });
     }
 
@@ -462,17 +454,17 @@ export function buildCategoryItemListSchema(
 ): object {
   return {
     "@context": "https://schema.org",
-    "@type": "ItemList",
+    "@type": tests.length ? "ItemList" : "CollectionPage",
     name: `${categoryName} Orthopedic Special Tests`,
     description: `Complete list of orthopedic special tests for ${categoryName} examination and clinical assessment.`,
     url: `${BASE_URL}/${appSlug}/${categoryName.toLowerCase().replace(/\s+&?\s*/g, "-")}`,
-    numberOfItems: tests.length,
-    itemListElement: tests.slice(0, 50).map((test, idx) => ({
+    ...(tests.length ? { numberOfItems: tests.length } : {}),
+    ...(tests.length ? { itemListElement: tests.slice(0, 50).map((test, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
       name: test.title,
       url: `${BASE_URL}/${appSlug}/tests/${test.slug}`,
       ...(test.description && { description: test.description }),
-    })),
+    })) } : {}),
   };
 }

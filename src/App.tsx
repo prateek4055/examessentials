@@ -1,56 +1,65 @@
+import { lazy, Suspense } from "react";
+import MedOrthoAdLoader from "./apps/medortho/components/MedOrthoAdLoader";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollToTop from "@/components/ScrollToTop";
 import SocialProofPopup from "@/components/SocialProofPopup";
-import Index from "./pages/Index";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
-import PurchaseForm from "./pages/PurchaseForm";
-import Cart from "./pages/Cart";
-import Auth from "./pages/Auth";
-import Profile from "./pages/Profile";
-import Admin from "./pages/Admin";
-import AdminProductForm from "./pages/AdminProductForm";
-import AdminBlogForm from "./pages/AdminBlogForm";
-import AdminWikiEditor from "./pages/AdminWikiEditor";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import RefundPolicy from "./pages/RefundPolicy";
-import ShippingPolicy from "./pages/ShippingPolicy";
-import NotFound from "./pages/NotFound";
-import TermsRedirect from "./pages/TermsRedirect";
-import Class11Notes from "./pages/Class11Notes";
-import Class12Notes from "./pages/Class12Notes";
-import NeetNotes from "./pages/NeetNotes";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import MedPosterHubIndex from "./apps/medposterhub/pages/MedPosterHubIndex";
-import MedPosterDetailPage from "./apps/medposterhub/pages/MedPosterDetailPage";
-import MedShippingPolicy from "./apps/medposterhub/pages/ShippingPolicy";
-import ReturnRefund from "./apps/medposterhub/pages/ReturnRefund";
-import BulkOrders from "./apps/medposterhub/pages/BulkOrders";
-import ContactUs from "./apps/medposterhub/pages/ContactUs";
-import PrivacyTerms from "./apps/medposterhub/pages/PrivacyTerms";
-import MedCheckoutPage from "./apps/medposterhub/pages/CheckoutPage";
-import MedOrderSuccessPage from "./apps/medposterhub/pages/OrderSuccessPage";
 import { CartProvider } from "./apps/medposterhub/context/CartContext";
-import MedOrthoPage from "./apps/medical/pages/MedOrthoPage";
-import MedWikiArticlePage from "./apps/medical/pages/MedWikiArticlePage";
 
-import MedCardioPage from "./apps/medical/pages/MedCardioPage";
-import MedNeuroPage from "./apps/medical/pages/MedNeuroPage";
-import MedPhysioPage from "./apps/medical/pages/MedPhysioPage";
-import MedRadioPage from "./apps/medical/pages/MedRadioPage";
-import MedPharmaPage from "./apps/medical/pages/MedPharmaPage";
-import NeetAppPage from "./apps/neet/pages/NeetAppPage";
+const Index = lazy(() => import("./pages/Index"));
+const Products = lazy(() => import("./pages/Products"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const PurchaseForm = lazy(() => import("./pages/PurchaseForm"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminProductForm = lazy(() => import("./pages/AdminProductForm"));
+const AdminBlogForm = lazy(() => import("./pages/AdminBlogForm"));
+const AdminWikiEditor = lazy(() => import("./pages/AdminWikiEditor"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const TermsRedirect = lazy(() => import("./pages/TermsRedirect"));
+const Class11Notes = lazy(() => import("./pages/Class11Notes"));
+const Class12Notes = lazy(() => import("./pages/Class12Notes"));
+const NeetNotes = lazy(() => import("./pages/NeetNotes"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const MedPosterHubIndex = lazy(() => import("./apps/medposterhub/pages/MedPosterHubIndex"));
+const MedPosterDetailPage = lazy(() => import("./apps/medposterhub/pages/MedPosterDetailPage"));
+const MedShippingPolicy = lazy(() => import("./apps/medposterhub/pages/ShippingPolicy"));
+const ReturnRefund = lazy(() => import("./apps/medposterhub/pages/ReturnRefund"));
+const BulkOrders = lazy(() => import("./apps/medposterhub/pages/BulkOrders"));
+const ContactUs = lazy(() => import("./apps/medposterhub/pages/ContactUs"));
+const PrivacyTerms = lazy(() => import("./apps/medposterhub/pages/PrivacyTerms"));
+const MedCheckoutPage = lazy(() => import("./apps/medposterhub/pages/CheckoutPage"));
+const MedOrderSuccessPage = lazy(() => import("./apps/medposterhub/pages/OrderSuccessPage"));
+const MedOrthoPage = lazy(() => import("./apps/medical/pages/MedOrthoPage"));
+const MedWikiArticlePage = lazy(() => import("./apps/medical/pages/MedWikiArticlePage"));
+
+const MedCardioPage = lazy(() => import("./apps/medical/pages/MedCardioPage"));
+const MedNeuroPage = lazy(() => import("./apps/medical/pages/MedNeuroPage"));
+const MedPhysioPage = lazy(() => import("./apps/medical/pages/MedPhysioPage"));
+const MedRadioPage = lazy(() => import("./apps/medical/pages/MedRadioPage"));
+const MedPharmaPage = lazy(() => import("./apps/medical/pages/MedPharmaPage"));
+const NeetAppPage = lazy(() => import("./apps/neet/pages/NeetAppPage"));
+
+const SiteOverlays = () => {
+  const { pathname } = useLocation();
+  if (/^\/medortho(?:\/|$)/.test(pathname)) return null;
+  return <><WhatsAppButton /><SocialProofPopup /></>;
+};
 
 const queryClient = new QueryClient();
 
@@ -64,6 +73,8 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
+              <MedOrthoAdLoader />
+              <Suspense fallback={<div role="status" className="p-12 text-center text-slate-500">Loading page…</div>}>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
@@ -117,8 +128,8 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
 
               </Routes>
-              <WhatsAppButton />
-              <SocialProofPopup />
+              </Suspense>
+              <SiteOverlays />
             </BrowserRouter>
           </TooltipProvider>
         </CartProvider>

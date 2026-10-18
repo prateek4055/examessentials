@@ -6,6 +6,7 @@ import { MedPosterHeader } from "../components/MedPosterHeader";
 import { MedFooter } from "../components/MedFooter";
 import { ClayButton } from "../components/ClayButton";
 import { ClayCard } from "../components/ClayCard";
+import { calculateVariantPrice } from "../data/posters";
 import SEOHead from "@/components/SEOHead";
 import { 
     ChevronRight, 
@@ -405,25 +406,21 @@ const CheckoutPage = () => {
                             <ClayCard className="p-6 bg-blue-50/50 border-blue-100 divide-y divide-blue-100">
                                 <div className="space-y-4 pb-4">
                                     {cart.map((item) => {
-                                        const itemPrice = item.selectedSize === "A1" ? item.price.large : 
-                                                         (item.selectedSize === "A3" ? item.price.small : item.price.medium);
-                                        const finalItemPrice = item.isDoubleSided ? itemPrice + 200 : itemPrice;
+                                        const material = item.selectedMaterial || "matte";
+                                        const finalItemPrice = calculateVariantPrice(item.price, material, item.selectedSize);
                                         
                                         return (
-                                            <div key={`${item.id}-${item.selectedSize}`} className="flex gap-4">
-                                                <div className="w-16 h-20 rounded shadow-clay-sm overflow-hidden bg-white flex-shrink-0">
-                                                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                                            <div key={`${item.id}-${item.selectedSize}-${material}`} className="flex gap-4">
+                                                <div className="w-16 h-20 rounded shadow-clay-sm overflow-hidden bg-white flex-shrink-0 flex items-center justify-center p-1">
+                                                    <img src={item.image} alt={item.title} className="max-h-full max-w-full object-contain" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <h4 className="text-sm font-semibold text-slate-800 line-clamp-2 leading-tight">
                                                         {item.title}
                                                     </h4>
-                                                    <p className="text-sm text-slate-500 mt-1">
-                                                        {item.selectedSize} × {item.quantity}
+                                                    <p className="text-xs text-slate-500 mt-1 capitalize">
+                                                        {material} • {item.selectedSize} × {item.quantity}
                                                     </p>
-                                                    {item.isDoubleSided && (
-                                                        <p className="text-[10px] text-green-600 font-medium">Double Sided</p>
-                                                    )}
                                                 </div>
                                                 <div className="text-sm font-bold text-slate-900">
                                                     ₹{finalItemPrice * item.quantity}
