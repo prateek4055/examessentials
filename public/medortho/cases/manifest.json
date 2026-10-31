@@ -1,0 +1,206 @@
+[
+  {
+    "id": "MED-ORT-L1-001",
+    "title": "The Fall That Injured a Wrist",
+    "diagnosis": "Displaced extra-articular Colles-pattern distal radius fracture",
+    "file": "cases/MED-ORT-L1-001.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.aaos.org/aaos-home/newsroom/press-releases/management-of-distal-radius-fractures-clinical-practice-guidelines-cpg-fact-sheet/",
+      "https://www.boa.ac.uk/resource/boast-16-pdf.html",
+      "https://ao-alliance.org/wp-content/uploads/2024/12/clinical-guidelines_distal-radial-fractures_2024.pdf"
+    ],
+    "sha256": "d37db804be20c8c6c022e39dbb3debdf3ff74a85b22c9006d96ad4a0dff51784",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Margaret Wilson",
+      "age_years": 68,
+      "sex": "Female",
+      "chief_complaint": "Right wrist pain and deformity, pain 8/10."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-002",
+    "title": "The Wrist Bent the Other Way",
+    "diagnosis": "Displaced Smith-pattern distal radius fracture with unstable alignment",
+    "file": "cases/MED-ORT-L1-002.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.ncbi.nlm.nih.gov/books/NBK547714/",
+      "https://www.aaos.org/aaos-home/newsroom/press-releases/management-of-distal-radius-fractures-clinical-practice-guidelines-cpg-fact-sheet/",
+      "https://www.boa.ac.uk/resource/boast-16-pdf.html"
+    ],
+    "sha256": "c00729a925a4493db93995d8dc36f71cd4dc703fe881c47fabe666b779622f2f",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Arjun Mehta",
+      "age_years": 34,
+      "sex": "Male",
+      "chief_complaint": "Pain and volar wrist deformity, pain 8/10."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-003",
+    "title": "The Invisible Wrist Fracture",
+    "diagnosis": "Radiograph-occult nondisplaced scaphoid waist fracture confirmed by MRI",
+    "file": "cases/MED-ORT-L1-003.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.nice.org.uk/guidance/ng38/chapter/recommendations",
+      "https://acsearch.acr.org/docs/69418/Narrative/",
+      "https://orthoinfo.aaos.org/en/diseases--conditions/scaphoid-fracture-of-the-wrist/"
+    ],
+    "sha256": "78e2042d96a15f90cc68e05ac5edefb5e3be08686d7b740cbaa9c0296860814f",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Daniel Carter",
+      "age_years": 22,
+      "sex": "Male",
+      "chief_complaint": "Thumb-side wrist pain persisting after a fall, pain 5/10."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-004",
+    "title": "A Small Fall, a Stable Wrist",
+    "diagnosis": "Isolated pediatric distal radius torus (buckle) fracture",
+    "file": "cases/MED-ORT-L1-004.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.nice.org.uk/guidance/ng38/chapter/recommendations",
+      "https://www.rch.org.au/clinicalguide/guideline_index/fractures/distal_radius_and_or_ulna_metaphyseal_fractures_emergency_department_setting/",
+      "https://www.rch.org.au/kidsinfo/fact_sheets/Fracture_care_buckle_injury/"
+    ],
+    "sha256": "4bd0e89fd420ed736fdd4e6bb7d14e8c10a1817ca35d2c2bea90f7fd36511b22",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Maya Sharma",
+      "age_years": 8,
+      "sex": "Female",
+      "chief_complaint": "Left wrist pain 4/10 and mild swelling for 3 hours."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-005",
+    "title": "The Cyclist’s Collarbone",
+    "diagnosis": "Closed minimally displaced midshaft clavicle fracture",
+    "file": "cases/MED-ORT-L1-005.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.aaos.org/quality/quality-programs/clavicle-fractures/",
+      "https://orthoinfo.aaos.org/en/diseases--conditions/clavicle-fracture-broken-collarbone/"
+    ],
+    "sha256": "5c60e4e6b304044ef66f4b93fce45b7b475491a944a1fd3f109da67bf341d9d5",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Ethan Brooks",
+      "age_years": 27,
+      "sex": "Male",
+      "chief_complaint": "Localized right collarbone pain, 6/10."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-006",
+    "title": "The Shoulder That Slipped Out",
+    "diagnosis": "First-time traumatic anterior glenohumeral dislocation without fracture",
+    "file": "cases/MED-ORT-L1-006.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.orthoinfo.org/diseases--conditions/dislocated-shoulder",
+      "https://www.rch.org.au/clinicalguide/guideline_index/fractures/Shoulder_Dislocations_-_Emergency_Department/"
+    ],
+    "sha256": "63efc25dd16b79f0d0b712b5d27dc3d05a167eaaac00611875d6e5819e51d3cf",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Sofia Martinez",
+      "age_years": 24,
+      "sex": "Female",
+      "chief_complaint": "Severe right shoulder pain and inability to move arm, 9/10."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-007",
+    "title": "The Shoulder After a Small Fall",
+    "diagnosis": "Minimally displaced proximal humerus surgical-neck fracture",
+    "file": "cases/MED-ORT-L1-007.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://surgeryreference.aofoundation.org/orthopedic-trauma/adult-trauma/proximal-humerus/extraarticular-2-part-surgical-neck-impaction/nonoperative",
+      "https://www.ncbi.nlm.nih.gov/books/NBK470346/"
+    ],
+    "sha256": "779c8eb9aa7b334aef9729ef988d8809f780c4484db90c88c87697f61a6c431b",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Eleanor Price",
+      "age_years": 73,
+      "sex": "Female",
+      "chief_complaint": "Left upper arm pain 7/10 and limited shoulder movement."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-008",
+    "title": "The Elbow That Wouldn’t Straighten",
+    "diagnosis": "Isolated nondisplaced radial head fracture (Mason type I)",
+    "file": "cases/MED-ORT-L1-008.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.orthoinfo.org/diseases--conditions/radial-head-fractures-of-the-elbow/",
+      "https://aci.health.nsw.gov.au/networks/eci/clinical/tools/radial-head-neck-fractures"
+    ],
+    "sha256": "d0ce317e6664f606a91f2e024a6a201a475cdc5844b7367864cbfde22d75d598",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Noah Kim",
+      "age_years": 31,
+      "sex": "Male",
+      "chief_complaint": "Lateral left elbow pain 5/10 and difficulty turning the palm upward."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-009",
+    "title": "The Child With a Swollen Elbow",
+    "diagnosis": "Displaced Gartland type III extension supracondylar humerus fracture",
+    "file": "cases/MED-ORT-L1-009.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.rch.org.au/clinicalguide/guideline_index/fractures/supracondylar_fracture_of_the_humerus_emergency_department/",
+      "https://ao-alliance.org/wp-content/uploads/2024/12/clinical-guidelines_supracondylar-humeral-fractures-children_2024.pdf"
+    ],
+    "sha256": "167c42ccecaf6bfb9690f32fc0b17940ebfaa320896b9b60676e6f3a8a55066e",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Oliver Bennett",
+      "age_years": 6,
+      "sex": "Male",
+      "chief_complaint": "Severe swollen left elbow and inability to bend it, pain 9/10."
+    }
+  },
+  {
+    "id": "MED-ORT-L1-010",
+    "title": "The Punch That Hurt the Hand",
+    "diagnosis": "Closed fifth metacarpal neck fracture without rotational deformity",
+    "file": "cases/MED-ORT-L1-010.json",
+    "clinical_review_status": "PENDING",
+    "references": [
+      "https://www.orthoinfo.org/diseases--conditions/hand-fractures",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC7451089/"
+    ],
+    "sha256": "2739dcdbc577348a37bdbc53b3d604b8334e1d8a2aceb0b4f00ecff902262db6",
+    "level": 1,
+    "difficulty": "intern",
+    "patient": {
+      "name": "Liam O’Connor",
+      "age_years": 25,
+      "sex": "Male",
+      "chief_complaint": "Pain over right little-finger knuckle, 6/10."
+    }
+  }
+]

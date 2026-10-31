@@ -1,0 +1,1244 @@
+{
+  "case_id": "MED-ORT-L1-003",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Radiograph-occult nondisplaced scaphoid waist fracture confirmed by MRI",
+  "primary_diagnosis_registry_key": "ORT-L1-003",
+  "language": "en",
+  "display": {
+    "title": "The Invisible Wrist Fracture",
+    "subtitle": "A normal initial radiograph cannot always clear the scaphoid.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_003.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 41
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Daniel Carter",
+    "age_years": 22,
+    "sex": "Male",
+    "hand_dominance": "Right",
+    "occupation": "University football player",
+    "setting": "Urgent care",
+    "presenting_event": "Fell onto an outstretched right hand during a football match yesterday.",
+    "history": {
+      "chief_complaint": "Thumb-side wrist pain persisting after a fall, pain 5/10.",
+      "mechanism": "Wrist extended during FOOSH with axial loading.",
+      "positive": [
+        "Pain in anatomical snuffbox",
+        "Pain when gripping a bottle",
+        "Tenderness at volar scaphoid tubercle"
+      ],
+      "negative": [
+        "No deformity, open injury or tingling",
+        "No previous wrist fracture",
+        "No other painful joint"
+      ],
+      "medical": [
+        "Healthy"
+      ],
+      "medications": [
+        "None"
+      ],
+      "allergies": "No known drug allergies",
+      "goal": "Return safely to sport without losing wrist motion"
+    },
+    "vitals": {
+      "pulse_bpm": 72,
+      "bp_mmHg": "118/74",
+      "rr_per_min": 15,
+      "spo2_percent": 99,
+      "temperature_C": 36.6,
+      "pain_0_10": 5
+    },
+    "physical_examination": {
+      "inspection": [
+        "Mild radial wrist swelling, no deformity"
+      ],
+      "palpation": [
+        "Snuffbox tenderness and scaphoid tubercle tenderness",
+        "No focal distal radius tenderness"
+      ],
+      "movement": [
+        "Pain with resisted thumb movement and gripping",
+        "Wrist flexion/extension mildly limited"
+      ],
+      "neurovascular": [
+        "Warm hand, normal radial pulse, refill <2 seconds",
+        "Intact sensation and intrinsic hand motor function"
+      ],
+      "safety_red_flags": [
+        "Increasing pain, impaired sensation or circulation",
+        "Missed scaphoid fracture risking nonunion/AVN"
+      ]
+    }
+  },
+  "learning_objective": "Avoid missing an occult scaphoid fracture and select staged imaging and immobilization based on findings.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No deformity, open injury or tingling; No previous wrist fracture; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No deformity, open injury or tingling; No previous wrist fracture; No other painful joint",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Wrist extended during FOOSH with axial loading.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Return safely to sport without losing wrist motion. Occupation: University football player.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: Healthy. Medicines: None. Allergies: No known drug allergies.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Thumb-side wrist pain persisting after a fall, pain 5/10. Pain in anatomical snuffbox.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Increasing pain, impaired sensation or circulation",
+          "Missed scaphoid fracture risking nonunion/AVN"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Warm hand, normal radial pulse, refill <2 seconds",
+          "Intact sensation and intrinsic hand motor function"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Snuffbox tenderness and scaphoid tubercle tenderness",
+          "No focal distal radius tenderness"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Pain with resisted thumb movement and gripping",
+          "Wrist flexion/extension mildly limited"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Mild radial wrist swelling, no deformity"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Mild radial wrist swelling, no deformity"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Right wrist PA, lateral, oblique and dedicated scaphoid radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No definite visible cortical break",
+            "Carpal alignment preserved"
+          ],
+          "impression": "Negative initial radiographs; occult scaphoid fracture remains possible.",
+          "title": "Right wrist PA, lateral, oblique and dedicated scaphoid radiographs — Report"
+        },
+        "rationale": "Obtain baseline films and do not rule out fracture solely on negative result.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "ACR"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Obtain baseline films and do not rule out fracture solely on negative result.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Ultrasound scaphoid",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Nonspecific periscaphoid soft-tissue swelling"
+          ],
+          "impression": "Nonspecific findings.",
+          "title": "Ultrasound scaphoid — Report"
+        },
+        "rationale": "Does not substitute for MRI or appropriate radiography.",
+        "incorrect_order_penalty": 9,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Does not substitute for MRI or appropriate radiography.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "ESR and CRP",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "ESR 6 mm/h",
+            "CRP 2 mg/L"
+          ],
+          "impression": "No inflammatory elevation.",
+          "title": "ESR and CRP — Report"
+        },
+        "rationale": "No features of infection.",
+        "incorrect_order_penalty": 5,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No features of infection.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right thumb phalanx radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No phalangeal fracture"
+          ],
+          "impression": "No thumb fracture.",
+          "title": "Right thumb phalanx radiographs — Report"
+        },
+        "rationale": "Pain is at scaphoid not phalanges.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Pain is at scaphoid not phalanges.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI right wrist without contrast after negative films",
+        "role": "essential_after_negative",
+        "phase": "after_negative_xray",
+        "report": {
+          "findings": [
+            "Bone marrow edema and nondisplaced transverse waist fracture line",
+            "No major ligament disruption"
+          ],
+          "impression": "MRI-confirmed nondisplaced scaphoid waist fracture.",
+          "title": "MRI right wrist without contrast after negative films — Report"
+        },
+        "rationale": "Early MRI is appropriate after clinical suspicion persists despite negative films.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "NICE",
+          "ACR"
+        ],
+        "id": "I02",
+        "availability": {
+          "trigger": "after_negative_xray",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Early MRI is appropriate after clinical suspicion persists despite negative films.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Bone scintigraphy",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Focal increased uptake near scaphoid"
+          ],
+          "impression": "Nonspecific active bone injury.",
+          "title": "Bone scintigraphy — Report"
+        },
+        "rationale": "MRI preferred for this young patient.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. MRI preferred for this young patient.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI with IV gadolinium",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Scaphoid fracture edema; no enhancing mass"
+          ],
+          "impression": "Known fracture.",
+          "title": "MRI with IV gadolinium — Report"
+        },
+        "rationale": "Contrast adds little to acute suspected occult fracture.",
+        "incorrect_order_penalty": 11,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Contrast adds little to acute suspected occult fracture.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Nerve conduction studies",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Normal median nerve conduction"
+          ],
+          "impression": "Normal test.",
+          "title": "Nerve conduction studies — Report"
+        },
+        "rationale": "Not indicated in acute trauma without neuropathy.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not indicated in acute trauma without neuropathy.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Wrist MRI at union review",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "Reduced fracture-line edema and bridging healing changes"
+          ],
+          "impression": "Healing scaphoid fracture.",
+          "title": "Wrist MRI at union review — Report"
+        },
+        "rationale": "Advanced follow-up imaging only if union uncertain or symptoms persist.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I13",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Advanced follow-up imaging only if union uncertain or symptoms persist.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Repeat scaphoid radiographs in 10-14 days",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "Thin scaphoid waist lucency now more conspicuous"
+          ],
+          "impression": "Scaphoid waist fracture.",
+          "title": "Repeat scaphoid radiographs in 10-14 days — Report"
+        },
+        "rationale": "Alternative strategy where timely MRI unavailable; not needed after diagnostic MRI.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Alternative strategy where timely MRI unavailable; not needed after diagnostic MRI.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT wrist without contrast",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Subtle nondisplaced scaphoid waist cortical defect",
+            "No humpback deformity"
+          ],
+          "impression": "Scaphoid waist fracture without displacement.",
+          "title": "CT wrist without contrast — Report"
+        },
+        "rationale": "Alternative for characterization when MRI is unavailable or alignment detail needed; do not routinely obtain both.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Alternative for characterization when MRI is unavailable or alignment detail needed; do not routinely obtain both.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right forearm radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No forearm shaft fracture"
+          ],
+          "impression": "No additional fracture.",
+          "title": "Right forearm radiographs — Report"
+        },
+        "rationale": "No tenderness in shaft.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No tenderness in shaft.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hemoglobin 14.5 g/dL",
+            "WBC 6.8 x10^9/L"
+          ],
+          "impression": "No acute hematological issue.",
+          "title": "CBC — Report"
+        },
+        "rationale": "No systemic illness or surgery planned.",
+        "incorrect_order_penalty": 5,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No systemic illness or surgery planned.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [
+      "I02"
+    ],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Scapholunate dissociation",
+        "feedback": "No ligament discontinuity or widening.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no ligament discontinuity or widening."
+      },
+      {
+        "label": "De Quervain tenosynovitis",
+        "feedback": "Acute FOOSH and MRI fracture make tendinopathy unlikely.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but acute FOOSH and MRI fracture make tendinopathy unlikely."
+      },
+      {
+        "label": "Isolated wrist sprain",
+        "feedback": "Does not account for MRI fracture line.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but does not account for MRI fracture line."
+      },
+      {
+        "label": "Occult distal ulna fracture",
+        "feedback": "No ulnar-sided pain or bone finding.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no ulnar-sided pain or bone finding."
+      },
+      {
+        "label": "Colles fracture",
+        "feedback": "No dorsal displaced distal radius fracture.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no dorsal displaced distal radius fracture."
+      },
+      {
+        "label": "Distal radius fracture",
+        "feedback": "Distal radius cortex is intact.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but distal radius cortex is intact."
+      },
+      {
+        "label": "Lunate fracture",
+        "feedback": "Fracture is in scaphoid waist.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but fracture is in scaphoid waist."
+      },
+      {
+        "label": "Radiograph-occult nondisplaced scaphoid waist fracture",
+        "feedback": "Snuffbox tenderness with MRI fracture line confirms.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Snuffbox tenderness with MRI fracture line confirms."
+      },
+      {
+        "label": "Thumb ulnar collateral ligament tear",
+        "feedback": "No MCP instability or relevant mechanism.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no MCP instability or relevant mechanism."
+      },
+      {
+        "label": "Trapezium fracture",
+        "feedback": "MRI localizes injury to scaphoid.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but mRI localizes injury to scaphoid."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-003-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Ignore anatomical snuffbox tenderness",
+        "requires": [],
+        "teaching_point": "Key clinical red flag for scaphoid injury.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Key clinical red flag for scaphoid injury.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discuss management with fracture/hand team and arrange appropriate below-elbow immobilization",
+        "requires": [
+          "T02",
+          "T05"
+        ],
+        "teaching_point": "Stable nondisplaced waist fractures are often managed conservatively with close review.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Stable nondisplaced waist fractures are often managed conservatively with close review.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Discharge as wrist sprain solely because first X-ray is negative",
+        "requires": [],
+        "teaching_point": "Initial scaphoid films can miss fractures.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Initial scaphoid films can miss fractures.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Arrange early MRI because suspicion remains high after negative radiographs",
+        "requires": [
+          "T03"
+        ],
+        "teaching_point": "NICE recommends considering MRI for clinically suspected scaphoid fracture.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. NICE recommends considering MRI for clinically suspected scaphoid fracture.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Provide no immobilization while imaging is pending",
+        "requires": [],
+        "teaching_point": "Protect a clinically suspected fracture.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T17",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Protect a clinically suspected fracture.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Provide pain relief and immobilize the wrist in a supportive scaphoid-appropriate splint",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Protect the suspected fracture while workup continues.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Protect the suspected fracture while workup continues.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Interpret MRI confirming nondisplaced waist fracture and assess stability",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Confirm site/displacement and future nonunion risk.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [
+          "I02"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Confirm site/displacement and future nonunion risk.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Review initial wrist/scaphoid radiographs and recognize that negative views do not exclude fracture",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Do not falsely reassure with negative radiographs.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Do not falsely reassure with negative radiographs.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Arrange specialist fracture clinic review to assess healing and safe return to activity",
+        "requires": [
+          "T07"
+        ],
+        "teaching_point": "Scaphoid union must be assessed before contact sport.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Scaphoid union must be assessed before contact sport.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Schedule routine bone scan instead of early MRI",
+        "requires": [],
+        "teaching_point": "MRI is preferred where available.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: MRI is preferred where available.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Explain immobilization adherence, smoking avoidance if relevant and nonunion/AVN warning signs",
+        "requires": [
+          "T06"
+        ],
+        "teaching_point": "Healing is vulnerable to premature loading and missed follow-up.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Healing is vulnerable to premature loading and missed follow-up.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Plan graded wrist mobility/strength once clinician confirms sufficient healing",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Avoid premature loading while supporting later function.",
+        "kind": "required",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Avoid premature loading while supporting later function.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Document skin, nerve function, pulses and exact snuffbox/scaphoid tenderness",
+        "requires": [],
+        "teaching_point": "Focused suspicion comes from mechanism plus examination.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Focused suspicion comes from mechanism plus examination.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Order prophylactic antibiotics for closed scaphoid fracture",
+        "requires": [],
+        "teaching_point": "Not indicated.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T18",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Not indicated.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Perform vigorous painful wrist mobilization before confirming healing",
+        "requires": [],
+        "teaching_point": "Can aggravate the fracture.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Can aggravate the fracture.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Order contrast-enhanced MRI instead of standard MRI",
+        "requires": [],
+        "teaching_point": "IV contrast not routinely necessary.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: IV contrast not routinely necessary.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Start full-contact football this weekend",
+        "requires": [],
+        "teaching_point": "Premature loading risks nonunion.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Premature loading risks nonunion.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Use wrist radiographs alone as definitive exclusion of fracture",
+        "requires": [],
+        "teaching_point": "Normal films do not eliminate occult fracture.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Normal films do not eliminate occult fracture.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09"
+    ],
+    "required_investigation_ids": [
+      "I01",
+      "I02"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Daniel needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Daniel! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Negative initial scaphoid films do not rule out fracture.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Where is the focal tenderness despite a normal radiograph?",
+      "differentiating_clue": "Snuffbox tenderness after FOOSH should remain suspicious for occult scaphoid injury.",
+      "clinical_coaching": "Protect wrist, review initial radiographs, then arrange early MRI. MRI confirms a nondisplaced scaphoid waist fracture.",
+      "critical_red_flags": [
+        "Increasing pain, impaired sensation or circulation",
+        "Missed scaphoid fracture risking nonunion/AVN"
+      ],
+      "key_teaching_points": [
+        "Negative initial scaphoid films do not rule out fracture.",
+        "Early MRI can confirm occult injury.",
+        "Immobilize while suspicion persists.",
+        "Nonunion and avascular necrosis are key concerns, particularly with proximal injuries."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-003-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Wrist extended during FOOSH with axial loading.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-003|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-003-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Warm hand, normal radial pulse, refill <2 seconds. Intact sensation and intrinsic hand motor function. Red flag: Increasing pain, impaired sensation or circulation.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-003|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-003-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Right wrist PA, lateral, oblique and dedicated scaphoid radiographs. Where is the focal tenderness despite a normal radiograph?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-003|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-003-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Snuffbox tenderness after FOOSH should remain suspicious for occult scaphoid injury.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-003|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-003-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Protect wrist, review initial radiographs, then arrange early MRI. MRI confirms a nondisplaced scaphoid waist fracture.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-003|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "Can a normal initial wrist X-ray exclude scaphoid fracture?",
+        "options": [
+          {
+            "text": "No",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Only in adults",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Yes, always",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Only after 24 hours",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Scaphoid fracture can be radiographically occult.",
+        "id": "Q01",
+        "correct_option_id": "Q01O01"
+      },
+      {
+        "question": "What is an appropriate next study for persistent clinical suspicion?",
+        "options": [
+          {
+            "text": "Bone density scan",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Routine contrast-enhanced CT angiogram",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Early MRI without contrast",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Electromyography",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "NICE supports MRI in clinically suspected scaphoid fracture.",
+        "id": "Q02",
+        "correct_option_id": "Q02O03"
+      },
+      {
+        "question": "Why protect the wrist while awaiting definitive imaging?",
+        "options": [
+          {
+            "text": "Treat infection",
+            "id": "Q03O01"
+          },
+          {
+            "text": "Prevent displacement and delayed union",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Reduce blood pressure",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Improve wrist strength immediately",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "Missed scaphoid injuries can fail to unite.",
+        "id": "Q03",
+        "correct_option_id": "Q03O02"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Avoid missing an occult scaphoid fracture and select staged imaging and immobilization based on findings.",
+    "key_takeaways": [
+      "Negative initial scaphoid films do not rule out fracture.",
+      "Early MRI can confirm occult injury.",
+      "Immobilize while suspicion persists.",
+      "Nonunion and avascular necrosis are key concerns, particularly with proximal injuries."
+    ],
+    "watch_for": [
+      "Increasing pain, impaired sensation or circulation",
+      "Missed scaphoid fracture risking nonunion/AVN"
+    ],
+    "followup_relevance": "Return safely to sport without losing wrist motion"
+  },
+  "references": [
+    {
+      "key": "NICE",
+      "organization": "NICE",
+      "title": "NG38: Fractures (non-complex): assessment and management",
+      "url": "https://www.nice.org.uk/guidance/ng38/chapter/recommendations",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "ACR",
+      "organization": "ACR",
+      "title": "Appropriateness Criteria: Acute Hand and Wrist Trauma",
+      "url": "https://acsearch.acr.org/docs/69418/Narrative/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "AAOS_SC",
+      "organization": "AAOS OrthoInfo",
+      "title": "Scaphoid Fracture of the Wrist",
+      "url": "https://orthoinfo.aaos.org/en/diseases--conditions/scaphoid-fracture-of-the-wrist/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_003.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}

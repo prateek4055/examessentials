@@ -1,0 +1,1282 @@
+{
+  "case_id": "MED-ORT-L1-009",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Displaced Gartland type III extension supracondylar humerus fracture",
+  "primary_diagnosis_registry_key": "ORT-L1-009",
+  "language": "en",
+  "display": {
+    "title": "The Child With a Swollen Elbow",
+    "subtitle": "The priority is circulation, nerves and urgent specialist stabilization.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_009.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 43
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Oliver Bennett",
+    "age_years": 6,
+    "sex": "Male",
+    "hand_dominance": "Right",
+    "occupation": "Primary school student",
+    "setting": "Pediatric emergency department",
+    "presenting_event": "Fell from climbing frame onto an outstretched left hand 35 minutes ago.",
+    "history": {
+      "chief_complaint": "Severe swollen left elbow and inability to bend it, pain 9/10.",
+      "mechanism": "Elbow hyperextension during a fall from play structure.",
+      "positive": [
+        "Rapid elbow swelling",
+        "Marked deformity",
+        "Distress and guarding"
+      ],
+      "negative": [
+        "No open wound",
+        "No head injury reported",
+        "No reported preinjury nerve symptoms"
+      ],
+      "medical": [
+        "Generally healthy"
+      ],
+      "medications": [
+        "None"
+      ],
+      "allergies": "No known allergies",
+      "goal": "Pain relief and safe return to normal play"
+    },
+    "vitals": {
+      "pulse_bpm": 114,
+      "bp_mmHg": "108/66",
+      "rr_per_min": 22,
+      "spo2_percent": 99,
+      "temperature_C": 36.8,
+      "pain_0_10": 9
+    },
+    "physical_examination": {
+      "inspection": [
+        "Marked elbow swelling and deformity",
+        "Anterior elbow bruising without open skin"
+      ],
+      "palpation": [
+        "Severe distal humerus tenderness",
+        "Compartments currently soft"
+      ],
+      "movement": [
+        "Elbow movement not forced",
+        "Child able to flex thumb IP and index DIP, extend thumb and spread fingers"
+      ],
+      "neurovascular": [
+        "Warm pink hand, radial pulse palpable, refill <2 seconds",
+        "AIN, median, radial and ulnar nerve screens intact on documented exam"
+      ],
+      "safety_red_flags": [
+        "Pale or cold hand / absent refill",
+        "Increasing forearm pain or tense compartments",
+        "Median/AIN deficit, open injury or worsening swelling"
+      ]
+    }
+  },
+  "learning_objective": "Recognize displaced pediatric elbow fracture and prioritize perfusion, nerve assessment, safe splinting and urgent orthopedic management.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Pain relief and safe return to normal play. Occupation: Primary school student.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Elbow hyperextension during a fall from play structure.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: Generally healthy. Medicines: None. Allergies: No known allergies.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No open wound; No head injury reported; No reported preinjury nerve symptoms",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No open wound; No head injury reported; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Severe swollen left elbow and inability to bend it, pain 9/10. Rapid elbow swelling.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Pale or cold hand / absent refill",
+          "Increasing forearm pain or tense compartments",
+          "Median/AIN deficit, open injury or worsening swelling"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Elbow movement not forced",
+          "Child able to flex thumb IP and index DIP, extend thumb and spread fingers"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Marked elbow swelling and deformity",
+          "Anterior elbow bruising without open skin"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Warm pink hand, radial pulse palpable, refill <2 seconds",
+          "AIN, median, radial and ulnar nerve screens intact on documented exam"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Severe distal humerus tenderness",
+          "Compartments currently soft"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Marked elbow swelling and deformity",
+          "Anterior elbow bruising without open skin"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Left distal humerus/elbow AP and lateral radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Completely displaced extension-type supracondylar distal humerus fracture",
+            "Anterior humeral line does not intersect capitellum",
+            "Distal fragment posteriorly displaced; no elbow dislocation"
+          ],
+          "impression": "Gartland type III extension supracondylar humerus fracture.",
+          "title": "Left distal humerus/elbow AP and lateral radiographs — Report"
+        },
+        "rationale": "Identify displacement and classify, without delaying urgent management when ischemia is present.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "RCH_SUP",
+          "AO_SUP"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Identify displacement and classify, without delaying urgent management when ischemia is present.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Intraoperative fluoroscopic AP/lateral confirmation",
+        "role": "required_later",
+        "phase": "operative",
+        "report": {
+          "findings": [
+            "Reduction restored coronal and sagittal alignment",
+            "Two lateral percutaneous pins across fracture with proximal cortical engagement"
+          ],
+          "impression": "Stable intraoperative fixation.",
+          "title": "Intraoperative fluoroscopic AP/lateral confirmation — Report"
+        },
+        "rationale": "Confirm specialist reduction/pin placement.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [
+          "T08"
+        ],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "operative",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Confirm specialist reduction/pin placement.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "CT angiography",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Brachial artery patent"
+          ],
+          "impression": "No occlusion.",
+          "title": "CT angiography — Report"
+        },
+        "rationale": "Not indicated for currently warm pulsed hand.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not indicated for currently warm pulsed hand.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Arterial Doppler",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Radial and ulnar flow present"
+          ],
+          "impression": "Preserved distal arterial flow.",
+          "title": "Arterial Doppler — Report"
+        },
+        "rationale": "Not necessary when hand well perfused and pulse palpable; never delay ischemic limb management.",
+        "incorrect_order_penalty": 4,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Not necessary when hand well perfused and pulse palpable; never delay ischemic limb management.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left wrist radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No associated distal radius or ulna fracture"
+          ],
+          "impression": "No wrist fracture.",
+          "title": "Left wrist radiographs — Report"
+        },
+        "rationale": "Only if wrist tenderness/associated injury suspected.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Only if wrist tenderness/associated injury suspected.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Coagulation test",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "INR 1.0"
+          ],
+          "impression": "Normal.",
+          "title": "Coagulation test — Report"
+        },
+        "rationale": "Only if surgical team indicates.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Only if surgical team indicates.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC preoperative assessment",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hb 12.1 g/dL",
+            "WBC 10.4 x10^9/L",
+            "Platelets 260 x10^9/L"
+          ],
+          "impression": "No concerning blood abnormality.",
+          "title": "CBC preoperative assessment — Report"
+        },
+        "rationale": "Depending on anesthesia pathway/local protocol.",
+        "incorrect_order_penalty": 1,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Depending on anesthesia pathway/local protocol.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left forearm radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No additional radius or ulna fracture"
+          ],
+          "impression": "No forearm fracture.",
+          "title": "Left forearm radiographs — Report"
+        },
+        "rationale": "Consider when forearm swelling or tenderness suggests floating elbow.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Consider when forearm swelling or tenderness suggests floating elbow.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Routine DEXA",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Age-adjusted bone density within expected limits"
+          ],
+          "impression": "No metabolic bone disease.",
+          "title": "Routine DEXA — Report"
+        },
+        "rationale": "Single traumatic injury does not mandate DXA.",
+        "incorrect_order_penalty": 8,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I13",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Single traumatic injury does not mandate DXA.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Elbow CT",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Displaced extra-articular supracondylar fracture"
+          ],
+          "impression": "Known displaced fracture.",
+          "title": "Elbow CT — Report"
+        },
+        "rationale": "Radiographs usually suffice; delay/radiation unnecessary.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Radiographs usually suffice; delay/radiation unnecessary.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Basic metabolic profile preoperative",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Na 139 mmol/L",
+            "K 4.0 mmol/L",
+            "Creatinine 0.4 mg/dL"
+          ],
+          "impression": "No relevant biochemical abnormality.",
+          "title": "Basic metabolic profile preoperative — Report"
+        },
+        "rationale": "Conditional on perioperative pathway.",
+        "incorrect_order_penalty": 1,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Conditional on perioperative pathway.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Postoperative distal humerus radiographs",
+        "role": "required_later",
+        "phase": "postoperative",
+        "report": {
+          "findings": [
+            "Stable reduction and intact pins",
+            "No new displacement"
+          ],
+          "impression": "Stable postoperative alignment.",
+          "title": "Postoperative distal humerus radiographs — Report"
+        },
+        "rationale": "Verify operative results according to unit protocol.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [
+          "T09"
+        ],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "postoperative",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Verify operative results according to unit protocol.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Elbow MRI",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Marked fracture edema and swelling"
+          ],
+          "impression": "Known supracondylar injury.",
+          "title": "Elbow MRI — Report"
+        },
+        "rationale": "Does not guide immediate management.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Does not guide immediate management.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [
+      "I11",
+      "I12"
+    ],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Distal radius fracture",
+        "feedback": "No distal forearm focus.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no distal forearm focus."
+      },
+      {
+        "label": "Displaced Gartland type III supracondylar humerus fracture",
+        "feedback": "Complete displacement of extension-type pediatric distal humerus.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Complete displacement of extension-type pediatric distal humerus."
+      },
+      {
+        "label": "Posterior elbow dislocation",
+        "feedback": "Radiocapitellar/ulnohumeral relationship not a primary dislocation.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but radiocapitellar/ulnohumeral relationship not a primary dislocation."
+      },
+      {
+        "label": "Septic elbow arthritis",
+        "feedback": "Acute injury with displaced fracture, no fever.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but acute injury with displaced fracture, no fever."
+      },
+      {
+        "label": "Medial epicondyle avulsion",
+        "feedback": "No isolated epicondylar fragment.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no isolated epicondylar fragment."
+      },
+      {
+        "label": "Olecranon fracture",
+        "feedback": "Olecranon intact.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but olecranon intact."
+      },
+      {
+        "label": "Lateral condyle fracture",
+        "feedback": "Fracture line traverses supracondylar metaphysis, not isolated lateral condyle.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but fracture line traverses supracondylar metaphysis, not isolated lateral condyle."
+      },
+      {
+        "label": "Gartland type I supracondylar fracture",
+        "feedback": "Type I is undisplaced.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but type I is undisplaced."
+      },
+      {
+        "label": "Radial neck fracture",
+        "feedback": "Distal humeral metaphysis is injured.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but distal humeral metaphysis is injured."
+      },
+      {
+        "label": "Gartland type II supracondylar fracture",
+        "feedback": "Type III shows complete displacement/loss of cortical contact.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but type III shows complete displacement/loss of cortical contact."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-009-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Delay urgent ischemic-limb care to obtain MRI",
+        "requires": [],
+        "teaching_point": "Ischemia needs immediate action.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Ischemia needs immediate action.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Review distal humerus AP/lateral radiographs and identify Gartland III displacement",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "The displaced pattern needs orthopedic involvement.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. The displaced pattern needs orthopedic involvement.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Explain and consent for surgeon-led reduction and percutaneous fixation under anesthesia",
+        "requires": [
+          "T05",
+          "T06"
+        ],
+        "teaching_point": "Definitive reduction and pinning belong to trained surgical team.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Definitive reduction and pinning belong to trained surgical team.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Ignore median/AIN motor examination if pulse present",
+        "requires": [],
+        "teaching_point": "Nerve damage can occur with normal perfusion.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Nerve damage can occur with normal perfusion.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Attempt pin fixation without specialist and procedural resources",
+        "requires": [],
+        "teaching_point": "Surgical procedure is not an intern task.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T17",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Surgical procedure is not an intern task.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Observe for swelling, compartment syndrome, pulse changes and escalating pain postoperatively",
+        "requires": [
+          "T09"
+        ],
+        "teaching_point": "Continuous monitoring detects urgent complications.",
+        "kind": "required",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Continuous monitoring detects urgent complications.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Schedule elective review in three months as only treatment",
+        "requires": [],
+        "teaching_point": "Inadequate for displaced injury.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T18",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Inadequate for displaced injury.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Assess ABCs and document skin, radial pulse, hand perfusion, AIN/median/radial/ulnar nerve status and compartments",
+        "requires": [],
+        "teaching_point": "Initial full neurovascular status is time-critical.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Initial full neurovascular status is time-critical.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Order CT instead of necessary plain films and referral",
+        "requires": [],
+        "teaching_point": "Unnecessary delay.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T19",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Unnecessary delay.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Give caregiver cast/pin care, return precautions and follow-up for pin removal and motion",
+        "requires": [
+          "T10"
+        ],
+        "teaching_point": "Structured follow-up supports healing and recognizes complications.",
+        "kind": "required",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Structured follow-up supports healing and recognizes complications.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Immobilize in a well-padded above-elbow backslab in a safe low-flexion position while displaced",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Avoid excessive elbow flexion before reduction, which can worsen vascular compromise.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Avoid excessive elbow flexion before reduction, which can worsen vascular compromise.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Keep child appropriately fasted for likely procedure and coordinate pediatric anesthesia assessment",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Prepare for safe operative intervention according to team instructions.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Prepare for safe operative intervention according to team instructions.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Forcefully flex swollen displaced elbow beyond 120 degrees before reduction",
+        "requires": [],
+        "teaching_point": "Could worsen vascular compromise and swelling.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Could worsen vascular compromise and swelling.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Arrange orthopedic-led closed reduction and percutaneous pin fixation with image guidance",
+        "requires": [
+          "T07"
+        ],
+        "teaching_point": "Displaced Gartland III generally warrants specialist operative stabilization.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Displaced Gartland III generally warrants specialist operative stabilization.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Give appropriate pediatric analgesia and calmly explain plan to caregiver",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Comfort and cooperation are central to safe assessment.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Comfort and cooperation are central to safe assessment.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Encourage active resisted elbow exercise before fracture fixation",
+        "requires": [],
+        "teaching_point": "Unsafe in unstable displaced injury.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T20",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Unsafe in unstable displaced injury.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discharge in sling alone despite complete displacement",
+        "requires": [],
+        "teaching_point": "Requires urgent specialist management.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Requires urgent specialist management.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Check intraoperative alignment/pin position and document post-fixation neurovascular status",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Stability and circulation are re-evaluated after fixation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [
+          "I11"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Stability and circulation are re-evaluated after fixation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Use a tight circumferential cast over rapidly swelling elbow",
+        "requires": [],
+        "teaching_point": "Risks neurovascular compromise.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Risks neurovascular compromise.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Urgently contact pediatric orthopedic team and monitor perfusion continuously",
+        "requires": [
+          "T03",
+          "T04"
+        ],
+        "teaching_point": "Specialist evaluation is essential; ischemia changes timing to emergency.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Specialist evaluation is essential; ischemia changes timing to emergency.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10",
+      "T11"
+    ],
+    "required_investigation_ids": [
+      "I01",
+      "I11",
+      "I12"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Oliver needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Oliver! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Examine radial pulse, refill and all peripheral nerve functions; a warm pulsed hand is still monitored.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Which area is fractured, and what is the hand perfusion status?",
+      "differentiating_clue": "The distal humerus is completely displaced; type III injuries carry neurovascular risk.",
+      "clinical_coaching": "Gartland III: check pulse/capillary refill/AIN and other nerves, safe low-flexion temporary splint, urgent pediatric orthopedic review and specialist reduction/pinning.",
+      "critical_red_flags": [
+        "Pale or cold hand / absent refill",
+        "Increasing forearm pain or tense compartments",
+        "Median/AIN deficit, open injury or worsening swelling"
+      ],
+      "key_teaching_points": [
+        "Examine radial pulse, refill and all peripheral nerve functions; a warm pulsed hand is still monitored.",
+        "Gartland III is a fully displaced extension supracondylar fracture.",
+        "Avoid flexing a swollen displaced elbow tightly before reduction.",
+        "Definitive reduction and percutaneous fixation is specialist care; ischemia triggers emergency escalation."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-009-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Elbow hyperextension during a fall from play structure.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-009|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-009-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Warm pink hand, radial pulse palpable, refill <2 seconds. AIN, median, radial and ulnar nerve screens intact on documented exam. Red flag: Pale or cold hand / absent refill.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-009|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-009-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Left distal humerus/elbow AP and lateral radiographs. Which area is fractured, and what is the hand perfusion status?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-009|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-009-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "The distal humerus is completely displaced; type III injuries carry neurovascular risk.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-009|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-009-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Gartland III: check pulse/capillary refill/AIN and other nerves, safe low-flexion temporary splint, urgent pediatric orthopedic review and specialist reduction/pinning.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-009|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "What defines Gartland type III?",
+        "options": [
+          {
+            "text": "Complete displacement of extension supracondylar fracture",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Medial epicondyle overuse",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Undisplaced distal humerus crack",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Isolated radial head fissure",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Gartland III has complete displacement.",
+        "id": "Q01",
+        "correct_option_id": "Q01O01"
+      },
+      {
+        "question": "Which exam is essential at presentation?",
+        "options": [
+          {
+            "text": "Only oxygen saturation",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Only shoulder strength",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Pulse, perfusion and AIN/median/radial/ulnar nerve status",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Bone density",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "Neurovascular complications are high priority.",
+        "id": "Q02",
+        "correct_option_id": "Q02O03"
+      },
+      {
+        "question": "How should a displaced markedly swollen elbow be temporarily splinted?",
+        "options": [
+          {
+            "text": "Safe low-flexion position",
+            "id": "Q03O01"
+          },
+          {
+            "text": "Tight full cast at 150 degrees",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Forced maximum flexion",
+            "id": "Q03O03"
+          },
+          {
+            "text": "No support at all",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "Avoid worsening perfusion by tight flexion.",
+        "id": "Q03",
+        "correct_option_id": "Q03O01"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Recognize displaced pediatric elbow fracture and prioritize perfusion, nerve assessment, safe splinting and urgent orthopedic management.",
+    "key_takeaways": [
+      "Examine radial pulse, refill and all peripheral nerve functions; a warm pulsed hand is still monitored.",
+      "Gartland III is a fully displaced extension supracondylar fracture.",
+      "Avoid flexing a swollen displaced elbow tightly before reduction.",
+      "Definitive reduction and percutaneous fixation is specialist care; ischemia triggers emergency escalation."
+    ],
+    "watch_for": [
+      "Pale or cold hand / absent refill",
+      "Increasing forearm pain or tense compartments",
+      "Median/AIN deficit, open injury or worsening swelling"
+    ],
+    "followup_relevance": "Pain relief and safe return to normal play"
+  },
+  "references": [
+    {
+      "key": "RCH_SUP",
+      "organization": "Royal Children’s Hospital Melbourne",
+      "title": "Supracondylar fracture of the humerus—ED",
+      "url": "https://www.rch.org.au/clinicalguide/guideline_index/fractures/supracondylar_fracture_of_the_humerus_emergency_department/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "AO_SUP",
+      "organization": "AO Alliance",
+      "title": "Management of Supracondylar Humeral Fractures in Children (2024)",
+      "url": "https://ao-alliance.org/wp-content/uploads/2024/12/clinical-guidelines_supracondylar-humeral-fractures-children_2024.pdf",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_009.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}

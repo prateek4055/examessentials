@@ -1,0 +1,1185 @@
+{
+  "case_id": "MED-ORT-L1-004",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Isolated pediatric distal radius torus (buckle) fracture",
+  "primary_diagnosis_registry_key": "ORT-L1-004",
+  "language": "en",
+  "display": {
+    "title": "A Small Fall, a Stable Wrist",
+    "subtitle": "Eight-year-old, sore wrist—and a treatment plan built around doing less.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_004.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 38
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Maya Sharma",
+    "age_years": 8,
+    "sex": "Female",
+    "hand_dominance": "Right",
+    "occupation": "School student",
+    "setting": "Pediatric emergency department",
+    "presenting_event": "Tripped while running at school and landed on her outstretched left hand.",
+    "history": {
+      "chief_complaint": "Left wrist pain 4/10 and mild swelling for 3 hours.",
+      "mechanism": "Low-height fall onto hand; no high-energy trauma.",
+      "positive": [
+        "Tender distal radial wrist",
+        "Using fingers normally",
+        "Child calm with caregiver"
+      ],
+      "negative": [
+        "No visible deformity",
+        "No skin break, numbness or elbow pain",
+        "No prior fracture or safeguarding concerns elicited"
+      ],
+      "medical": [
+        "Otherwise well"
+      ],
+      "medications": [
+        "None"
+      ],
+      "allergies": "No known allergies",
+      "goal": "Comfortably return to classroom and play"
+    },
+    "vitals": {
+      "pulse_bpm": 96,
+      "bp_mmHg": "102/64",
+      "rr_per_min": 20,
+      "spo2_percent": 99,
+      "temperature_C": 36.7,
+      "pain_0_10": 4
+    },
+    "physical_examination": {
+      "inspection": [
+        "Mild distal forearm swelling, no angulation or wound"
+      ],
+      "palpation": [
+        "Distal radial metaphyseal tenderness",
+        "No growth-plate focal tenderness, snuffbox pain or elbow pain"
+      ],
+      "movement": [
+        "Gentle finger, elbow and shoulder motion intact",
+        "Wrist rotation guarded due to pain"
+      ],
+      "neurovascular": [
+        "Warm digits, refill <2 s",
+        "Normal finger sensory and motor screening"
+      ],
+      "safety_red_flags": [
+        "Disproportionate pain, deformity or loss of finger movement",
+        "Suspected growth-plate involvement or complete cortical disruption"
+      ]
+    }
+  },
+  "learning_objective": "Identify true buckle fracture, avoid overtreatment, and counsel caregiver on removable splint and recovery.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Low-height fall onto hand; no high-energy trauma.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Left wrist pain 4/10 and mild swelling for 3 hours. Tender distal radial wrist.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Comfortably return to classroom and play. Occupation: School student.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: Otherwise well. Medicines: None. Allergies: No known allergies.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No visible deformity; No skin break, numbness or elbow pain; No prior fracture or safeguarding concerns elicited",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No visible deformity; No skin break, numbness or elbow pain; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Disproportionate pain, deformity or loss of finger movement",
+          "Suspected growth-plate involvement or complete cortical disruption"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Warm digits, refill <2 s",
+          "Normal finger sensory and motor screening"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Gentle finger, elbow and shoulder motion intact",
+          "Wrist rotation guarded due to pain"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Mild distal forearm swelling, no angulation or wound"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Mild distal forearm swelling, no angulation or wound"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Distal radial metaphyseal tenderness",
+          "No growth-plate focal tenderness, snuffbox pain or elbow pain"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Left elbow AP/lateral radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No elbow fracture or joint effusion"
+          ],
+          "impression": "Normal elbow.",
+          "title": "Left elbow AP/lateral radiographs — Report"
+        },
+        "rationale": "No elbow findings.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No elbow findings.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hemoglobin 12.3 g/dL",
+            "WBC 7.9 x10^9/L"
+          ],
+          "impression": "No blood abnormality.",
+          "title": "CBC — Report"
+        },
+        "rationale": "Not required for isolated stable injury.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not required for isolated stable injury.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "ESR/CRP",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "CRP 1 mg/L",
+            "ESR 5 mm/h"
+          ],
+          "impression": "No inflammation.",
+          "title": "ESR/CRP — Report"
+        },
+        "rationale": "No infectious/systemic features.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No infectious/systemic features.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT left wrist",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Mild cortical buckling without complete fracture"
+          ],
+          "impression": "Torus fracture.",
+          "title": "CT left wrist — Report"
+        },
+        "rationale": "Radiation without management benefit.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Radiation without management benefit.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Vitamin D assay",
+        "role": "conditional_later",
+        "phase": "secondary_prevention",
+        "report": {
+          "findings": [
+            "25-OH vitamin D 30 ng/mL"
+          ],
+          "impression": "No deficiency in this scenario.",
+          "title": "Vitamin D assay — Report"
+        },
+        "rationale": "Only evaluate with separate clinical indications such as recurrent fragility fractures.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "secondary_prevention",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Only evaluate with separate clinical indications such as recurrent fragility fractures.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Bone scan",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Focal distal radial uptake"
+          ],
+          "impression": "Acute bone injury.",
+          "title": "Bone scan — Report"
+        },
+        "rationale": "Not useful for radiographically evident torus fracture.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not useful for radiographically evident torus fracture.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Ultrasound left wrist",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Minimal periosteal swelling"
+          ],
+          "impression": "Nonspecific soft tissue swelling.",
+          "title": "Ultrasound left wrist — Report"
+        },
+        "rationale": "No need when plain films establish diagnosis.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No need when plain films establish diagnosis.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI left wrist",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Focal metaphyseal marrow edema and mild cortical buckling"
+          ],
+          "impression": "Stable distal radius torus fracture.",
+          "title": "MRI left wrist — Report"
+        },
+        "rationale": "Not indicated for clear buckle pattern.",
+        "incorrect_order_penalty": 11,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not indicated for clear buckle pattern.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Opposite wrist comparison radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Normal distal radius and ulna"
+          ],
+          "impression": "Normal right wrist.",
+          "title": "Opposite wrist comparison radiographs — Report"
+        },
+        "rationale": "No clinical benefit.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No clinical benefit.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Repeat routine wrist X-ray at day 7",
+        "role": "unnecessary_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "Unchanged subtle cortical buckle"
+          ],
+          "impression": "Stable torus fracture.",
+          "title": "Repeat routine wrist X-ray at day 7 — Report"
+        },
+        "rationale": "Routine follow-up X-rays are not needed for uncomplicated torus injury.",
+        "incorrect_order_penalty": 8,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Routine follow-up X-rays are not needed for uncomplicated torus injury.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left wrist AP and lateral radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Subtle dorsal cortical buckling at distal radial metaphysis",
+            "Both cortices remain intact; no transverse fracture line through opposite cortex",
+            "No significant angulation or growth-plate extension"
+          ],
+          "impression": "Stable isolated distal radial metaphyseal torus fracture.",
+          "title": "Left wrist AP and lateral radiographs — Report"
+        },
+        "rationale": "Check both cortices to avoid mislabeling greenstick fracture.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "RCH_TOR"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Check both cortices to avoid mislabeling greenstick fracture.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Dedicated left forearm radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Distal radial buckle deformity",
+            "No shaft fracture"
+          ],
+          "impression": "No additional forearm injury.",
+          "title": "Dedicated left forearm radiographs — Report"
+        },
+        "rationale": "Only if proximal tenderness.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Only if proximal tenderness.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Wrist sprain only",
+        "feedback": "Cortical buckle is a bony injury.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but cortical buckle is a bony injury."
+      },
+      {
+        "label": "Juvenile distal radius osteomyelitis",
+        "feedback": "Acute fall and characteristic radiograph, no infection features.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but acute fall and characteristic radiograph, no infection features."
+      },
+      {
+        "label": "Lunate dislocation",
+        "feedback": "Carpal alignment is normal.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but carpal alignment is normal."
+      },
+      {
+        "label": "Salter-Harris type II distal radius fracture",
+        "feedback": "No physeal extension or Thurston-Holland fragment.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no physeal extension or Thurston-Holland fragment."
+      },
+      {
+        "label": "Isolated distal radius buckle (torus) fracture",
+        "feedback": "Intact opposing cortices and cortical compression without displacement.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Intact opposing cortices and cortical compression without displacement."
+      },
+      {
+        "label": "Greenstick fracture of distal radius",
+        "feedback": "Opposite cortex is intact without a break and notable angulation.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but opposite cortex is intact without a break and notable angulation."
+      },
+      {
+        "label": "Scaphoid fracture",
+        "feedback": "Pain localizes to distal radius, not snuffbox.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but pain localizes to distal radius, not snuffbox."
+      },
+      {
+        "label": "Distal ulnar greenstick fracture",
+        "feedback": "Ulna has no cortical disruption.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but ulna has no cortical disruption."
+      },
+      {
+        "label": "Complete displaced metaphyseal fracture",
+        "feedback": "No full-thickness fracture line or displacement.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no full-thickness fracture line or displacement."
+      },
+      {
+        "label": "Galeazzi fracture-dislocation",
+        "feedback": "No shaft fracture or DRUJ disruption.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no shaft fracture or DRUJ disruption."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-004-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Schedule weekly radiographs irrespective of symptoms",
+        "requires": [],
+        "teaching_point": "Unnecessary imaging and visits.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Unnecessary imaging and visits.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Allow competitive contact sports tomorrow",
+        "requires": [],
+        "teaching_point": "Avoid high-risk play until comfortable and healed.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Avoid high-risk play until comfortable and healed.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Explain stable buckle mechanism and no need for manipulation",
+        "requires": [
+          "T03"
+        ],
+        "teaching_point": "A torus fracture should not undergo reduction.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. A torus fracture should not undergo reduction.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Provide appropriate weight-based analgesia and caregiver reassurance",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Comfort and reassurance are important.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Comfort and reassurance are important.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Complete age-appropriate history and examine skin, tenderness and distal nerve/perfusion status",
+        "requires": [],
+        "teaching_point": "Confirm isolated uncomplicated stable injury.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Confirm isolated uncomplicated stable injury.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Explain removal around three weeks and gradual normal hand activity as comfortable",
+        "requires": [
+          "T06"
+        ],
+        "teaching_point": "Self-managed recovery with temporary avoidance of collision sports.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Self-managed recovery with temporary avoidance of collision sports.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Attempt reduction under sedation",
+        "requires": [],
+        "teaching_point": "A torus fracture is stable and not displaced.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: A torus fracture is stable and not displaced.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Fit a removable wrist splint/backslab for about three weeks",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Removable support is usually sufficient; no rigid cast needed.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Removable support is usually sufficient; no rigid cast needed.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Apply a rigid cast as the mandatory first choice",
+        "requires": [],
+        "teaching_point": "NICE discourages rigid cast for distal radius torus injury.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: NICE discourages rigid cast for distal radius torus injury.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discharge without routine fracture-clinic visit or repeat X-ray if uncomplicated",
+        "requires": [
+          "T07"
+        ],
+        "teaching_point": "Routine repeat evaluation usually unnecessary for a true torus fracture.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Routine repeat evaluation usually unnecessary for a true torus fracture.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Skip evaluating both radiographic cortices",
+        "requires": [],
+        "teaching_point": "Greenstick or complete fracture may be mislabeled.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Greenstick or complete fracture may be mislabeled.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Order routine CT wrist before splinting",
+        "requires": [],
+        "teaching_point": "Unnecessary radiation and delay.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Unnecessary radiation and delay.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Review AP/lateral films and verify both cortices intact without physeal extension",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Misclassification leads to undertreatment of a complete fracture.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Misclassification leads to undertreatment of a complete fracture.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Tell parents to immobilize for 12 weeks",
+        "requires": [],
+        "teaching_point": "Excessive restriction for stable buckle fracture.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Excessive restriction for stable buckle fracture.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Give written caregiver instructions, pain-control advice and red-flag return precautions",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Family must know what to expect and when to return.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Family must know what to expect and when to return.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Admit for urgent orthopedic fixation",
+        "requires": [],
+        "teaching_point": "No operative indication.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: No operative indication.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08"
+    ],
+    "required_investigation_ids": [
+      "I01"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Maya needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Maya! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Both cortices must remain intact to classify an isolated torus fracture.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Look carefully at whether one or both cortices are broken.",
+      "differentiating_clue": "There is dorsal buckling without a complete fracture line or significant angulation.",
+      "clinical_coaching": "This is a stable torus fracture: simple analgesia, removable splint for about three weeks and no routine repeat X-ray or follow-up if uncomplicated.",
+      "critical_red_flags": [
+        "Disproportionate pain, deformity or loss of finger movement",
+        "Suspected growth-plate involvement or complete cortical disruption"
+      ],
+      "key_teaching_points": [
+        "Both cortices must remain intact to classify an isolated torus fracture.",
+        "Removable splint/backslab is appropriate; no reduction.",
+        "No routine follow-up X-ray or fracture-clinic appointment is usually required.",
+        "Provide caregiver instructions and clear return precautions."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-004-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Low-height fall onto hand; no high-energy trauma.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-004|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-004-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Warm digits, refill <2 s. Normal finger sensory and motor screening. Red flag: Disproportionate pain, deformity or loss of finger movement.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-004|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-004-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Left wrist AP and lateral radiographs. Look carefully at whether one or both cortices are broken.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-004|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-004-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "There is dorsal buckling without a complete fracture line or significant angulation.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-004|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-004-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "This is a stable torus fracture: simple analgesia, removable splint for about three weeks and no routine repeat X-ray or follow-up if uncomplicated.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-004|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "What defines a true torus fracture?",
+        "options": [
+          {
+            "text": "Cortical buckling with intact opposing cortex",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Growth-plate separation",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Carpal dislocation",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Displaced complete fracture",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Torus is a compression injury.",
+        "id": "Q01",
+        "correct_option_id": "Q01O01"
+      },
+      {
+        "question": "Preferred support for uncomplicated distal radius torus fracture?",
+        "options": [
+          {
+            "text": "No pain relief permitted",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Urgent internal fixation",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Removable wrist splint",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Mandatory 8-week rigid cast",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "NICE advises avoiding rigid casting.",
+        "id": "Q02",
+        "correct_option_id": "Q02O03"
+      },
+      {
+        "question": "Routine fracture clinic review is usually necessary?",
+        "options": [
+          {
+            "text": "Yes, every week for six weeks",
+            "id": "Q03O01"
+          },
+          {
+            "text": "No",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Yes, at 48 hours for every child",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Only if bone scan is positive",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "RCH and NICE support discharge after first assessment with instructions.",
+        "id": "Q03",
+        "correct_option_id": "Q03O02"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Identify true buckle fracture, avoid overtreatment, and counsel caregiver on removable splint and recovery.",
+    "key_takeaways": [
+      "Both cortices must remain intact to classify an isolated torus fracture.",
+      "Removable splint/backslab is appropriate; no reduction.",
+      "No routine follow-up X-ray or fracture-clinic appointment is usually required.",
+      "Provide caregiver instructions and clear return precautions."
+    ],
+    "watch_for": [
+      "Disproportionate pain, deformity or loss of finger movement",
+      "Suspected growth-plate involvement or complete cortical disruption"
+    ],
+    "followup_relevance": "Comfortably return to classroom and play"
+  },
+  "references": [
+    {
+      "key": "NICE",
+      "organization": "NICE",
+      "title": "NG38: Fractures (non-complex): assessment and management",
+      "url": "https://www.nice.org.uk/guidance/ng38/chapter/recommendations",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "RCH_TOR",
+      "organization": "Royal Children’s Hospital Melbourne",
+      "title": "Distal radius and/or ulna metaphyseal fractures—ED",
+      "url": "https://www.rch.org.au/clinicalguide/guideline_index/fractures/distal_radius_and_or_ulna_metaphyseal_fractures_emergency_department_setting/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "RCH_TOR_HOME",
+      "organization": "Royal Children’s Hospital Melbourne",
+      "title": "Fracture care: buckle injury (updated July 2025)",
+      "url": "https://www.rch.org.au/kidsinfo/fact_sheets/Fracture_care_buckle_injury/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_004.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}
