@@ -1,5 +1,5 @@
 import imageMetadata from "../../medortho/data/imageMetadata.json";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import MedWikiLayout from "../components/MedWikiLayout";
 import MedOrthoArticle from "../../medortho/components/MedOrthoArticle"; // This can be made generic too later if needed
@@ -45,6 +45,8 @@ const MedWikiArticlePage: React.FC = () => {
   
   const [article, setArticle] = useState<WikiArticle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [topicStatus, setTopicStatus] = useState({ topic: "", hasContent: false });
+  const handleTopicStatus = useCallback((topic: string, hasContent: boolean) => setTopicStatus({ topic, hasContent }), []);
 
   const isSpecialTestsIndex = pathId?.toLowerCase().replace(/\/$/, "") === "special-tests";
   const isCategoryPage = segments.filter(Boolean).length === 1 && ["shoulder", "knee", "hip", "spine", "elbow", "wrist-hand", "wrist", "ankle-foot", "ankle", "neurological"].includes(segments[0]?.toLowerCase().replace(/\/$/, ""));
@@ -221,7 +223,8 @@ const MedWikiArticlePage: React.FC = () => {
   const cleanPathId = pathId ? pathId.replace(/\/$/, "") : "";
   let pageCanonical = `/${app.slug}${cleanPathId ? `/${cleanPathId}` : ""}`;
   let pageKeywords = `${app.name}, medical education, wiki, special tests`;
-  let pageNoIndex = new URLSearchParams(location.search).has("q");
+  let pageNoIndex = new URLSearchParams(location.search).has("q") ||
+    (!!(isAnatomyPage || isPathologyPage) && (topicStatus.topic !== segments[1] || !topicStatus.hasContent));
   let pageArticleSection: string | undefined = undefined;
   let pageStructuredData: object[] | undefined = undefined;
 
@@ -333,9 +336,9 @@ const MedWikiArticlePage: React.FC = () => {
           isCategoryLocked={true} 
         />
       ) : isAnatomyPage ? (
-        <MedOrthoTopicPage topicType="anatomy" topicName={segments[1]} />
+        <MedOrthoTopicPage onContentStatus={handleTopicStatus} topicType="anatomy" topicName={segments[1]} />
       ) : isPathologyPage ? (
-        <MedOrthoTopicPage topicType="pathologies" topicName={segments[1]} />
+        <MedOrthoTopicPage onContentStatus={handleTopicStatus} topicType="pathologies" topicName={segments[1]} />
       ) : article ? (
         <MedOrthoArticle article={article as any} /> 
       ) : (

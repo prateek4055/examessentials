@@ -38,8 +38,9 @@ const Index = () => {
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://examessentials.in/#website",
       "name": "Exam Essentials",
-      "alternateName": "ExamEssentials Notes",
+      "alternateName": "ExamEssentials",
       "url": "https://examessentials.in",
       "potentialAction": {
         "@type": "SearchAction",

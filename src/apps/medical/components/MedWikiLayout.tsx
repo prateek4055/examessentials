@@ -18,7 +18,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
   useEffect(() => setIsSidebarOpen(false), [pathname]);
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] dark:bg-[#0A0A0F] text-gray-900 dark:text-white flex flex-col font-sans">
+    <div className={`${app.id === "medortho" ? "medortho-type" : ""} min-h-screen bg-[#FDFDFD] dark:bg-[#0A0A0F] text-gray-900 dark:text-white flex flex-col font-sans`}>
       
       <a href="#medical-main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-slate-900">Skip to content</a>
       {/* Mobile Top Header */}
@@ -35,7 +35,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
       </div>
 
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-        <SheetContent side="left" className="w-72 p-0 lg:hidden">
+        <SheetContent side="left" className={`${app.id === "medortho" ? "medortho-type" : ""} w-72 p-0 lg:hidden`}>
           <SheetTitle className="sr-only">{app.name} navigation</SheetTitle>
           <SheetDescription className="sr-only">Browse clinical topics and special tests.</SheetDescription>
           <MedWikiSidebar app={app} className="h-full pt-12" />

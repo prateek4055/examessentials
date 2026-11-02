@@ -1,3 +1,4 @@
+import { postsForTopic } from "../data/topicIndex.js";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +19,7 @@ interface BlogPost {
 interface MedOrthoTopicPageProps {
   topicType: "anatomy" | "pathologies";
   topicName: string;
+  onContentStatus?: (topic: string, hasContent: boolean) => void;
 }
 
 const TOPIC_TITLES: Record<string, string> = {
@@ -42,18 +44,7 @@ const TOPIC_DESCRIPTIONS: Record<string, string> = {
   "chronic-conditions": "Diagnostic and treatment strategies for chronic conditions like osteoarthritis, osteoporosis, avascular necrosis (AVN), and spinal stenosis.",
 };
 
-// Search keywords mapped to topic slugs
-const TOPIC_KEYWORDS: Record<string, string> = {
-  "bones": "bone",
-  "joints": "joint",
-  "muscles": "muscle",
-  "ligaments": "ligament",
-  "fractures": "fractur",
-  "inflammation": "inflam",
-  "chronic-conditions": "chronic",
-};
-
-const MedOrthoTopicPage: React.FC<MedOrthoTopicPageProps> = ({ topicType, topicName }) => {
+const MedOrthoTopicPage: React.FC<MedOrthoTopicPageProps> = ({ topicType, topicName, onContentStatus }) => {
   const app = getAppBySlug("medortho");
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,7 +57,7 @@ const MedOrthoTopicPage: React.FC<MedOrthoTopicPageProps> = ({ topicType, topicN
     const fetchTopicPosts = async () => {
       setLoading(true);
       try {
-        const keyword = TOPIC_KEYWORDS[cleanTopicName] || cleanTopicName;
+        onContentStatus?.(cleanTopicName, false);
         
         // Fetch all blog posts for MedOrtho from Supabase
         const { data, error } = await supabase
@@ -79,11 +70,7 @@ const MedOrthoTopicPage: React.FC<MedOrthoTopicPageProps> = ({ topicType, topicN
 
         if (data) {
           // Filter matching posts client-side for robust matching
-          const filtered = data
-            .filter((p: any) => {
-              const text = `${p.title} ${p.excerpt} ${p.content}`.toLowerCase();
-              return text.includes(keyword);
-            })
+          const filtered = postsForTopic(data, cleanTopicName)
             .map((p: any) => ({
               id: p.slug,
               title: p.title,
@@ -95,6 +82,7 @@ const MedOrthoTopicPage: React.FC<MedOrthoTopicPageProps> = ({ topicType, topicN
             }));
           
           setPosts(filtered);
+          onContentStatus?.(cleanTopicName, filtered.length > 0);
         }
       } catch (err) {
         console.error("Error fetching topic posts:", err);
@@ -104,7 +92,7 @@ const MedOrthoTopicPage: React.FC<MedOrthoTopicPageProps> = ({ topicType, topicN
     };
 
     fetchTopicPosts();
-  }, [cleanTopicName]);
+  }, [cleanTopicName, onContentStatus]);
 
   if (loading) {
     return (

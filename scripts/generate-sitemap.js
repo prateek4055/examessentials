@@ -1,3 +1,5 @@
+import { isPlaceholderContent } from '../src/lib/contentEligibility.js';
+import { postsForTopic } from '../src/apps/medortho/data/topicIndex.js';
 import { buildWikiSitemap } from "./medortho-seo-utils.js";
 import fs from 'fs';
 import path from 'path';
@@ -67,14 +69,13 @@ async function generateSitemaps() {
     console.log('Fetching blog posts from Supabase...');
     const { data: dbBlogPosts, error: blogError } = await supabase
       .from('blog_posts')
-      .select('slug, updated_at')
+      .select('slug, updated_at, title, excerpt, content, category')
       .eq('published', true);
 
     if (blogError) {
-      console.warn('⚠️ Could not fetch blog posts from Supabase (this is okay if table doesn\'t exist yet):', blogError.message);
+      throw new Error('Cannot determine sitemap eligibility: published blog fetch failed.');
     }
 
-    const today = new Date().toISOString().split('T')[0];
 
     // 2b. Fetch all wiki articles from Supabase
     console.log('Fetching wiki articles from Supabase...');
@@ -130,7 +131,6 @@ async function generateSitemaps() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${DOMAIN}/products</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>`;
@@ -139,12 +139,12 @@ async function generateSitemaps() {
       products.forEach((product) => {
         const lastmod = product.updated_at
           ? new Date(product.updated_at).toISOString().split('T')[0]
-          : today;
+          : null;
 
         productSitemap += `
   <url>
     <loc>${DOMAIN}/product/${product.id}</loc>
-    <lastmod>${lastmod}</lastmod>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -158,7 +158,6 @@ async function generateSitemaps() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${DOMAIN}/blog</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>`;
@@ -168,7 +167,6 @@ async function generateSitemaps() {
       blogSitemap += `
   <url>
     <loc>${DOMAIN}/blog/${slug}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
@@ -176,16 +174,16 @@ async function generateSitemaps() {
 
     // Add DB blog posts (avoid duplicates if slug matches static ID)
     if (dbBlogPosts && dbBlogPosts.length > 0) {
-      dbBlogPosts.forEach(post => {
+      dbBlogPosts.filter(post => !isPlaceholderContent(post.content)).forEach(post => {
         if (!staticBlogSlugs.includes(post.slug)) {
           const lastmod = post.updated_at
             ? new Date(post.updated_at).toISOString().split('T')[0]
-            : today;
+            : null;
           
           blogSitemap += `
   <url>
     <loc>${DOMAIN}/blog/${post.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -258,11 +256,13 @@ async function generateSitemaps() {
     let pagesSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-    staticPages.forEach(page => {
+    staticPages.filter(page => {
+      const topic = /^\/medortho\/(?:anatomy|pathologies)\/([^/]+)$/.exec(page.path)?.[1];
+      return !topic || postsForTopic(dbBlogPosts || [], topic).length > 0;
+    }).forEach(page => {
       pagesSitemap += `
   <url>
     <loc>${DOMAIN}${page.path}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`;
@@ -275,19 +275,15 @@ async function generateSitemaps() {
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>${DOMAIN}/sitemap-pages.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/sitemap-products.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/sitemap-blog.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/sitemap-wiki.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
 </sitemapindex>`;
 

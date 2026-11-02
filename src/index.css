@@ -527,3 +527,23 @@
   transform: rotateY(180deg);
 }
 
+
+/* MedOrtho uses a self-hosted UI face; the rest of the site retains its branding. */
+@font-face {
+  font-family: 'MedOrtho Inter';
+  src: url('/fonts/inter/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+.medortho-type,
+.medortho-type :is(h1, h2, h3, h4, h5, h6, input, button, select, textarea, .font-sans, .font-display) {
+  font-family: 'MedOrtho Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.medortho-type :is(h1, h2, h3) {
+  letter-spacing: -0.025em;
+}

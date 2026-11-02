@@ -47,3 +47,57 @@ test('neurological prerender includes matching subcategories', () => {
     assert.ok(html.includes(`/medortho/tests/${testSlug(t.title)}`));
   }
 });
+
+test('reference landing exposes region links and truthful collection metadata', () => {
+  const html = fs.readFileSync('dist/medortho/index.html', 'utf8');
+  assert.equal((html.match(/rel="canonical"/g) || []).length, 1);
+  assert.ok(html.includes(`${tests.length} tests in the web library`));
+  assert.ok(!html.includes('700+'));
+  const schemas = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(m => JSON.parse(m[1]));
+  const library = schemas.find(s => s['@type'] === 'CollectionPage');
+  assert.ok(library);
+  assert.equal(library.mainEntity.itemListElement.length, 8);
+  for (const item of library.mainEntity.itemListElement) {
+    assert.ok(html.includes(`href="${new URL(item.url).pathname}"`));
+  }
+  assert.ok(!schemas.some(s => s['@type'] === 'MobileApplication'));
+  const directory = fs.readFileSync('dist/medortho/special-tests/index.html', 'utf8');
+  assert.ok(directory.includes('id="all-tests"'));
+  for (const t of tests) assert.ok(directory.includes(`href="/medortho/tests/${testSlug(t.title)}"`));
+});
+
+test('Vercel SPA fallback uses an extensionless destination with clean URLs', () => {
+  const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+  assert.equal(config.cleanUrls, true);
+  const fallback = config.rewrites.find(r => r.destination === '/index');
+  assert.ok(fallback, 'client routes must resolve to the extensionless index');
+  assert.ok(!config.rewrites.some(r => r.destination === '/index.html'));
+});
+
+test('empty topic collections are noindex in initial HTML', () => {
+  const html = fs.readFileSync('dist/medortho/pathologies/inflammation/index.html', 'utf8');
+  assert.ok(html.includes('name="robots" content="noindex, follow"'));
+  assert.ok(!html.includes('name="googlebot" content="index, follow"'));
+});
+
+test('topic eligibility uses the same published MedOrtho posts as the browser', async () => {
+  const { postsForTopic } = await import('../../src/apps/medortho/data/topicIndex.js');
+  const rows = [
+    { category: 'MedOrtho', title: 'Inflammation', published: true },
+    { category: 'MedOrtho', title: 'Inflammation draft', published: false },
+    { category: 'MedCardio', title: 'Inflammation', published: true },
+    { category: 'MedOrtho', title: 'Other', content: 'Joint anatomy' },
+  ];
+  assert.deepEqual(postsForTopic(rows, 'inflammation'), [rows[0]]);
+  assert.deepEqual(postsForTopic(rows, 'joints'), [rows[3]]);
+  assert.deepEqual(postsForTopic(rows, 'unknown'), []);
+});
+
+test('CMS placeholders are distinguished from concise complete articles', async () => {
+  const { isPlaceholderContent } = await import('../../src/lib/contentEligibility.js');
+  assert.equal(isPlaceholderContent('Why Class 11 Physics is Foundation for NEET & JEE...'), true);
+  assert.equal(isPlaceholderContent('<p>Introduction…</p>'), true);
+  assert.equal(isPlaceholderContent(''), true);
+  assert.equal(isPlaceholderContent('A concise but complete explanation.'), false);
+  assert.equal(isPlaceholderContent('Detailed information. '.repeat(30) + '...'), false);
+});

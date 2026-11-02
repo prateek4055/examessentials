@@ -1,7 +1,10 @@
+import { isPlaceholderContent } from '../src/lib/contentEligibility.js';
+import { postsForTopic } from '../src/apps/medortho/data/topicIndex.js';
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { testSlug } from './medortho-seo-utils.js';
 
 dotenv.config();
 
@@ -57,6 +60,10 @@ function stripHtml(html) {
 function generatePageHtml(templateHtml, options) {
   const { title, description, keywords, canonical, ogImage, schemas, bodyContent } = options;
   let content = templateHtml;
+  if (options.noIndex) {
+    content = content.replace(/<meta\b[^>]*name=["'](?:robots|googlebot|bingbot)["'][^>]*>/gi, '');
+    content = content.replace('</head>', '<meta data-rh="true" name="robots" content="noindex, follow" /></head>');
+  }
   // A child page must not inherit the homepage's FAQ/app schemas.
   content = content.replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, '');
   content = content.replace(/<meta\b[^>]*(?:property|name)=["'](?:og:image:(?:width|height)|og:type|twitter:url)["'][^>]*>/gi, '');
@@ -104,7 +111,7 @@ function generatePageHtml(templateHtml, options) {
   content = content.replace(/<\/head>/i, `${headAdditions}</head>`);
   
   // Replace Root Div Content
-  content = content.replace(/(<div\s+id=["']root["'][^>]*>)([\s\S]*?)(<\/div>)/i, `$1\n${bodyContent}\n$3`);
+  content = content.replace(/(<div\s+id=["']root["'][^>]*>)([\s\S]*?)(<\/div>)/i, `$1\n${canonical && new URL(canonical).pathname.match(/^\/medortho(?:\/|$)/) ? `<div class="medortho-type">${bodyContent}</div>` : bodyContent}\n$3`);
   
   content = content.replace(/<meta (?!data-rh)(?=(?:name|property)=["'](?:title|description|keywords|og:[^"']+|twitter:[^"']+)["'])/g, '<meta data-rh="true" ');
   return content;
@@ -258,7 +265,8 @@ async function runPrerender() {
   }
 
   const templateHtml = fs.readFileSync(indexHtmlPath, 'utf8');
-  const testsList = JSON.parse(fs.readFileSync(testsDataPath, 'utf8'));
+  const testRecords = JSON.parse(fs.readFileSync(testsDataPath, 'utf8'));
+  const testsList = testRecords.filter((t, i) => testRecords.findIndex(other => testSlug(other.title) === testSlug(t.title)) === i);
 
   console.log(`✅ Loaded template HTML and ${testsList.length} special tests.`);
 
@@ -271,12 +279,12 @@ async function runPrerender() {
         .select('*')
         .eq('published', true);
       if (error) {
-        console.warn('⚠️ Could not fetch blog posts from Supabase for pre-rendering:', error.message);
+        throw new Error('Published blog fetch failed; refusing to generate incorrect noindex pages.');
       } else {
         dbBlogPosts = data || [];
       }
     } catch (e) {
-      console.warn('⚠️ Could not fetch blog posts for pre-rendering:', e.message);
+      throw e;
     }
 
     try {
@@ -534,7 +542,7 @@ async function runPrerender() {
   });
 
   // 2. Pre-render Special Tests Directory Page (/medortho/special-tests)
-  const allTestsContent = testsList.map(t => {
+  const allTestsContent = [...testsList].sort((a, b) => a.title.localeCompare(b.title)).map(t => {
     if (!t.title) return '';
     const cleanSlug = t.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     return `
@@ -576,7 +584,7 @@ async function runPrerender() {
             Orthopedic Special Tests Directory
           </h1>
           <p class="text-gray-500 text-lg max-w-3xl leading-relaxed">
-            Browse and search all 700+ orthopedic physical examination special tests, clinical diagnostics, sensitivity, specificity, and procedures.
+            Browse ${testsList.length} orthopedic special tests by body region, with examination procedures, interpretation and reference images.
           </p>
         </div>
 
@@ -595,7 +603,7 @@ async function runPrerender() {
         </div>
 
         <div>
-          <h2 class="text-2xl font-bold mb-6 text-gray-900">All Orthopedic Special Tests</h2>
+          <h2 id="all-tests" class="text-2xl font-bold mb-6 text-gray-900">All special tests A–Z</h2>
           <div class="space-y-4">
             ${allTestsContent}
           </div>
@@ -605,6 +613,26 @@ async function runPrerender() {
   };
   writePage('medortho/special-tests', generatePageHtml(templateHtml, specialTestsDirectoryOptions));
   console.log('✅ Pre-rendered /medortho/special-tests');
+
+  // The MedOrtho entry point is a web reference collection, not an app store page.
+  const libraryTitle = 'Orthopedic Special Tests & Examination Library | MedOrtho';
+  const libraryDescription = 'Explore orthopedic special tests by body region. Find examination procedures, interpretation, reference images and sources in the MedOrtho clinical library.';
+  const libraryRegions = [['shoulder', 'Shoulder'], ['knee', 'Knee'], ['hip', 'Hip'], ['spine', 'Spine'], ['elbow', 'Elbow'], ['wrist-hand', 'Wrist & Hand'], ['ankle-foot', 'Ankle & Foot'], ['neurological', 'Neurological']];
+  writePage('medortho', generatePageHtml(templateHtml, {
+    title: libraryTitle, description: libraryDescription, canonical: `${DOMAIN}/medortho`, ogImage: `${DOMAIN}/og-image.png`,
+    schemas: [{ '@context': 'https://schema.org', '@type': 'CollectionPage', '@id': `${DOMAIN}/medortho#library`, name: libraryTitle, description: libraryDescription, url: `${DOMAIN}/medortho`, inLanguage: 'en', mainEntity: { '@type': 'ItemList', itemListElement: libraryRegions.map(([slug, name], i) => ({ '@type': 'ListItem', position: i + 1, name, url: `${DOMAIN}/medortho/${slug}` })) } }],
+    bodyContent: `<main id="library" class="max-w-6xl mx-auto px-5 py-12">
+      <p>MedOrtho · Clinical reference library</p>
+      <h1>Orthopedic special tests. Find your next reference.</h1>
+      <p>Explore orthopedic special tests by body region. Find examination procedures, interpretation, reference images and sources.</p>
+      <form action="/medortho/special-tests" role="search"><label for="library-search">Search orthopedic special tests</label><input id="library-search" name="q" type="search"><button>Search</button></form>
+      <p>${testsList.length} tests in the web library · Browse by region or explore the complete directory</p>
+      <h2>Browse by body region</h2><div class="grid grid-cols-2 md:grid-cols-4 gap-4">${libraryRegions.map(([slug, name]) => `<a href="/medortho/${slug}"><h3>${escapeHtml(name)}</h3><p>${testsList.filter(t => slug === 'neurological' ? /neuro/i.test(`${t.category} ${t.subCategory || ''}`) : t.category === name).length} tests</p></a>`).join('')}</div>
+      <h2>Every test, one directory</h2><p>Browse the complete alphabetical index or search for a specific examination.</p><a href="/medortho/special-tests#all-tests">View A–Z directory</a>
+      <h2>MedOrtho on your phone</h2><p>Explore the MedOrtho Android app alongside the web library.</p><a href="https://play.google.com/store/apps/details?id=com.prateek.orthoexam">View on Google Play</a>
+    </main>`
+  }));
+
 
   // 3. Pre-render Category pages (shoulder, knee, etc.)
   const categories = [
@@ -1013,6 +1041,7 @@ async function runPrerender() {
         .join('\n');
 
       const blogPostOptions = {
+        noIndex: isPlaceholderContent(post.content),
         title: `${post.title} | Exam Essentials`,
         description: post.excerpt || '',
         keywords: `${post.category?.toLowerCase() || 'medical'}, exam essentials, ${post.title.toLowerCase().split(' ').join(', ')}`,
@@ -1555,13 +1584,16 @@ async function runPrerender() {
   ];
 
   extraStaticPages.forEach(page => {
+    const topic = /^medortho\/(?:anatomy|pathologies)\/([^/]+)$/.exec(page.route)?.[1];
+    const topicPosts = topic ? postsForTopic(dbBlogPosts, topic) : [];
     const pageOptions = {
+      noIndex: !!topic && topicPosts.length === 0,
       title: page.title,
       description: page.description,
       keywords: page.keywords,
       canonical: `${DOMAIN}/${page.route}`,
       ogImage: `${DOMAIN}/og-image.png`,
-      bodyContent: page.bodyContent
+      bodyContent: page.bodyContent + (topicPosts.length ? `<ul>${topicPosts.map(post => `<li><a href="/blog/${escapeHtml(post.slug)}">${escapeHtml(post.title)}</a></li>`).join('')}</ul>` : '')
     };
     writePage(page.route, generatePageHtml(templateHtml, pageOptions));
   });
@@ -1660,8 +1692,9 @@ async function runPrerender() {
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
+          "@id": "https://examessentials.in/#website",
           "name": "Exam Essentials",
-          "alternateName": "ExamEssentials Notes",
+          "alternateName": "ExamEssentials",
           "url": DOMAIN,
           "potentialAction": {
             "@type": "SearchAction",
