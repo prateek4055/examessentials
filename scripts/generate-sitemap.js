@@ -1,3 +1,6 @@
+import { isPlaceholderContent } from '../src/lib/contentEligibility.js';
+import { postsForTopic } from '../src/apps/medortho/data/topicIndex.js';
+import { buildWikiSitemap } from "./medortho-seo-utils.js";
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
@@ -66,14 +69,13 @@ async function generateSitemaps() {
     console.log('Fetching blog posts from Supabase...');
     const { data: dbBlogPosts, error: blogError } = await supabase
       .from('blog_posts')
-      .select('slug, updated_at')
+      .select('slug, updated_at, title, excerpt, content, category')
       .eq('published', true);
 
     if (blogError) {
-      console.warn('⚠️ Could not fetch blog posts from Supabase (this is okay if table doesn\'t exist yet):', blogError.message);
+      throw new Error('Cannot determine sitemap eligibility: published blog fetch failed.');
     }
 
-    const today = new Date().toISOString().split('T')[0];
 
     // 2b. Fetch all wiki articles from Supabase
     console.log('Fetching wiki articles from Supabase...');
@@ -111,7 +113,7 @@ async function generateSitemaps() {
             localWikiTests.push({
               app_id: 'medortho',
               slug: cleanSlug,
-              updated_at: today,
+              updated_at: t.lastUpdated || null,
               image1: t.image1,
               title: t.title,
               usedFor: t.usedFor
@@ -129,7 +131,6 @@ async function generateSitemaps() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${DOMAIN}/products</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>`;
@@ -138,12 +139,12 @@ async function generateSitemaps() {
       products.forEach((product) => {
         const lastmod = product.updated_at
           ? new Date(product.updated_at).toISOString().split('T')[0]
-          : today;
+          : null;
 
         productSitemap += `
   <url>
     <loc>${DOMAIN}/product/${product.id}</loc>
-    <lastmod>${lastmod}</lastmod>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -157,7 +158,6 @@ async function generateSitemaps() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${DOMAIN}/blog</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>`;
@@ -167,7 +167,6 @@ async function generateSitemaps() {
       blogSitemap += `
   <url>
     <loc>${DOMAIN}/blog/${slug}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
@@ -175,16 +174,16 @@ async function generateSitemaps() {
 
     // Add DB blog posts (avoid duplicates if slug matches static ID)
     if (dbBlogPosts && dbBlogPosts.length > 0) {
-      dbBlogPosts.forEach(post => {
+      dbBlogPosts.filter(post => !isPlaceholderContent(post.content)).forEach(post => {
         if (!staticBlogSlugs.includes(post.slug)) {
           const lastmod = post.updated_at
             ? new Date(post.updated_at).toISOString().split('T')[0]
-            : today;
+            : null;
           
           blogSitemap += `
   <url>
     <loc>${DOMAIN}/blog/${post.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -194,71 +193,8 @@ async function generateSitemaps() {
 
     blogSitemap += `\n</urlset>`;
 
-    // 4b. Generate Wiki Sitemap (sitemap-wiki.xml)
-    let wikiSitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`;
-
-    // Combine Supabase articles and local articles, deduplicating by unique path
-    const allWikiArticles = [];
-    const seenWikiPaths = new Set();
-
-    if (dbArticles && dbArticles.length > 0) {
-      dbArticles.forEach(art => {
-        const path = `/${art.app_id}/tests/${art.slug}`;
-        if (!seenWikiPaths.has(path)) {
-          seenWikiPaths.add(path);
-          
-          let imageMarkup = '';
-          const localMatch = localWikiTests.find(l => l.app_id === art.app_id && l.slug === art.slug);
-          if (localMatch && localMatch.image1) {
-            const imageFilename = localMatch.image1.split('/').pop();
-            const cleanTitle = localMatch.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            const cleanDesc = localMatch.usedFor ? localMatch.usedFor.replace(/<[^>]*>/g, '').substring(0, 100).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
-            imageMarkup = `\n    <image:image>\n      <image:loc>${DOMAIN}/${art.app_id}/tests/images/${imageFilename}</image:loc>\n      <image:title>${cleanTitle} Orthopedic Special Test</image:title>\n      <image:caption>Diagnostic guide and procedure for ${cleanTitle}: ${cleanDesc}</image:caption>\n    </image:image>`;
-          }
-
-          allWikiArticles.push({
-            loc: `${DOMAIN}${path}`,
-            lastmod: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : today,
-            imageMarkup: imageMarkup
-          });
-        }
-      });
-    }
-
-    localWikiTests.forEach(art => {
-      const path = `/${art.app_id}/tests/${art.slug}`;
-      if (!seenWikiPaths.has(path)) {
-        seenWikiPaths.add(path);
-        
-        let imageMarkup = '';
-        if (art.image1) {
-          const imageFilename = art.image1.split('/').pop();
-          const cleanTitle = art.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-          const cleanDesc = art.usedFor ? art.usedFor.replace(/<[^>]*>/g, '').substring(0, 100).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
-          imageMarkup = `\n    <image:image>\n      <image:loc>${DOMAIN}/medortho/tests/images/${imageFilename}</image:loc>\n      <image:title>${cleanTitle} Orthopedic Special Test</image:title>\n      <image:caption>Diagnostic guide and procedure for ${cleanTitle}: ${cleanDesc}</image:caption>\n    </image:image>`;
-        }
-
-        allWikiArticles.push({
-          loc: `${DOMAIN}${path}`,
-          lastmod: today,
-          imageMarkup: imageMarkup
-        });
-      }
-    });
-
-    allWikiArticles.forEach(item => {
-      wikiSitemap += `
-  <url>
-    <loc>${item.loc}</loc>
-    <lastmod>${item.lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>${item.imageMarkup || ''}
-  </url>`;
-    });
-
-    wikiSitemap += `\n</urlset>`;
+    // Local article images and real update dates; no synthetic freshness.
+    const wikiSitemap = buildWikiSitemap(dbArticles, localWikiTests);
 
     // 5. Generate Static Pages Sitemap (sitemap-pages.xml)
     const staticPages = [
@@ -320,11 +256,13 @@ async function generateSitemaps() {
     let pagesSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-    staticPages.forEach(page => {
+    staticPages.filter(page => {
+      const topic = /^\/medortho\/(?:anatomy|pathologies)\/([^/]+)$/.exec(page.path)?.[1];
+      return !topic || postsForTopic(dbBlogPosts || [], topic).length > 0;
+    }).forEach(page => {
       pagesSitemap += `
   <url>
     <loc>${DOMAIN}${page.path}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`;
@@ -337,19 +275,15 @@ async function generateSitemaps() {
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>${DOMAIN}/sitemap-pages.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/sitemap-products.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/sitemap-blog.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${DOMAIN}/sitemap-wiki.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>
 </sitemapindex>`;
 

@@ -18,15 +18,22 @@ import { Button } from "@/components/ui/button";
 
 const MedPosterHubContent = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCollection, setSelectedCollection] = useState<"all" | "teaching" | "decorative">("all");
   const [selectedPoster, setSelectedPoster] = useState<Poster | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Derive categories
-  const categories = ["All", ...Array.from(new Set(posters.map((p) => p.category))).sort()];
+  // Derive categories based on current collection
+  const availablePostersByCollection = posters.filter((p) => {
+    if (selectedCollection === "all") return true;
+    return (p.collectionType || "teaching") === selectedCollection;
+  });
 
-  const filteredPosters = posters.filter((poster) => {
+  const categories = ["All", ...Array.from(new Set(availablePostersByCollection.map((p) => p.category))).sort()];
+
+  const filteredPosters = availablePostersByCollection.filter((poster) => {
     const matchesCategory = selectedCategory === "All" || poster.category === selectedCategory;
-    const matchesSearch = poster.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      poster.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       poster.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -178,21 +185,83 @@ const MedPosterHubContent = () => {
 
         <BuyerPersonas />
 
-        {/* Sticky Category Filter */}
-        <section id="products" className="sticky top-20 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm transition-all">
-          <div className="container mx-auto px-4 overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-3 min-w-max justify-start md:justify-center px-2 py-1">
-              {categories.map((cat) => (
-                <CategoryCard
-                  key={cat}
-                  label={cat}
-                  isActive={selectedCategory === cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    window.scrollTo({ top: document.getElementById('product-grid')?.offsetTop! - 180, behavior: 'smooth' });
-                  }}
-                />
-              ))}
+        {/* Sticky Collection & Category Filter */}
+        <section id="products" className="sticky top-16 sm:top-20 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 py-3 sm:py-4 shadow-xs transition-all">
+          <div className="container mx-auto px-4">
+            {/* Top Level Collection Switcher */}
+            <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCollection("all");
+                  setSelectedCategory("All");
+                }}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                  selectedCollection === "all"
+                    ? "bg-slate-900 text-white shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                All Posters
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCollection("teaching");
+                  setSelectedCategory("All");
+                }}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+                  selectedCollection === "teaching"
+                    ? "bg-blue-600 text-white shadow-xs"
+                    : "bg-blue-50 text-blue-700 hover:bg-blue-100/70"
+                }`}
+              >
+                <span>🩺 Clinical & Teaching</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCollection("decorative");
+                  setSelectedCategory("All");
+                }}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+                  selectedCollection === "decorative"
+                    ? "bg-purple-600 text-white shadow-xs"
+                    : "bg-purple-50 text-purple-700 hover:bg-purple-100/70"
+                }`}
+              >
+                <span>✨ Aesthetic Decor</span>
+                <span className="text-[10px] bg-purple-200 text-purple-900 font-extrabold px-1.5 py-0.2 rounded-full">Coming Soon</span>
+              </button>
+            </div>
+
+            {/* Horizontal Sub-category Pills */}
+            <div className="overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="flex items-center gap-2 min-w-max justify-start md:justify-center py-0.5">
+                {categories.map((cat) => {
+                  const count = cat === "All"
+                    ? availablePostersByCollection.length
+                    : availablePostersByCollection.filter((p) => p.category === cat).length;
+
+                  return (
+                    <CategoryCard
+                      key={cat}
+                      label={cat}
+                      count={count}
+                      isActive={selectedCategory === cat}
+                      onClick={() => {
+                        setSelectedCategory(cat);
+                        window.scrollTo({
+                          top: (document.getElementById('product-grid')?.offsetTop || 400) - 130,
+                          behavior: 'smooth'
+                        });
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>

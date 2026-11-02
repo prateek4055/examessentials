@@ -52,16 +52,14 @@ export const TestimonialsSection = () => {
                                 "{testimonial.quote}"
                             </div>
 
-                            <div className="flex items-center gap-4 mt-auto pt-6 border-t border-slate-100">
-                                <img
-                                    src={testimonial.avatar}
-                                    alt={testimonial.name}
-                                    className="w-12 h-12 rounded-full object-cover bg-slate-200"
-                                />
+                            <div className="flex items-center gap-3.5 mt-auto pt-5 border-t border-slate-100">
+                                <div className="w-11 h-11 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm shadow-xs border border-blue-200 flex-shrink-0">
+                                    {testimonial.name.replace("Dr. ", "").split(" ").map(n => n[0]).join("")}
+                                </div>
                                 <div>
-                                    <h4 className="font-bold text-slate-900">{testimonial.name}</h4>
+                                    <h4 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">{testimonial.name}</h4>
                                     <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide">{testimonial.role}</div>
-                                    <div className="text-xs text-slate-400">{testimonial.credibility}</div>
+                                    <div className="text-[11px] text-slate-400">{testimonial.credibility}</div>
                                 </div>
                             </div>
                         </motion.div>

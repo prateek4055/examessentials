@@ -1,19 +1,23 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { toast } from "sonner";
-import { Poster } from "../data/posters";
+import { Poster, PosterMaterial, calculateVariantPrice } from "../data/posters";
 
 export interface CartItem extends Poster {
   selectedSize: string;
+  selectedMaterial?: PosterMaterial;
   quantity: number;
-  isDoubleSided?: boolean;
-  backPosterTitle?: string;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Poster, size: string, quantity: number, isDoubleSided?: boolean, backPosterTitle?: string) => void;
-  removeFromCart: (productId: string, size: string, isDoubleSided?: boolean) => void;
-  updateQuantity: (productId: string, size: string, quantity: number, isDoubleSided?: boolean) => void;
+  addToCart: (
+    product: Poster,
+    size: string,
+    quantity: number,
+    material?: PosterMaterial
+  ) => void;
+  removeFromCart: (productId: string, size: string, material?: PosterMaterial) => void;
+  updateQuantity: (productId: string, size: string, quantity: number, material?: PosterMaterial) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -27,39 +31,69 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const DOUBLE_SIDED_SURCHARGE = 200;
-
-  const addToCart = (product: Poster, size: string, quantity: number, isDoubleSided?: boolean, backPosterTitle?: string) => {
+  const addToCart = (
+    product: Poster,
+    size: string,
+    quantity: number,
+    material: PosterMaterial = "matte"
+  ) => {
     setCart((prev) => {
       const existingItem = prev.find(
-        (item) => item.id === product.id && item.selectedSize === size && !!item.isDoubleSided === !!isDoubleSided
+        (item) =>
+          item.id === product.id &&
+          item.selectedSize === size &&
+          (item.selectedMaterial || "matte") === material
       );
 
       if (existingItem) {
         return prev.map((item) =>
-          item.id === product.id && item.selectedSize === size && !!item.isDoubleSided === !!isDoubleSided
+          item.id === product.id &&
+          item.selectedSize === size &&
+          (item.selectedMaterial || "matte") === material
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { ...product, selectedSize: size, quantity, isDoubleSided, backPosterTitle }];
+      return [
+        ...prev,
+        {
+          ...product,
+          selectedSize: size,
+          selectedMaterial: material,
+          quantity,
+        },
+      ];
     });
-    toast.success("Added to cart");
+    toast.success(`Added ${product.title} to cart`);
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId: string, size: string, isDoubleSided?: boolean) => {
+  const removeFromCart = (productId: string, size: string, material: PosterMaterial = "matte") => {
     setCart((prev) =>
-      prev.filter((item) => !(item.id === productId && item.selectedSize === size && !!item.isDoubleSided === !!isDoubleSided))
+      prev.filter(
+        (item) =>
+          !(
+            item.id === productId &&
+            item.selectedSize === size &&
+            (item.selectedMaterial || "matte") === material
+          )
+      )
     );
     toast.info("Removed from cart");
   };
 
-  const updateQuantity = (productId: string, size: string, quantity: number, isDoubleSided?: boolean) => {
+  const updateQuantity = (
+    productId: string,
+    size: string,
+    quantity: number,
+    material: PosterMaterial = "matte"
+  ) => {
     if (quantity < 1) return;
     setCart((prev) =>
       prev.map((item) =>
-        item.id === productId && item.selectedSize === size && !!item.isDoubleSided === !!isDoubleSided
+        item.id === productId &&
+        item.selectedSize === size &&
+        (item.selectedMaterial || "matte") === material
           ? { ...item, quantity }
           : item
       )
@@ -70,16 +104,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  // Rough estimation of price based on size logic from original code or hardcoded defaults if missing
-  // The original poster interface had price: { small, medium, large }
-  // We need to map size string to these keys.
   const getPriceForSize = (item: CartItem) => {
-      let basePrice = item.price.medium;
-      if (item.selectedSize === "A3") basePrice = item.price.small;
-      if (item.selectedSize === "A2") basePrice = item.price.medium;
-      if (item.selectedSize === "A1") basePrice = item.price.large; 
-      
-      return item.isDoubleSided ? basePrice + DOUBLE_SIDED_SURCHARGE : basePrice;
+    const material = item.selectedMaterial || "matte";
+    return calculateVariantPrice(item.price, material, item.selectedSize);
   };
 
   const totalPrice = cart.reduce((acc, item) => acc + (getPriceForSize(item) * item.quantity), 0);

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Poster, posters } from "../data/posters";
+import { Poster, posters, PosterMaterial, calculateVariantPrice, MEDPOSTER_AMAZON_URL } from "../data/posters";
 import { useCart } from "../context/CartContext";
 import { MedPosterHeader } from "../components/MedPosterHeader";
 import { MedFooter } from "../components/MedFooter";
@@ -25,7 +25,9 @@ import {
   CreditCard,
   ShoppingBag as AmazonIcon,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  ExternalLink,
+  Sparkles
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -36,11 +38,9 @@ const MedPosterDetailContent = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { toast } = useToast();
-  const [selectedSize, setSelectedSize] = useState("A2");
+  const [selectedSize, setSelectedSize] = useState<"A3" | "A2" | "A1">("A2");
+  const [selectedMaterial, setSelectedMaterial] = useState<PosterMaterial>("matte");
   const [quantity, setQuantity] = useState(1);
-  const [backPoster, setBackPoster] = useState<Poster | null>(null);
-
-  const DOUBLE_SIDED_SURCHARGE = 200;
 
   const poster = posters.find((p) => p.slug === slug);
 
@@ -62,28 +62,21 @@ const MedPosterDetailContent = () => {
     );
   }
 
-  const getPrice = (size: string) => {
-    if (size === "A3") return poster.price.small;
-    if (size === "A2") return poster.price.medium;
-    if (size === "A1") return poster.price.large;
-    return poster.price.medium;
+  const getPrice = (size: string, material: PosterMaterial = selectedMaterial) => {
+    return calculateVariantPrice(poster.price, material, size);
   };
 
-  const getUnitPrice = (size: string) => {
-    const basePrice = getPrice(size);
-    return backPoster ? basePrice + DOUBLE_SIDED_SURCHARGE : basePrice;
+  const getUnitPrice = (size: string, material: PosterMaterial = selectedMaterial) => {
+    return getPrice(size, material);
   };
 
   const handleWhatsAppOrder = () => {
-    const unitPrice = getUnitPrice(selectedSize);
-    const backLine = backPoster
-      ? `🔄 Back Side: ${backPoster.title} (+₹${DOUBLE_SIDED_SURCHARGE} double-sided)\n`
-      : "";
+    const unitPrice = getUnitPrice(selectedSize, selectedMaterial);
     const message = encodeURIComponent(
       `Hi! I want to order this poster:\n\n` +
         `📋 Product: ${poster.title}\n` +
+        `🎨 Material: ${selectedMaterial.toUpperCase()}\n` +
         `📐 Size: ${selectedSize}\n` +
-        backLine +
         `📦 Quantity: ${quantity}\n` +
         `💰 Total: ₹${unitPrice * quantity}\n\n` +
         `Please share payment details and delivery options.`
@@ -93,11 +86,8 @@ const MedPosterDetailContent = () => {
 
   const handleAmazonClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    toast({
-      title: "Amazon Store Coming Soon",
-      description: "We are currently setting up our Amazon catalog. Please buy directly from our website for priority delivery.",
-      variant: "default",
-    });
+    const targetUrl = poster.amazonUrl || MEDPOSTER_AMAZON_URL;
+    window.open(targetUrl, "_blank", "noopener,noreferrer");
   };
 
   // Suggested combos
@@ -181,7 +171,7 @@ const MedPosterDetailContent = () => {
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       <SEOHead
         title={poster.seoTitle || `${poster.title} – Buy ${poster.category} Poster Online | MedPosterHub`}
-        description={poster.seoDescription || `${poster.description} Available in A3 (₹${poster.price.small}), A2 (₹${poster.price.medium}), A1 (₹${poster.price.large}). Premium 250gsm matte print. Worldwide shipping available. Order now from MedPosterHub.`}
+        description={poster.seoDescription || `${poster.description} Available in A3 (₹699), A2 (₹899), Framed & Acrylic editions. Premium 300 GSM archival print. Worldwide shipping available. Order now from MedPosterHub.`}
         canonical={`/medposterhub/${poster.slug}`}
         keywords={seoKeywords}
         ogImage={`${BASE_URL}${poster.image}`}
@@ -216,12 +206,9 @@ const MedPosterDetailContent = () => {
           </Button>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* 3D Flip Viewer */}
+            {/* Poster Preview Viewer */}
             <PosterFlipViewer
               frontPoster={poster}
-              allPosters={posters}
-              backPoster={backPoster}
-              onBackPosterChange={setBackPoster}
             />
 
             {/* Details */}
@@ -246,8 +233,52 @@ const MedPosterDetailContent = () => {
                   <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
                   <div>
                     <h3 className="text-sm font-semibold text-slate-900">Print Quality</h3>
-                    <p className="text-sm text-slate-600">{poster.quality}</p>
+                    <p className="text-sm text-slate-600">
+                      {selectedMaterial === "framed"
+                        ? "Premium 300 GSM archival print mounted inside a high-durability gallery frame."
+                        : selectedMaterial === "acrylic"
+                        ? "Direct high-resolution UV printing on luxury 3mm crystal-clear acrylic glass with metallic wall studs."
+                        : "Premium heavyweight 300 GSM archival matte paper with rich, UV-resistant inks."}
+                    </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Material Format Selector */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    Select Material Format
+                  </h3>
+                  <span className="text-xs font-bold text-blue-600 capitalize">
+                    {selectedMaterial === "matte" && "300 GSM Heavyweight Matte"}
+                    {selectedMaterial === "framed" && "Wood Gallery Frame"}
+                    {selectedMaterial === "acrylic" && "Ultra HD Acrylic Glass"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { key: "matte" as const, label: "300 GSM Poster", note: "Roll in tube" },
+                    { key: "framed" as const, label: "Gallery Framed", note: "Ready to hang" },
+                    { key: "acrylic" as const, label: "Ultra Acrylic", note: "Luxury glass glow" },
+                  ].map((mat) => (
+                    <button
+                      key={mat.key}
+                      type="button"
+                      onClick={() => setSelectedMaterial(mat.key)}
+                      className={`p-3 rounded-xl border-2 text-left transition-all ${
+                        selectedMaterial === mat.key
+                          ? "border-blue-600 bg-blue-50/80 text-blue-900 shadow-xs"
+                          : "border-slate-200 text-slate-700 hover:border-slate-300 bg-white"
+                      }`}
+                    >
+                      <div className="text-xs sm:text-sm font-bold">{mat.label}</div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{mat.note}</div>
+                      <div className="text-xs font-bold text-blue-700 mt-1">
+                        ₹{getPrice(selectedSize, mat.key)}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -256,30 +287,40 @@ const MedPosterDetailContent = () => {
                 <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
                   Select Size
                 </h3>
-                <div className="flex gap-3">
-                  {["A3", "A2", "A1"].map((size) => (
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { key: "A3" as const, label: "A3", dimension: "11.7\" × 16.5\"" },
+                    { 
+                      key: "A2" as const, 
+                      label: selectedMaterial === "acrylic" ? "16\" × 24\"" : "A2", 
+                      dimension: selectedMaterial === "acrylic" ? "Acrylic Wall Size" : "18\" × 24\"" 
+                    },
+                  ].map((sizeItem) => (
                     <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`flex-1 py-3 px-4 rounded-xl border-2 text-sm font-semibold transition-all ${
-                        selectedSize === size
-                          ? "border-blue-600 bg-blue-50 text-blue-700"
-                          : "border-slate-200 text-slate-600 hover:border-slate-300"
+                      key={sizeItem.key}
+                      onClick={() => setSelectedSize(sizeItem.key)}
+                      className={`py-3 px-4 rounded-xl border-2 text-left transition-all ${
+                        selectedSize === sizeItem.key
+                          ? "border-blue-600 bg-blue-50 text-blue-700 shadow-xs"
+                          : "border-slate-200 text-slate-600 hover:border-slate-300 bg-white"
                       }`}
                     >
-                      <div>{size}</div>
-                      <div className="text-xs mt-1 font-normal">₹{backPoster ? getPrice(size) + DOUBLE_SIDED_SURCHARGE : getPrice(size)}</div>
+                      <div className="text-sm font-bold">{sizeItem.label}</div>
+                      <div className="text-xs text-slate-500 mt-0.5">{sizeItem.dimension}</div>
+                      <div className="text-xs font-bold text-blue-700 mt-1">
+                        ₹{getUnitPrice(sizeItem.key, selectedMaterial)}
+                      </div>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Quantity */}
-              <div className="mb-8">
+              <div className="mb-6">
                 <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
                   Quantity
                 </h3>
-                <div className="flex items-center border border-slate-200 rounded-xl p-1 w-32">
+                <div className="flex items-center border border-slate-200 rounded-xl p-1 w-32 bg-white">
                   <button
                     className="p-2 hover:bg-slate-100 rounded-lg disabled:opacity-50"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -301,25 +342,21 @@ const MedPosterDetailContent = () => {
               <div className="mt-auto pt-6 border-t border-slate-100">
                 <div className="flex flex-col gap-1 mb-6">
                   <div className="flex items-center gap-3">
-                    <span className="text-4xl font-bold text-slate-900">
-                      ₹{getUnitPrice(selectedSize) * quantity}
+                    <span className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                      ₹{getUnitPrice(selectedSize, selectedMaterial) * quantity}
                     </span>
-                    <span className="text-sm text-slate-400">Total</span>
+                    <span className="text-sm text-slate-400 capitalize">
+                      ({selectedMaterial} • {selectedSize})
+                    </span>
                   </div>
-                  {backPoster && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-slate-500">₹{getPrice(selectedSize)} × {quantity}</span>
-                      <span className="text-blue-600 font-semibold">+ ₹{DOUBLE_SIDED_SURCHARGE * quantity} double-sided</span>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     size="lg"
-                    className="flex-1 rounded-xl bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 h-14 text-lg"
+                    className="flex-1 rounded-xl bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 h-13 text-base sm:text-lg font-bold"
                     onClick={() => {
-                      addToCart(poster, selectedSize, quantity, !!backPoster, backPoster?.title);
+                      addToCart(poster, selectedSize, quantity, selectedMaterial);
                     }}
                   >
                     <ShoppingCart className="w-5 h-5 mr-2" />
@@ -329,9 +366,9 @@ const MedPosterDetailContent = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="flex-1 rounded-xl border-blue-600 text-blue-700 hover:bg-blue-50 h-14 text-lg"
+                    className="flex-1 rounded-xl border-blue-600 text-blue-700 hover:bg-blue-50 h-13 text-base sm:text-lg font-bold"
                     onClick={() => {
-                      addToCart(poster, selectedSize, quantity, !!backPoster, backPoster?.title);
+                      addToCart(poster, selectedSize, quantity, selectedMaterial);
                       navigate("/medposterhub/checkout");
                     }}
                   >
@@ -339,38 +376,51 @@ const MedPosterDetailContent = () => {
                   </Button>
                 </div>
 
+                {/* Amazon Trust Banner & Quick Link */}
+                <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-800 font-medium">
+                    <span className="bg-amber-100 text-amber-900 border border-amber-300 font-extrabold px-2 py-0.5 rounded text-xs">
+                      Amazon
+                    </span>
+                    <span>Available on Amazon India</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAmazonClick}
+                    className="h-8 text-xs font-bold border-slate-300 text-slate-800 bg-white hover:bg-slate-100 flex items-center gap-1"
+                  >
+                    <span>View on Amazon</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </Button>
+                </div>
+
                 {/* Trust & Policies */}
-                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-amber-50/50 border border-amber-100/50">
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/70">
                     <ShieldCheck className="w-5 h-5 text-amber-600 flex-shrink-0" />
                     <div>
-                      <span className="block text-sm font-bold text-amber-900">Non-Returnable</span>
-                      <span className="block text-[11px] text-amber-700">Printed to order specially for you</span>
+                      <span className="block text-xs font-bold text-slate-900">Custom Printed to Order</span>
+                      <span className="block text-[11px] text-slate-500">Non-returnable archival print</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50/50 border border-blue-100/50">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/70">
                     <CreditCard className="w-5 h-5 text-blue-600 flex-shrink-0" />
                     <div>
-                      <span className="block text-sm font-bold text-blue-900">Prepaid Only</span>
-                      <span className="block text-[11px] text-blue-700">No COD available on website</span>
+                      <span className="block text-xs font-bold text-slate-900">Prepaid Only on Website</span>
+                      <span className="block text-[11px] text-slate-500">Instant UPI, Card & Netbanking</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div className="sm:col-span-2 flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/70">
                     <Clock className="w-5 h-5 text-slate-600 flex-shrink-0" />
                     <div>
-                      <span className="block text-sm font-bold text-slate-900">
-                        Dispatch: {backPoster ? "5 Business Days" : "2-3 Business Days"}
+                      <span className="block text-xs font-bold text-slate-900">
+                        Dispatch: {selectedMaterial === "acrylic" ? "4-5 Business Days" : "2-3 Business Days"}
                       </span>
                       <span className="block text-[11px] text-slate-500">
-                        Estimated Delivery: 3-5 days after dispatch
+                        Estimated Delivery: 3-5 days across India in reinforced PVC cylinder
                       </span>
                     </div>
-                  </div>
-                  <div className="sm:col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-slate-200">
-                    <AmazonIcon className="w-4 h-4 text-slate-400" />
-                    <span className="text-xs text-slate-500">
-                      Need COD? Order via our <a href="#" onClick={handleAmazonClick} className="font-semibold text-blue-600 underline">Amazon Store</a>
-                    </span>
                   </div>
                 </div>
               </div>
@@ -394,11 +444,11 @@ const MedPosterDetailContent = () => {
                     to={`/medposterhub/${suggested.slug}`}
                     className="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all duration-300"
                   >
-                    <div className="aspect-[4/3] bg-slate-50 overflow-hidden">
+                    <div className="aspect-[4/3] bg-slate-50 p-2 overflow-hidden flex items-center justify-center">
                       <img
                         src={suggested.image}
                         alt={`${suggested.title} – Medical Poster`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />
                     </div>

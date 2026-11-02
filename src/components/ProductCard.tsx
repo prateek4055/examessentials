@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { FileText } from "lucide-react";
+import { FileText, ArrowUpRight } from "lucide-react";
 import { Product } from "@/lib/api";
 import ProductImageHoverPreview from "./ProductImageHoverPreview";
 import { getProxiedImageUrl } from "@/lib/utils";
@@ -10,7 +10,7 @@ interface ProductCardProps {
   index?: number;
 }
 
-const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const [showPreview, setShowPreview] = useState(false);
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
 
@@ -29,11 +29,6 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     }
   }, []);
 
-  const closePreview = () => {
-    setShowPreview(false);
-    setIsMobilePreviewOpen(false);
-  };
-
   // Mobile touch to toggle preview
   const handleMobileTouch = (e: React.TouchEvent) => {
     if (window.innerWidth < 768 && hasImages) {
@@ -46,12 +41,12 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     <div>
       <Link
         to={`/product/${product.id}`}
-        className="group block rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 glass-card glass-card-hover shadow-clay-sm hover:shadow-clay-md"
+        className="group block rounded-[1.75rem] overflow-hidden transition-all duration-300 hover:-translate-y-1.5 bg-card/75 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] hover:border-primary/40 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.12)]"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className="relative bg-secondary overflow-hidden"
+          className="relative bg-secondary/50 overflow-hidden aspect-[4/3] flex items-center justify-center"
           onTouchStart={handleMobileTouch}
         >
           {hasImages ? (
@@ -60,7 +55,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
                 src={getProxiedImageUrl(product.images![0]) || ""}
                 alt={product.title}
                 loading="lazy"
-                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               />
               {/* Auto-scroll preview overlay */}
               <ProductImageHoverPreview
@@ -70,25 +65,49 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
               />
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center aspect-[4/3]">
-              <FileText className="w-16 h-16 text-muted-foreground/30" />
+            <div className="w-full h-full flex items-center justify-center">
+              <FileText className="w-12 h-12 text-muted-foreground/30" />
             </div>
           )}
-          <span className="absolute top-2 right-2 bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded-full z-10">
-            Sale!
+
+          {/* Premium Glass Sale Tag */}
+          <span className="absolute top-3 right-3 backdrop-blur-md bg-black/65 text-white dark:bg-white/90 dark:text-black text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full shadow-sm z-10">
+            Special Offer
           </span>
         </div>
-        <div className="p-4">
-          <h3 className="font-display text-sm md:text-base font-semibold text-foreground line-clamp-2 mb-2 group-hover:text-accent transition-colors">
+
+        <div className="p-5">
+          <div className="flex items-center gap-2 mb-2.5">
+            <span className="text-[11px] font-semibold px-2.5 py-0.5 bg-secondary rounded-full text-muted-foreground">
+              {product.subject}
+            </span>
+            <span className="text-[11px] font-semibold px-2.5 py-0.5 bg-primary/10 text-primary rounded-full">
+              Class {product.class}
+            </span>
+          </div>
+
+          <h3
+            className="text-sm md:text-base font-semibold text-foreground line-clamp-2 mb-3 group-hover:text-primary transition-colors leading-snug"
+            style={{
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif",
+            }}
+          >
             {product.title}
           </h3>
-          <div className="flex items-center gap-2">
-            <span className="font-body font-bold text-foreground">₹{product.price}</span>
-            <span className="font-body text-sm text-muted-foreground line-through">₹{Math.round(product.price * 1.5)}</span>
-          </div>
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-xs px-2 py-1 bg-secondary rounded-full text-muted-foreground">{product.subject}</span>
-            <span className="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">Class {product.class}</span>
+
+          <div className="flex items-center justify-between pt-2 border-t border-border/50">
+            <div className="flex items-baseline gap-2">
+              <span className="text-base md:text-lg font-bold text-foreground">
+                ₹{product.price}
+              </span>
+              <span className="text-xs text-muted-foreground line-through">
+                ₹{Math.round(product.price * 1.5)}
+              </span>
+            </div>
+            <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </div>
           </div>
         </div>
       </Link>

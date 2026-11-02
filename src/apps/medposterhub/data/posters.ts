@@ -1,3 +1,12 @@
+export type PosterMaterial = "matte" | "framed" | "acrylic";
+export type PosterCollectionType = "teaching" | "decorative";
+
+export interface PosterPriceStructure {
+  small: number;
+  medium: number;
+  large?: number;
+}
+
 export interface Poster {
   id: string;
   slug: string;
@@ -8,11 +17,9 @@ export interface Poster {
   sizes: string[];
   quality: string;
   comboSuggestions: string[];
-  price: {
-    small: number;
-    medium: number;
-    large: number;
-  };
+  price: PosterPriceStructure;
+  collectionType?: PosterCollectionType;
+  amazonUrl?: string;
   rating?: number;
   reviewCount?: number;
   bestseller?: boolean;
@@ -20,6 +27,39 @@ export interface Poster {
   seoTitle?: string;
   seoDescription?: string;
 }
+
+/** 
+ * Standard price helper for materials:
+ * Posters 300 GSM:
+ * - A3 (11.7" × 16.5"): ₹699
+ * - A2 (18" × 24"): ₹899
+ * 
+ * Frame:
+ * - A3: ₹1599
+ * - A2: ₹1799
+ * 
+ * Acrylic:
+ * - 16" × 24" (A2 standard): ₹1799
+ * - A3: ₹1499
+ */
+export const calculateVariantPrice = (
+  _basePrice: PosterPriceStructure,
+  material: PosterMaterial,
+  size: "A3" | "A2" | "A1" | string
+): number => {
+  const isA2orA1 = size === "A2" || size === "A1";
+
+  if (material === "framed") {
+    return isA2orA1 ? 1799 : 1599;
+  }
+  if (material === "acrylic") {
+    return isA2orA1 ? 1799 : 1499;
+  }
+  // Standard Matte / 300 GSM Poster
+  return isA2orA1 ? 899 : 699;
+};
+
+export const MEDPOSTER_AMAZON_URL = "https://amzn.in/d/0fbiiVsk";
 
 const POSTER_BASE = "/posters";
 
@@ -312,9 +352,11 @@ export const posters: Poster[] = [
     sizes: ["A3", "A2", "A1"],
     quality: "Recommended for ortho OPDs, rehab and sports clinics.",
     comboSuggestions: ["Ligaments of the Joints", "Anatomy and Injuries of the Knee", "Anatomy of the Spine"],
-    price: { small: 499, medium: 699, large: 899 },
+    price: { small: 699, medium: 899 },
     rating: 4.7,
     reviewCount: 145,
+    collectionType: "teaching",
+    amazonUrl: MEDPOSTER_AMAZON_URL,
   },
 ];
 

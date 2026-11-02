@@ -59,6 +59,7 @@ const NeetAppContent = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A0F1D] text-white flex flex-col items-center justify-center p-6 selection:bg-emerald-500 selection:text-black font-body">
         <SEOHead
+          noIndex
           title="Under Active Development | NEET Essentials"
           description="NEET Essentials is currently in private preview mode."
           canonical="https://examessentials.in/neet-app"
@@ -130,6 +131,7 @@ const NeetAppContent = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#F6F8FB] via-[#F1F5F9] to-[#E9EFF6] text-slate-900 flex flex-col font-body selection:bg-emerald-600 selection:text-white">
         <SEOHead
+          noIndex
           title="Curate Your NEET Journey | NEET Essentials"
           description="Personalized digital coaching system for NEET aspirants with curated NCERT lessons and NTA CBT mock testing."
           canonical="https://examessentials.in/neet-app"
@@ -142,6 +144,7 @@ const NeetAppContent = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F6F8FB] via-[#F1F5F9] to-[#E9EFF6] text-slate-900 flex flex-col font-body selection:bg-emerald-600 selection:text-white">
       <SEOHead
+          noIndex
         title="NEET Essentials | Personal NCERT Digital Coaching & 720M CBT Mocks"
         description="Master NEET with personalized daily missions, curated NCERT YouTube video lessons, synchronized formulas, and real NTA 720-mark CBT mock exams."
         canonical="https://examessentials.in/neet-app"

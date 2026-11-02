@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Search, ChevronLeft, ChevronRight, Stethoscope, Heart, Info } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Search, ChevronLeft, ChevronRight, Stethoscope } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { getAppBySlug } from "../../medical/data/medicalAppsData";
 
 interface TestItem {
@@ -49,13 +48,20 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "All": "Browse all orthopedic special tests. Search by joint region, test name, or pathology.",
 };
 
+const slugify = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+const categoryPath = (name: string) => name === "All" ? "/medortho/special-tests" : `/medortho/${name === "Wrist & Hand" ? "wrist-hand" : name === "Ankle & Foot" ? "ankle-foot" : name.toLowerCase()}`;
+
 const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
   initialCategory = "All",
   isCategoryLocked = false,
 }) => {
   const app = getAppBySlug("medortho");
   const [tests, setTests] = useState<TestItem[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q") || "";
+  const setSearchQuery = (query: string) => {
+    setSearchParams(query ? { q: query } : {}, { replace: true });
+  };
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -67,6 +73,8 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
     setCurrentPage(1);
   }, [initialCategory]);
 
+  useEffect(() => setCurrentPage(1), [searchQuery]);
+
   // Load tests from json database
   useEffect(() => {
     setLoading(true);
@@ -76,7 +84,7 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
         throw new Error("Failed to load tests");
       })
       .then((data) => {
-        setTests(data);
+        setTests(data.filter((item: TestItem, index: number) => data.findIndex((t: TestItem) => slugify(t.title) === slugify(item.title)) === index));
       })
       .catch((err) => console.error("Error loading tests_data.json:", err))
       .finally(() => setLoading(false));
@@ -197,6 +205,7 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
+            aria-label="Search special tests by name or pathology"
             placeholder="Search special tests by name or pathology..."
             className="pl-10 h-11 bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 rounded-xl focus:ring-2 focus:ring-primary/20"
           />
@@ -209,12 +218,10 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
               const count = getCategoryCount(cat);
               const isSelected = selectedCategory.toLowerCase() === cat.toLowerCase();
               return (
-                <button
+                <Link
                   key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setCurrentPage(1);
-                  }}
+                  to={categoryPath(cat)}
+                  aria-current={isSelected ? "page" : undefined}
                   className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
                     isSelected
                       ? "shadow-sm"
@@ -231,13 +238,14 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
                   }
                 >
                   {cat} <span className="ml-1 opacity-60 font-medium">({count})</span>
-                </button>
+                </Link>
               );
             })}
           </div>
         )}
       </div>
 
+      <a href="#all-tests" className="mb-6 inline-block font-semibold text-[#2A5A8C] underline underline-offset-4">Browse the complete A–Z index ({filteredTests.length} tests)</a>
       {/* Results Grid */}
       {paginatedTests.length > 0 ? (
         <>
@@ -264,8 +272,9 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
                       <img
                         src={imgUrl}
                         alt={t.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           // Fallback to illustration card
                           (e.target as HTMLImageElement).style.display = "none";
@@ -325,6 +334,7 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 pb-16">
               <button
+                aria-label="Previous page"
                 disabled={currentPage === 1}
                 onClick={() => handlePageChange(currentPage - 1)}
                 className="w-10 h-10 rounded-xl border border-gray-200 dark:border-zinc-800 flex items-center justify-center text-gray-500 hover:bg-slate-50 dark:hover:bg-zinc-900 disabled:opacity-40"
@@ -344,6 +354,8 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
                     <button
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
+                      aria-label={`Page ${pageNum}`}
+                      aria-current={currentPage === pageNum ? "page" : undefined}
                       className={`w-10 h-10 rounded-xl font-semibold text-sm transition-all ${
                         currentPage === pageNum
                           ? "text-white"
@@ -371,6 +383,7 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
               })}
 
               <button
+                aria-label="Next page"
                 disabled={currentPage === totalPages}
                 onClick={() => handlePageChange(currentPage + 1)}
                 className="w-10 h-10 rounded-xl border border-gray-200 dark:border-zinc-800 flex items-center justify-center text-gray-500 hover:bg-slate-50 dark:hover:bg-zinc-900 disabled:opacity-40"
@@ -390,7 +403,7 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
           <button
             onClick={() => {
               setSearchQuery("");
-              setSelectedCategory("All");
+              setSelectedCategory(initialCategory);
             }}
             className="mt-6 px-5 py-2 text-white text-xs font-bold rounded-full transition-all hover:opacity-90"
             style={{ backgroundColor: app?.theme.primary }}
@@ -399,6 +412,12 @@ const MedOrthoSpecialTestsIndex: React.FC<MedOrthoSpecialTestsIndexProps> = ({
           </button>
         </div>
       )}
+      <section id="all-tests" aria-labelledby="all-tests-heading" className="scroll-mt-24 border-t border-slate-200 pt-10 pb-12">
+        <h2 id="all-tests-heading" className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">{selectedCategory === "All" ? "All special tests" : `${selectedCategory} tests`} A–Z</h2>
+        <ul className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+          {[...filteredTests].sort((a, b) => a.title.localeCompare(b.title)).map(t => <li key={slugify(t.title)} className="border-b border-slate-100 dark:border-zinc-800"><Link to={`/medortho/tests/${slugify(t.title)}`} className="block py-3 text-sm font-medium text-[#2A5A8C] dark:text-sky-300 hover:underline">{t.title}</Link></li>)}
+        </ul>
+      </section>
     </div>
   );
 };

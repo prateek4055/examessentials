@@ -45,36 +45,31 @@ export const CartDrawer = () => {
                     ) : (
                         <div className="space-y-6 py-4">
                             {cart.map((item) => (
-                                <ClayCard key={`${item.id}-${item.selectedSize}-${item.isDoubleSided}`} variant="flat" className="flex gap-4 p-3 bg-white/50">
-                                    <div className="w-20 h-24 rounded-lg overflow-hidden flex-shrink-0 shadow-clay-inner bg-white">
+                                <ClayCard key={`${item.id}-${item.selectedSize}-${item.selectedMaterial || 'matte'}`} variant="flat" className="flex gap-4 p-3 bg-white/50">
+                                    <div className="w-20 h-24 rounded-lg overflow-hidden flex-shrink-0 shadow-clay-inner bg-white flex items-center justify-center p-1">
                                         <img
                                             src={item.image}
                                             alt={item.title}
-                                            className="w-full h-full object-cover"
+                                            className="max-h-full max-w-full object-contain"
                                         />
                                     </div>
                                     <div className="flex-1 flex flex-col">
                                         <h4 className="font-semibold text-slate-900 text-sm line-clamp-2 leading-tight">
                                             {item.title}
                                         </h4>
-                                        <div className="flex flex-wrap gap-2 mt-1">
-                                            <span className="text-xs text-slate-500 font-medium bg-blue-50 px-2 py-0.5 rounded w-fit text-blue-600">
+                                        <div className="flex flex-wrap gap-1.5 mt-1">
+                                            <span className="text-[11px] font-bold bg-blue-50 px-2 py-0.5 rounded text-blue-700 capitalize">
+                                                {item.selectedMaterial || "matte"}
+                                            </span>
+                                            <span className="text-[11px] text-slate-600 font-medium bg-slate-100 px-2 py-0.5 rounded">
                                                 Size: {item.selectedSize}
                                             </span>
-                                            {item.isDoubleSided && (
-                                                <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded w-fit border border-green-200">
-                                                    + Double Sided (₹200)
-                                                </span>
-                                            )}
                                         </div>
-                                        {item.backPosterTitle && (
-                                            <span className="text-[10px] text-slate-400 mt-1 line-clamp-1">Back: {item.backPosterTitle}</span>
-                                        )}
                                         <div className="mt-auto pt-2 flex items-center justify-between">
                                             <div className="flex items-center gap-3 bg-[#F4F7FB] rounded-lg shadow-clay-inner p-1">
                                                 <button
                                                     className="p-1 hover:text-blue-600 disabled:opacity-30 transition-colors"
-                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1, item.isDoubleSided)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1, item.selectedMaterial)}
                                                     disabled={item.quantity <= 1}
                                                 >
                                                     <Minus className="w-3 h-3" />
@@ -82,7 +77,7 @@ export const CartDrawer = () => {
                                                 <span className="text-sm font-bold w-4 text-center text-slate-700">{item.quantity}</span>
                                                 <button
                                                     className="p-1 hover:text-blue-600 transition-colors"
-                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1, item.isDoubleSided)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1, item.selectedMaterial)}
                                                 >
                                                     <Plus className="w-3 h-3" />
                                                 </button>
@@ -90,7 +85,7 @@ export const CartDrawer = () => {
                                             <ClayButton
                                                 variant="icon"
                                                 className="h-8 w-8 text-red-400 hover:text-red-500 bg-transparent shadow-none hover:bg-red-50"
-                                                onClick={() => removeFromCart(item.id, item.selectedSize, item.isDoubleSided)}
+                                                onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedMaterial)}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </ClayButton>

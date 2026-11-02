@@ -89,7 +89,7 @@ const OrderSuccessPage = () => {
                                             </div>
                                             <div>
                                                 <h4 className="font-semibold text-slate-800">Custom Printing</h4>
-                                                <p className="text-sm text-slate-500">We are preparing your posters on 250gsm matte paper. Special double-sided prints take up to 5 days.</p>
+                                                <p className="text-sm text-slate-500">We are preparing your posters on premium 300 GSM archival paper. Standard dispatch takes 2-3 business days.</p>
                                             </div>
                                         </div>
                                         <div className="flex gap-4 p-4 rounded-xl border border-amber-100 bg-amber-50/50">

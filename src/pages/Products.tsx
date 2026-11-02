@@ -197,6 +197,7 @@ const Products = () => {
   return (
     <>
       <SEOHead
+        noIndex={searchParams.has("search")}
         title={pageTitle}
         description={pageDescription}
         canonical={canonicalPath}

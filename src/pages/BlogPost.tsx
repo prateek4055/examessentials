@@ -1,3 +1,4 @@
+import { isPlaceholderContent } from "@/lib/contentEligibility.js";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -263,7 +264,7 @@ const BlogPostPage = () => {
         ogImage={ogImage}
         keywords={pageKeywords}
         structuredData={blogStructuredData.length > 0 ? blogStructuredData : undefined}
-        noIndex={!isLoading && !post}
+        noIndex={!isLoading && (!post || isPlaceholderContent(post.content))}
       />
 
       <Navbar />
