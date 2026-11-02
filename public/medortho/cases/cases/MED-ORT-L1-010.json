@@ -1,0 +1,1215 @@
+{
+  "case_id": "MED-ORT-L1-010",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Closed fifth metacarpal neck fracture without rotational deformity",
+  "primary_diagnosis_registry_key": "ORT-L1-010",
+  "language": "en",
+  "display": {
+    "title": "The Punch That Hurt the Hand",
+    "subtitle": "It is not just the angle—rotation and skin integrity change the plan.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_010.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 40
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Liam O’Connor",
+    "age_years": 25,
+    "sex": "Male",
+    "hand_dominance": "Right",
+    "occupation": "Mechanic apprentice",
+    "setting": "Minor injury clinic",
+    "presenting_event": "Punched a wooden door with his closed right fist after an argument 2 hours ago; states no person was struck.",
+    "history": {
+      "chief_complaint": "Pain over right little-finger knuckle, 6/10.",
+      "mechanism": "Axial load through clenched fist against wooden door.",
+      "positive": [
+        "Swelling over dorsal fifth MCP region",
+        "Depressed fifth knuckle",
+        "Pain gripping objects"
+      ],
+      "negative": [
+        "No tooth contact or human bite",
+        "No open wound or paresthesia",
+        "No prior metacarpal injury"
+      ],
+      "medical": [
+        "No significant history"
+      ],
+      "medications": [
+        "None"
+      ],
+      "allergies": "No known drug allergies",
+      "goal": "Return to work with full grip and finger alignment"
+    },
+    "vitals": {
+      "pulse_bpm": 82,
+      "bp_mmHg": "124/78",
+      "rr_per_min": 16,
+      "spo2_percent": 99,
+      "temperature_C": 36.8,
+      "pain_0_10": 6
+    },
+    "physical_examination": {
+      "inspection": [
+        "Swollen fifth MCP area and depressed knuckle contour",
+        "Skin intact with no laceration or bite mark"
+      ],
+      "palpation": [
+        "Focal fifth metacarpal neck tenderness",
+        "No wrist/snuffbox tenderness"
+      ],
+      "movement": [
+        "Finger flexion/extension active but painful",
+        "No scissoring or rotational overlap when making a fist"
+      ],
+      "neurovascular": [
+        "Normal capillary refill all digits",
+        "Intact ulnar-side and other finger sensation",
+        "Tendon function intact"
+      ],
+      "safety_red_flags": [
+        "Fight bite over MCP with infection risk",
+        "Rotational deformity, open injury or tendon damage",
+        "Numb or ischemic finger"
+      ]
+    }
+  },
+  "learning_objective": "Recognize boxer fracture, screen for fight bite and rotation, and select safe nonoperative support and follow-up.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: No significant history. Medicines: None. Allergies: No known drug allergies.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Pain over right little-finger knuckle, 6/10. Swelling over dorsal fifth MCP region.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No tooth contact or human bite; No open wound or paresthesia; No prior metacarpal injury",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Axial load through clenched fist against wooden door.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Return to work with full grip and finger alignment. Occupation: Mechanic apprentice.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No tooth contact or human bite; No open wound or paresthesia; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Focal fifth metacarpal neck tenderness",
+          "No wrist/snuffbox tenderness"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Swollen fifth MCP area and depressed knuckle contour",
+          "Skin intact with no laceration or bite mark"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Normal capillary refill all digits",
+          "Intact ulnar-side and other finger sensation",
+          "Tendon function intact"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Fight bite over MCP with infection risk",
+          "Rotational deformity, open injury or tendon damage",
+          "Numb or ischemic finger"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Swollen fifth MCP area and depressed knuckle contour",
+          "Skin intact with no laceration or bite mark"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Finger flexion/extension active but painful",
+          "No scissoring or rotational overlap when making a fist"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "CRP and ESR",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "CRP 2 mg/L",
+            "ESR 8 mm/h"
+          ],
+          "impression": "Normal inflammation markers.",
+          "title": "CRP and ESR — Report"
+        },
+        "rationale": "No infection features.",
+        "incorrect_order_penalty": 5,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No infection features.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hemoglobin 15.1 g/dL",
+            "WBC 7.5 x10^9/L"
+          ],
+          "impression": "No hematologic abnormality.",
+          "title": "CBC — Report"
+        },
+        "rationale": "No bite or infection features.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No bite or infection features.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Follow-up right hand radiographs if function/alignment deteriorates",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "Stable neck fracture angle and early callus"
+          ],
+          "impression": "Maintained alignment.",
+          "title": "Follow-up right hand radiographs if function/alignment deteriorates — Report"
+        },
+        "rationale": "Based on symptoms, stability and treatment plan.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Based on symptoms, stability and treatment plan.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right wrist PA/lateral radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No carpal or distal radius fracture"
+          ],
+          "impression": "No wrist injury.",
+          "title": "Right wrist PA/lateral radiographs — Report"
+        },
+        "rationale": "No wrist tenderness.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No wrist tenderness.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI hand",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Fracture edema with intact major tendon continuity"
+          ],
+          "impression": "Known fracture.",
+          "title": "MRI hand — Report"
+        },
+        "rationale": "Does not change care in closed stable injury.",
+        "incorrect_order_penalty": 11,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Does not change care in closed stable injury.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Wound swab culture",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No swab obtained because skin intact"
+          ],
+          "impression": "Not applicable.",
+          "title": "Wound swab culture — Report"
+        },
+        "rationale": "No wound exists.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No wound exists.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right fifth finger isolated radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Fifth metacarpal neck fracture partially visible",
+            "No phalangeal fracture"
+          ],
+          "impression": "No separate digit fracture.",
+          "title": "Right fifth finger isolated radiographs — Report"
+        },
+        "rationale": "Hand views already adequately define neck.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Hand views already adequately define neck.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right hand PA, oblique and lateral radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Extra-articular fifth metacarpal neck fracture",
+            "Apex-dorsal angulation about 28 degrees",
+            "No articular involvement or appreciable shortening"
+          ],
+          "impression": "Closed fifth metacarpal neck fracture without significant displacement other than moderate angulation.",
+          "title": "Right hand PA, oblique and lateral radiographs — Report"
+        },
+        "rationale": "Characterize metacarpal neck fracture and its angulation.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "AAOS_HAND"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Characterize metacarpal neck fracture and its angulation.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Comparison opposite hand radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No left hand fracture"
+          ],
+          "impression": "Normal left hand.",
+          "title": "Comparison opposite hand radiographs — Report"
+        },
+        "rationale": "Not necessary.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not necessary.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Hand ultrasound",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Subcutaneous edema over fifth metacarpal"
+          ],
+          "impression": "Soft-tissue swelling.",
+          "title": "Hand ultrasound — Report"
+        },
+        "rationale": "Does not replace hand radiography.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Does not replace hand radiography.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT right hand",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Extra-articular fifth metacarpal neck fracture without comminution"
+          ],
+          "impression": "Known simple fracture.",
+          "title": "CT right hand — Report"
+        },
+        "rationale": "Not needed with adequate radiographs.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not needed with adequate radiographs.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Nerve conduction studies",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No neuropathy found"
+          ],
+          "impression": "No nerve disease.",
+          "title": "Nerve conduction studies — Report"
+        },
+        "rationale": "Not an acute indication.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not an acute indication.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Fifth MCP dislocation",
+        "feedback": "Joint congruent, fracture present.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but joint congruent, fracture present."
+      },
+      {
+        "label": "Fifth proximal phalanx fracture",
+        "feedback": "Phalanx intact.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but phalanx intact."
+      },
+      {
+        "label": "Fight bite with MCP septic arthritis",
+        "feedback": "No human contact, wound, infection or joint findings.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no human contact, wound, infection or joint findings."
+      },
+      {
+        "label": "Carpal boss",
+        "feedback": "Acute traumatic neck fracture explains presentation.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but acute traumatic neck fracture explains presentation."
+      },
+      {
+        "label": "Fifth metacarpal base fracture",
+        "feedback": "Fracture is distal, near MCP joint.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but fracture is distal, near MCP joint."
+      },
+      {
+        "label": "Closed fifth metacarpal neck fracture (boxer’s fracture)",
+        "feedback": "Clenched fist injury with characteristic fifth metacarpal neck line.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Clenched fist injury with characteristic fifth metacarpal neck line."
+      },
+      {
+        "label": "Fourth metacarpal fracture",
+        "feedback": "Injury localized to fifth metacarpal.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but injury localized to fifth metacarpal."
+      },
+      {
+        "label": "Hamate fracture",
+        "feedback": "Hamate intact; pain at fifth neck.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but hamate intact; pain at fifth neck."
+      },
+      {
+        "label": "Extensor tendon rupture",
+        "feedback": "Tendon function intact and fracture visible.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but tendon function intact and fracture visible."
+      },
+      {
+        "label": "Fifth metacarpal shaft fracture",
+        "feedback": "The fracture is at neck, not shaft.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but the fracture is at neck, not shaft."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-010-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Prescribe antibiotics for all closed clean hand fractures",
+        "requires": [],
+        "teaching_point": "No routine indication in closed injury.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T18",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: No routine indication in closed injury.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Apply suitable ulnar gutter support or buddy strapping per local protocol and comfort",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Protect injured metacarpal without unnecessary prolonged immobilization.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Protect injured metacarpal without unnecessary prolonged immobilization.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Teach safe early finger movement of permitted joints and avoidance of heavy punching/loading",
+        "requires": [
+          "T07"
+        ],
+        "teaching_point": "Prevent stiffness while protecting healing.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Prevent stiffness while protecting healing.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Check finger perfusion, sensation and rotation after support is applied",
+        "requires": [
+          "T06"
+        ],
+        "teaching_point": "Ensure the chosen support does not create new problems.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Ensure the chosen support does not create new problems.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Arrange hand/fracture follow-up if indicated and explain red flags: rotation, worsening pain or swelling",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Review function and healing and recognize complications.",
+        "kind": "required",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Review function and healing and recognize complications.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Confirm mechanism and inspect knuckles for laceration/human bite; assess skin and neurovascular status",
+        "requires": [],
+        "teaching_point": "A clenched-fist human bite changes infection management dramatically.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. A clenched-fist human bite changes infection management dramatically.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Check flexion cascade for rotational scissoring and test active extension/flexion of all digits",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Rotation poorly tolerated even if angulation seems modest.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Rotation poorly tolerated even if angulation seems modest.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Forcefully manipulate without checking rotation or imaging",
+        "requires": [],
+        "teaching_point": "Can harm soft tissues and worsen alignment.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Can harm soft tissues and worsen alignment.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Treat obvious rotational finger overlap as normal",
+        "requires": [],
+        "teaching_point": "Malrotation can impair hand function.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Malrotation can impair hand function.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Use a tight circumferential cast that makes fingers numb",
+        "requires": [],
+        "teaching_point": "Neurovascular compromise must be avoided.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Neurovascular compromise must be avoided.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Provide simple analgesia, ice/elevation and comfort measures",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Early comfort.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Early comfort.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Order MRI before routine hand radiographs",
+        "requires": [],
+        "teaching_point": "Plain films are first-line.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Plain films are first-line.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Perform immediate fixation on every uncomplicated boxer fracture",
+        "requires": [],
+        "teaching_point": "Not routinely necessary.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Not routinely necessary.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Ignore a possible tooth puncture over the fifth MCP joint",
+        "requires": [],
+        "teaching_point": "Fight bite can cause deep infection and needs different pathway.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Fight bite can cause deep infection and needs different pathway.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Tell patient to resume punching immediately",
+        "requires": [],
+        "teaching_point": "Risk reinjury.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T17",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Risk reinjury.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Keep all finger joints completely immobilized for 12 weeks",
+        "requires": [],
+        "teaching_point": "Excessive immobilization causes stiffness.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Excessive immobilization causes stiffness.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discuss conservative care with clinician/hand service when angulation acceptable and rotation absent",
+        "requires": [
+          "T02",
+          "T04"
+        ],
+        "teaching_point": "Many uncomplicated fifth neck fractures do not require surgery.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Many uncomplicated fifth neck fractures do not require surgery.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Review hand radiographs for neck angulation, shortening and joint involvement",
+        "requires": [
+          "T02"
+        ],
+        "teaching_point": "Assess the bony pattern in context of rotational exam.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Assess the bony pattern in context of rotational exam.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09"
+    ],
+    "required_investigation_ids": [
+      "I01"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Liam needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Liam! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Clenched-fist skin examination is essential to detect human bite.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Did the fist hit a person or an object, and is the skin intact?",
+      "differentiating_clue": "Fifth MCP tenderness after punching with a fifth metacarpal neck fracture and no rotational overlap.",
+      "clinical_coaching": "Closed nonrotated boxer fracture: examine for bite, confirm alignment on hand views, provide appropriate support and movement/follow-up advice.",
+      "critical_red_flags": [
+        "Fight bite over MCP with infection risk",
+        "Rotational deformity, open injury or tendon damage",
+        "Numb or ischemic finger"
+      ],
+      "key_teaching_points": [
+        "Clenched-fist skin examination is essential to detect human bite.",
+        "Assess rotation by looking for finger scissoring in flexion.",
+        "Acceptable stable fifth metacarpal neck injuries often recover with nonoperative support.",
+        "Angulation tolerance varies; assess function and local protocols rather than a single universal cutoff."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-010-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Axial load through clenched fist against wooden door.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-010|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-010-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Normal capillary refill all digits. Intact ulnar-side and other finger sensation. Red flag: Fight bite over MCP with infection risk.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-010|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-010-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Right hand PA, oblique and lateral radiographs. Did the fist hit a person or an object, and is the skin intact?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-010|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-010-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Fifth MCP tenderness after punching with a fifth metacarpal neck fracture and no rotational overlap.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-010|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-010-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Closed nonrotated boxer fracture: examine for bite, confirm alignment on hand views, provide appropriate support and movement/follow-up advice.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-010|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "Which clinical finding can mandate a different management pathway?",
+        "options": [
+          {
+            "text": "Rotational scissoring",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Mild bruising only",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Pain score 6",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Right-hand dominance alone",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Rotational deformity has functional consequences.",
+        "id": "Q01",
+        "correct_option_id": "Q01O01"
+      },
+      {
+        "question": "What is particularly important after a clenched-fist injury?",
+        "options": [
+          {
+            "text": "Look for human bite over MCP",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Check Achilles tendon",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Examine hip labrum",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Order bone density scan",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "Clenched-fist bite may introduce serious deep-space infection.",
+        "id": "Q02",
+        "correct_option_id": "Q02O01"
+      },
+      {
+        "question": "Many closed nonrotated fifth metacarpal neck fractures can receive:",
+        "options": [
+          {
+            "text": "Ulnar gutter support or buddy taping",
+            "id": "Q03O01"
+          },
+          {
+            "text": "No assessment of alignment",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Months of total hand paralysis",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Automatic emergency ORIF",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "Nonoperative care often appropriate when alignment/rotation acceptable.",
+        "id": "Q03",
+        "correct_option_id": "Q03O01"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Recognize boxer fracture, screen for fight bite and rotation, and select safe nonoperative support and follow-up.",
+    "key_takeaways": [
+      "Clenched-fist skin examination is essential to detect human bite.",
+      "Assess rotation by looking for finger scissoring in flexion.",
+      "Acceptable stable fifth metacarpal neck injuries often recover with nonoperative support.",
+      "Angulation tolerance varies; assess function and local protocols rather than a single universal cutoff."
+    ],
+    "watch_for": [
+      "Fight bite over MCP with infection risk",
+      "Rotational deformity, open injury or tendon damage",
+      "Numb or ischemic finger"
+    ],
+    "followup_relevance": "Return to work with full grip and finger alignment"
+  },
+  "references": [
+    {
+      "key": "AAOS_HAND",
+      "organization": "AAOS OrthoInfo",
+      "title": "Hand Fractures",
+      "url": "https://www.orthoinfo.org/diseases--conditions/hand-fractures",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "BOX",
+      "organization": "Cureus / PubMed Central",
+      "title": "Management of Fifth Metacarpal Neck Fracture: A Literature Review",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7451089/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_010.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}

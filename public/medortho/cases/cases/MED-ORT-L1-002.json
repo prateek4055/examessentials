@@ -1,0 +1,1318 @@
+{
+  "case_id": "MED-ORT-L1-002",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Displaced Smith-pattern distal radius fracture with unstable alignment",
+  "primary_diagnosis_registry_key": "ORT-L1-002",
+  "language": "en",
+  "display": {
+    "title": "The Wrist Bent the Other Way",
+    "subtitle": "Volar displacement looks familiar—until the reduction fails to hold.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_002.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 44
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Arjun Mehta",
+    "age_years": 34,
+    "sex": "Male",
+    "hand_dominance": "Left",
+    "occupation": "Warehouse supervisor",
+    "setting": "Emergency department",
+    "presenting_event": "Fell backwards from a low step onto the dorsum of his flexed left wrist 2 hours ago.",
+    "history": {
+      "chief_complaint": "Pain and volar wrist deformity, pain 8/10.",
+      "mechanism": "Fall onto a flexed left wrist; not a classic extended-wrist FOOSH.",
+      "positive": [
+        "Rapid swelling",
+        "Difficulty holding objects",
+        "Tenderness over distal radius"
+      ],
+      "negative": [
+        "No wound or tingling",
+        "No other painful joints",
+        "No anticoagulant use"
+      ],
+      "medical": [
+        "Generally healthy"
+      ],
+      "medications": [
+        "None regular"
+      ],
+      "allergies": "None known",
+      "goal": "Recover left-hand use for work"
+    },
+    "vitals": {
+      "pulse_bpm": 92,
+      "bp_mmHg": "128/78",
+      "rr_per_min": 17,
+      "spo2_percent": 98,
+      "temperature_C": 36.8,
+      "pain_0_10": 8
+    },
+    "physical_examination": {
+      "inspection": [
+        "Closed distal wrist swelling with volar contour deformity",
+        "No skin tenting"
+      ],
+      "palpation": [
+        "Marked distal radial tenderness",
+        "No isolated scaphoid or elbow tenderness"
+      ],
+      "movement": [
+        "Wrist movement restricted by pain",
+        "Finger active movement preserved"
+      ],
+      "neurovascular": [
+        "Warm hand, capillary refill 2 seconds",
+        "Intact median, radial and ulnar sensation and motor screening",
+        "Palpable radial pulse"
+      ],
+      "safety_red_flags": [
+        "Progressive median nerve symptoms",
+        "Open or threatened skin",
+        "Vascular compromise or worsening pain"
+      ]
+    }
+  },
+  "learning_objective": "Interpret volar displacement, recognize reduction failure and escalate appropriately rather than forcing a routine casting pathway.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Recover left-hand use for work. Occupation: Warehouse supervisor.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Pain and volar wrist deformity, pain 8/10. Rapid swelling.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: Generally healthy. Medicines: None regular. Allergies: None known.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Fall onto a flexed left wrist; not a classic extended-wrist FOOSH.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No wound or tingling; No other painful joints; No anticoagulant use",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No wound or tingling; No other painful joints; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Closed distal wrist swelling with volar contour deformity",
+          "No skin tenting"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Progressive median nerve symptoms",
+          "Open or threatened skin",
+          "Vascular compromise or worsening pain"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Marked distal radial tenderness",
+          "No isolated scaphoid or elbow tenderness"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Warm hand, capillary refill 2 seconds",
+          "Intact median, radial and ulnar sensation and motor screening",
+          "Palpable radial pulse"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Wrist movement restricted by pain",
+          "Finger active movement preserved"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Closed distal wrist swelling with volar contour deformity",
+          "No skin tenting"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Arterial Doppler wrist",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Patent radial and ulnar arteries"
+          ],
+          "impression": "No vascular occlusion.",
+          "title": "Arterial Doppler wrist — Report"
+        },
+        "rationale": "Not indicated when perfusion and pulse are normal.",
+        "incorrect_order_penalty": 9,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not indicated when perfusion and pulse are normal.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Post-operative wrist PA/lateral radiographs",
+        "role": "required_later",
+        "phase": "postoperative",
+        "report": {
+          "findings": [
+            "Volar plate/screw fixation maintaining radial alignment",
+            "No intra-articular screw penetration identified"
+          ],
+          "impression": "Satisfactory postoperative alignment in this scenario.",
+          "title": "Post-operative wrist PA/lateral radiographs — Report"
+        },
+        "rationale": "Confirm stabilization and hardware positioning after operation.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [
+          "T09"
+        ],
+        "reference_keys": [],
+        "id": "I13",
+        "availability": {
+          "trigger": "postoperative",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Confirm stabilization and hardware positioning after operation.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Creatinine/electrolytes",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Creatinine 0.9 mg/dL",
+            "Na 140 mmol/L",
+            "K 4.1 mmol/L"
+          ],
+          "impression": "Within reference range.",
+          "title": "Creatinine/electrolytes — Report"
+        },
+        "rationale": "May be appropriate for anesthesia evaluation.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. May be appropriate for anesthesia evaluation.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT angiography upper limb",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Arteries patent; no extravasation"
+          ],
+          "impression": "No arterial injury.",
+          "title": "CT angiography upper limb — Report"
+        },
+        "rationale": "Unnecessary without ischemia or suspected vessel injury.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I14",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Unnecessary without ischemia or suspected vessel injury.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left wrist PA and lateral radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Distal radial metaphyseal fracture with volar tilt approximately 24 degrees",
+            "Volar translation approximately 6 mm",
+            "No clear radiocarpal rim fragment"
+          ],
+          "impression": "Displaced extra-articular volarly angulated distal radius fracture, Smith pattern.",
+          "title": "Left wrist PA and lateral radiographs — Report"
+        },
+        "rationale": "Differentiate volar from dorsal displacement and exclude Barton rim injury.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "SMITH"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Differentiate volar from dorsal displacement and exclude Barton rim injury.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Left hand PA/oblique radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No metacarpal or phalangeal fracture"
+          ],
+          "impression": "No separate hand injury.",
+          "title": "Left hand PA/oblique radiographs — Report"
+        },
+        "rationale": "No hand tenderness.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No hand tenderness.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "ECG",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Sinus rhythm, 86/min"
+          ],
+          "impression": "No acute ECG abnormality.",
+          "title": "ECG — Report"
+        },
+        "rationale": "Not routinely required in otherwise fit 34-year-old.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Not routinely required in otherwise fit 34-year-old.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Coagulation profile",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "INR 1.0",
+            "aPTT 28 s"
+          ],
+          "impression": "No coagulation abnormality.",
+          "title": "Coagulation profile — Report"
+        },
+        "rationale": "Conditional on surgical workup or bleeding history.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Conditional on surgical workup or bleeding history.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT wrist for suspected radiocarpal rim involvement",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Extra-articular metaphyseal configuration",
+            "No volar marginal articular fragment"
+          ],
+          "impression": "No Barton fracture-dislocation.",
+          "title": "CT wrist for suspected radiocarpal rim involvement — Report"
+        },
+        "rationale": "Can help if plain films show complex articular/rim involvement; not routine here.",
+        "incorrect_order_penalty": 4,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Can help if plain films show complex articular/rim involvement; not routine here.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right wrist comparison radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Normal contralateral radius"
+          ],
+          "impression": "Normal right wrist.",
+          "title": "Right wrist comparison radiographs — Report"
+        },
+        "rationale": "Not needed.",
+        "incorrect_order_penalty": 8,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not needed.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Post-manipulation left wrist PA and lateral radiographs",
+        "role": "required_later",
+        "phase": "post_reduction",
+        "report": {
+          "findings": [
+            "Persistent volar tilt approximately 17 degrees and translation 4 mm",
+            "Reduction unstable within splint"
+          ],
+          "impression": "Unacceptable residual volar displacement; orthopedic fixation assessment indicated.",
+          "title": "Post-manipulation left wrist PA and lateral radiographs — Report"
+        },
+        "rationale": "The simulated reduction is not maintained—management must change.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [
+          "T06"
+        ],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "post_reduction",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: The simulated reduction is not maintained—management must change.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "MRI wrist",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Distal radial edema and fracture",
+            "No additional major soft-tissue injury"
+          ],
+          "impression": "Known fracture.",
+          "title": "MRI wrist — Report"
+        },
+        "rationale": "Does not change acute management.",
+        "incorrect_order_penalty": 11,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Does not change acute management.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left forearm radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Distal radius fracture included",
+            "No proximal radial or ulnar shaft injury"
+          ],
+          "impression": "No shaft fracture.",
+          "title": "Left forearm radiographs — Report"
+        },
+        "rationale": "Useful only if more proximal tenderness.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Useful only if more proximal tenderness.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hemoglobin 14.2 g/dL",
+            "WBC 8.3 x10^9/L",
+            "Platelets 262 x10^9/L"
+          ],
+          "impression": "No relevant hematologic abnormality.",
+          "title": "CBC — Report"
+        },
+        "rationale": "Relevant if operative pathway and facility protocols indicate.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Relevant if operative pathway and facility protocols indicate.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [
+      "I13",
+      "I12"
+    ],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Lunate dislocation",
+        "feedback": "Carpal row remains aligned.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but carpal row remains aligned."
+      },
+      {
+        "label": "Scaphoid waist fracture",
+        "feedback": "Distal radius is fractured.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but distal radius is fractured."
+      },
+      {
+        "label": "Smith-pattern displaced extra-articular distal radius fracture",
+        "feedback": "Distal radius displaced volarly after a fall on flexed wrist.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Distal radius displaced volarly after a fall on flexed wrist."
+      },
+      {
+        "label": "Volar Barton fracture-dislocation",
+        "feedback": "Would involve volar articular rim with radiocarpal subluxation.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but would involve volar articular rim with radiocarpal subluxation."
+      },
+      {
+        "label": "Galeazzi fracture-dislocation",
+        "feedback": "Radial shaft and DRUJ pattern are absent.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but radial shaft and DRUJ pattern are absent."
+      },
+      {
+        "label": "Wrist ligament sprain",
+        "feedback": "Cannot explain displaced metaphyseal fracture.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but cannot explain displaced metaphyseal fracture."
+      },
+      {
+        "label": "Radial styloid fracture",
+        "feedback": "Fracture traverses distal metaphysis rather than styloid only.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but fracture traverses distal metaphysis rather than styloid only."
+      },
+      {
+        "label": "Distal ulnar physeal fracture",
+        "feedback": "Skeletally mature and radius involved.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but skeletally mature and radius involved."
+      },
+      {
+        "label": "Dorsal Barton fracture",
+        "feedback": "No dorsal rim articular injury.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no dorsal rim articular injury."
+      },
+      {
+        "label": "Colles fracture",
+        "feedback": "Would show dorsal displacement.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but would show dorsal displacement."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-002-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Discharge with sling alone despite persistent major displacement",
+        "requires": [],
+        "teaching_point": "Unstable malalignment needs specialist management.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Unstable malalignment needs specialist management.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Escalate to orthopedic surgeon for definitive fixation planning and informed discussion",
+        "requires": [
+          "T07"
+        ],
+        "teaching_point": "Persistent unacceptable displacement warrants specialist decision, often ORIF.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Persistent unacceptable displacement warrants specialist decision, often ORIF.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Consent and arrange reduction analgesia/anesthesia with qualified staff",
+        "requires": [
+          "T03"
+        ],
+        "teaching_point": "Safe attempt at reduction requires expertise and pain control.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Safe attempt at reduction requires expertise and pain control.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Apply temporary well-padded molded splint and check perfusion",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Stabilize while assessing reduction maintenance.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Stabilize while assessing reduction maintenance.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Review post-reduction films showing persisting unstable volar displacement",
+        "requires": [
+          "T06"
+        ],
+        "teaching_point": "Failure to maintain alignment changes the definitive plan.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [
+          "I12"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Failure to maintain alignment changes the definitive plan.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Assess skin, distal pulses, capillary refill and all major nerve functions",
+        "requires": [],
+        "teaching_point": "Baseline perfusion and neurologic examination precedes manipulation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Baseline perfusion and neurologic examination precedes manipulation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Order wrist MRI before standard radiographs",
+        "requires": [],
+        "teaching_point": "Plain films are primary.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Plain films are primary.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Label the injury as Colles without reading the lateral view",
+        "requires": [],
+        "teaching_point": "Volar versus dorsal displacement matters.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Volar versus dorsal displacement matters.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Attempt gentle closed reduction with appropriate technique",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Initial restoration of alignment is reasonable under trained care.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Initial restoration of alignment is reasonable under trained care.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Review volar displacement and consult orthopedics because unstable alignment is possible",
+        "requires": [
+          "T01",
+          "T02"
+        ],
+        "teaching_point": "Volar angulation can be unstable and may need fixation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Volar angulation can be unstable and may need fixation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Perform repeated forceful reductions after failure to maintain position",
+        "requires": [],
+        "teaching_point": "Risks soft-tissue and neurovascular harm.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Risks soft-tissue and neurovascular harm.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Provide analgesia, support the arm and protect swelling",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Early comfort and protection.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Early comfort and protection.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Place a tight cast without checking fingers",
+        "requires": [],
+        "teaching_point": "Swelling and compression can compromise perfusion.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T17",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Swelling and compression can compromise perfusion.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Perform ORIF before counseling and surgical safety check",
+        "requires": [],
+        "teaching_point": "Consent and safety protocols are required.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T19",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Consent and safety protocols are required.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Reassess hand perfusion and nerve function and review postoperative alignment",
+        "requires": [
+          "T09"
+        ],
+        "teaching_point": "Confirm postoperative safety and fixation position.",
+        "kind": "required",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [
+          "I13"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Confirm postoperative safety and fixation position.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Arrange wound care, finger movement, staged rehabilitation and specialist follow-up",
+        "requires": [
+          "T10"
+        ],
+        "teaching_point": "Recovery and rehabilitation follow fixation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Recovery and rehabilitation follow fixation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Begin heavy lifting immediately after fixation",
+        "requires": [],
+        "teaching_point": "Healing and rehab must be graded.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T18",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Healing and rehab must be graded.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Ignore median nerve symptoms if they appear",
+        "requires": [],
+        "teaching_point": "Nerve symptoms demand reassessment.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Nerve symptoms demand reassessment.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Give prophylactic antibiotics to treat a closed injury without surgery",
+        "requires": [],
+        "teaching_point": "Antibiotics are not a general treatment for closed fractures.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T20",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Antibiotics are not a general treatment for closed fractures.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Arrange orthopedic-led operative fixation using suitable stabilization and surgical safety protocols",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Only a trained surgical team performs indicated fixation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Only a trained surgical team performs indicated fixation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10",
+      "T11"
+    ],
+    "required_investigation_ids": [
+      "I13",
+      "I01",
+      "I12"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Arjun needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Arjun! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Smith is volar distal radius displacement, opposite Colles.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Is the distal radius angulated toward the palm or the back of the hand?",
+      "differentiating_clue": "A volarly displaced extra-articular distal radius fracture after a fall onto a flexed wrist is not a Colles fracture.",
+      "clinical_coaching": "Smith pattern. Attempt safe reduction under qualified staff, reassess films; persistent displacement prompts orthopedic fixation planning.",
+      "critical_red_flags": [
+        "Progressive median nerve symptoms",
+        "Open or threatened skin",
+        "Vascular compromise or worsening pain"
+      ],
+      "key_teaching_points": [
+        "Smith is volar distal radius displacement, opposite Colles.",
+        "A persistent unstable reduction can require specialist fixation.",
+        "Post-reduction imaging changes the treatment branch in this case.",
+        "Neurovascular reassessment remains essential."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-002-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Fall onto a flexed left wrist; not a classic extended-wrist FOOSH.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-002|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-002-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Warm hand, capillary refill 2 seconds. Intact median, radial and ulnar sensation and motor screening. Red flag: Progressive median nerve symptoms.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-002|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-002-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Left wrist PA and lateral radiographs. Is the distal radius angulated toward the palm or the back of the hand?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-002|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-002-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "A volarly displaced extra-articular distal radius fracture after a fall onto a flexed wrist is not a Colles fracture.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-002|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-002-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Smith pattern. Attempt safe reduction under qualified staff, reassess films; persistent displacement prompts orthopedic fixation planning.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-002|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "Which direction defines a Smith fracture?",
+        "options": [
+          {
+            "text": "Only radial",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Purely proximal",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Dorsal",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Volar",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Smith pattern involves volar displacement or angulation.",
+        "id": "Q01",
+        "correct_option_id": "Q01O04"
+      },
+      {
+        "question": "After reduction the fracture remains markedly volarly displaced. What next?",
+        "options": [
+          {
+            "text": "Ignore alignment",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Discharge with sling only",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Specialist fixation assessment",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Forcefully repeat multiple times without review",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "Instability after reduction supports specialist management.",
+        "id": "Q02",
+        "correct_option_id": "Q02O03"
+      },
+      {
+        "question": "Which examination matters before and after reduction?",
+        "options": [
+          {
+            "text": "DEXA on same day",
+            "id": "Q03O01"
+          },
+          {
+            "text": "Shoulder flexion force test",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Neurovascular assessment",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Only elbow circumference",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "Median nerve and circulation may be threatened by injury or treatment.",
+        "id": "Q03",
+        "correct_option_id": "Q03O03"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Interpret volar displacement, recognize reduction failure and escalate appropriately rather than forcing a routine casting pathway.",
+    "key_takeaways": [
+      "Smith is volar distal radius displacement, opposite Colles.",
+      "A persistent unstable reduction can require specialist fixation.",
+      "Post-reduction imaging changes the treatment branch in this case.",
+      "Neurovascular reassessment remains essential."
+    ],
+    "watch_for": [
+      "Progressive median nerve symptoms",
+      "Open or threatened skin",
+      "Vascular compromise or worsening pain"
+    ],
+    "followup_relevance": "Recover left-hand use for work"
+  },
+  "references": [
+    {
+      "key": "SMITH",
+      "organization": "NCBI Bookshelf / StatPearls",
+      "title": "Smith Fracture Review",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK547714/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "AAOS_DR",
+      "organization": "AAOS/ASSH",
+      "title": "Management of Distal Radius Fractures CPG (2020)",
+      "url": "https://www.aaos.org/aaos-home/newsroom/press-releases/management-of-distal-radius-fractures-clinical-practice-guidelines-cpg-fact-sheet/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "BOAST_DR",
+      "organization": "BOA",
+      "title": "BOAST 16 Management of Distal Radial Fractures",
+      "url": "https://www.boa.ac.uk/resource/boast-16-pdf.html",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_002.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}

@@ -1,0 +1,1207 @@
+{
+  "case_id": "MED-ORT-L1-007",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Minimally displaced proximal humerus surgical-neck fracture",
+  "primary_diagnosis_registry_key": "ORT-L1-007",
+  "language": "en",
+  "display": {
+    "title": "The Shoulder After a Small Fall",
+    "subtitle": "An older adult needs a good plan—not automatic shoulder surgery.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_007.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 39
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Eleanor Price",
+    "age_years": 73,
+    "sex": "Female",
+    "hand_dominance": "Right",
+    "occupation": "Retired librarian",
+    "setting": "Emergency department",
+    "presenting_event": "Tripped on a doorstep and landed on the left shoulder this morning.",
+    "history": {
+      "chief_complaint": "Left upper arm pain 7/10 and limited shoulder movement.",
+      "mechanism": "Low-energy direct impact to shoulder with no seizure or dislocation mechanism.",
+      "positive": [
+        "Proximal arm bruising/swelling",
+        "Pain trying to dress",
+        "Unable to lift arm overhead"
+      ],
+      "negative": [
+        "No numbness or cool hand",
+        "No wound",
+        "No chest symptoms or head injury"
+      ],
+      "medical": [
+        "Hypertension",
+        "Prior fall last year without fracture"
+      ],
+      "medications": [
+        "Amlodipine"
+      ],
+      "allergies": "No known allergies",
+      "goal": "Regain independent dressing and household tasks"
+    },
+    "vitals": {
+      "pulse_bpm": 85,
+      "bp_mmHg": "134/80",
+      "rr_per_min": 16,
+      "spo2_percent": 98,
+      "temperature_C": 36.6,
+      "pain_0_10": 7
+    },
+    "physical_examination": {
+      "inspection": [
+        "Proximal upper arm swelling and ecchymosis",
+        "Shoulder contour grossly maintained, no wound"
+      ],
+      "palpation": [
+        "Tender at proximal humeral surgical neck",
+        "No clavicle or elbow tenderness"
+      ],
+      "movement": [
+        "Shoulder movements guarded",
+        "Finger/wrist and elbow movements preserved"
+      ],
+      "neurovascular": [
+        "Axillary sensory patch intact",
+        "Radial/median/ulnar function intact",
+        "Warm hand and palpable pulses"
+      ],
+      "safety_red_flags": [
+        "New neurovascular deficit",
+        "Dislocation or open injury",
+        "Increasing swelling or skin compromise"
+      ]
+    }
+  },
+  "learning_objective": "Interpret proximal humerus radiographs and select conservative care, safe early rehabilitation and fragility prevention.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Low-energy direct impact to shoulder with no seizure or dislocation mechanism.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No numbness or cool hand; No wound; No chest symptoms or head injury",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No numbness or cool hand; No wound; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Left upper arm pain 7/10 and limited shoulder movement. Proximal arm bruising/swelling.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Regain independent dressing and household tasks. Occupation: Retired librarian.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: Hypertension, Prior fall last year without fracture. Medicines: Amlodipine. Allergies: No known allergies.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Proximal upper arm swelling and ecchymosis",
+          "Shoulder contour grossly maintained, no wound"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Proximal upper arm swelling and ecchymosis",
+          "Shoulder contour grossly maintained, no wound"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "New neurovascular deficit",
+          "Dislocation or open injury",
+          "Increasing swelling or skin compromise"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Shoulder movements guarded",
+          "Finger/wrist and elbow movements preserved"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Tender at proximal humeral surgical neck",
+          "No clavicle or elbow tenderness"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Axillary sensory patch intact",
+          "Radial/median/ulnar function intact",
+          "Warm hand and palpable pulses"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Coagulation screen",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "INR 1.0"
+          ],
+          "impression": "Normal coagulation.",
+          "title": "Coagulation screen — Report"
+        },
+        "rationale": "No bleeding history or anticoagulants.",
+        "incorrect_order_penalty": 5,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No bleeding history or anticoagulants.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Chest radiograph",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No acute thoracic abnormality"
+          ],
+          "impression": "Normal chest findings.",
+          "title": "Chest radiograph — Report"
+        },
+        "rationale": "No thoracic concern.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No thoracic concern.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT left shoulder",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Two-part impacted proximal humerus pattern",
+            "No head-splitting or articular comminution"
+          ],
+          "impression": "Minimally displaced two-part proximal humerus fracture.",
+          "title": "CT left shoulder — Report"
+        },
+        "rationale": "Consider if plain radiographs are insufficient for management planning.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Consider if plain radiographs are insufficient for management planning.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Follow-up shoulder radiographs as clinically indicated",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "Early callus and unchanged alignment at planned review"
+          ],
+          "impression": "Maintained fracture alignment.",
+          "title": "Follow-up shoulder radiographs as clinically indicated — Report"
+        },
+        "rationale": "Detect secondary displacement where clinically relevant.",
+        "incorrect_order_penalty": 1,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Detect secondary displacement where clinically relevant.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Vascular Doppler of arm",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Patent upper-limb arterial flow"
+          ],
+          "impression": "No occlusion.",
+          "title": "Vascular Doppler of arm — Report"
+        },
+        "rationale": "No vascular deficit.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No vascular deficit.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left humerus radiographs including shaft",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Surgical-neck fracture confirmed",
+            "No additional shaft fracture"
+          ],
+          "impression": "No additional shaft injury.",
+          "title": "Left humerus radiographs including shaft — Report"
+        },
+        "rationale": "Useful if tenderness extends distally.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Useful if tenderness extends distally.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hb 12.7 g/dL",
+            "WBC 7.4 x10^9/L"
+          ],
+          "impression": "No hematologic issue.",
+          "title": "CBC — Report"
+        },
+        "rationale": "Routine testing unnecessary unless surgical/medical concerns.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Routine testing unnecessary unless surgical/medical concerns.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Axillary shoulder view when tolerable",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Humeral head remains centered on glenoid"
+          ],
+          "impression": "No shoulder dislocation.",
+          "title": "Axillary shoulder view when tolerable — Report"
+        },
+        "rationale": "Helpful if dislocation difficult to exclude; do not force painful positioning.",
+        "incorrect_order_penalty": 1,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Helpful if dislocation difficult to exclude; do not force painful positioning.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Elbow radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No acute elbow fracture"
+          ],
+          "impression": "No elbow injury.",
+          "title": "Elbow radiographs — Report"
+        },
+        "rationale": "No elbow tenderness.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No elbow tenderness.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left shoulder AP and scapular-Y radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Impacted surgical-neck fracture of proximal humerus with minimal displacement",
+            "Glenohumeral joint remains located",
+            "No substantial greater-tuberosity displacement"
+          ],
+          "impression": "Minimally displaced proximal humeral surgical-neck fracture.",
+          "title": "Left shoulder AP and scapular-Y radiographs — Report"
+        },
+        "rationale": "Assess pattern and exclude dislocation.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "PH"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Assess pattern and exclude dislocation.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "MRI shoulder",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Proximal humeral marrow edema and fracture",
+            "No acute full-thickness cuff tear"
+          ],
+          "impression": "Known fracture.",
+          "title": "MRI shoulder — Report"
+        },
+        "rationale": "No routine indication in initial uncomplicated case.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No routine indication in initial uncomplicated case.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Bone density DXA after acute phase",
+        "role": "recommended_later",
+        "phase": "secondary_prevention",
+        "report": {
+          "findings": [
+            "Femoral neck T-score -2.7"
+          ],
+          "impression": "Osteoporosis.",
+          "title": "Bone density DXA after acute phase — Report"
+        },
+        "rationale": "A low-energy proximal humerus fracture merits fragility fracture assessment.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [
+          "T08"
+        ],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "secondary_prevention",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: A low-energy proximal humerus fracture merits fragility fracture assessment.",
+        "scores_as_unnecessary_unless_indicated": false
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Acromioclavicular separation",
+        "feedback": "AC region is not the lesion.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but aC region is not the lesion."
+      },
+      {
+        "label": "Proximal humeral head-splitting fracture",
+        "feedback": "No articular head splitting.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no articular head splitting."
+      },
+      {
+        "label": "Humeral shaft fracture",
+        "feedback": "Fracture is proximal to shaft.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but fracture is proximal to shaft."
+      },
+      {
+        "label": "Scapular neck fracture",
+        "feedback": "Scapula intact.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but scapula intact."
+      },
+      {
+        "label": "Midshaft clavicle fracture",
+        "feedback": "Clavicle intact.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but clavicle intact."
+      },
+      {
+        "label": "Posterior shoulder dislocation",
+        "feedback": "No displaced humeral head.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no displaced humeral head."
+      },
+      {
+        "label": "Minimally displaced surgical-neck fracture of proximal humerus",
+        "feedback": "Impacted surgical-neck line with preserved glenohumeral alignment.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Impacted surgical-neck line with preserved glenohumeral alignment."
+      },
+      {
+        "label": "Rotator cuff tear without fracture",
+        "feedback": "Plain films show definite proximal humerus fracture.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but plain films show definite proximal humerus fracture."
+      },
+      {
+        "label": "Greater tuberosity fracture alone",
+        "feedback": "Primary fracture line is surgical neck.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but primary fracture line is surgical neck."
+      },
+      {
+        "label": "Anterior glenohumeral dislocation",
+        "feedback": "Joint remains located.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but joint remains located."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-007-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Reduce a glenohumeral dislocation that is not present",
+        "requires": [],
+        "teaching_point": "Unnecessary harmful manipulation.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Unnecessary harmful manipulation.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Ignore falls risk and osteoporosis after low-energy injury",
+        "requires": [],
+        "teaching_point": "Secondary prevention important.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Secondary prevention important.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discuss nonoperative management and expected rehabilitation milestones with orthopedic service",
+        "requires": [
+          "T03"
+        ],
+        "teaching_point": "Most minimally displaced injuries can avoid operation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Most minimally displaced injuries can avoid operation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Immobilize shoulder completely for three months without reassessment",
+        "requires": [],
+        "teaching_point": "Prolonged immobilization risks stiffness.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Prolonged immobilization risks stiffness.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Review two-plane imaging to confirm minimal displacement and located shoulder",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Confirm suitable nonoperative candidate.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Confirm suitable nonoperative candidate.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Instruct hand, wrist and elbow mobility; avoid painful shoulder loading",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Prevent distal joint stiffness.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Prevent distal joint stiffness.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Force shoulder range of motion to 180 degrees during initial exam",
+        "requires": [],
+        "teaching_point": "May worsen injury and pain.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: May worsen injury and pain.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Progress active-assisted then active shoulder movement and strengthening when healing permits",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Stage rehabilitation; no heavy lifting immediately.",
+        "kind": "required",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Stage rehabilitation; no heavy lifting immediately.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Operate with plate fixation solely because patient is older than 70",
+        "requires": [],
+        "teaching_point": "Age alone is not an indication for surgery.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Age alone is not an indication for surgery.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Skip axillary sensory exam because hand pulse is normal",
+        "requires": [],
+        "teaching_point": "Nerve injury can occur independently.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T17",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Nerve injury can occur independently.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Screen for associated trauma and document skin, axillary nerve and distal perfusion",
+        "requires": [],
+        "teaching_point": "Neurovascular status and skin matter even in low-energy injuries.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Neurovascular status and skin matter even in low-energy injuries.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Provide sling for comfort and initial protection",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Avoid excessive immobilization while healing.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Avoid excessive immobilization while healing.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Provide appropriate analgesia and comfortable arm support",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Manage pain and reduce fear.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Manage pain and reduce fear.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Use vigorous resisted shoulder training on day one",
+        "requires": [],
+        "teaching_point": "Unsafe for healing fracture.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Unsafe for healing fracture.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Order MRI routinely before plain X-ray",
+        "requires": [],
+        "teaching_point": "Radiography is primary.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Radiography is primary.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Arrange supervised/structured gentle shoulder pendulum exercises at an appropriate early time based on pain and stability",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Early graded motion is individualized to avoid stiffness.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Early graded motion is individualized to avoid stiffness.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Arrange specialist reassessment with symptoms/films and falls/bone-health referral",
+        "requires": [
+          "T06",
+          "T07"
+        ],
+        "teaching_point": "Look for secondary displacement and address fragility risk.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Look for secondary displacement and address fragility risk.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09"
+    ],
+    "required_investigation_ids": [
+      "I01"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Eleanor needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Eleanor! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Minimal displacement usually favors nonoperative care.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Is the humeral head still aligned with the glenoid?",
+      "differentiating_clue": "There is an impacted surgical-neck line with minimal displacement and no dislocation.",
+      "clinical_coaching": "Minimally displaced proximal humerus surgical-neck fracture: pain control, sling, distal joint motion, staged early shoulder rehabilitation and follow-up.",
+      "critical_red_flags": [
+        "New neurovascular deficit",
+        "Dislocation or open injury",
+        "Increasing swelling or skin compromise"
+      ],
+      "key_teaching_points": [
+        "Minimal displacement usually favors nonoperative care.",
+        "Axillary nerve and joint alignment must be assessed.",
+        "Begin graded motion as pain/stability allow, avoiding prolonged unnecessary immobilization.",
+        "Older adult low-energy fractures are an opportunity to evaluate bone health."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-007-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Low-energy direct impact to shoulder with no seizure or dislocation mechanism.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-007|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-007-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Axillary sensory patch intact. Radial/median/ulnar function intact. Red flag: New neurovascular deficit.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-007|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-007-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Left shoulder AP and scapular-Y radiographs. Is the humeral head still aligned with the glenoid?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-007|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-007-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "There is an impacted surgical-neck line with minimal displacement and no dislocation.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-007|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-007-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Minimally displaced proximal humerus surgical-neck fracture: pain control, sling, distal joint motion, staged early shoulder rehabilitation and follow-up.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-007|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "What determines suitability for nonoperative care here?",
+        "options": [
+          {
+            "text": "Age alone",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Any bruising",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Pain intensity alone",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Minimal displacement and maintained joint alignment",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Most minimally displaced proximal humerus fractures can be managed without surgery.",
+        "id": "Q01",
+        "correct_option_id": "Q01O04"
+      },
+      {
+        "question": "Why mobilize fingers, wrist and elbow?",
+        "options": [
+          {
+            "text": "Treat infection",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Speed up MRI",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Prevent stiffness",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Avoid all shoulder healing",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "Uninvolved joints should remain mobile.",
+        "id": "Q02",
+        "correct_option_id": "Q02O03"
+      },
+      {
+        "question": "What important additional assessment follows a low-energy fracture at 73?",
+        "options": [
+          {
+            "text": "Bone health and falls risk",
+            "id": "Q03O01"
+          },
+          {
+            "text": "Cardiac angioplasty",
+            "id": "Q03O02"
+          },
+          {
+            "text": "No further assessment",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Routine angiography",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "Fragility fracture may indicate osteoporosis.",
+        "id": "Q03",
+        "correct_option_id": "Q03O01"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Interpret proximal humerus radiographs and select conservative care, safe early rehabilitation and fragility prevention.",
+    "key_takeaways": [
+      "Minimal displacement usually favors nonoperative care.",
+      "Axillary nerve and joint alignment must be assessed.",
+      "Begin graded motion as pain/stability allow, avoiding prolonged unnecessary immobilization.",
+      "Older adult low-energy fractures are an opportunity to evaluate bone health."
+    ],
+    "watch_for": [
+      "New neurovascular deficit",
+      "Dislocation or open injury",
+      "Increasing swelling or skin compromise"
+    ],
+    "followup_relevance": "Regain independent dressing and household tasks"
+  },
+  "references": [
+    {
+      "key": "AO_PH",
+      "organization": "AO Foundation",
+      "title": "Nonoperative Treatment: Two-Part Impacted Proximal Humerus Surgical Neck",
+      "url": "https://surgeryreference.aofoundation.org/orthopedic-trauma/adult-trauma/proximal-humerus/extraarticular-2-part-surgical-neck-impaction/nonoperative",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "PH",
+      "organization": "NCBI Bookshelf / StatPearls",
+      "title": "Proximal Humerus Fracture",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK470346/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_007.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}

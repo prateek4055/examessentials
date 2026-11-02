@@ -1,0 +1,1242 @@
+{
+  "case_id": "MED-ORT-L1-006",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "First-time traumatic anterior glenohumeral dislocation without fracture",
+  "primary_diagnosis_registry_key": "ORT-L1-006",
+  "language": "en",
+  "display": {
+    "title": "The Shoulder That Slipped Out",
+    "subtitle": "Restore alignment, but never forget the axillary nerve.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_006.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 41
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Sofia Martinez",
+    "age_years": 24,
+    "sex": "Female",
+    "hand_dominance": "Right",
+    "occupation": "Graduate student",
+    "setting": "Emergency department",
+    "presenting_event": "Arm forced into abduction and external rotation while playing basketball 45 minutes ago.",
+    "history": {
+      "chief_complaint": "Severe right shoulder pain and inability to move arm, 9/10.",
+      "mechanism": "Traumatic abduction/external rotation with immediate shoulder displacement.",
+      "positive": [
+        "Holds arm slightly abducted",
+        "Feels shoulder looks squared off",
+        "No prior dislocations"
+      ],
+      "negative": [
+        "No fall from height or head injury",
+        "No arm numbness or hand coldness",
+        "No open wound"
+      ],
+      "medical": [
+        "No known ligamentous disorder"
+      ],
+      "medications": [
+        "No regular prescriptions"
+      ],
+      "allergies": "None known",
+      "goal": "Resume sport with low recurrence risk"
+    },
+    "vitals": {
+      "pulse_bpm": 102,
+      "bp_mmHg": "130/80",
+      "rr_per_min": 18,
+      "spo2_percent": 99,
+      "temperature_C": 36.7,
+      "pain_0_10": 9
+    },
+    "physical_examination": {
+      "inspection": [
+        "Loss of rounded deltoid contour",
+        "Arm guarded in slight abduction/external rotation"
+      ],
+      "palpation": [
+        "Humeral head felt anteriorly",
+        "No clavicle or shaft tenderness"
+      ],
+      "movement": [
+        "Shoulder movement not forced due to injury",
+        "Elbow and hand active function intact"
+      ],
+      "neurovascular": [
+        "Axillary nerve sensation over lateral deltoid intact",
+        "Radial pulse present, warm hand",
+        "Median, ulnar and radial nerve screening intact"
+      ],
+      "safety_red_flags": [
+        "Absent distal perfusion",
+        "New axillary nerve deficit",
+        "Associated proximal humerus or glenoid fracture",
+        "Irreducible dislocation"
+      ]
+    }
+  },
+  "learning_objective": "Recognize anterior dislocation, safely sequence reduction and confirm neurovascular and radiographic status.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: No known ligamentous disorder. Medicines: No regular prescriptions. Allergies: None known.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Severe right shoulder pain and inability to move arm, 9/10. Holds arm slightly abducted.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No fall from height or head injury; No arm numbness or hand coldness; No open wound",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No prior shoulder dislocations reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No fall from height or head injury; No arm numbness or hand coldness; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Resume sport with low recurrence risk. Occupation: Graduate student.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Traumatic abduction/external rotation with immediate shoulder displacement.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Loss of rounded deltoid contour",
+          "Arm guarded in slight abduction/external rotation"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Loss of rounded deltoid contour",
+          "Arm guarded in slight abduction/external rotation"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Axillary nerve sensation over lateral deltoid intact",
+          "Radial pulse present, warm hand",
+          "Median, ulnar and radial nerve screening intact"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Humeral head felt anteriorly",
+          "No clavicle or shaft tenderness"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Absent distal perfusion",
+          "New axillary nerve deficit",
+          "Associated proximal humerus or glenoid fracture",
+          "Irreducible dislocation"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Shoulder movement not forced due to injury",
+          "Elbow and hand active function intact"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Ultrasound rotator cuff",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "No definite full-thickness cuff tear"
+          ],
+          "impression": "Intact rotator cuff by ultrasound.",
+          "title": "Ultrasound rotator cuff — Report"
+        },
+        "rationale": "Consider only with persistent weakness or age-dependent concern.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Consider only with persistent weakness or age-dependent concern.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Cervical spine CT",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No fracture or malalignment"
+          ],
+          "impression": "No acute cervical spine injury.",
+          "title": "Cervical spine CT — Report"
+        },
+        "rationale": "No head/neck trauma indicators.",
+        "incorrect_order_penalty": 11,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No head/neck trauma indicators.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Post-reduction shoulder radiographs",
+        "role": "required_later",
+        "phase": "post_reduction",
+        "report": {
+          "findings": [
+            "Concentric glenohumeral reduction",
+            "No displaced fracture or large bony Bankart fragment"
+          ],
+          "impression": "Successful reduction.",
+          "title": "Post-reduction shoulder radiographs — Report"
+        },
+        "rationale": "Confirm congruent alignment and screen for associated fracture.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [
+          "T06"
+        ],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "post_reduction",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Confirm congruent alignment and screen for associated fracture.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Nerve conduction study",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No abnormal conduction in tested nerves"
+          ],
+          "impression": "No neuropathy demonstrated.",
+          "title": "Nerve conduction study — Report"
+        },
+        "rationale": "Not a first-day screening tool.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not a first-day screening tool.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI shoulder",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "Anterior labral detachment compatible with Bankart soft-tissue lesion",
+            "No full-thickness rotator cuff tear"
+          ],
+          "impression": "Soft-tissue Bankart lesion, for follow-up risk stratification.",
+          "title": "MRI shoulder — Report"
+        },
+        "rationale": "Not routinely necessary before simple emergency reduction; consider based on follow-up findings.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Not routinely necessary before simple emergency reduction; consider based on follow-up findings.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Clavicle radiographs",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No clavicular fracture"
+          ],
+          "impression": "No clavicle injury.",
+          "title": "Clavicle radiographs — Report"
+        },
+        "rationale": "No focal clavicle tenderness.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No focal clavicle tenderness.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "ECG",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Sinus tachycardia 102/min"
+          ],
+          "impression": "Sinus tachycardia likely pain-related.",
+          "title": "ECG — Report"
+        },
+        "rationale": "Sedation assessment is individualized.",
+        "incorrect_order_penalty": 2,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Sedation assessment is individualized.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hb 13.8 g/dL",
+            "WBC 8.2 x10^9/L"
+          ],
+          "impression": "No relevant blood count abnormality.",
+          "title": "CBC — Report"
+        },
+        "rationale": "Routine lab not required for isolated uncomplicated reduction.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Routine lab not required for isolated uncomplicated reduction.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Right shoulder trauma radiographs: AP and scapular-Y/axillary-equivalent view",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Humeral head lies anteroinferior to glenoid (subcoracoid)",
+            "No definite acute glenoid or proximal humerus fracture"
+          ],
+          "impression": "Anterior glenohumeral dislocation without visible fracture.",
+          "title": "Right shoulder trauma radiographs: AP and scapular-Y/axillary-equivalent view — Report"
+        },
+        "rationale": "Confirm direction and evaluate associated bone injury before planned reduction.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "AAOS_SH"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: Confirm direction and evaluate associated bone injury before planned reduction.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "CT angiography of arm",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Axillary and brachial arteries patent"
+          ],
+          "impression": "No vascular injury.",
+          "title": "CT angiography of arm — Report"
+        },
+        "rationale": "Only if vascular compromise suspected.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Only if vascular compromise suspected.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI brachial plexus",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No plexus edema or discontinuity"
+          ],
+          "impression": "No demonstrated plexus injury.",
+          "title": "MRI brachial plexus — Report"
+        },
+        "rationale": "Normal neuro exam.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Normal neuro exam.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT right shoulder without contrast",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Humeral head position confirmed",
+            "No large glenoid rim fracture"
+          ],
+          "impression": "No substantial bony injury.",
+          "title": "CT right shoulder without contrast — Report"
+        },
+        "rationale": "Reserve for suspected occult/complex fracture or unclear X-ray.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Reserve for suspected occult/complex fracture or unclear X-ray.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [
+      "I02"
+    ],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Acromioclavicular separation",
+        "feedback": "Glenohumeral joint, not AC, is incongruent.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but glenohumeral joint, not AC, is incongruent."
+      },
+      {
+        "label": "Rotator cuff tear without dislocation",
+        "feedback": "Cannot explain radiographic head displacement.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but cannot explain radiographic head displacement."
+      },
+      {
+        "label": "Glenoid fracture without dislocation",
+        "feedback": "Dislocation is present; no separate fracture.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but dislocation is present; no separate fracture."
+      },
+      {
+        "label": "First-time traumatic anterior glenohumeral dislocation",
+        "feedback": "Anteroinferior humeral head on X-ray with typical contour and mechanism.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Anteroinferior humeral head on X-ray with typical contour and mechanism."
+      },
+      {
+        "label": "Inferior luxatio erecta dislocation",
+        "feedback": "Arm would typically be fixed markedly overhead.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but arm would typically be fixed markedly overhead."
+      },
+      {
+        "label": "Proximal humeral surgical-neck fracture",
+        "feedback": "No proximal humeral fracture on radiographs.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no proximal humeral fracture on radiographs."
+      },
+      {
+        "label": "Long-head biceps rupture",
+        "feedback": "No Popeye sign or matching imaging.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no Popeye sign or matching imaging."
+      },
+      {
+        "label": "Clavicle fracture",
+        "feedback": "Clavicle intact.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but clavicle intact."
+      },
+      {
+        "label": "Shoulder strain",
+        "feedback": "Does not explain joint displacement.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but does not explain joint displacement."
+      },
+      {
+        "label": "Posterior shoulder dislocation",
+        "feedback": "Would commonly show posterior position and internal rotation.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but would commonly show posterior position and internal rotation."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-006-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Attempt forceful reduction before documenting axillary sensation",
+        "requires": [],
+        "teaching_point": "Could mask or worsen nerve injury.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Could mask or worsen nerve injury.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Assume a normal radial pulse excludes axillary nerve damage",
+        "requires": [],
+        "teaching_point": "Nerve and vascular findings are separate.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T18",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Nerve and vascular findings are separate.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Assess general stability, skin, distal pulses and axillary/other nerve function",
+        "requires": [],
+        "teaching_point": "Axillary sensory examination before reduction is critical.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Axillary sensory examination before reduction is critical.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Provide analgesia, immobilize in comfortable position and explain reduction process",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Minimize pain and further injury.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Minimize pain and further injury.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Apply a comfortable sling and give early protection/avoidance advice",
+        "requires": [
+          "T06",
+          "T07"
+        ],
+        "teaching_point": "Short-term support until review.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Short-term support until review.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Start aggressive overhead strengthening on day one",
+        "requires": [],
+        "teaching_point": "Premature stress increases symptoms.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Premature stress increases symptoms.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Review two-plane shoulder radiographs for direction and associated fracture",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "First-time traumatic dislocation generally needs pre-reduction films.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. First-time traumatic dislocation generally needs pre-reduction films.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Reassess distal perfusion and axillary/median/ulnar/radial nerve function immediately after reduction",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Detect change after manipulation.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Detect change after manipulation.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Order acute MRI before reduction in all cases",
+        "requires": [],
+        "teaching_point": "Usually unnecessary, delays reduction.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Usually unnecessary, delays reduction.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discharge without recurrence-risk counseling in young athlete",
+        "requires": [],
+        "teaching_point": "Important follow-up issue.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T17",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Important follow-up issue.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discuss consent and arrange appropriate clinician-led sedation/analgesia with monitoring",
+        "requires": [
+          "T02",
+          "T03"
+        ],
+        "teaching_point": "Controlled reduction is safer than forceful unmonitored attempts.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Controlled reduction is safer than forceful unmonitored attempts.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Apply a tight rigid cast around the shoulder",
+        "requires": [],
+        "teaching_point": "Not standard and could harm.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Not standard and could harm.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Arrange early sports medicine/orthopedic follow-up for recurrence risk and rehabilitation",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Young first-time dislocators may benefit from instability counseling.",
+        "kind": "required",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Young first-time dislocators may benefit from instability counseling.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Explain return precautions for recurrent dislocation, numbness, severe pain or cold hand",
+        "requires": [
+          "T08"
+        ],
+        "teaching_point": "Clear safety-netting is mandatory.",
+        "kind": "required",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Clear safety-netting is mandatory.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Perform gentle closed reduction by trained practitioner",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Use established low-force technique.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Use established low-force technique.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Skip initial X-ray despite first-time traumatic event without vascular emergency",
+        "requires": [],
+        "teaching_point": "Risk missing associated fracture.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Risk missing associated fracture.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Send home without post-reduction imaging",
+        "requires": [],
+        "teaching_point": "Reduction and associated fracture must be checked.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Reduction and associated fracture must be checked.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Review post-reduction radiographs to confirm concentric joint position",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Document successful reduction and fractures.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [
+          "I02"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Document successful reduction and fractures.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Perform repeated forceful attempts when reduction fails",
+        "requires": [],
+        "teaching_point": "Escalate for specialist assessment.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T19",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Escalate for specialist assessment.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10"
+    ],
+    "required_investigation_ids": [
+      "I02",
+      "I01"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Sofia needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Sofia! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Document axillary nerve before and after reduction.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "What direction did the arm move, and what happened to the shoulder contour?",
+      "differentiating_clue": "Anterior dislocations follow abduction/external rotation and show an anteroinferior humeral head.",
+      "clinical_coaching": "Examine axillary nerve and perfusion, review trauma X-rays, arrange qualified gentle reduction, recheck nerves and confirm with post-reduction films.",
+      "critical_red_flags": [
+        "Absent distal perfusion",
+        "New axillary nerve deficit",
+        "Associated proximal humerus or glenoid fracture",
+        "Irreducible dislocation"
+      ],
+      "key_teaching_points": [
+        "Document axillary nerve before and after reduction.",
+        "First-time traumatic dislocation needs radiographic confirmation.",
+        "Gentle monitored reduction and post-reduction imaging are key.",
+        "Early rehab and recurrence-risk counseling are important in young patients."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-006-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Traumatic abduction/external rotation with immediate shoulder displacement.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-006|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-006-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Axillary nerve sensation over lateral deltoid intact. Radial pulse present, warm hand. Red flag: Absent distal perfusion.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-006|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-006-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Right shoulder trauma radiographs: AP and scapular-Y/axillary-equivalent view. What direction did the arm move, and what happened to the shoulder contour?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-006|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-006-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Anterior dislocations follow abduction/external rotation and show an anteroinferior humeral head.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-006|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-006-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Examine axillary nerve and perfusion, review trauma X-rays, arrange qualified gentle reduction, recheck nerves and confirm with post-reduction films.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-006|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "Which nerve deserves focused testing with anterior shoulder dislocation?",
+        "options": [
+          {
+            "text": "Axillary nerve",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Posterior interosseous only",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Tibial nerve",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Femoral nerve",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Axillary nerve may be injured and supplies lateral shoulder sensation.",
+        "id": "Q01",
+        "correct_option_id": "Q01O01"
+      },
+      {
+        "question": "Which check is mandatory following reduction?",
+        "options": [
+          {
+            "text": "Only a pain score",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Immediate marathon training",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Routine head CT",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Repeat neurovascular exam and confirmation radiographs",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "Confirm safe reduction and identify complications.",
+        "id": "Q02",
+        "correct_option_id": "Q02O04"
+      },
+      {
+        "question": "Is MRI routinely required before reducing a simple anterior shoulder dislocation?",
+        "options": [
+          {
+            "text": "It replaces all X-rays",
+            "id": "Q03O01"
+          },
+          {
+            "text": "No",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Only if patient is 24",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Yes, always",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "MRI is often deferred to follow-up based on persistent symptoms or instability.",
+        "id": "Q03",
+        "correct_option_id": "Q03O02"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Recognize anterior dislocation, safely sequence reduction and confirm neurovascular and radiographic status.",
+    "key_takeaways": [
+      "Document axillary nerve before and after reduction.",
+      "First-time traumatic dislocation needs radiographic confirmation.",
+      "Gentle monitored reduction and post-reduction imaging are key.",
+      "Early rehab and recurrence-risk counseling are important in young patients."
+    ],
+    "watch_for": [
+      "Absent distal perfusion",
+      "New axillary nerve deficit",
+      "Associated proximal humerus or glenoid fracture",
+      "Irreducible dislocation"
+    ],
+    "followup_relevance": "Resume sport with low recurrence risk"
+  },
+  "references": [
+    {
+      "key": "AAOS_SH",
+      "organization": "AAOS OrthoInfo",
+      "title": "Shoulder Dislocation",
+      "url": "https://www.orthoinfo.org/diseases--conditions/dislocated-shoulder",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "RCH_SH",
+      "organization": "Royal Children’s Hospital Melbourne",
+      "title": "Shoulder Dislocations—ED",
+      "url": "https://www.rch.org.au/clinicalguide/guideline_index/fractures/Shoulder_Dislocations_-_Emergency_Department/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_006.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}

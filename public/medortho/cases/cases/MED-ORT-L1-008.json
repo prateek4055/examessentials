@@ -1,0 +1,1182 @@
+{
+  "case_id": "MED-ORT-L1-008",
+  "schema_version": "3.1.0",
+  "content_version": "2026-10-31.1",
+  "level": 1,
+  "difficulty": "intern",
+  "topic": "Isolated nondisplaced radial head fracture (Mason type I)",
+  "primary_diagnosis_registry_key": "ORT-L1-008",
+  "language": "en",
+  "display": {
+    "title": "The Elbow That Wouldn’t Straighten",
+    "subtitle": "A subtle elbow fracture where early, controlled motion protects function.",
+    "badge_text": "CLINICAL CHALLENGE",
+    "cover_image_path": "assets/cover/case_008.webp",
+    "case_art_status": "asset_reference_only_not_included",
+    "estimated_decision_points": 38
+  },
+  "evidence_policy": {
+    "scenario": "original synthesized medical education scenario",
+    "patient_data": "invented and internally consistent; not identifiable clinical patient data",
+    "clinical_sources": "linked published clinical guidelines and professional society educational resources",
+    "display_disclosure": "Evidence-informed interactive clinical simulation; not a replacement for supervised clinical care.",
+    "approval_status": "PENDING_INDEPENDENT_CLINICAL_REVIEW",
+    "source_truthfulness": "No claim that narrative/measurements were extracted from real patient charts.",
+    "medical_safety": "For education; clinician judgment and local escalation protocols govern real practice."
+  },
+  "patient": {
+    "name": "Noah Kim",
+    "age_years": 31,
+    "sex": "Male",
+    "hand_dominance": "Right",
+    "occupation": "Graphic designer",
+    "setting": "Emergency department",
+    "presenting_event": "Fell forward on an outstretched left hand while skateboarding 4 hours ago.",
+    "history": {
+      "chief_complaint": "Lateral left elbow pain 5/10 and difficulty turning the palm upward.",
+      "mechanism": "Axial load transmitted through extended elbow.",
+      "positive": [
+        "Lateral elbow swelling",
+        "Pain on forearm rotation",
+        "Can still actively bend elbow"
+      ],
+      "negative": [
+        "No gross deformity or open injury",
+        "No wrist pain or shoulder pain",
+        "No hand numbness"
+      ],
+      "medical": [
+        "None"
+      ],
+      "medications": [
+        "None"
+      ],
+      "allergies": "No known allergies",
+      "goal": "Return to desk work and controlled sport"
+    },
+    "vitals": {
+      "pulse_bpm": 76,
+      "bp_mmHg": "120/76",
+      "rr_per_min": 16,
+      "spo2_percent": 99,
+      "temperature_C": 36.8,
+      "pain_0_10": 5
+    },
+    "physical_examination": {
+      "inspection": [
+        "Small lateral elbow swelling without gross deformity"
+      ],
+      "palpation": [
+        "Focal radial head tenderness",
+        "No DRUJ, wrist or interosseous membrane tenderness"
+      ],
+      "movement": [
+        "Elbow flexion 30–120 degrees limited by pain",
+        "Forearm pronation/supination painful but no true mechanical block"
+      ],
+      "neurovascular": [
+        "Normal radial pulse and refill",
+        "Radial, median, ulnar motor/sensory function intact"
+      ],
+      "safety_red_flags": [
+        "Mechanical block",
+        "Associated wrist/DRUJ pain suggesting longitudinal instability",
+        "Neurovascular change"
+      ]
+    }
+  },
+  "learning_objective": "Identify subtle Mason I injury, check associated instability and balance short comfort support with early motion.",
+  "history_engine": {
+    "interaction": "select_appropriate_patient_questions",
+    "options": [
+      {
+        "id": "H07",
+        "prompt": "Ask about previous injuries to the same region",
+        "patient_response": "No previous related injury was reported.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H09",
+        "prompt": "Ask which music the patient prefers",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H10",
+        "prompt": "Ask about favorite vacation destination",
+        "patient_response": "No relevant change in clinical assessment.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H02",
+        "prompt": "Ask about numbness, tingling, cold digits or altered function",
+        "patient_response": "No gross deformity or open injury; No wrist pain or shoulder pain; on focused questioning no new neurovascular symptoms are reported.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H03",
+        "prompt": "Ask the patient to describe location, quality and severity of pain",
+        "patient_response": "Lateral left elbow pain 5/10 and difficulty turning the palm upward. Lateral elbow swelling.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H06",
+        "prompt": "Ask how the injury affects work, play and personal goals",
+        "patient_response": "Return to desk work and controlled sport. Occupation: Graphic designer.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H08",
+        "prompt": "Ask about appetite last week",
+        "patient_response": "Normal appetite prior to injury.",
+        "clinical_priority": "low_value",
+        "explanation": "Does not help evaluate the current injury.",
+        "penalty": 3
+      },
+      {
+        "id": "H01",
+        "prompt": "Ask exactly how the injury occurred",
+        "patient_response": "Axial load transmitted through extended elbow.",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H05",
+        "prompt": "Ask about medical conditions, medication and allergies",
+        "patient_response": "History: None. Medicines: None. Allergies: No known allergies.",
+        "clinical_priority": "recommended",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      },
+      {
+        "id": "H04",
+        "prompt": "Ask about wounds and whether there are other injuries",
+        "patient_response": "No gross deformity or open injury; No wrist pain or shoulder pain; No hand numbness",
+        "clinical_priority": "critical",
+        "explanation": "Build the focused history and identify red flags.",
+        "penalty": 0
+      }
+    ],
+    "required_priority": "critical",
+    "ordering": "per_attempt_shuffle",
+    "scoring": {
+      "critical_missed_penalty": 8,
+      "low_value_question_penalty": 3,
+      "no_penalty_for_relevant_followup": true
+    }
+  },
+  "physical_exam_engine": {
+    "interaction": "select_safe_clinical_exam_actions",
+    "options": [
+      {
+        "id": "E05",
+        "prompt": "Look actively for urgent red-flag findings",
+        "priority": "critical",
+        "observations": [
+          "Mechanical block",
+          "Associated wrist/DRUJ pain suggesting longitudinal instability",
+          "Neurovascular change"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E02",
+        "prompt": "Palpate the injury and nearby joints cautiously",
+        "priority": "critical",
+        "observations": [
+          "Focal radial head tenderness",
+          "No DRUJ, wrist or interosseous membrane tenderness"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E03",
+        "prompt": "Assess safe active movement without forcing the injury",
+        "priority": "recommended",
+        "observations": [
+          "Elbow flexion 30–120 degrees limited by pain",
+          "Forearm pronation/supination painful but no true mechanical block"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E06",
+        "prompt": "Assess the uninjured limb for gross comparison if clinically useful",
+        "priority": "conditional",
+        "observations": [
+          "Small lateral elbow swelling without gross deformity"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E07",
+        "prompt": "Force through painful movement to test the endpoint",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E04",
+        "prompt": "Document perfusion, sensation and motor nerve function",
+        "priority": "critical",
+        "observations": [
+          "Normal radial pulse and refill",
+          "Radial, median, ulnar motor/sensory function intact"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E08",
+        "prompt": "Skip distal nerve testing if the pulse is present",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      },
+      {
+        "id": "E01",
+        "prompt": "Inspect skin, deformity and swelling",
+        "priority": "critical",
+        "observations": [
+          "Small lateral elbow swelling without gross deformity"
+        ],
+        "explanation": "Clinical examination clarifies anatomy and urgency.",
+        "penalty": 0
+      },
+      {
+        "id": "E09",
+        "prompt": "Attempt emergency manipulation before confirming the injury pattern",
+        "priority": "unsafe",
+        "observations": [
+          "This maneuver is unsafe: do not perform it."
+        ],
+        "explanation": "Do not force injured structures or omit safety screening.",
+        "penalty": 12
+      }
+    ],
+    "ordering": "per_attempt_shuffle",
+    "critical_ids": [
+      "E01",
+      "E02",
+      "E04",
+      "E05"
+    ],
+    "safety_actions_free_and_unlocked": true,
+    "unsafe_penalty": 12
+  },
+  "investigation_engine": {
+    "interaction": "order_test_then_reveal_concise_patient_specific_report",
+    "options": [
+      {
+        "label": "Left wrist PA/lateral radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Normal DRUJ alignment and no wrist fracture"
+          ],
+          "impression": "No distal injury.",
+          "title": "Left wrist PA/lateral radiographs — Report"
+        },
+        "rationale": "Use if wrist tenderness raises Essex-Lopresti concern; absent here.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I03",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Use if wrist tenderness raises Essex-Lopresti concern; absent here.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "ESR/CRP",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "CRP 2 mg/L",
+            "ESR 7 mm/h"
+          ],
+          "impression": "No inflammatory elevation.",
+          "title": "ESR/CRP — Report"
+        },
+        "rationale": "No infection concern.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I09",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No infection concern.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CT elbow",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Nondisplaced radial head crack, no comminution"
+          ],
+          "impression": "Mason type I injury.",
+          "title": "CT elbow — Report"
+        },
+        "rationale": "For uncertain extent or mechanical block; not routine here.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I05",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. For uncertain extent or mechanical block; not routine here.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "CBC",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Hb 14.4 g/dL",
+            "WBC 6.6 x10^9/L"
+          ],
+          "impression": "No acute issue.",
+          "title": "CBC — Report"
+        },
+        "rationale": "Not needed.",
+        "incorrect_order_penalty": 6,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I08",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not needed.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "MRI elbow",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Fracture edema without major ligament disruption"
+          ],
+          "impression": "Known isolated radial head fracture.",
+          "title": "MRI elbow — Report"
+        },
+        "rationale": "Not routine in stable type I.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I06",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Not routine in stable type I.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Forearm radiographs",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No proximal-to-distal associated shaft fracture"
+          ],
+          "impression": "No additional fracture.",
+          "title": "Forearm radiographs — Report"
+        },
+        "rationale": "Useful if forearm symptoms.",
+        "incorrect_order_penalty": 3,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I04",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Useful if forearm symptoms.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Repeat elbow radiographs if symptoms worsen",
+        "role": "conditional_later",
+        "phase": "follow_up",
+        "report": {
+          "findings": [
+            "No displacement at reassessment"
+          ],
+          "impression": "Stable fracture.",
+          "title": "Repeat elbow radiographs if symptoms worsen — Report"
+        },
+        "rationale": "Only when progression or pain suggests complication.",
+        "incorrect_order_penalty": 1,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I11",
+        "availability": {
+          "trigger": "follow_up",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Only when progression or pain suggests complication.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Left elbow AP and lateral radiographs",
+        "role": "essential",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Subtle nondisplaced radial head fracture line with joint effusion",
+            "No elbow subluxation"
+          ],
+          "impression": "Mason type I radial head fracture.",
+          "title": "Left elbow AP and lateral radiographs — Report"
+        },
+        "rationale": "First-line imaging plus check radial head alignment.",
+        "incorrect_order_penalty": 0,
+        "requires_actions": [],
+        "reference_keys": [
+          "AAOS_RH"
+        ],
+        "id": "I01",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Good clinical question: First-line imaging plus check radial head alignment.",
+        "scores_as_unnecessary_unless_indicated": false
+      },
+      {
+        "label": "Nerve conduction studies",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Normal peripheral conduction"
+          ],
+          "impression": "No neuropathy.",
+          "title": "Nerve conduction studies — Report"
+        },
+        "rationale": "No clinical nerve impairment.",
+        "incorrect_order_penalty": 10,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I12",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. No clinical nerve impairment.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Elbow angiography",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "No arterial abnormality"
+          ],
+          "impression": "No vascular lesion.",
+          "title": "Elbow angiography — Report"
+        },
+        "rationale": "Perfusion normal.",
+        "incorrect_order_penalty": 12,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I10",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Perfusion normal.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Ultrasound elbow",
+        "role": "unnecessary",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Joint effusion present"
+          ],
+          "impression": "Nonspecific effusion.",
+          "title": "Ultrasound elbow — Report"
+        },
+        "rationale": "Does not replace radiographs.",
+        "incorrect_order_penalty": 7,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I07",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "Consider whether this test changes your next clinical decision. Does not replace radiographs.",
+        "scores_as_unnecessary_unless_indicated": true
+      },
+      {
+        "label": "Radial head–capitellum view",
+        "role": "conditional",
+        "phase": "initial",
+        "report": {
+          "findings": [
+            "Undisplaced radial head cortical line clearer",
+            "No articular step-off"
+          ],
+          "impression": "Nondisplaced radial head fracture.",
+          "title": "Radial head–capitellum view — Report"
+        },
+        "rationale": "Useful if standard radiographs are equivocal.",
+        "incorrect_order_penalty": 1,
+        "requires_actions": [],
+        "reference_keys": [],
+        "id": "I02",
+        "availability": {
+          "trigger": "on_selection",
+          "time_model": "instant_simulated"
+        },
+        "mentor_on_order": "That test can be appropriate in selected situations. Useful if standard radiographs are equivocal.",
+        "scores_as_unnecessary_unless_indicated": true
+      }
+    ],
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "order_independently_of_result_correctness": true,
+    "initial_phase_required_ids": [
+      "I01"
+    ],
+    "later_required_ids": [],
+    "scoring": {
+      "base_points": 100,
+      "selecting_essential_ordered_early_bonus": 10,
+      "essential_omission_penalty": 35,
+      "avoidable_test_penalty_from_option": true,
+      "conditional_tests_are_justified_only_when_case_indications_present": true,
+      "clinically_indicated_tests_exempt_from_minimal_testing_penalties": true,
+      "never_reward_omission_of_required_tests": true
+    },
+    "phase_transitions": {
+      "initial": "at start",
+      "after_negative_xray": "after initial X-ray reviewed if high scaphoid suspicion",
+      "post_reduction": "after designated reduction/splint action",
+      "postoperative": "after orthopedic-led procedure",
+      "operative": "when specialist procedure performed",
+      "follow_up": "simulated later follow-up",
+      "secondary_prevention": "after acute stabilization"
+    }
+  },
+  "diagnosis_engine": {
+    "interaction": "select_best_matching_diagnosis",
+    "options": [
+      {
+        "label": "Mason type III comminuted radial head fracture",
+        "feedback": "No comminution.",
+        "id": "D02",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no comminution."
+      },
+      {
+        "label": "Coronoid process fracture",
+        "feedback": "No coronoid defect.",
+        "id": "D08",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no coronoid defect."
+      },
+      {
+        "label": "Radial neck displaced fracture",
+        "feedback": "Fracture is head and nondisplaced.",
+        "id": "D07",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but fracture is head and nondisplaced."
+      },
+      {
+        "label": "Essex-Lopresti injury",
+        "feedback": "No DRUJ/interosseous tenderness or longitudinal instability signs.",
+        "id": "D09",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no DRUJ/interosseous tenderness or longitudinal instability signs."
+      },
+      {
+        "label": "Lateral epicondylitis",
+        "feedback": "Acute trauma and fracture line not chronic tendinopathy.",
+        "id": "D05",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but acute trauma and fracture line not chronic tendinopathy."
+      },
+      {
+        "label": "Olecranon fracture",
+        "feedback": "Tenderness and fracture line are at radial head.",
+        "id": "D03",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but tenderness and fracture line are at radial head."
+      },
+      {
+        "label": "Posterior elbow dislocation",
+        "feedback": "Joint alignment is preserved.",
+        "id": "D06",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but joint alignment is preserved."
+      },
+      {
+        "label": "Supracondylar humerus fracture",
+        "feedback": "No distal humerus fracture.",
+        "id": "D04",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but no distal humerus fracture."
+      },
+      {
+        "label": "Septic elbow arthritis",
+        "feedback": "Post-traumatic with no fever or infection features.",
+        "id": "D10",
+        "correct": false,
+        "feedback_if_selected": "A good possibility to consider, but post-traumatic with no fever or infection features."
+      },
+      {
+        "label": "Isolated Mason type I radial head fracture",
+        "feedback": "Nondisplaced radial head injury with no mechanical block.",
+        "id": "D01",
+        "correct": true,
+        "feedback_if_selected": "Excellent clinical synthesis. Nondisplaced radial head injury with no mechanical block."
+      }
+    ],
+    "correct_id": "D01",
+    "ordering": "per_attempt_shuffle_preserving_ids",
+    "max_score": 100,
+    "wrong_attempt_penalty": 15,
+    "retry_allowed": true,
+    "lock_correct_answer_until_accepted": true
+  },
+  "treatment_engine": {
+    "interaction": "select_actions_from_shuffled_tray_and_number_when_valid",
+    "pathway_id": "MED-ORT-L1-008-primary-pathway",
+    "pathway_summary": "Case-specific preferred pathway; clinician review required for alternative branches.",
+    "options": [
+      {
+        "label": "Start weight-bearing push-ups tomorrow",
+        "requires": [],
+        "teaching_point": "Avoid early heavy loading.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T14",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Avoid early heavy loading.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Arrange appropriate review of motion and pain within about one week",
+        "requires": [
+          "T05",
+          "T07"
+        ],
+        "teaching_point": "Assess function and decide if additional evaluation needed.",
+        "kind": "required",
+        "tags": [],
+        "id": "T08",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Assess function and decide if additional evaluation needed.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Explain avoidance of heavy loading and aggressive stretching during early healing",
+        "requires": [
+          "T05"
+        ],
+        "teaching_point": "Protect healing while moving safely.",
+        "kind": "required",
+        "tags": [],
+        "id": "T06",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Protect healing while moving safely.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Perform radial head excision for a stable nondisplaced fracture",
+        "requires": [],
+        "teaching_point": "No indication for destructive surgery.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T10",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: No indication for destructive surgery.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Provide return precautions for increasing pain, block, numbness or wrist symptoms",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Worsening symptoms may reveal associated instability.",
+        "kind": "required",
+        "tags": [],
+        "id": "T07",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Worsening symptoms may reveal associated instability.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Immobilize rigidly in above-elbow cast for six weeks despite isolated Mason I",
+        "requires": [],
+        "teaching_point": "Unnecessarily prolongs stiffness.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T09",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Unnecessarily prolongs stiffness.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discuss nonoperative plan and short-term comfort sling if needed",
+        "requires": [
+          "T03"
+        ],
+        "teaching_point": "Avoid prolonged immobilization.",
+        "kind": "required",
+        "tags": [],
+        "id": "T04",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Avoid prolonged immobilization.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Begin gradual pain-limited elbow flexion/extension and forearm rotation within days",
+        "requires": [
+          "T04"
+        ],
+        "teaching_point": "Early controlled motion helps prevent stiffness.",
+        "kind": "required",
+        "tags": [],
+        "id": "T05",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Early controlled motion helps prevent stiffness.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Assess whole limb including radial pulse, nerves, wrist/DRUJ and forearm for associated injury",
+        "requires": [],
+        "teaching_point": "Look for missed longitudinal forearm instability.",
+        "kind": "required",
+        "tags": [],
+        "id": "T01",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Look for missed longitudinal forearm instability.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Order MRI before elbow radiographs",
+        "requires": [],
+        "teaching_point": "Plain film first-line.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T13",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Plain film first-line.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Forcefully manipulate through painful mechanical stop",
+        "requires": [],
+        "teaching_point": "Potentially harmful and may reflect complex injury.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T11",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Potentially harmful and may reflect complex injury.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Review elbow radiographs and assess displacement, alignment and mechanical block",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Mason I defined by minimal/no displacement and no mechanical block.",
+        "kind": "required",
+        "tags": [],
+        "id": "T03",
+        "requires_investigations": [
+          "I01"
+        ],
+        "when_selected_mentor": "Good clinical judgment. Mason I defined by minimal/no displacement and no mechanical block.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      },
+      {
+        "label": "Give antibiotics for closed stable fracture",
+        "requires": [],
+        "teaching_point": "Not indicated.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T16",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Not indicated.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Discharge without explaining early controlled movement",
+        "requires": [],
+        "teaching_point": "Risk persistent elbow stiffness.",
+        "kind": "incorrect",
+        "tags": [],
+        "id": "T15",
+        "requires_investigations": [],
+        "when_selected_mentor": "Think again: Risk persistent elbow stiffness.",
+        "incorrect_attempt_penalty": 5,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Ignore wrist pain if it develops",
+        "requires": [],
+        "teaching_point": "Could indicate Essex-Lopresti injury.",
+        "kind": "unsafe",
+        "tags": [],
+        "id": "T12",
+        "requires_investigations": [],
+        "when_selected_mentor": "Patient safety first: Could indicate Essex-Lopresti injury.",
+        "incorrect_attempt_penalty": 12,
+        "accepted_sequence_number": null
+      },
+      {
+        "label": "Provide analgesia and support/elevation for swelling",
+        "requires": [
+          "T01"
+        ],
+        "teaching_point": "Symptom control first.",
+        "kind": "required",
+        "tags": [],
+        "id": "T02",
+        "requires_investigations": [],
+        "when_selected_mentor": "Good clinical judgment. Symptom control first.",
+        "incorrect_attempt_penalty": 0,
+        "accepted_sequence_number": "assigned_at_runtime_not_stored"
+      }
+    ],
+    "required_action_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08"
+    ],
+    "required_investigation_ids": [
+      "I01"
+    ],
+    "acceptance_policy": {
+      "valid_when": "kind==required AND all requires action IDs already accepted AND all requires_investigations ordered/reports viewed",
+      "on_valid_selection": "append action ID to accepted_actions; show assigned sequence number = accepted_actions.length",
+      "on_premature_selection": "do not number or penalize; show missing prerequisites; permit retry",
+      "on_incorrect_selection": "do not number; explain and apply penalty",
+      "on_unsafe_selection": "do not number; always display free safety explanation; apply penalty",
+      "already_accepted": "show completed, no duplicate numbering",
+      "allow_alternative_valid_order": "yes, wherever prereqs permit",
+      "do_not_rely_on_display_array_order": true
+    },
+    "scoring": {
+      "max_points": 100,
+      "incorrect_penalty": 5,
+      "unsafe_penalty": 12,
+      "wrong_order_penalty": 0,
+      "must_complete_all_required": true,
+      "must_complete_required_investigations": true,
+      "floor": 0
+    }
+  },
+  "dr_puffle": {
+    "character_id": "dr_puffle",
+    "tone": "warm, encouraging, precise, non-patronizing",
+    "always_free": {
+      "stage_messages": {
+        "introduction": "Hey Doctor! Noah needs your help. Start with what happened, then keep your patient safe. You’ve got this!",
+        "history": "Good questions uncover the mechanism and red flags. You do not need to ask everything—ask what changes your decisions.",
+        "examination": "Slow and safe. Inspect first, localize tenderness and protect injured structures while checking nerves and circulation.",
+        "investigations": "Choose the smallest clinically sufficient set of tests. I’ll show you each written report as you order it.",
+        "diagnosis": "Now connect the mechanism, examination and investigations. Which diagnosis actually explains all three?",
+        "treatment": "The treatment tray is shuffled. Each safe action gets its sequence number when its prerequisites are complete.",
+        "knowledge_check": "Nice work! Three quick questions to lock in the clinical reasoning.",
+        "completion": "Great job with Noah! The best clinicians are careful about both decisions and patient safety."
+      },
+      "safety_alert": "Safety first, Doctor. That action could harm the patient. Mason I is nondisplaced and treated nonoperatively.",
+      "wrong_diagnosis": "Good try! Let’s compare that diagnosis with the specific report finding before choosing again.",
+      "incorrect_investigation": "Would this test change management? If not, we can avoid delays and cost.",
+      "out_of_order_treatment": "That could be appropriate later, but first complete: {missing_prerequisite_labels}.",
+      "correct_treatment": "Nice decision! Step {number} is confirmed. {action_teaching_point}",
+      "incorrect_treatment": "Not the best step in this patient. {action_teaching_point}",
+      "unsafe_treatment": "Hold on, Doctor—this action is potentially unsafe. {action_teaching_point}",
+      "completion": "You finished with {treatment_correct_count} correct treatment decisions, {investigations_unnecessary_count} unnecessary tests, and {diagnosis_attempts} diagnosis attempt(s)."
+    },
+    "case_specific_guidance": {
+      "diagnostic_nudge": "Which bone is tender when forearm rotates?",
+      "differentiating_clue": "The radial head has a subtle nondisplaced line with joint effusion and no true block.",
+      "clinical_coaching": "Mason I radial head fracture: analgesia, brief sling if needed, screen DRUJ/wrist and start pain-limited movement early.",
+      "critical_red_flags": [
+        "Mechanical block",
+        "Associated wrist/DRUJ pain suggesting longitudinal instability",
+        "Neurovascular change"
+      ],
+      "key_teaching_points": [
+        "Mason I is nondisplaced and treated nonoperatively.",
+        "Check wrist and forearm for associated longitudinal instability.",
+        "Prolonged immobilization can cause elbow stiffness.",
+        "Early graded range of motion is typically favorable."
+      ]
+    },
+    "paid_stage_hints": {
+      "history": {
+        "hint_id": "MED-ORT-L1-008-history-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Focus on the injury mechanism, neurovascular symptoms, wounds and other associated injuries. Axial load transmitted through extended elbow.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-008|attempt:{attempt_id}|stage:history|hint:1"
+      },
+      "examination": {
+        "hint_id": "MED-ORT-L1-008-examination-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Start with these case-specific findings: Normal radial pulse and refill. Radial, median, ulnar motor/sensory function intact. Red flag: Mechanical block.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-008|attempt:{attempt_id}|stage:examination|hint:1"
+      },
+      "investigations": {
+        "hint_id": "MED-ORT-L1-008-investigations-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Select investigations that will change management. Initial priority: Left elbow AP and lateral radiographs. Which bone is tender when forearm rotates?",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-008|attempt:{attempt_id}|stage:investigations|hint:1"
+      },
+      "diagnosis": {
+        "hint_id": "MED-ORT-L1-008-diagnosis-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "The radial head has a subtle nondisplaced line with joint effusion and no true block.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-008|attempt:{attempt_id}|stage:diagnosis|hint:1"
+      },
+      "treatment": {
+        "hint_id": "MED-ORT-L1-008-treatment-paid-01",
+        "price_medcoins": 100,
+        "currency": "MedCoins",
+        "charge_policy": "once_per_stage_per_case_attempt",
+        "unlock_requires": "confirmed_backend_wallet_debit",
+        "message": "Mason I radial head fracture: analgesia, brief sling if needed, screen DRUJ/wrist and start pain-limited movement early.",
+        "free_replay_after_purchase": true,
+        "transaction_idempotency_key_template": "account:{user_id}|case:MED-ORT-L1-008|attempt:{attempt_id}|stage:treatment|hint:1"
+      }
+    },
+    "ui_emotions": {
+      "correct": "celebrating",
+      "wrong": "thinking",
+      "unsafe": "concerned",
+      "hint": "supportive",
+      "complete": "proud"
+    }
+  },
+  "knowledge_check": {
+    "questions": [
+      {
+        "question": "Mason type I implies which fracture?",
+        "options": [
+          {
+            "text": "Distal radial fracture",
+            "id": "Q01O01"
+          },
+          {
+            "text": "Olecranon fracture",
+            "id": "Q01O02"
+          },
+          {
+            "text": "Comminuted radial head with dislocation",
+            "id": "Q01O03"
+          },
+          {
+            "text": "Nondisplaced radial head fracture",
+            "id": "Q01O04"
+          }
+        ],
+        "explanation": "Type I is a small/nondisplaced radial head fracture.",
+        "id": "Q01",
+        "correct_option_id": "Q01O04"
+      },
+      {
+        "question": "What is a key rehabilitation principle?",
+        "options": [
+          {
+            "text": "Early gradual movement",
+            "id": "Q02O01"
+          },
+          {
+            "text": "Never move forearm",
+            "id": "Q02O02"
+          },
+          {
+            "text": "Immediate heavy loading",
+            "id": "Q02O03"
+          },
+          {
+            "text": "Rigid immobilization for months",
+            "id": "Q02O04"
+          }
+        ],
+        "explanation": "Long immobilization worsens stiffness.",
+        "id": "Q02",
+        "correct_option_id": "Q02O01"
+      },
+      {
+        "question": "Which additional exam can identify Essex-Lopresti concern?",
+        "options": [
+          {
+            "text": "Cervical flexion only",
+            "id": "Q03O01"
+          },
+          {
+            "text": "Hip rotation exam",
+            "id": "Q03O02"
+          },
+          {
+            "text": "Only blood pressure",
+            "id": "Q03O03"
+          },
+          {
+            "text": "Wrist/DRUJ and forearm assessment",
+            "id": "Q03O04"
+          }
+        ],
+        "explanation": "Longitudinal radioulnar instability may accompany radial head trauma.",
+        "id": "Q03",
+        "correct_option_id": "Q03O04"
+      }
+    ],
+    "shuffle_question_options_per_attempt": true,
+    "correct_score_each": 10,
+    "explanations_visible_after_response": true
+  },
+  "completion": {
+    "criteria": [
+      "correct_diagnosis_accepted",
+      "all_required_treatment_actions_accepted",
+      "all_required_investigation_reports_viewed",
+      "no_unresolved_critical_safety_alert"
+    ],
+    "score_categories": [
+      "history",
+      "physical_exam",
+      "investigations",
+      "diagnosis",
+      "treatment",
+      "knowledge_check"
+    ],
+    "show_personalized_debrief": true,
+    "report_fields": [
+      "best_decisions",
+      "unnecessary_orders",
+      "diagnosis_attempts",
+      "unsafe_actions",
+      "treatment_order_issues",
+      "paid_hints_spent",
+      "missed_red_flags"
+    ]
+  },
+  "rewards": {
+    "xp_on_completion": 150,
+    "medcoins_on_completion": 35,
+    "server_authoritative_grant": true,
+    "prevent_repeat_reward_per_case_id_and_user_policy": "configure_with_existing_medortho_rewards_backend",
+    "notes": "A paid hint costs 100 MedCoins; completing this case does not need to award enough coins to buy the hint."
+  },
+  "case_review": {
+    "clinical_reasoning": "Identify subtle Mason I injury, check associated instability and balance short comfort support with early motion.",
+    "key_takeaways": [
+      "Mason I is nondisplaced and treated nonoperatively.",
+      "Check wrist and forearm for associated longitudinal instability.",
+      "Prolonged immobilization can cause elbow stiffness.",
+      "Early graded range of motion is typically favorable."
+    ],
+    "watch_for": [
+      "Mechanical block",
+      "Associated wrist/DRUJ pain suggesting longitudinal instability",
+      "Neurovascular change"
+    ],
+    "followup_relevance": "Return to desk work and controlled sport"
+  },
+  "references": [
+    {
+      "key": "AAOS_RH",
+      "organization": "AAOS OrthoInfo",
+      "title": "Radial Head Fractures of the Elbow",
+      "url": "https://www.orthoinfo.org/diseases--conditions/radial-head-fractures-of-the-elbow/",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    },
+    {
+      "key": "NSW_RH",
+      "organization": "NSW Agency for Clinical Innovation",
+      "title": "Radial head and neck fractures, revised August 2025",
+      "url": "https://aci.health.nsw.gov.au/networks/eci/clinical/tools/radial-head-neck-fractures",
+      "usage": "Supports the stated clinical principle, not the invented patient biography or exact simulated measurement."
+    }
+  ],
+  "images": {
+    "investigation_images": [],
+    "premium_imaging_paywall": false,
+    "illustration": "assets/cover/case_008.webp"
+  },
+  "editorial_qa": {
+    "status": "requires_licensed_clinician_content_approval",
+    "checked_by_automated_test": "structural checks only",
+    "uncertainty": "Exact measurements and demographic details are deliberately constructed teaching data. Some acceptable treatments vary with local resources and specialist judgment."
+  }
+}
