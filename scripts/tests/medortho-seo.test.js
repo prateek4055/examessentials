@@ -101,3 +101,12 @@ test('CMS placeholders are distinguished from concise complete articles', async 
   assert.equal(isPlaceholderContent('A concise but complete explanation.'), false);
   assert.equal(isPlaceholderContent('Detailed information. '.repeat(30) + '...'), false);
 });
+
+
+test('medical initial HTML does not add crawler-only medical claims', () => {
+  for (const item of tests) {
+    const html = fs.readFileSync(`dist/medortho/tests/${testSlug(item.title)}/index.html`, 'utf8');
+    assert.ok(!html.includes('is a validated orthopedic special test used in the physical examination'));
+    assert.ok(!html.includes('clinical utility supported by expert consensus and routine clinical use'));
+  }
+});

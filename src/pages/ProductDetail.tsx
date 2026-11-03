@@ -149,7 +149,6 @@ const ProductDetail = () => {
         "priceCurrency": "INR",
         "price": product.price,
         "availability": "https://schema.org/InStock",
-        "priceValidUntil": "2026-12-31",
         "seller": {
           "@type": "Organization",
           "name": "Exam Essentials"
@@ -188,14 +187,7 @@ const ProductDetail = () => {
           "merchantReturnDays": 0
         }
       },
-      "category": `Class ${product.class} ${product.subject} Notes`,
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "150",
-        "bestRating": "5",
-        "worstRating": "1"
-      }
+      "category": `Class ${product.class} ${product.subject} Notes`
     },
     {
       "@context": "https://schema.org",
@@ -237,7 +229,7 @@ const ProductDetail = () => {
     ? `${product.title} - ${product.description.slice(0, 140)}. Premium handwritten ${product.subject} notes for Class ${product.class}. Best for CBSE, NEET, JEE. Instant PDF delivery. ₹${product.price} only.`
     : "Buy premium handwritten notes for CBSE Class 11 & 12, NEET, and JEE. Instant delivery.";
 
-  const pageCanonical = product ? `/product/${product.id}` : `/products`;
+  const pageCanonical = id ? `/product/${id}` : `/products`;
 
   const pageKeywords = product
     ? `${product.subject} notes class ${product.class}, ${product.title}, CBSE ${product.subject} notes class ${product.class}, handwritten ${product.subject} notes, best ${product.subject} notes, topper notes ${product.subject}, ${product.subject} PDF notes, NEET ${product.subject} notes, JEE ${product.subject} notes`

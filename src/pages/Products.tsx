@@ -128,7 +128,6 @@ const Products = () => {
               "priceCurrency": "INR",
               "availability": "https://schema.org/InStock",
               "url": `https://examessentials.in/product/${product.id}`,
-              "priceValidUntil": "2026-12-31",
               "shippingDetails": {
                 "@type": "OfferShippingDetails",
                 "shippingRate": {
@@ -162,13 +161,6 @@ const Products = () => {
                 "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
                 "merchantReturnDays": 0
               }
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.8",
-              "reviewCount": "150",
-              "bestRating": "5",
-              "worstRating": "1"
             }
           }
         }))

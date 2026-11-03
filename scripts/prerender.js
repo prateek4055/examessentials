@@ -97,7 +97,7 @@ function generatePageHtml(templateHtml, options) {
   
   // Insert Canonical & Schema Script before </head>
   let headAdditions = `  <link data-rh="true" rel="canonical" href="${escapeHtml(canonical)}" />\n`;
-  headAdditions += `<meta data-rh="true" property="og:type" content="${canonical.includes('/tests/') ? 'article' : 'website'}" />\n`;
+  headAdditions += `<meta data-rh="true" property="og:type" content="${options.ogType || (canonical.includes('/tests/') ? 'article' : 'website')}" />\n`;
   headAdditions += `<meta data-rh="true" name="twitter:url" content="${escapeHtml(canonical)}" />\n`;
   const dimensions = imageMetadata[ogImage?.split('/').pop()];
   if (dimensions) {
@@ -272,7 +272,13 @@ async function runPrerender() {
 
   let dbBlogPosts = [];
   let dbArticles = [];
+  let dbProducts = [];
   if (supabase) {
+    const { data: products, error: productError } = await supabase
+      .from('products').select('*').eq('published', true).order('created_at', { ascending: false });
+    if (productError) throw new Error('Published products fetch failed; refusing to publish incorrect catalog metadata.');
+    dbProducts = products || [];
+
     try {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -303,6 +309,45 @@ async function runPrerender() {
   }
   console.log(`✅ Loaded ${dbBlogPosts.length} blog posts from DB for pre-rendering.`);
   console.log(`✅ Loaded ${dbArticles.length} wiki articles from DB for pre-rendering.`);
+
+  // Product routes must have their own canonical and content before JavaScript runs.
+  if (supabase) {
+    const productImage = (product) => {
+      const raw = product.images?.[0];
+      if (!raw) return `${DOMAIN}/og-image.png`;
+      if (raw.startsWith('/')) return `${DOMAIN}${raw}`;
+      if (!raw.startsWith('http')) return `${DOMAIN}/supabase-api/storage/v1/object/public/product-images/${raw}`;
+      const image = new URL(raw);
+      return image.hostname.endsWith('.supabase.co') ? `${DOMAIN}/supabase-api${image.pathname}${image.search}` : raw;
+    };
+    const titleFor = (product) => `${product.title} - Class ${product.class} ${product.subject} Notes | Buy Now`;
+    const descriptionFor = (product) => {
+      const description = `${product.title} - ${product.description.slice(0, 140)}. Premium handwritten ${product.subject} notes for Class ${product.class}. Best for CBSE, NEET, JEE. Instant PDF delivery. ₹${product.price} only.`;
+      return description.length > 160 ? description.slice(0, 157) + '...' : description;
+    };
+    writePage('products', generatePageHtml(templateHtml, {
+      title: 'All Premium Handwritten Notes | Class 11 & 12 | CBSE, NEET, JEE',
+      description: "India's best handwritten notes for Class 11 & 12 students. Premium Physics, Chemistry, Maths, Biology notes by toppers. Perfect for CBSE Boards, NEET, JEE preparation.".slice(0, 157) + '...',
+      canonical: `${DOMAIN}/products`, ogImage: `${DOMAIN}/og-image.png`,
+      schemas: [{ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Study Notes', url: `${DOMAIN}/products`, mainEntity: {
+        '@type': 'ItemList', itemListElement: dbProducts.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.title, url: `${DOMAIN}/product/${p.id}` }))
+      }}],
+      bodyContent: `<main class="max-w-6xl mx-auto px-4 py-12"><h1>Study Notes</h1><ul>${dbProducts.map(p => `<li><a href="/product/${escapeHtml(p.id)}">${escapeHtml(p.title)}</a><p>${escapeHtml(p.description)}</p></li>`).join('')}</ul></main>`
+    }));
+    for (const product of dbProducts) {
+      const url = `${DOMAIN}/product/${product.id}`;
+      const title = titleFor(product);
+      writePage(`product/${product.id}`, generatePageHtml(templateHtml, {
+        title: title.length + ' | Exam Essentials'.length <= 65 ? `${title} | Exam Essentials` : title,
+        description: descriptionFor(product), canonical: url, ogImage: productImage(product), ogType: 'product',
+        schemas: [{ '@context': 'https://schema.org', '@type': 'Product', name: product.title,
+          description: product.description.slice(0, 200), image: productImage(product), sku: product.id,
+          offers: { '@type': 'Offer', url, priceCurrency: 'INR', price: product.price, availability: 'https://schema.org/InStock' }
+        }],
+        bodyContent: `<main class="max-w-4xl mx-auto px-4 py-12"><nav><a href="/products">Study Notes</a></nav><h1>${escapeHtml(product.title)}</h1><img src="${escapeHtml(productImage(product))}" alt="${escapeHtml(product.title)}" /><p>${escapeHtml(product.description)}</p><p>₹${escapeHtml(String(product.price))}</p></main>`
+      }));
+    }
+  }
 
   // Define all medical apps to pre-render their landing pages
   const appsList = [
@@ -769,48 +814,7 @@ async function runPrerender() {
       `;
     }
 
-    // Build SEO intro + clinical context paragraph (ensures 300+ words visible to Googlebot)
-    const categoryContext = {
-      'Shoulder': 'shoulder joint pathology including rotator cuff tears, subacromial impingement, labral injuries (SLAP), and shoulder instability',
-      'Knee': 'knee joint conditions including anterior cruciate ligament (ACL) tears, posterior cruciate ligament (PCL) injuries, meniscal tears, and patellofemoral disorders',
-      'Hip': 'hip joint disorders including femoroacetabular impingement (FAI), acetabular labral tears, trochanteric bursitis, and hip osteoarthritis',
-      'Spine': 'spinal pathology including cervical and lumbar disc herniation, nerve root compression, radiculopathy, and sacroiliac joint dysfunction',
-      'Elbow': 'elbow conditions including lateral epicondylitis (tennis elbow), medial epicondylitis (golfer\'s elbow), and ulnar collateral ligament instability',
-      'Wrist & Hand': 'wrist and hand conditions including carpal tunnel syndrome, De Quervain tenosynovitis, triangular fibrocartilage complex (TFCC) tears, and ulnar nerve entrapment',
-      'Ankle & Foot': 'ankle and foot pathology including Achilles tendon rupture, lateral ankle instability, syndesmosis injury, and plantar fasciitis',
-      'Neurological': 'neurological and nerve entrapment conditions including thoracic outlet syndrome (TOS), tarsal tunnel syndrome, and peripheral nerve injuries',
-    };
-    const catContext = categoryContext[t.category] || `${t.category.toLowerCase()} musculoskeletal pathology`;
-    const evidenceDesc = t.evidence === 'strong'
-      ? 'strong scientific evidence with validated diagnostic accuracy'
-      : t.evidence === 'moderate'
-      ? 'moderate evidence and widespread acceptance in clinical practice'
-      : 'clinical utility supported by expert consensus and routine clinical use';
-    const sensitivityMatch = (t.accuracy || '').match(/[Ss]ensitivity[:\s]+([0-9]+)/i);
-    const specificityMatch = (t.accuracy || '').match(/[Ss]pecificity[:\s]+([0-9]+)/i);
-    const sensPct = sensitivityMatch ? sensitivityMatch[1] + '%' : null;
-    const specPct = specificityMatch ? specificityMatch[1] + '%' : null;
-    const accuracyNote = (sensPct && specPct)
-      ? `Studies report a sensitivity of ${sensPct} and a specificity of ${specPct}, making it a valuable screening and confirmatory tool.`
-      : sensPct ? `Studies report a sensitivity of ${sensPct} when the test is performed with correct technique.` : '';
-
-    const introHtml = `
-      <section class="mb-8 p-5 bg-blue-50 border border-blue-100 rounded-xl">
-        <h2 class="text-lg font-bold text-blue-900 mb-3">Clinical Overview</h2>
-        <p class="text-blue-800 leading-relaxed text-[15px] mb-3">
-          The <strong>${escapeHtml(t.title)}</strong> is a validated orthopedic special test used in the physical examination and clinical assessment of ${catContext}.
-          This musculoskeletal examination maneuver is routinely performed by physiotherapists, orthopedic surgeons, sports medicine physicians, and allied health practitioners as part of a structured ${escapeHtml(t.category)} evaluation protocol.
-        </p>
-        <p class="text-blue-800 leading-relaxed text-[15px] mb-3">
-          The ${escapeHtml(t.title)} carries ${evidenceDesc}. ${accuracyNote}
-          As with all clinical special tests, findings must be interpreted alongside patient history, imaging studies, and other physical examination findings to guide diagnosis and management.
-        </p>
-        <p class="text-blue-800 leading-relaxed text-[15px]">
-          Accurate execution of this test requires a thorough understanding of the relevant anatomy, biomechanics, and joint kinematics of the ${escapeHtml(t.category)} region. Correct patient positioning, appropriate force application, and assessment of end-feel are essential for reliable and reproducible results in both clinical and research settings.
-        </p>
-      </section>
-    `;
-
+    // Render the source clinical fields only; do not add crawler-only medical claims.
     const bodyContent = `
       <div class="max-w-4xl mx-auto px-4 py-8">
         <nav class="text-sm text-gray-500 mb-6">
@@ -835,7 +839,6 @@ async function runPrerender() {
             <img src="/medortho/tests/images/${imageFilename}" alt="${escapeHtml(t.title)} Orthopedic Special Test" width="${imageMetadata[imageFilename]?.width || ""}" height="${imageMetadata[imageFilename]?.height || ""}" fetchpriority="high" decoding="async" class="max-h-[400px] object-contain" />
           </div>
           ` : ''}
-          ${introHtml}
 
           <div class="prose max-w-none">
             ${t.usedFor ? `
