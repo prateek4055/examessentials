@@ -23,3 +23,14 @@ References: [Google canonical guidance](https://developers.google.com/search/doc
 ## Post-deployment evidence
 
 Implementation commit `7f38f23` deployed successfully to production. A fresh crawl of all 356 current sitemap URLs found 356 HTTP 200 responses, zero canonical mismatches, zero missing titles and exactly one H1 on each page. Per-URL evidence: `follow-up-live-crawl-2026-11-03.json`. All 367 generated HTML documents also had exactly one canonical and valid JSON-LD. The live Matles page retained its clinical fields and illustration while the template-only claims were absent. These are technical checks, not evidence of an immediate ranking change.
+
+## Search Console submissions completed in Chrome
+
+On 3 November 2026, the owner opened Search Console in regular Chrome and controls worked. Confirmed actions:
+
+- Restarted Not found (404) validation: status “Validation started”, nine pending URLs, zero failed in the new validation.
+- Submitted Soft 404 validation: status “Validation started”, two affected URLs.
+- Resubmitted https://examessentials.in/sitemap.xml: “Sitemap submitted successfully”; table status Success, submitted/read 3 November. The displayed discovered count was still 363; the independent current sitemap crawl has 356 URLs.
+- Inspected /medortho and /: both reported “URL is on Google” and “Page is indexed”. Requested indexing for each; Google accepted both into the priority crawl queue.
+
+These actions supersede the earlier UI-blocked pending-submission notes. Validation results and recrawls remain pending with Google. The overall indexing report was still dated 23 October, so its old counts are not proof that deployed fixes failed. Expected redirects and alternate canonicals were not indiscriminately submitted as errors.
