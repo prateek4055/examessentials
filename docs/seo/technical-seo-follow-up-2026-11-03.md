@@ -19,3 +19,7 @@ Search Console's native window was retried but did not respond to its Search but
 Clinical evidence, reviewer credentials and image licensing have not been certified in this technical pass. Core Web Vitals still require field data. No ranking, search-result site name, AI citation or ad revenue outcome is guaranteed. Catalog data changes require a new build to keep static HTML current.
 
 References: [Google canonical guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), [Google JavaScript SEO](https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics), [Google site names](https://developers.google.com/search/docs/appearance/site-names).
+
+## Post-deployment evidence
+
+Implementation commit `7f38f23` deployed successfully to production. A fresh crawl of all 356 current sitemap URLs found 356 HTTP 200 responses, zero canonical mismatches, zero missing titles and exactly one H1 on each page. Per-URL evidence: `follow-up-live-crawl-2026-11-03.json`. All 367 generated HTML documents also had exactly one canonical and valid JSON-LD. The live Matles page retained its clinical fields and illustration while the template-only claims were absent. These are technical checks, not evidence of an immediate ranking change.
