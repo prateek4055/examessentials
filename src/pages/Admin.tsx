@@ -16,6 +16,7 @@ import {
   Mail,
   Send,
   Loader2,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -33,6 +34,16 @@ import { calculateCartTotal } from "@/lib/cartUtils";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.webp";
 import { medicalApps } from "@/apps/medical/data/medicalAppsData";
+import { WhatsAppDispatchDialog } from "@/components/admin/WhatsAppDispatchDialog";
+import {
+  DispatchDetails,
+  DispatchProduct,
+  formatWhatsAppPhone,
+  generateProductDownloadUrl,
+  generateWhatsAppMessage,
+  openWhatsAppChat,
+  downloadPdfFromUrl,
+} from "@/lib/whatsappDelivery";
 
 
 type Tab = "products" | "orders" | "poster-orders" | "blogs" | "wiki" | "sendmail";
@@ -49,7 +60,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Send Mail state
+  // Send Mail & WhatsApp state
   const [mailForm, setMailForm] = useState({
     studentName: "",
     email: "",
@@ -60,6 +71,12 @@ const Admin = () => {
   const [isSendingMail, setIsSendingMail] = useState(false);
   const [isFreeDelivery, setIsFreeDelivery] = useState(true);
   const [customPrices, setCustomPrices] = useState<Record<string, string>>({});
+  const [sendEmailOption, setSendEmailOption] = useState(true);
+  const [sendWhatsAppOption, setSendWhatsAppOption] = useState(true);
+  const [autoDownloadPdf, setAutoDownloadPdf] = useState(true);
+  const [autoOpenWhatsApp, setAutoOpenWhatsApp] = useState(true);
+  const [dispatchDetails, setDispatchDetails] = useState<DispatchDetails | null>(null);
+  const [isWhatsAppDialogOpen, setIsWhatsAppDialogOpen] = useState(false);
 
   useEffect(() => {
     // Wait for auth loading to complete before checking permissions
@@ -235,16 +252,81 @@ const Admin = () => {
     }
   };
 
-  // Send Mail handler
+  // WhatsApp dispatch for an existing order from the Orders tab
+  const handleOpenWhatsAppForOrder = async (order: Order) => {
+    try {
+      let orderProducts: Product[] = [];
+      if (order.product_id) {
+        const pIds = order.product_id.split(",").map((id) => id.trim());
+        orderProducts = products.filter((p) => pIds.includes(p.id));
+      }
+      if (orderProducts.length === 0) {
+        orderProducts = productsWithPdf.slice(0, 1);
+      }
+
+      const dispatchProducts: DispatchProduct[] = await Promise.all(
+        orderProducts.map(async (p) => {
+          const downloadUrl = await generateProductDownloadUrl(p, order.student_name, order.phone);
+          return {
+            id: p.id,
+            title: p.title,
+            price: p.price,
+            pdf_url: p.pdf_url,
+            secure_download_url: downloadUrl,
+          };
+        })
+      );
+
+      const { cleanPassword: pwd } = formatWhatsAppPhone(order.phone);
+
+      const details: DispatchDetails = {
+        studentName: order.student_name,
+        phone: order.phone,
+        email: order.email,
+        orderId: order.id,
+        products: dispatchProducts,
+        cleanPassword: pwd,
+        emailSent: true,
+      };
+
+      setDispatchDetails(details);
+      setIsWhatsAppDialogOpen(true);
+    } catch (err: any) {
+      toast({
+        title: "WhatsApp Dispatch Error",
+        description: err?.message || "Failed to prepare WhatsApp dispatch.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Send Notes (Email & WhatsApp) handler
   const handleSendMail = async () => {
-    if (!mailForm.studentName || !mailForm.email || !mailForm.phone || mailForm.productIds.length === 0) {
-      toast({ title: "Error", description: "Please fill all fields and select at least one product.", variant: "destructive" });
+    if (!mailForm.studentName || !mailForm.phone || mailForm.productIds.length === 0) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in student name, phone number, and select at least one product.",
+        variant: "destructive",
+      });
       return;
     }
+
+    if (sendEmailOption && !mailForm.email) {
+      toast({
+        title: "Email Required",
+        description: "Please provide an email address, or uncheck 'Send Email' to dispatch via WhatsApp only.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const effectiveEmail = (
+      mailForm.email || `student_${mailForm.phone.replace(/\D/g, "")}@examessentials.in`
+    ).trim().toLowerCase();
+
     setIsSendingMail(true);
     try {
       const selectedProducts = products.filter((p) => mailForm.productIds.includes(p.id));
-      const productIdStr = mailForm.productIds.join(",");
       const productNames = selectedProducts.map((p) => p.title).join(", ");
 
       let orderAmount: number;
@@ -254,10 +336,8 @@ const Admin = () => {
         orderAmount = 0;
         paymentId = "admin_free_" + crypto.randomUUID();
       } else {
-        // Use combo total if combos detected, otherwise sum custom prices
         if (detectedCombos.length > 0) {
           orderAmount = cartCalc.total;
-          // Use combo-calculated per-item prices
           const customPricesPayload: Record<string, number> = {};
           cartCalc.items.forEach((item) => {
             customPricesPayload[item.productId] = item.finalPrice;
@@ -288,7 +368,7 @@ const Admin = () => {
         const { data: oId, error: orderError } = await supabase.rpc("create_admin_order" as any, {
           p_product_id: p.id,
           p_student_name: mailForm.studentName.trim(),
-          p_email: mailForm.email.trim().toLowerCase(),
+          p_email: effectiveEmail,
           p_phone: mailForm.phone.trim(),
           p_class: mailForm.class,
           p_amount: itemPrice,
@@ -296,7 +376,6 @@ const Admin = () => {
           p_razorpay_payment_id: "admin_manual_" + paymentId + "_" + p.id,
           p_razorpay_order_id: "admin_order_" + crypto.randomUUID(),
         });
-
 
         if (orderError) {
           toast({ title: "Step 1 Failed: Order Creation", description: orderError.message, variant: "destructive" });
@@ -309,10 +388,7 @@ const Admin = () => {
         }
       }
 
-
       // Step 2: Direct Synchronous Delivery via Worker
-      // Calling the worker directly from the UI allows us to show a real loading spinner
-      // for the 10-20 seconds it takes to process the PDFs.
       const workerPayload = {
         products: selectedProducts.map((p) => {
           const itemPrice = isFreeDelivery ? 0 : (
@@ -333,34 +409,114 @@ const Admin = () => {
         }),
         student_name: mailForm.studentName.trim(),
         phone: mailForm.phone.trim(),
-        email: mailForm.email.trim().toLowerCase(),
+        email: effectiveEmail,
         order_id: primaryOrderId,
         total_amount: orderAmount,
-        payment_id: "admin_manual_" + paymentId
+        payment_id: "admin_manual_" + paymentId,
+        send_email: sendEmailOption,
       };
-
-
 
       const workerUrl = import.meta.env.DEV
         ? "http://localhost:7860/process-pdf"
         : "https://pdf-workerdf-workerpdf.onrender.com/process-pdf";
-      const workerResponse = await fetch(workerUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-worker-secret": "ExamNotes@2026"
-        },
-        body: JSON.stringify(workerPayload)
-      });
 
-      if (!workerResponse.ok) {
-        const errorText = await workerResponse.text();
-        throw new Error(`Worker Error: ${errorText}`);
+      let workerData: any = null;
+      let workerFailed = false;
+
+      try {
+        const workerResponse = await fetch(workerUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-worker-secret": "ExamNotes@2026"
+          },
+          body: JSON.stringify(workerPayload)
+        });
+
+        if (workerResponse.ok) {
+          try {
+            workerData = await workerResponse.json();
+          } catch {
+            // Not JSON
+          }
+        } else {
+          workerFailed = true;
+          const errorText = await workerResponse.text();
+          console.warn("Worker error response:", errorText);
+        }
+      } catch (workerErr: any) {
+        workerFailed = true;
+        console.warn("Worker fetch failed:", workerErr);
+      }
+
+      // Step 3: Direct resolution of download links
+      const dispatchProducts: DispatchProduct[] = await Promise.all(
+        selectedProducts.map(async (p) => {
+          const fromWorker = workerData?.products?.find((wp: any) => wp.id === p.id || wp.title === p.title);
+          if (fromWorker?.secure_download_url) {
+            return {
+              id: p.id,
+              title: p.title,
+              price: p.price,
+              pdf_url: p.pdf_url,
+              secure_download_url: fromWorker.secure_download_url,
+            };
+          }
+          // Client-side fallback: generates identical token
+          const fallbackUrl = await generateProductDownloadUrl(p, mailForm.studentName, mailForm.phone);
+          return {
+            id: p.id,
+            title: p.title,
+            price: p.price,
+            pdf_url: p.pdf_url,
+            secure_download_url: fallbackUrl,
+          };
+        })
+      );
+
+      const { fullPhone, cleanPassword: pwd } = formatWhatsAppPhone(mailForm.phone);
+      const effectivePassword = workerData?.password || pwd;
+
+      const newDetails: DispatchDetails = {
+        studentName: mailForm.studentName.trim(),
+        phone: mailForm.phone.trim(),
+        email: sendEmailOption ? effectiveEmail : undefined,
+        orderId: primaryOrderId || undefined,
+        products: dispatchProducts,
+        cleanPassword: effectivePassword,
+        emailSent: sendEmailOption ? (workerData?.email_sent ?? !workerFailed) : false,
+        emailError: workerData?.email_error || (workerFailed ? "Worker email service could not be reached" : null),
+      };
+
+      setDispatchDetails(newDetails);
+
+      if (sendWhatsAppOption) {
+        // Automatically download the protected PDF so it's ready in browser download bar
+        if (autoDownloadPdf) {
+          for (const prod of dispatchProducts) {
+            if (prod.secure_download_url) {
+              const cleanTitle = prod.title.replace(/[^a-zA-Z0-9_-]/g, "_");
+              downloadPdfFromUrl(prod.secure_download_url, `${cleanTitle}_Protected.pdf`);
+            }
+          }
+        }
+
+        setIsWhatsAppDialogOpen(true);
+        if (autoOpenWhatsApp) {
+          const msg = generateWhatsAppMessage({
+            studentName: mailForm.studentName,
+            phone: mailForm.phone,
+            cleanPassword: effectivePassword,
+            products: dispatchProducts,
+            orderId: primaryOrderId || undefined,
+          });
+          openWhatsAppChat(fullPhone, msg);
+        }
       }
 
       toast({
-        title: "Email Sent Successfully! ✉️",
-        description: `Download link sent to ${mailForm.email} for ${productNames}.`,
+        title: sendWhatsAppOption ? "Notes Ready for WhatsApp! 💬" : "Email Sent Successfully! ✉️",
+        description: `Protected notes prepared for ${mailForm.studentName} (${productNames}).`,
       });
 
       // Clear form & refresh orders
@@ -596,9 +752,11 @@ const Admin = () => {
             <Button
               variant={activeTab === "sendmail" ? "gradient" : "secondary"}
               onClick={() => setActiveTab("sendmail")}
+              className="flex items-center gap-1.5"
             >
-              <Mail className="w-4 h-4 mr-2" />
-              Send Mail
+              <Mail className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 text-emerald-400" />
+              Send Mail & WhatsApp
             </Button>
           </div>
 
@@ -818,6 +976,15 @@ const Admin = () => {
                                   Mark Completed
                                 </Button>
                               )}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleOpenWhatsAppForOrder(order)}
+                                title="Send Protected Notes via WhatsApp"
+                                className="text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10"
+                              >
+                                <MessageCircle className="w-4 h-4" />
+                              </Button>
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -1124,9 +1291,19 @@ const Admin = () => {
               animate={{ opacity: 1 }}
               className="max-w-lg mx-auto space-y-6"
             >
-              <h2 className="font-display text-xl font-bold text-foreground">
-                Send Download Email
-              </h2>
+              <div className="flex items-start justify-between">
+                <div>
+                  <h2 className="font-display text-xl font-bold text-foreground flex items-center gap-2">
+                    Send Material (Email &amp; WhatsApp)
+                    <span className="text-xs font-normal px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                      <MessageCircle className="w-3 h-3" /> WhatsApp
+                    </span>
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-body">
+                    Dispatch password-protected notes to students with pretyped WhatsApp message and attachments.
+                  </p>
+                </div>
+              </div>
 
               <div className="bg-card border border-border rounded-xl p-6 space-y-4">
                 <div>
@@ -1141,23 +1318,27 @@ const Admin = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-body text-muted-foreground mb-1">Email *</label>
-                  <input
-                    type="email"
-                    value={mailForm.email}
-                    onChange={(e) => setMailForm({ ...mailForm, email: e.target.value })}
-                    placeholder="student@email.com"
-                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-body text-muted-foreground mb-1">Phone Number * <span className="text-xs text-purple-400">(= PDF Password)</span></label>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">
+                    Phone Number * <span className="text-xs text-emerald-400">(= WhatsApp &amp; PDF Password)</span>
+                  </label>
                   <input
                     type="tel"
                     value={mailForm.phone}
                     onChange={(e) => setMailForm({ ...mailForm, phone: e.target.value })}
                     placeholder="9876543210"
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-body text-muted-foreground mb-1">
+                    Email {sendEmailOption ? "*" : "(Optional for WhatsApp-only)"}
+                  </label>
+                  <input
+                    type="email"
+                    value={mailForm.email}
+                    onChange={(e) => setMailForm({ ...mailForm, email: e.target.value })}
+                    placeholder="student@email.com"
                     className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground font-body focus:outline-none focus:ring-2 focus:ring-purple-500"
                   />
                 </div>
@@ -1230,7 +1411,6 @@ const Admin = () => {
                     onChange={(e) => {
                       setIsFreeDelivery(e.target.checked);
                       if (!e.target.checked) {
-                        // Initialize custom prices from product defaults
                         const defaults: Record<string, string> = {};
                         mailForm.productIds.forEach((id) => {
                           const prod = products.find((p) => p.id === id);
@@ -1241,6 +1421,62 @@ const Admin = () => {
                     }}
                     className="accent-purple-500 w-5 h-5"
                   />
+                </div>
+
+                {/* Delivery Channels Selector */}
+                <div className="p-3.5 rounded-xl bg-secondary/80 border border-border space-y-2.5">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                    Delivery Channels
+                  </span>
+
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <span className="text-sm font-body text-foreground flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-emerald-400" />
+                      <span>Send on WhatsApp (Pretyped + Protected PDF)</span>
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={sendWhatsAppOption}
+                      onChange={(e) => setSendWhatsAppOption(e.target.checked)}
+                      className="accent-emerald-500 w-4 h-4 cursor-pointer"
+                    />
+                  </label>
+
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <span className="text-sm font-body text-foreground flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-purple-400" />
+                      <span>Send Email (via Resend)</span>
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={sendEmailOption}
+                      onChange={(e) => setSendEmailOption(e.target.checked)}
+                      className="accent-purple-500 w-4 h-4 cursor-pointer"
+                    />
+                  </label>
+
+                  {sendWhatsAppOption && (
+                    <div className="pt-2 border-t border-border/60 space-y-1.5 text-xs text-muted-foreground">
+                      <label className="flex items-center justify-between cursor-pointer">
+                        <span>Auto-download protected PDF file for instant drag-and-drop</span>
+                        <input
+                          type="checkbox"
+                          checked={autoDownloadPdf}
+                          onChange={(e) => setAutoDownloadPdf(e.target.checked)}
+                          className="accent-emerald-500 w-3.5 h-3.5 cursor-pointer"
+                        />
+                      </label>
+                      <label className="flex items-center justify-between cursor-pointer">
+                        <span>Auto-open WhatsApp chat in new tab</span>
+                        <input
+                          type="checkbox"
+                          checked={autoOpenWhatsApp}
+                          onChange={(e) => setAutoOpenWhatsApp(e.target.checked)}
+                          className="accent-emerald-500 w-3.5 h-3.5 cursor-pointer"
+                        />
+                      </label>
+                    </div>
+                  )}
                 </div>
 
                 {/* Detected Combos */}
@@ -1284,23 +1520,43 @@ const Admin = () => {
 
                 <Button
                   variant="gradient"
-                  className="w-full mt-2"
+                  className={`w-full mt-2 font-semibold ${
+                    sendWhatsAppOption
+                      ? "bg-gradient-to-r from-purple-600 via-indigo-600 to-emerald-600 hover:opacity-95 text-white"
+                      : ""
+                  }`}
                   onClick={handleSendMail}
                   disabled={isSendingMail}
                 >
                   {isSendingMail ? (
-                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</>
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing Protected Notes...</>
+                  ) : sendWhatsAppOption && sendEmailOption ? (
+                    <><MessageCircle className="w-4 h-4 mr-2 text-emerald-300" /> {isFreeDelivery ? "Send Free Notes (Email + WhatsApp)" : "Send Paid Notes (Email + WhatsApp)"}</>
+                  ) : sendWhatsAppOption ? (
+                    <><MessageCircle className="w-4 h-4 mr-2 text-emerald-300" /> {isFreeDelivery ? "Process & Open WhatsApp (Free)" : "Process & Open WhatsApp (Paid)"}</>
                   ) : (
                     <><Send className="w-4 h-4 mr-2" /> {isFreeDelivery ? "Send Free Download Email" : "Send Paid Download Email"}</>
                   )}
                 </Button>
+
+                {dispatchDetails && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsWhatsAppDialogOpen(true)}
+                    className="w-full text-xs text-emerald-400 border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 mr-1.5" />
+                    Re-open WhatsApp Dispatch for {dispatchDetails.studentName}
+                  </Button>
+                )}
               </div>
 
               <div className="bg-card border border-border rounded-xl p-4">
-                <p className="text-xs text-muted-foreground font-body">
-                  <strong className="text-purple-400">How it works:</strong> This creates an admin order and triggers the PDF delivery system.
-                  The student will receive a watermarked, password-protected PDF with their phone number as the password.
-                  {!isFreeDelivery && " A GST invoice will be attached to the email."}
+                <p className="text-xs text-muted-foreground font-body leading-relaxed">
+                  <strong className="text-emerald-400">WhatsApp &amp; PDF Delivery:</strong> Generates watermarked, encrypted PDFs with the student&apos;s phone number as password. Opens WhatsApp with a pretyped message containing secure links, password instructions, and a 1-click button to download the protected PDF directly to attach into the chat.
+                  {!isFreeDelivery && " A GST invoice will also be generated."}
                 </p>
               </div>
             </motion.div>
@@ -1434,6 +1690,13 @@ const Admin = () => {
           )}
         </main>
       </div>
+
+      {/* WhatsApp Dispatch Dialog (Admin Only) */}
+      <WhatsAppDispatchDialog
+        isOpen={isWhatsAppDialogOpen}
+        onClose={() => setIsWhatsAppDialogOpen(false)}
+        details={dispatchDetails}
+      />
     </>
   );
 };

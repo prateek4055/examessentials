@@ -423,6 +423,7 @@ async def process_pdf(request: Request):
     order_id = data.get("order_id", "N/A")
     total_amount = data.get("total_amount", 0)
     payment_id = data.get("payment_id", "")
+    send_email = data.get("send_email", True)
     
     clean_password = get_clean_password(phone)
 
@@ -628,7 +629,10 @@ async def process_pdf(request: Request):
             })
 
         # 6. Send Email if requested
-        if email and processed_products:
+        email_sent = False
+        email_error = None
+
+        if send_email and email and processed_products:
             # Refresh key
             active_key = None
             for key, val in os.environ.items():
@@ -642,34 +646,51 @@ async def process_pdf(request: Request):
                 return {
                     "status": "success",
                     "message": f"Dev Mode (No Resend Key): Generated links successfully: {', '.join(links)}",
-                    "links": links
+                    "links": links,
+                    "products": processed_products,
+                    "password": clean_password,
+                    "email_sent": False
                 }
                 
             resend.api_key = active_key
 
-            
-            # Generate Invoice PDF
-            invoice_pdf = create_invoice_pdf(order_id, student_name, email, phone, processed_products, total_amount)
-            invoice_attachment = base64.b64encode(invoice_pdf).decode()
-            
-            # Compose HTML
-            html_content = get_html_template(student_name, phone, processed_products, email, total_amount, clean_password, coupon_code, first_name)
-            
-            resend.Emails.send({
-                "from": "Exam Essentials <contact@examessentials.in>",
-                "to": email,
-                "subject": f"Your Study Material is Ready! - Order #{order_id}",
-                "html": html_content,
-                "attachments": [
-                    {
-                        "content": invoice_attachment,
-                        "filename": f"Invoice_INV-{order_id}.pdf"
-                    }
-                ]
-            })
-            return {"status": "success", "message": f"Processed {len(processed_products)} items and emailed to {email}"}
+            try:
+                # Generate Invoice PDF
+                invoice_pdf = create_invoice_pdf(order_id, student_name, email, phone, processed_products, total_amount)
+                invoice_attachment = base64.b64encode(invoice_pdf).decode()
+                
+                # Compose HTML
+                html_content = get_html_template(student_name, phone, processed_products, email, total_amount, clean_password, coupon_code, first_name)
+                
+                resend.Emails.send({
+                    "from": "Exam Essentials <contact@examessentials.in>",
+                    "to": email,
+                    "subject": f"Your Study Material is Ready! - Order #{order_id}",
+                    "html": html_content,
+                    "attachments": [
+                        {
+                            "content": invoice_attachment,
+                            "filename": f"Invoice_INV-{order_id}.pdf"
+                        }
+                    ]
+                })
+                email_sent = True
+            except Exception as mail_err:
+                email_sent = False
+                email_error = str(mail_err)
+                print(f"[ERROR] Resend sending failed: {mail_err}")
 
-        return {"status": "success", "message": "No individual PDF returned for direct download in multi-mode."}
+        return {
+            "status": "success",
+            "message": f"Processed {len(processed_products)} items" + (" and emailed to " + email if email_sent else (f" (Email issue: {email_error})" if email_error else "")),
+            "email_sent": email_sent,
+            "email_error": email_error,
+            "products": processed_products,
+            "password": clean_password,
+            "student_name": student_name,
+            "phone": phone,
+            "order_id": order_id
+        }
 
     except Exception as e:
         print(f"Error: {e}")

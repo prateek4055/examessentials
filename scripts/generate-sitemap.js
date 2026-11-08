@@ -19,11 +19,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   process.exit(1);
 }
 
-// If running locally on JIO network, Supabase domains might be blocked.
-// We proxy the fetch request through the production domain.
+// Direct SUPABASE_URL is used by default, with proxy fallback if explicitly requested
 const PROXIED_URL = "https://examessentials.in/supabase-api";
-const isLocal = !process.env.VERCEL_ENV; // Vercel environment checks this
-const baseUrlToUse = isLocal ? PROXIED_URL : SUPABASE_URL;
+const baseUrlToUse = process.env.USE_PROXIED_SUPABASE === 'true' ? PROXIED_URL : SUPABASE_URL;
 
 const supabase = createClient(baseUrlToUse, SUPABASE_ANON_KEY, {
   global: {
