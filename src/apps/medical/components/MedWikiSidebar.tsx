@@ -158,11 +158,18 @@ const MedWikiSidebar: React.FC<MedWikiSidebarProps> = ({ app, className = "" }) 
   return (
     <div className={`flex flex-col h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto ${className}`}>
       <div className="mb-6">
-        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent mb-4" style={{ 
-            backgroundImage: `linear-gradient(to right, ${app.theme.primary}, ${app.theme.accent})` 
-        }}>
-          {app.name} Wiki
-        </h2>
+        <Link to={`/${app.slug}`} className="flex items-center gap-2.5 mb-4 group">
+          <img
+            src={app.logo}
+            alt={app.name}
+            className="w-7 h-7 rounded-lg object-contain bg-slate-50 dark:bg-slate-800 p-0.5 border border-black/[0.06] shadow-sm"
+          />
+          <h2 className="text-xl font-bold bg-clip-text text-transparent group-hover:opacity-90 transition-opacity" style={{ 
+              backgroundImage: `linear-gradient(to right, ${app.theme.primary}, ${app.theme.accent})` 
+          }}>
+            {app.name} Wiki
+          </h2>
+        </Link>
         <form role="search" className="relative" onSubmit={(event) => {
           event.preventDefault();
           navigate(`/${app.slug}/special-tests${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""}`);

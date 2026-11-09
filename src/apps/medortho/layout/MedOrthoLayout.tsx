@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MedOrthoSidebar from "../components/MedOrthoSidebar";
 import MedOrthoPromoBanner from "../components/MedOrthoPromoBanner";
 import AdSensePlaceholder from "../components/AdSensePlaceholder";
 import AnchorAd from "../components/AnchorAd";
+import medorthoLogo from "@/assets/apps/medortho.webp";
 
 interface MedOrthoLayoutProps {
   children: React.ReactNode;
@@ -22,7 +24,14 @@ const MedOrthoLayout: React.FC<MedOrthoLayoutProps> = ({ children }) => {
           <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(true)}>
             <Menu className="w-5 h-5" />
           </Button>
-          <span className="font-bold text-lg text-blue-700 dark:text-blue-400">MedOrtho Wiki</span>
+          <Link to="/medortho" className="flex items-center gap-2">
+            <img
+              src={medorthoLogo}
+              alt="MedOrtho"
+              className="w-6 h-6 rounded-md object-contain"
+            />
+            <span className="font-bold text-lg text-blue-700 dark:text-blue-400">MedOrtho Wiki</span>
+          </Link>
         </div>
       </div>
 

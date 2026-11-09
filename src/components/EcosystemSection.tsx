@@ -133,11 +133,11 @@ export const EcosystemSection = () => {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               
               <div className="flex items-start sm:items-center gap-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl p-1 bg-white dark:bg-zinc-800 shadow-md border border-black/[0.06] overflow-hidden shrink-0">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl p-2 bg-white dark:bg-zinc-800 shadow-md border border-black/[0.06] overflow-hidden shrink-0 flex items-center justify-center">
                   <img
                     src={flagshipApp.image}
                     alt={flagshipApp.name}
-                    className="w-full h-full object-cover rounded-xl"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 <div>

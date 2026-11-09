@@ -251,16 +251,15 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
               className="mb-8"
             >
               <div
-                className="inline-block p-1 rounded-[2rem] shadow-xl"
+                className="inline-block p-2 rounded-[2rem] shadow-xl bg-white/95 dark:bg-zinc-900/95 border border-black/[0.06] dark:border-white/[0.08]"
                 style={{
-                  background: `linear-gradient(135deg, ${app.theme.accent}20, ${app.theme.primary}30)`,
                   boxShadow: "0 20px 50px rgba(0, 0, 0, 0.05), 0 10px 30px " + app.theme.primary + "15",
                 }}
               >
                 <img
                   src={app.logo}
                   alt={`${app.name} Logo`}
-                  className="w-28 h-28 md:w-36 md:h-36 rounded-[1.75rem] object-cover"
+                  className="w-28 h-28 md:w-36 md:h-36 rounded-[1.75rem] object-contain"
                 />
               </div>
             </motion.div>
@@ -1277,12 +1276,14 @@ const MedAppPage = ({ app }: MedAppPageProps) => {
                   }}
                 >
                   <div className="flex items-center gap-4 mb-3">
-                    <img
-                      src={other.logo}
-                      alt={other.name}
-                      className="w-14 h-14 rounded-xl object-cover"
-                      loading="lazy"
-                    />
+                    <div className="w-14 h-14 rounded-xl p-1 bg-slate-50 dark:bg-slate-800 border border-black/[0.05] flex items-center justify-center shrink-0">
+                      <img
+                        src={other.logo}
+                        alt={other.name}
+                        className="w-full h-full object-contain"
+                        loading="lazy"
+                      />
+                    </div>
                     <div>
                       <h3 className="text-slate-800 font-bold text-lg group-hover:text-blue-600 transition-colors">
                         {other.name}

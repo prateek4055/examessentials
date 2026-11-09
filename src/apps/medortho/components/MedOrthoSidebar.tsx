@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, ChevronDown, ChevronRight, BookOpen, Activity, Stethoscope } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import medorthoLogo from "@/assets/apps/medortho.webp";
 
 interface NavNode {
   title: string;
@@ -88,9 +89,16 @@ const MedOrthoSidebar: React.FC<MedOrthoSidebarProps> = ({ className = "" }) => 
   return (
     <div className={`flex flex-col h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto ${className}`}>
       <div className="mb-6">
-        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-4">
-          MedOrtho Wiki
-        </h2>
+        <Link to="/medortho" className="flex items-center gap-2.5 mb-4 group">
+          <img
+            src={medorthoLogo}
+            alt="MedOrtho"
+            className="w-7 h-7 rounded-lg object-contain bg-slate-50 dark:bg-slate-800 p-0.5 border border-black/[0.06] shadow-sm"
+          />
+          <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:opacity-90 transition-opacity">
+            MedOrtho Wiki
+          </h2>
+        </Link>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input 

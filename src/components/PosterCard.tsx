@@ -65,3 +65,4 @@ export const PosterCard = ({ poster }: PosterCardProps) => {
 };
 
 export default PosterCard;
+
