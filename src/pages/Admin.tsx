@@ -634,10 +634,19 @@ const Admin = () => {
                 </div>
               </Link>
 
-              <Button variant="ghost" onClick={handleSignOut}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex text-xs border-purple-500/30 text-purple-400 bg-purple-500/5 hover:bg-purple-500/10">
+                  <Link to="/neet-app" target="_blank" rel="noopener noreferrer">
+                    <Sparkles className="w-3.5 h-3.5 mr-1 text-purple-400" />
+                    NEET App Preview 🔒
+                  </Link>
+                </Button>
+
+                <Button variant="ghost" onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
             </div>
           </div>
         </header>

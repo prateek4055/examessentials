@@ -46,7 +46,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className="relative bg-secondary/50 overflow-hidden aspect-[4/3] flex items-center justify-center"
+          className="relative bg-gradient-to-b from-slate-50 to-slate-100/70 dark:from-zinc-900/70 dark:to-zinc-950 overflow-hidden aspect-[3/4] p-3 sm:p-4 flex items-center justify-center"
           onTouchStart={handleMobileTouch}
         >
           {hasImages ? (
@@ -55,7 +55,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 src={getProxiedImageUrl(product.images![0]) || ""}
                 alt={product.title}
                 loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                className="w-full h-full object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.12)] group-hover:scale-[1.03] transition-transform duration-300 ease-out"
               />
               {/* Auto-scroll preview overlay */}
               <ProductImageHoverPreview
@@ -72,7 +72,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
           {/* Premium Glass Sale Tag */}
           <span className="absolute top-3 right-3 backdrop-blur-md bg-black/65 text-white dark:bg-white/90 dark:text-black text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full shadow-sm z-10">
-            Special Offer
+            Topper Notes
           </span>
         </div>
 

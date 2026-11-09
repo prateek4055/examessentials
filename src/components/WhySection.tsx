@@ -1,71 +1,61 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, Sparkles, FileText, Zap, Compass, Trophy } from "lucide-react";
+import { Sparkles, FileText, Stethoscope, Image as ImageIcon, ShieldCheck } from "lucide-react";
 
 const features = [
   {
     icon: FileText,
     accentColor: "from-blue-500/20 to-indigo-500/10 text-blue-600",
-    title: "Exam-Focused Precision",
+    title: "Topper Handwritten Notes",
     description:
-      "Engineered specifically for NEET, JEE & CBSE Boards. Every formula, trap, and NCERT reference is aligned with real weightage.",
-    badge: "100% Aligned",
+      "Handcrafted by top-ranking students for CBSE Class 11, 12, NEET & JEE. Mnemonics, color-coded diagrams, and zero textbook filler.",
+    badge: "NCERT Aligned",
   },
   {
-    icon: Sparkles,
-    accentColor: "from-purple-500/20 to-pink-500/10 text-purple-600",
-    title: "Topper Handwritten Visuals",
-    description:
-      "Handwritten clarity with mnemonic callouts, high-resolution flowcharts, and zero visual clutter to speed up cognitive recall.",
-    badge: "Visual Recall",
-  },
-  {
-    icon: Zap,
-    accentColor: "from-amber-500/20 to-orange-500/10 text-amber-600",
-    title: "Rapid 15-Minute Revision",
-    description:
-      "Curated cheat-sheets and high-yield unit summaries designed to compress entire 60-page chapters into crisp 5-minute passes.",
-    badge: "3x Faster",
-  },
-  {
-    icon: Trophy,
+    icon: ImageIcon,
     accentColor: "from-emerald-500/20 to-teal-500/10 text-emerald-600",
-    title: "Proven Medical Track Record",
+    title: "Clinical-Grade Anatomy Posters",
     description:
-      "Created with inputs from top medical students and GMC toppers who cracked the nation's most competitive rank boundaries.",
-    badge: "Top Tier",
+      "Printed on 300 GSM heavyweight matte paper with fade-resistant inks. Designed for clinics, hospitals, physiotherapy OPDs, and study walls.",
+    badge: "MedPosterHub",
+  },
+  {
+    icon: Stethoscope,
+    accentColor: "from-sky-500/20 to-cyan-500/10 text-sky-600",
+    title: "Evidence-Based Medical Apps",
+    description:
+      "292 orthopedic special tests with sensitivity, specificity, and video demonstrations on MedOrtho, trusted by physiotherapists and clinicians.",
+    badge: "MedOrtho Live",
+  },
+  {
+    icon: ShieldCheck,
+    accentColor: "from-purple-500/20 to-pink-500/10 text-purple-600",
+    title: "Protected Instant Delivery",
+    description:
+      "Personalized watermarked PDFs encrypted with your phone number, dispatched automatically to your WhatsApp and Email within seconds.",
+    badge: "Instant Delivery",
   },
 ];
 
-const WhySection = () => {
+export const WhySection = () => {
   return (
     <section className="py-24 bg-background relative overflow-hidden">
-      {/* Subtle ambient blur */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-primary/[0.03] rounded-full blur-[100px] pointer-events-none" />
-
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 mb-4">
-            <Compass className="w-3.5 h-3.5" />
-            Engineering The Standard
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-secondary/80 border border-black/[0.06] dark:border-white/[0.08] mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            Built For Precision
           </div>
-          <h2
-            className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-4"
-            style={{
-              fontFamily:
-                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif",
-            }}
-          >
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Why Exam Essentials?
           </h2>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-            We removed the filler textbooks and endless video playlists. Everything
-            is crafted for maximum retention in minimum hours.
+            We focus on what matters: high-retention study resources, clinical accuracy, and seamless digital and physical delivery.
           </p>
         </motion.div>
 
@@ -75,13 +65,12 @@ const WhySection = () => {
             return (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
                 viewport={{ once: true }}
-                className="group relative p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_-6px_rgba(0,0,0,0.09)] hover:-translate-y-1 transition-all duration-300"
+                className="group relative p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_-6px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300"
               >
-                {/* Subtle top-right badge */}
                 <div className="flex items-center justify-between mb-5">
                   <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${feature.accentColor} flex items-center justify-center border border-black/[0.04] dark:border-white/[0.06] group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-6 h-6" />
@@ -91,13 +80,7 @@ const WhySection = () => {
                   </span>
                 </div>
 
-                <h3
-                  className="text-xl font-bold text-foreground mb-2 tracking-tight group-hover:text-primary transition-colors"
-                  style={{
-                    fontFamily:
-                      "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif",
-                  }}
-                >
+                <h3 className="text-xl font-bold text-foreground mb-2 tracking-tight group-hover:text-primary transition-colors">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">

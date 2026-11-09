@@ -70,7 +70,7 @@ const Navbar = () => {
               className="h-10 w-10 rounded-lg object-cover"
             />
             <div className="flex flex-col">
-              <span className="font-display text-lg font-bold text-foreground leading-tight">
+              <span className="text-lg font-bold text-foreground leading-tight tracking-tight">
                 Exam Essentials
               </span>
               <span className="text-xs text-muted-foreground">

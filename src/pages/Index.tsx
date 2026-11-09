@@ -131,11 +131,11 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <ProductsSection />
         <section id="ecosystem">
           <EcosystemSection />
         </section>
         <WhySection />
-        <ProductsSection />
         <FAQSection />
       </main>
       <Footer />
