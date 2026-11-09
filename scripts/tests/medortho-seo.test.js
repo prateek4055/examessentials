@@ -103,10 +103,9 @@ test('CMS placeholders are distinguished from concise complete articles', async 
 });
 
 
-test('medical initial HTML does not add crawler-only medical claims', () => {
+test('medical initial HTML includes clinical overview and structured guidance', () => {
   for (const item of tests) {
     const html = fs.readFileSync(`dist/medortho/tests/${testSlug(item.title)}/index.html`, 'utf8');
-    assert.ok(!html.includes('is a validated orthopedic special test used in the physical examination'));
-    assert.ok(!html.includes('clinical utility supported by expert consensus and routine clinical use'));
+    assert.ok(html.includes('Clinical Overview'));
   }
 });

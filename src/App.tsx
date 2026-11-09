@@ -1,5 +1,4 @@
 import { lazy, Suspense } from "react";
-import MedOrthoAdLoader from "./apps/medortho/components/MedOrthoAdLoader";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -73,7 +72,6 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
-              <MedOrthoAdLoader />
               <Suspense fallback={<div role="status" className="p-12 text-center text-slate-500">Loading page…</div>}>
               <Routes>
                 <Route path="/" element={<Index />} />

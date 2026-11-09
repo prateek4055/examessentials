@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import MedWikiSidebar from "./MedWikiSidebar";
 import { MedAppData } from "../data/medicalAppsData";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import AnchorAd from "../../medortho/components/AnchorAd";
 
 interface MedWikiLayoutProps {
   app: MedAppData;
@@ -69,7 +70,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
         </main>
 
         {/* Desktop Right Sidebar (Clean Promo & Sticky Resource Cards) */}
-        <aside className="hidden 2xl:block w-72 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 bg-gray-50/50 dark:bg-gray-900/50">
+        <aside className="hidden xl:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto border-l border-gray-200 dark:border-gray-800 p-6 bg-gray-50/50 dark:bg-gray-900/50">
           <style dangerouslySetInnerHTML={{__html: `
             #wiki-right-sidebar-target:has(> div:not(.default-sidebar-content)) .default-sidebar-content {
               display: none;
@@ -103,6 +104,7 @@ const MedWikiLayout: React.FC<MedWikiLayoutProps> = ({ app, children }) => {
       </div>
 
       {/* Non-intrusive dismissible bottom anchor ad for mobile / tablet */}
+      <AnchorAd />
 
 
       {/* Mobile Sticky Bottom App Promo */}

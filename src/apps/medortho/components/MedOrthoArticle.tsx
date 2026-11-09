@@ -206,8 +206,8 @@ export const renderWikiContent = (content: string, accuracyHtml?: string, title?
       const id = hTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-");
       
       h2Count++;
-      // Only long articles get a middle placement, between complete sections.
-      if (h2Count === 3 && content.replace(/<[^>]*>/g, " ").split(/\s+/).length >= 600) {
+      // Dynamically inject an in-article ad unit right before the second major H2 heading
+      if (h2Count === 2) {
         elements.push(
           <AdSensePlaceholder key={`ad-in-article-${elementKey++}`} layout="in-article" />
         );
@@ -438,6 +438,8 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
               Get Android App
             </a>
           </div>
+          {/* Sticky Sidebar Ad Unit */}
+          <AdSensePlaceholder layout="sidebar" className="my-6" />
         </div>
       </RightSidebarPortal>
 
@@ -488,6 +490,8 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
           <StickyTOC content={article.content} appPrimary={app?.theme.primary || "#1B3A5C"} />
         </details>
 
+        {/* Top Banner Ad Unit */}
+        <AdSensePlaceholder layout="banner" className="mb-8" />
 
         {/* Hero Image Demonstration */}
         {heroImageUrl && (
@@ -518,9 +522,6 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
         <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-slate-800 dark:prose-headings:text-white">
           {renderWikiContent(article.content, article.accuracy, article.title, article.category, app?.theme.primary, app?.theme.accent)}
         </div>
-
-        {/* The first placement follows the complete clinical content. */}
-        <AdSensePlaceholder layout="banner" className="my-10" />
 
         {/* Dynamic App CTA Banner */}
         <div 

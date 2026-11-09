@@ -1,69 +1,112 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
-type Layout = "sidebar" | "banner" | "in-article" | "multiplex";
 interface AdSensePlaceholderProps {
-  layout: Layout;
+  layout: "sidebar" | "banner" | "in-article" | "multiplex";
   className?: string;
   adSlot?: string;
 }
+
 const AD_CLIENT = "ca-pub-4205476272781282";
-const SLOTS: Record<Layout, string> = {
-  sidebar: "5310841463", banner: "2988806161",
-  multiplex: "2684678128", "in-article": "2988806161",
+
+const SLOT_MAP: Record<string, string> = {
+  sidebar: "5310841463",
+  banner: "2988806161",
+  multiplex: "2684678128",
+  "in-article": "2988806161",
 };
 
-function AdUnit({ layout, className = "", adSlot }: AdSensePlaceholderProps) {
-  const container = useRef<HTMLDivElement>(null);
-  const element = useRef<HTMLModElement>(null);
-  const requested = useRef(false);
+const FORMAT_MAP: Record<string, string> = {
+  sidebar: "auto",
+  banner: "auto",
+  multiplex: "autorelaxed",
+  "in-article": "fluid",
+};
+
+const SIZE_MAP: Record<string, React.CSSProperties> = {
+  sidebar: { display: "block", minWidth: "160px", minHeight: "250px", width: "100%" },
+  banner: { display: "block", minWidth: "320px", minHeight: "90px", width: "100%" },
+  multiplex: { display: "block", minWidth: "300px", minHeight: "250px", width: "100%" },
+  "in-article": { display: "block", textAlign: "center", minWidth: "300px", minHeight: "250px", width: "100%" },
+};
+
+const AdSensePlaceholder: React.FC<AdSensePlaceholderProps> = ({
+  layout,
+  className = "",
+  adSlot,
+}) => {
+  const insRef = useRef<HTMLModElement | null>(null);
+  const location = useLocation(); // Re-trigger push on every SPA route change
 
   useEffect(() => {
-    // Local previews must not create live ad impressions.
-    if (import.meta.env.DEV) return;
-    let nearby = false;
-    const request = () => {
-      const ad = element.current;
-      if (!nearby || !ad || requested.current || ad.getBoundingClientRect().width < 250) return;
-      if (ad.hasAttribute("data-adsbygoogle-status")) return;
-      requested.current = true;
+    // Small delay to ensure DOM has non-zero dimensions before AdSense reads size
+    const timer = setTimeout(() => {
       try {
-        const adsWindow = window as Window & { adsbygoogle?: object[] };
-        (adsWindow.adsbygoogle = adsWindow.adsbygoogle || []).push({});
-      } catch (error) {
-        console.warn("Ad unit could not be initialized", error);
+        if (!insRef.current) return;
+
+        // Only push if this <ins> hasn't been filled yet by AdSense
+        const status = insRef.current.getAttribute("data-adsbygoogle-status");
+        if (!status) {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        }
+      } catch (e) {
+        console.warn("AdSense push error:", e);
       }
-    };
-    const intersection = new IntersectionObserver(([entry]) => {
-      nearby = entry.isIntersecting;
-      request();
-    }, { rootMargin: "200px 0px" });
-    const resize = new ResizeObserver(request);
-    if (container.current) intersection.observe(container.current);
-    if (element.current) resize.observe(element.current);
-    return () => { intersection.disconnect(); resize.disconnect(); };
-  }, []);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname, layout]);
+
+  const containerStyles: Record<string, string> = {
+    sidebar: "w-full min-h-[250px] my-4",
+    banner: "w-full min-h-[90px] my-6",
+    multiplex: "w-full min-h-[280px] my-8",
+    "in-article": "w-full min-h-[250px] my-8",
+  };
+
+  const slot = adSlot || SLOT_MAP[layout] || SLOT_MAP.banner;
+  const format = FORMAT_MAP[layout] || "auto";
+  const inlineStyle = SIZE_MAP[layout] || SIZE_MAP.banner;
 
   return (
-    <div ref={container} aria-label="Advertisement" className={`adsense-container my-10 w-full min-w-0 rounded-xl border border-slate-100 bg-slate-50/50 px-2 py-3 text-center dark:border-slate-800 dark:bg-slate-900/30 ${className}`}>
-      <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-slate-400">Advertisement</span>
-      <div className="min-h-[280px] w-full">
-        {import.meta.env.DEV ? (
-          <div className="flex min-h-[280px] items-center justify-center text-xs text-slate-400">Ad space · preview only</div>
-        ) : (
-          <ins ref={element} className="adsbygoogle" style={{ display: "block", width: "100%", minHeight: 280 }}
-            data-ad-client={AD_CLIENT} data-ad-slot={adSlot || SLOTS[layout]}
-            data-ad-format={layout === "multiplex" ? "autorelaxed" : "auto"}
-            data-full-width-responsive={layout === "multiplex" ? undefined : "true"} />
-        )}
-      </div>
+    <div
+      className={`adsense-container text-center overflow-hidden flex flex-col items-center justify-center ${containerStyles[layout] || ""} ${className}`}
+    >
+      <span className="block text-[9px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1 font-semibold">
+        Advertisement
+      </span>
+      {layout === "in-article" ? (
+        <ins
+          ref={insRef}
+          className="adsbygoogle"
+          style={inlineStyle}
+          data-ad-layout="in-article"
+          data-ad-format={format}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={slot}
+        />
+      ) : layout === "multiplex" ? (
+        <ins
+          ref={insRef}
+          className="adsbygoogle"
+          style={inlineStyle}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={slot}
+          data-ad-format={format}
+        />
+      ) : (
+        <ins
+          ref={insRef}
+          className="adsbygoogle"
+          style={inlineStyle}
+          data-ad-client={AD_CLIENT}
+          data-ad-slot={slot}
+          data-ad-format={format}
+          data-full-width-responsive="true"
+        />
+      )}
     </div>
   );
-}
+};
 
-export default function AdSensePlaceholder(props: AdSensePlaceholderProps) {
-  const { pathname } = useLocation();
-  if (!/^\/medortho(?:\/|$)/.test(pathname)) return null;
-  // A new page gets a new DOM unit; re-renders never refresh an existing ad.
-  return <AdUnit key={`${pathname}:${props.layout}:${props.adSlot || ""}`} {...props} />;
-}
+export default AdSensePlaceholder;
