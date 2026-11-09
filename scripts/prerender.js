@@ -111,7 +111,7 @@ function generatePageHtml(templateHtml, options) {
   content = content.replace(/<\/head>/i, `${headAdditions}</head>`);
   
   // Replace Root Div Content
-  content = content.replace(/(<div\s+id=["']root["'][^>]*>)([\s\S]*?)(<\/div>)/i, `$1\n${canonical && new URL(canonical).pathname.match(/^\/medortho(?:\/|$)/) ? `<div class="medortho-type">${bodyContent}</div>` : bodyContent}\n$3`);
+  content = content.replace(/(<div\s+id=["']root["'][^>]*>)([\s\S]*?)(<\/div>)/i, `$1\n${bodyContent}\n$3`);
   
   content = content.replace(/<meta (?!data-rh)(?=(?:name|property)=["'](?:title|description|keywords|og:[^"']+|twitter:[^"']+)["'])/g, '<meta data-rh="true" ');
   return content;
