@@ -64,11 +64,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img
-              src={logo}
-              alt="Exam Essentials"
-              className="h-10 w-10 rounded-lg object-cover"
-            />
+            <div className="h-10 w-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-sm border border-black/[0.06] dark:border-white/10 shrink-0">
+              <img
+                src={logo}
+                alt="Exam Essentials"
+                className="w-full h-full object-contain"
+              />
+            </div>
             <div className="flex flex-col">
               <span className="text-lg font-bold text-foreground leading-tight tracking-tight">
                 Exam Essentials

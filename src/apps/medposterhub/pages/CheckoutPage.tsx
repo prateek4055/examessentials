@@ -101,10 +101,9 @@ const CheckoutPage = () => {
         pincode: "",
     });
 
-    const [paymentPlan, setPaymentPlan] = useState<"full" | "partial">("full");
-
-    const initialPayment = paymentPlan === "full" ? totalPrice : Math.ceil(totalPrice / 2);
-    const balanceDue = totalPrice - initialPayment;
+    const paymentPlan = "full" as const;
+    const initialPayment = totalPrice;
+    const balanceDue = 0;
 
     if (cart.length === 0 && !isProcessing) {
         return (
@@ -388,14 +387,9 @@ const CheckoutPage = () => {
                                                 Processing...
                                             </>
                                         ) : (
-                                            <>Pay ₹{initialPayment} Now {paymentPlan === "partial" && <span className="ml-2 text-xs opacity-80">(50% Advance)</span>}</>
+                                            <>Pay ₹{totalPrice} Now</>
                                         )}
                                     </ClayButton>
-                                    {paymentPlan === "partial" && (
-                                        <p className="text-[10px] text-center text-amber-600 font-bold uppercase mt-2">
-                                            ₹{balanceDue} Balance Due After Dispatch
-                                        </p>
-                                    )}
                                 </div>
                             </form>
                         </div>
@@ -430,38 +424,6 @@ const CheckoutPage = () => {
                                     })}
                                 </div>
 
-                                <div className="py-4 space-y-4">
-                                    <div className="flex flex-col gap-2">
-                                        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Choose Payment Plan</h4>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => setPaymentPlan("full")}
-                                                className={`p-3 rounded-xl border-2 text-xs font-bold transition-all text-center ${
-                                                    paymentPlan === "full"
-                                                        ? "border-blue-600 bg-blue-100/50 text-blue-700"
-                                                        : "border-slate-100 bg-white text-slate-500 hover:border-slate-200"
-                                                }`}
-                                            >
-                                                Full Payment
-                                                <span className="block text-[10px] font-normal mt-1 opacity-70">100% Upfront</span>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => setPaymentPlan("partial")}
-                                                className={`p-3 rounded-xl border-2 text-xs font-bold transition-all text-center ${
-                                                    paymentPlan === "partial"
-                                                        ? "border-blue-600 bg-blue-100/50 text-blue-700"
-                                                        : "border-slate-100 bg-white text-slate-500 hover:border-slate-200"
-                                                }`}
-                                            >
-                                                Trust Plan (50/50)
-                                                <span className="block text-[10px] font-normal mt-1 opacity-70">Pay ₹{Math.ceil(totalPrice/2)} now</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div className="py-4 space-y-2">
                                     <div className="flex justify-between text-sm text-slate-600">
                                         <span>Subtotal</span>
@@ -473,21 +435,11 @@ const CheckoutPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="pt-4">
+                                <div className="pt-4 border-t border-slate-200">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-lg font-bold text-slate-900">Total Bill</span>
-                                        <span className="text-2xl font-bold text-slate-800">₹{totalPrice}</span>
+                                        <span className="text-lg font-bold text-slate-900">Total Payable</span>
+                                        <span className="text-2xl font-bold text-blue-600">₹{totalPrice}</span>
                                     </div>
-                                    <div className="flex justify-between items-center mt-2 border-t border-blue-100/50 pt-2">
-                                        <span className="text-sm font-semibold text-slate-500">Amount to Pay Now</span>
-                                        <span className="text-xl font-bold text-blue-600">₹{initialPayment}</span>
-                                    </div>
-                                    {paymentPlan === "partial" && (
-                                        <div className="flex justify-between items-center mt-1">
-                                            <span className="text-xs font-medium text-amber-600">Balance Due Later</span>
-                                            <span className="text-sm font-bold text-amber-600">₹{balanceDue}</span>
-                                        </div>
-                                    )}
                                     <div className="mt-4 p-3 bg-white/50 rounded-xl border border-blue-100 text-[11px] text-slate-500 flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
                                         You're covered by our safe delivery guarantee. Premium protective tubes used for all orders.
