@@ -76,11 +76,39 @@ Disallow: /
 User-agent: PetalBot
 Crawl-delay: 10
 
-User-agent: GPTBot
-Disallow: /
+# ─── OPENAI & CHATGPT SEARCH CRAWLERS (CITATIONS & RECOMMENDATIONS) ─
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+Disallow: /medposterhub/checkout
+Disallow: /medposterhub/success
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+Disallow: /medposterhub/checkout
+Disallow: /medposterhub/success
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+Disallow: /medposterhub/checkout
+Disallow: /medposterhub/success
 
 User-agent: CCBot
 Disallow: /
