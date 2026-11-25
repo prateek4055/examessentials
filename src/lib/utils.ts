@@ -1,3 +1,4 @@
+import productThumbnails from "./productThumbnails.json";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { _SUPABASE_URL, PROXIED_SUPABASE_URL } from "@/integrations/supabase/client";
@@ -34,3 +35,8 @@ export function getProxiedImageUrl(url: string | null | undefined): string | nul
   return finalUrl;
 }
 
+
+/** Small catalog images; full-size originals remain available on detail pages. */
+export function getCatalogImageUrl(url: string): string {
+  return (productThumbnails as Record<string, string>)[url] || getProxiedImageUrl(url) || "";
+}

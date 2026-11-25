@@ -1,3 +1,4 @@
+import { medicalDescription } from "@/lib/medicalSeo.js";
 import imageMetadata from "../../medortho/data/imageMetadata.json";
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
@@ -274,8 +275,7 @@ const MedWikiArticlePage: React.FC = () => {
   } else if (article) {
     pageTitle = `${article.title} — ${article.category} Special Test | MedOrtho`;
     pageDescription =
-      article.description ||
-      `Learn how to perform the ${article.title} orthopedic special test: indications, step-by-step procedure, positive findings, and diagnostic accuracy. Used in ${article.category} assessment.`;
+      medicalDescription(article.title, article.usedFor || article.description);
     pageCanonical = `/${app.slug}/tests/${slug}`;
     pageKeywords = `${article.title}, ${article.category} special test, ${article.title.toLowerCase()} orthopedic test, how to perform ${article.title.toLowerCase()}, ${article.category.toLowerCase()} examination, physiotherapy assessment, orthopedic clinical test`;
     pageArticleSection = article.category;

@@ -45,7 +45,7 @@ const Class12Notes = () => {
       answer: "Yes! Our Class 12 notes comprehensively cover the entire CBSE syllabus. They include all important topics, previous year question patterns, and detailed explanations - perfect for scoring 90%+ in boards."
     },
     {
-      question: "Will these notes help me in NEET 2025/2026?",
+      question: "Will these notes help me in NEET?",
       answer: "Absolutely! Our Class 12 notes are designed keeping NEET syllabus in mind. Biology, Physics, and Chemistry notes cover all NEET-relevant topics with the depth required for competitive exams."
     },
     {
@@ -92,30 +92,12 @@ const Class12Notes = () => {
               "priceCurrency": "INR",
               "availability": "https://schema.org/InStock",
               "url": `https://examessentials.in/product/${product.id}`,
-              "priceValidUntil": "2026-12-31",
-              "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
-                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
-                "deliveryTime": {
-                  "@type": "ShippingDeliveryTime",
-                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "d" },
-                  "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 5, "unitCode": "d" }
-                }
-              },
               "hasMerchantReturnPolicy": {
                 "@type": "MerchantReturnPolicy",
                 "applicableCountry": "IN",
                 "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
                 "merchantReturnDays": 0
               }
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.8",
-              "reviewCount": "150",
-              "bestRating": "5",
-              "worstRating": "1"
             }
           }
         }))
@@ -147,7 +129,7 @@ const Class12Notes = () => {
     <>
       <SEOHead
         title="Class 12 Notes - Physics, Chemistry, Maths, Biology | Handwritten Notes PDF"
-        description="Buy premium Class 12 handwritten notes for Physics, Chemistry, Maths & Biology. CBSE board exam focused content by 95%+ scorers. Essential for NEET & JEE 2025. Instant PDF delivery."
+        description="Buy premium Class 12 handwritten notes for Physics, Chemistry, Maths & Biology. CBSE board exam focused content by 95%+ scorers. Essential for NEET & JEE. Instant PDF delivery."
         canonical="/class-12-notes"
         keywords="class 12 notes, class 12 physics notes, class 12 chemistry notes, class 12 maths notes, class 12 biology notes, CBSE class 12 notes, handwritten notes class 12, topper notes class 12, NEET notes, JEE notes, board exam notes"
         structuredData={structuredData}

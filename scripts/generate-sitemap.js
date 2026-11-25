@@ -2,6 +2,7 @@ import { isPlaceholderContent } from '../src/lib/contentEligibility.js';
 import { postsForTopic } from '../src/apps/medortho/data/topicIndex.js';
 import { buildWikiSitemap } from "./medortho-seo-utils.js";
 import fs from 'fs';
+import { loadPosterData } from './load-poster-data.js';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
@@ -85,12 +86,12 @@ async function generateSitemaps() {
         .eq('published', true);
 
       if (error) {
-        console.warn('⚠️ Could not fetch wiki articles from Supabase:', error.message);
+        throw new Error('Published wiki fetch failed; refusing an incomplete sitemap.');
       } else {
         dbArticles = data || [];
       }
     } catch (e) {
-      console.warn('⚠️ Could not fetch wiki articles from Supabase:', e.message);
+      throw e;
     }
     console.log(`✅ Found ${dbArticles.length} published wiki articles in DB.`);
 
@@ -204,6 +205,7 @@ async function generateSitemaps() {
       { path: '/neet-notes', priority: '0.9', changefreq: 'weekly' },
       // Sub-Apps
       { path: '/medposterhub', priority: '0.8', changefreq: 'weekly' },
+      ...['shipping', 'returns', 'bulk-orders', 'contact', 'privacy-terms'].map(slug => ({ path: `/medposterhub/${slug}`, priority: '0.5', changefreq: 'monthly' })),
       { path: '/medortho', priority: '0.8', changefreq: 'weekly' },
       
       // MedOrtho clinical knowledge base clean URLs
@@ -236,20 +238,8 @@ async function generateSitemaps() {
       { path: '/shipping-policy', priority: '0.3', changefreq: 'monthly' },
     ];
 
-    // Read poster slugs from posters.ts and add individual poster pages
-    try {
-      const postersDataPath = path.resolve(process.cwd(), 'src/apps/medposterhub/data/posters.ts');
-      if (fs.existsSync(postersDataPath)) {
-        const postersContent = fs.readFileSync(postersDataPath, 'utf8');
-        const slugMatches = [...postersContent.matchAll(/slug:\s*["']([^"']+)["']/g)];
-        slugMatches.forEach(match => {
-          staticPages.push({ path: `/medposterhub/${match[1]}`, priority: '0.7', changefreq: 'monthly' });
-        });
-        console.log(`✅ Added ${slugMatches.length} poster detail pages to sitemap.`);
-      }
-    } catch (e) {
-      console.warn('⚠️ Could not read poster slugs:', e.message);
-    }
+    const { posters } = await loadPosterData();
+    posters.forEach(poster => staticPages.push({ path: `/medposterhub/${poster.slug}`, priority: '0.7', changefreq: 'monthly' }));
 
     let pagesSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;

@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/medortho-image-metadata.js && node scripts/generate-sitemap.js",
+    "prebuild": "node scripts/medortho-image-metadata.js && node scripts/generate-sitemap.js && node scripts/generate-product-thumbnails.js",
     "build": "vite build",
     "postbuild": "node scripts/prerender.js",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:medortho-seo": "node scripts/medortho-image-metadata.js && vite build && node scripts/prerender.js --local-only && node --test scripts/tests/medortho-seo.test.js"
+    "test:medortho-seo": "node scripts/medortho-image-metadata.js && vite build && node scripts/prerender.js --local-only && node --test scripts/tests/medortho-seo.test.js",
+    "test:seo": "node --test scripts/tests/*.test.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -89,6 +90,7 @@
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.13",
     "postcss": "^8.5.6",
+    "sharp": "^0.35.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",

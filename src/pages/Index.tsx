@@ -121,8 +121,8 @@ const Index = () => {
   return (
     <>
       <SEOHead
-        title="Exam Essentials — Topper Handwritten Notes for Class 11, 12, NEET & JEE"
-        description="Buy India's best topper-handwritten notes for CBSE Class 11 & 12, NEET and JEE. Physics, Chemistry, Maths & Biology. Also: medical anatomy posters for MBBS students. Order now."
+        title="Exam Essentials | Class 11, 12, NEET & JEE Notes"
+        description="Browse handwritten Physics, Chemistry, Maths and Biology notes for Class 11, Class 12, NEET and JEE, plus medical anatomy posters and clinical references."
         canonical="/"
         keywords="exam essentials, board exam essentials, best handwritten notes India, topper notes class 11, topper notes class 12, CBSE board exam notes, NEET notes PDF, JEE notes PDF, physics handwritten notes, chemistry handwritten notes, biology handwritten notes, maths handwritten notes, study material for boards, medical posters"
         structuredData={allStructuredData}
