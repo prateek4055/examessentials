@@ -37,6 +37,8 @@ test('all posters expose original imagery, current prices and no unsupported rat
 test('similar medical indications retain unique descriptions without synthetic ellipses', () => {
   assert.notEqual(medicalDescription('Phalen test', 'Carpal tunnel assessment.'), medicalDescription('Reverse Phalen test', 'Carpal tunnel assessment.'));
   assert.equal(medicalDescription('Test', 'Short purpose.'), 'Test: Short purpose.');
+  assert.equal(medicalDescription('Pivot Shift Test', '<p>Replicates &ldquo;giving way&rdquo; at 30&deg;.</p>'), 'Pivot Shift Test: Replicates “giving way” at 30°.');
+  assert.equal(medicalDescription('Test', '&#x2019; &#39; &#99999999;'), "Test: ’ ' &#99999999;");
   assert.ok(medicalDescription('Test', 'Long indication '.repeat(30)).length <= 160);
 });
 
