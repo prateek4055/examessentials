@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FileText, ArrowUpRight } from "lucide-react";
 import { Product } from "@/lib/api";
 import ProductImageHoverPreview from "./ProductImageHoverPreview";
-import { getProxiedImageUrl } from "@/lib/utils";
+import { getCatalogImageUrl } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -52,9 +52,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {hasImages ? (
             <>
               <img
-                src={getProxiedImageUrl(product.images![0]) || ""}
+                src={getCatalogImageUrl(product.images![0]) || ""}
                 alt={product.title}
                 loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.12)] group-hover:scale-[1.03] transition-transform duration-300 ease-out"
               />
               {/* Auto-scroll preview overlay */}
@@ -78,10 +79,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         <div className="p-5">
           <div className="flex items-center gap-2 mb-2.5">
-            <span className="text-[11px] font-semibold px-2.5 py-0.5 bg-secondary rounded-full text-muted-foreground">
+            <span className="text-[11px] font-semibold px-2.5 py-0.5 bg-secondary rounded-full text-foreground">
               {product.subject}
             </span>
-            <span className="text-[11px] font-semibold px-2.5 py-0.5 bg-primary/10 text-primary rounded-full">
+            <span className="text-[11px] font-semibold px-2.5 py-0.5 bg-primary/10 text-foreground rounded-full">
               Class {product.class}
             </span>
           </div>

@@ -363,3 +363,26 @@ export const posters: Poster[] = [
 export const categories: string[] = Array.from(
   new Set(posters.map((p) => p.category))
 ).sort();
+
+/** Offer prices come from the same calculator as the purchase controls. */
+export function buildPosterProductSchema(poster: Poster) {
+  const prices = poster.sizes.flatMap(size =>
+    (["matte", "framed", "acrylic"] as PosterMaterial[]).map(material => calculateVariantPrice(poster.price, material, size))
+  );
+  return {
+    "@context": "https://schema.org", "@type": "Product",
+    name: poster.title, description: poster.description,
+    image: `https://examessentials.in${poster.image}`,
+    url: `https://examessentials.in/medposterhub/${poster.slug}`,
+    sku: `MEDPOSTER-${poster.id}`,
+    brand: { "@type": "Brand", name: "MedPosterHub by Exam Essentials" },
+    category: `Medical Posters > ${poster.category}`,
+    offers: {
+      "@type": "AggregateOffer", priceCurrency: "INR",
+      lowPrice: Math.min(...prices), highPrice: Math.max(...prices), offerCount: prices.length,
+      availability: "https://schema.org/InStock",
+      url: `https://examessentials.in/medposterhub/${poster.slug}`,
+      seller: { "@type": "Organization", name: "MedPosterHub by Exam Essentials" },
+    },
+  };
+}

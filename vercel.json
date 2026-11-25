@@ -3,6 +3,17 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.examessentials.in"
+        }
+      ],
+      "destination": "https://examessentials.in/:path*",
+      "permanent": true
+    },
+    {
       "source": "/medortho/wrist",
       "destination": "/medortho/wrist-hand",
       "permanent": true
@@ -10,6 +21,11 @@
     {
       "source": "/medortho/ankle",
       "destination": "/medortho/ankle-foot",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms-and-conditions",
       "permanent": true
     }
   ],
@@ -19,8 +35,86 @@
       "destination": "https://jfqjeqgwbpnnzdgcpbzw.supabase.co/:match*"
     },
     {
-      "source": "/((?!.*\\.).*)",
-      "destination": "/index"
+      "source": "/admin/:path*",
+      "destination": "/admin"
+    },
+    {
+      "source": "/purchase/:id",
+      "destination": "/auth"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/purchase/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/auth",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/profile",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/cart",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/neet-app",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/medposterhub/checkout",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/medposterhub/success",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
     }
   ]
 }

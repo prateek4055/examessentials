@@ -107,30 +107,12 @@ const NeetNotes = () => {
               "priceCurrency": "INR",
               "availability": "https://schema.org/InStock",
               "url": `https://examessentials.in/product/${product.id}`,
-              "priceValidUntil": "2026-12-31",
-              "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
-                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
-                "deliveryTime": {
-                  "@type": "ShippingDeliveryTime",
-                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "d" },
-                  "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 5, "unitCode": "d" }
-                }
-              },
               "hasMerchantReturnPolicy": {
                 "@type": "MerchantReturnPolicy",
                 "applicableCountry": "IN",
                 "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
                 "merchantReturnDays": 0
               }
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.8",
-              "reviewCount": "150",
-              "bestRating": "5",
-              "worstRating": "1"
             }
           }
         }))
@@ -161,10 +143,10 @@ const NeetNotes = () => {
   return (
     <>
       <SEOHead
-        title="NEET Notes 2025 - Biology, Physics, Chemistry | Best Handwritten Notes PDF"
+        title="NEET Notes - Biology, Physics, Chemistry | Best Handwritten Notes PDF"
         description="Buy premium NEET handwritten notes for Biology, Physics & Chemistry. Complete NCERT-based content for Class 11 & 12. Created by NEET qualifiers. Score 600+ with our study material. Instant PDF."
         canonical="/neet-notes"
-        keywords="NEET notes, NEET biology notes, NEET physics notes, NEET chemistry notes, NEET preparation, NEET study material, NEET 2025 notes, handwritten notes NEET, NCERT notes NEET, best NEET notes, NEET topper notes"
+        keywords="NEET notes, NEET biology notes, NEET physics notes, NEET chemistry notes, NEET preparation, NEET study material, NEET notes, handwritten notes NEET, NCERT notes NEET, best NEET notes, NEET topper notes"
         structuredData={structuredData}
       />
 
@@ -187,7 +169,7 @@ const NeetNotes = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 rounded-full text-accent text-sm font-medium mb-4">
               <Target className="w-4 h-4" />
-              NEET 2025 Preparation
+              NEET Preparation
             </div>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
               NEET Handwritten Notes

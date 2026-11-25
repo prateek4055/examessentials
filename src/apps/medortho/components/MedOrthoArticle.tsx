@@ -1,3 +1,4 @@
+import imageMetadata from "../data/imageMetadata.json";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
@@ -583,7 +584,11 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
           <div className="my-8">
             <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-900 shadow-sm max-w-full">
               <img 
-                src={heroImageUrl} 
+                src={heroImageUrl}
+                width={imageMetadata[heroImageUrl.split('/').pop() as keyof typeof imageMetadata]?.width}
+                height={imageMetadata[heroImageUrl.split('/').pop() as keyof typeof imageMetadata]?.height}
+                fetchPriority="high"
+                decoding="async"
                 alt={article.title} 
                 className="w-full h-auto max-h-[550px] object-contain mx-auto block bg-slate-50/30 dark:bg-zinc-900/5"
                 onError={(e) => {

@@ -66,11 +66,11 @@ test('reference landing exposes region links and truthful collection metadata', 
   for (const t of tests) assert.ok(directory.includes(`href="/medortho/tests/${testSlug(t.title)}"`));
 });
 
-test('Vercel SPA fallback uses an extensionless destination with clean URLs', () => {
+test('Vercel preserves private application routes without rewriting unknown URLs', () => {
   const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
   assert.equal(config.cleanUrls, true);
-  const fallback = config.rewrites.find(r => r.destination === '/index');
-  assert.ok(fallback, 'client routes must resolve to the extensionless index');
+  assert.ok(config.rewrites.some(r => r.source === '/purchase/:id'));
+  assert.ok(!config.rewrites.some(r => r.destination === '/index'), 'unknown URLs must reach the platform 404');
   assert.ok(!config.rewrites.some(r => r.destination === '/index.html'));
 });
 
@@ -103,9 +103,12 @@ test('CMS placeholders are distinguished from concise complete articles', async 
 });
 
 
-test('medical initial HTML includes clinical overview and structured guidance', () => {
+test('medical initial HTML does not invent clinical validation or expert consensus', () => {
   for (const item of tests) {
     const html = fs.readFileSync(`dist/medortho/tests/${testSlug(item.title)}/index.html`, 'utf8');
-    assert.ok(html.includes('Clinical Overview'));
+    assert.ok(!html.includes('is a validated orthopedic special test'));
+    assert.ok(!html.includes('clinical utility supported by expert consensus'));
+    assert.ok(!html.includes('Clinical Overview'));
+    if (item.usedFor) assert.ok(html.includes(item.usedFor));
   }
 });

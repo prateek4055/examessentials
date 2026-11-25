@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { posters, Poster } from "../data/posters";
+import { posters, Poster, buildPosterProductSchema } from "../data/posters";
 import { MedPosterHeader } from "../components/MedPosterHeader";
 import { HeroSection } from "../components/HeroSection";
 import { ProductGrid } from "../components/ProductGrid";
@@ -53,39 +53,7 @@ const MedPosterHubContent = () => {
         "itemListElement": posters.map((poster, idx) => ({
           "@type": "ListItem",
           "position": idx + 1,
-          "item": {
-            "@type": "Product",
-            "name": poster.title,
-            "description": poster.description,
-            "image": `https://examessentials.in${poster.image}`,
-            "sku": `MEDPOSTER-${poster.id}`,
-            "brand": {
-              "@type": "Brand",
-              "name": "MedPosterHub by Exam Essentials"
-            },
-            "category": `Medical Posters > ${poster.category}`,
-            "offers": {
-              "@type": "AggregateOffer",
-              "priceCurrency": "INR",
-              "lowPrice": poster.price.small,
-              "highPrice": poster.price.large,
-              "offerCount": 3,
-              "availability": "https://schema.org/InStock",
-              "seller": {
-                "@type": "Organization",
-                "name": "MedPosterHub"
-              }
-            },
-            ...(poster.rating ? {
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": poster.rating.toString(),
-                "reviewCount": (poster.reviewCount || 50).toString(),
-                "bestRating": "5",
-                "worstRating": "1"
-              }
-            } : {})
-          }
+          "item": buildPosterProductSchema(poster)
         }))
       }
     },
@@ -108,7 +76,7 @@ const MedPosterHubContent = () => {
           "name": "What sizes are the medical posters available in?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "All MedPosterHub posters are available in three standard sizes: A3 (₹299), A2 (₹399), and A1 (₹499). Each is printed on premium 250gsm matte paper with UV-resistant inks for long-lasting display."
+            "text": "All MedPosterHub posters are available in three standard sizes: A3 (₹699), A2 (₹899), and A1 (₹899). Each is printed on premium 250gsm matte paper with UV-resistant inks for long-lasting display."
           }
         },
         {
@@ -168,8 +136,8 @@ const MedPosterHubContent = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
       <SEOHead
-        title="MedPosterHub – Buy Medical Anatomy Posters Online | Clinic & Hospital Charts India"
-        description="Shop 20+ premium medical anatomy posters for hospitals, clinics & students. High-resolution Anatomy, Orthopedics & Neurology charts on 250gsm matte paper. Sizes A3, A2, A1 starting ₹299. Trusted by 100+ clinics across India."
+        title="Medical Anatomy Posters | MedPosterHub"
+        description="Browse anatomy, orthopedics and neurology posters for clinics, classrooms and study. Compare designs, sizes and current prices at MedPosterHub."
         canonical="/medposterhub"
         keywords="medical posters, anatomy posters for clinic, buy medical charts online India, anatomy chart A1 A2 A3, ortho clinic posters, neuro anatomy poster, muscular system poster, skeletal system chart, physiotherapy clinic posters, hospital wall charts, medical education posters, dermatomes poster, spine anatomy chart, knee anatomy poster, shoulder anatomy poster, medical posters for students, clinic decoration, OPD posters India, MedPosterHub"
         structuredData={posterStructuredData}

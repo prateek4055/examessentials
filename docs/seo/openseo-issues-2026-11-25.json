@@ -1,0 +1,891 @@
+{
+  "summary": [
+    {
+      "issueType": "thin-content",
+      "title": "Thin content",
+      "severity": "warning",
+      "count": 2
+    },
+    {
+      "issueType": "duplicate-meta-description",
+      "title": "Duplicate meta description",
+      "severity": "warning",
+      "count": 2
+    },
+    {
+      "issueType": "crawl-page-limit",
+      "title": "Crawl stopped early: page limit",
+      "severity": "warning",
+      "count": 1
+    },
+    {
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "severity": "info",
+      "count": 48
+    },
+    {
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "severity": "info",
+      "count": 25
+    },
+    {
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "severity": "info",
+      "count": 7
+    },
+    {
+      "issueType": "meta-description-too-long",
+      "title": "Meta description too long",
+      "severity": "info",
+      "count": 1
+    }
+  ],
+  "issues": [
+    {
+      "severity": "warning",
+      "issueType": "crawl-page-limit",
+      "title": "Crawl stopped early: page limit",
+      "url": "https://examessentials.in/",
+      "details": {
+        "pagesCrawled": 50,
+        "urlsNotCrawled": 306
+      },
+      "howToFix": "Re-run the audit with a higher page limit. If it is already at the maximum, add a robots.txt group for the \"OpenSEO-Audit\" user agent that disallows sections you don't need audited, such as tag archives or filtered listings, so the limit goes to the pages that matter: https://openseo.so/docs/crawler"
+    },
+    {
+      "severity": "warning",
+      "issueType": "duplicate-meta-description",
+      "title": "Duplicate meta description",
+      "url": "https://examessentials.in/medortho/tests/golfer-s-elbow-test",
+      "details": {
+        "groupSize": 2,
+        "otherUrls": [
+          "https://examessentials.in/medortho/tests/reverse-cozen-test"
+        ]
+      },
+      "howToFix": "Write a unique meta description per page, or remove the duplicated one entirely — search engines will generate a snippet from page content, which beats a wrong duplicate."
+    },
+    {
+      "severity": "warning",
+      "issueType": "duplicate-meta-description",
+      "title": "Duplicate meta description",
+      "url": "https://examessentials.in/medortho/tests/reverse-cozen-test",
+      "details": {
+        "groupSize": 2,
+        "otherUrls": [
+          "https://examessentials.in/medortho/tests/golfer-s-elbow-test"
+        ]
+      },
+      "howToFix": "Write a unique meta description per page, or remove the duplicated one entirely — search engines will generate a snippet from page content, which beats a wrong duplicate."
+    },
+    {
+      "severity": "warning",
+      "issueType": "thin-content",
+      "title": "Thin content",
+      "url": "https://examessentials.in/",
+      "details": {
+        "wordCount": 108
+      },
+      "howToFix": "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered."
+    },
+    {
+      "severity": "warning",
+      "issueType": "thin-content",
+      "title": "Thin content",
+      "url": "https://examessentials.in/medortho/tests/anterior-cruciate-ligament",
+      "details": {
+        "wordCount": 18
+      },
+      "howToFix": "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ankle-anterior-drawer-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ankle-posterior-drawer-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ankle-range-of-motion",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/barlow-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/bicipital-aponeurosis-flex-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/chair-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/cozen-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/craig-s-test-ryder-method",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/deltoid-ligament-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/elbow-lateral-pivot-shift-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/elbow-range-of-motion",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/elbow-valgus-stress-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ely-s-test-duncan-ely",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/external-rotation-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/faddir-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/fulcrum-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/golfer-s-elbow-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/heel-thump-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/hip-range-of-motion",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/hip-scour-test-quadrant",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/homans-sign",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/hook-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/jack-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/log-roll-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/matles-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/maudsley-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/milking-maneuver",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/mill-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/mortons-neuroma-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/moving-valgus-stress-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/noble-compression-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ober-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ortolani-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/patellar-pubic-percussion-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/patrick-s-test-faber",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/pelvic-drop-test-step-down",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/pelvic-ligament-stress-tests",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ramirez-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/reverse-cozen-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/ruland-biceps-squeeze-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/squeeze-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/staheli-test-prone-hip-extension",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/stinchfield-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/talar-tilt-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/the-chair-push-up-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/thomas-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/thompson-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "heading-order-skip",
+      "title": "Heading levels skip",
+      "url": "https://examessentials.in/medortho/tests/trendelenburg-s-test",
+      "details": null,
+      "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-long",
+      "title": "Meta description too long",
+      "url": "https://examessentials.in/",
+      "details": {
+        "length": 176,
+        "max": 160,
+        "description": "Buy India's best topper-handwritten notes for CBSE Class 11 & 12, NEET and JEE. Physics, Chemistry, …"
+      },
+      "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/ankle-range-of-motion",
+      "details": {
+        "length": 66,
+        "min": 70,
+        "description": "Measuring the degrees of movement available at the ankle joint...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/anterior-cruciate-ligament",
+      "details": {
+        "length": 6,
+        "min": 70,
+        "description": "ACL..."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/barlow-s-test",
+      "details": {
+        "length": 58,
+        "min": 70,
+        "description": "Provoking dislocation in an unstable hip (Newborn DDH)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/chair-test",
+      "details": {
+        "length": 45,
+        "min": 70,
+        "description": "Functional test for Lateral Epicondylitis...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/cozen-s-test",
+      "details": {
+        "length": 52,
+        "min": 70,
+        "description": "Diagnosing Lateral Epicondylalgia (Tennis Elbow)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/craig-s-test-ryder-method",
+      "details": {
+        "length": 63,
+        "min": 70,
+        "description": "Measuring Femoral Anteversion (internal twist of the femur)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/deltoid-ligament-test",
+      "details": {
+        "length": 66,
+        "min": 70,
+        "description": "Assessing the medial ligaments (Deltoid ligament) of the ankle...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/elbow-range-of-motion",
+      "details": {
+        "length": 68,
+        "min": 70,
+        "description": "Measuring functional and physiological limits of the elbow joint...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/ely-s-test-duncan-ely",
+      "details": {
+        "length": 59,
+        "min": 70,
+        "description": "Assessing spasticity or tightness of the Rectus Femoris...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/external-rotation-test",
+      "details": {
+        "length": 55,
+        "min": 70,
+        "description": "Diagnosing syndesmosis injuries (High Ankle Sprain)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/fulcrum-test",
+      "details": {
+        "length": 44,
+        "min": 70,
+        "description": "Detecting Femoral Shaft Stress Fractures...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/golfer-s-elbow-test",
+      "details": {
+        "length": 52,
+        "min": 70,
+        "description": "Diagnosing Medial Epicondylitis (Golfer's Elbow)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/hip-range-of-motion",
+      "details": {
+        "length": 51,
+        "min": 70,
+        "description": "Measuring physiological limits of the hip joint...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/homans-sign",
+      "details": {
+        "length": 44,
+        "min": 70,
+        "description": "Screening for Deep Vein Thrombosis (DVT)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/hook-test",
+      "details": {
+        "length": 60,
+        "min": 70,
+        "description": "Diagnosing complete avulsion of the Distal Biceps Tendon...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/matles-test",
+      "details": {
+        "length": 49,
+        "min": 70,
+        "description": "Visual assessment for Achilles Tendon Rupture...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/maudsley-s-test",
+      "details": {
+        "length": 51,
+        "min": 70,
+        "description": "Diagnosing Lateral Epicondylitis (Tennis Elbow)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/mortons-neuroma-test",
+      "details": {
+        "length": 59,
+        "min": 70,
+        "description": "Detecting Morton's Neuroma (pinched nerve between toes)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/noble-compression-test",
+      "details": {
+        "length": 64,
+        "min": 70,
+        "description": "Diagnosing Iliotibial Band Friction Syndrome (Runner's Knee)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/patellar-pubic-percussion-test",
+      "details": {
+        "length": 59,
+        "min": 70,
+        "description": "Detecting Occult Hip Fractures when X-rays are negative...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/ramirez-test",
+      "details": {
+        "length": 42,
+        "min": 70,
+        "description": "Testing for Deep Vein Thrombosis (DVT)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/reverse-cozen-test",
+      "details": {
+        "length": 52,
+        "min": 70,
+        "description": "Diagnosing Medial Epicondylitis (Golfer's Elbow)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/stinchfield-test",
+      "details": {
+        "length": 68,
+        "min": 70,
+        "description": "Differentiating between Hip Joint pathology and Lumbar/SI issues...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/thompson-s-test",
+      "details": {
+        "length": 57,
+        "min": 70,
+        "description": "Identifying a complete rupture of the Achilles Tendon...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-short",
+      "title": "Meta description too short",
+      "url": "https://examessentials.in/medortho/tests/trendelenburg-s-test",
+      "details": {
+        "length": 62,
+        "min": 70,
+        "description": "Identifying weakness of the Gluteus Medius (Hip Abductors)...."
+      },
+      "howToFix": "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/",
+      "details": {
+        "length": 71,
+        "max": 60,
+        "title": "Exam Essentials — Topper Handwritten Notes for Class 11, 12, NEET & JEE"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/medortho/tests/ankle-anterior-drawer-test",
+      "details": {
+        "length": 65,
+        "max": 60,
+        "title": "Ankle Anterior Drawer Test – Ankle & Foot Special Test | MedOrtho"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/medortho/tests/ankle-posterior-drawer-test",
+      "details": {
+        "length": 66,
+        "max": 60,
+        "title": "Ankle Posterior Drawer Test – Ankle & Foot Special Test | MedOrtho"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/medortho/tests/bicipital-aponeurosis-flex-test",
+      "details": {
+        "length": 63,
+        "max": 60,
+        "title": "Bicipital Aponeurosis Flex Test – Elbow Special Test | MedOrtho"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/medortho/tests/elbow-lateral-pivot-shift-test",
+      "details": {
+        "length": 62,
+        "max": 60,
+        "title": "Elbow Lateral Pivot-Shift Test – Elbow Special Test | MedOrtho"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/medortho/tests/external-rotation-test",
+      "details": {
+        "length": 61,
+        "max": 60,
+        "title": "External Rotation Test – Ankle & Foot Special Test | MedOrtho"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    },
+    {
+      "severity": "info",
+      "issueType": "title-too-long",
+      "title": "Title too long",
+      "url": "https://examessentials.in/medortho/tests/staheli-test-prone-hip-extension",
+      "details": {
+        "length": 64,
+        "max": 60,
+        "title": "Staheli Test (Prone Hip Extension) – Hip Special Test | MedOrtho"
+      },
+      "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+    }
+  ],
+  "total": 86,
+  "page": 1,
+  "meta": {
+    "projectId": "48fe3768-d76c-4ecf-a1bb-17ae534b1655",
+    "url": "https://app.openseo.so/p/48fe3768-d76c-4ecf-a1bb-17ae534b1655/audit?auditId=88c67685-e64c-46f8-898e-86f4b4fc7747"
+  }
+}

@@ -92,30 +92,12 @@ const Class11Notes = () => {
               "priceCurrency": "INR",
               "availability": "https://schema.org/InStock",
               "url": `https://examessentials.in/product/${product.id}`,
-              "priceValidUntil": "2026-12-31",
-              "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
-                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
-                "deliveryTime": {
-                  "@type": "ShippingDeliveryTime",
-                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "d" },
-                  "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 5, "unitCode": "d" }
-                }
-              },
               "hasMerchantReturnPolicy": {
                 "@type": "MerchantReturnPolicy",
                 "applicableCountry": "IN",
                 "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
                 "merchantReturnDays": 0
               }
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.8",
-              "reviewCount": "150",
-              "bestRating": "5",
-              "worstRating": "1"
             }
           }
         }))

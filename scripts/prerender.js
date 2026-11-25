@@ -1,3 +1,5 @@
+import { medicalDescription } from '../src/lib/medicalSeo.js';
+import { loadPosterData } from './load-poster-data.js';
 import { isPlaceholderContent } from '../src/lib/contentEligibility.js';
 import { postsForTopic } from '../src/apps/medortho/data/topicIndex.js';
 import fs from 'fs';
@@ -58,7 +60,8 @@ function stripHtml(html) {
 
 // Helper to replace meta tags in the template index.html
 function generatePageHtml(templateHtml, options) {
-  const { title, description, keywords, canonical, ogImage, schemas, bodyContent } = options;
+  const { title, keywords, canonical, ogImage, schemas, bodyContent } = options;
+  const description = options.description.length > 160 ? options.description.slice(0, 157) + "..." : options.description;
   let content = templateHtml;
   if (options.noIndex) {
     content = content.replace(/<meta\b[^>]*name=["'](?:robots|googlebot|bingbot)["'][^>]*>/gi, '');
@@ -299,12 +302,12 @@ async function runPrerender() {
         .select('*')
         .eq('published', true);
       if (error) {
-        console.warn('⚠️ Could not fetch wiki articles from Supabase for pre-rendering:', error.message);
+        throw new Error('Published wiki fetch failed; refusing an incomplete static site.');
       } else {
         dbArticles = data || [];
       }
     } catch (e) {
-      console.warn('⚠️ Could not fetch wiki articles for pre-rendering:', e.message);
+      throw e;
     }
   }
   console.log(`✅ Loaded ${dbBlogPosts.length} blog posts from DB for pre-rendering.`);
@@ -514,7 +517,7 @@ async function runPrerender() {
 
     const faqsHtml = app.faqs.map(faq => `
       <div>
-        <h4 class="font-bold text-gray-800">${escapeHtml(faq.question)}</h4>
+        <h3 class="font-bold text-gray-800">${escapeHtml(faq.question)}</h3>
         <p class="text-gray-500 text-sm mt-1 leading-relaxed">${escapeHtml(faq.answer)}</p>
       </div>
     `).join('\n');
@@ -763,9 +766,7 @@ async function runPrerender() {
     if (renderedTestSlugs.has(slug)) return;
     renderedTestSlugs.add(slug);
     const cleanUsedFor = stripHtml(t.usedFor);
-    const cleanDesc = cleanUsedFor 
-      ? cleanUsedFor.substring(0, 155).trim() + "..."
-      : `Learn how to perform the ${t.title} orthopedic special test including indications, procedure, and accuracy.`;
+    const cleanDesc = medicalDescription(t.title, cleanUsedFor);
 
     const imageFilename = t.image1 ? t.image1.split('/').pop() : null;
     const ogImage = imageFilename 
@@ -794,9 +795,9 @@ async function runPrerender() {
               <span class="text-[10px] font-bold uppercase tracking-wider mb-1.5 block text-blue-500">
                 ${escapeHtml(rt.category)} Examination
               </span>
-              <h4 class="font-bold text-sm text-gray-800 line-clamp-2 leading-snug">
+              <h3 class="font-bold text-sm text-gray-800 line-clamp-2 leading-snug">
                 ${escapeHtml(rt.title)}
-              </h4>
+              </h3>
             </div>
           </a>
         `;
@@ -813,48 +814,6 @@ async function runPrerender() {
         </div>
       `;
     }
-
-    // Build SEO intro + clinical context paragraph (ensures 300+ words visible to Googlebot and AdSense crawlers)
-    const categoryContext = {
-      'Shoulder': 'shoulder joint pathology including rotator cuff tears, subacromial impingement, labral injuries (SLAP), and shoulder instability',
-      'Knee': 'knee joint conditions including anterior cruciate ligament (ACL) tears, posterior cruciate ligament (PCL) injuries, meniscal tears, and patellofemoral disorders',
-      'Hip': 'hip joint disorders including femoroacetabular impingement (FAI), acetabular labral tears, trochanteric bursitis, and hip osteoarthritis',
-      'Spine': 'spinal pathology including cervical and lumbar disc herniation, nerve root compression, radiculopathy, and sacroiliac joint dysfunction',
-      'Elbow': 'elbow conditions including lateral epicondylitis (tennis elbow), medial epicondylitis (golfer\'s elbow), and ulnar collateral ligament instability',
-      'Wrist & Hand': 'wrist and hand conditions including carpal tunnel syndrome, De Quervain tenosynovitis, triangular fibrocartilage complex (TFCC) tears, and ulnar nerve entrapment',
-      'Ankle & Foot': 'ankle and foot pathology including Achilles tendon rupture, lateral ankle instability, syndesmosis injury, and plantar fasciitis',
-      'Neurological': 'neurological and nerve entrapment conditions including thoracic outlet syndrome (TOS), tarsal tunnel syndrome, and peripheral nerve injuries',
-    };
-    const catContext = categoryContext[t.category] || `${t.category.toLowerCase()} musculoskeletal pathology`;
-    const evidenceDesc = t.evidence === 'strong'
-      ? 'strong scientific evidence with validated diagnostic accuracy'
-      : t.evidence === 'moderate'
-      ? 'moderate evidence and widespread acceptance in clinical practice'
-      : 'clinical utility supported by expert consensus and routine clinical use';
-    const sensitivityMatch = (t.accuracy || '').match(/[Ss]ensitivity[:\s]+([0-9]+)/i);
-    const specificityMatch = (t.accuracy || '').match(/[Ss]pecificity[:\s]+([0-9]+)/i);
-    const sensPct = sensitivityMatch ? sensitivityMatch[1] + '%' : null;
-    const specPct = specificityMatch ? specificityMatch[1] + '%' : null;
-    const accuracyNote = (sensPct && specPct)
-      ? `Studies report a sensitivity of ${sensPct} and a specificity of ${specPct}, making it a valuable screening and confirmatory tool.`
-      : sensPct ? `Studies report a sensitivity of ${sensPct} when the test is performed with correct technique.` : '';
-
-    const introHtml = `
-      <section class="mb-8 p-5 bg-blue-50 border border-blue-100 rounded-xl">
-        <h2 class="text-lg font-bold text-blue-900 mb-3">Clinical Overview</h2>
-        <p class="text-blue-800 leading-relaxed text-[15px] mb-3">
-          The <strong>${escapeHtml(t.title)}</strong> is a validated orthopedic special test used in the physical examination and clinical assessment of ${catContext}.
-          This musculoskeletal examination maneuver is routinely performed by physiotherapists, orthopedic surgeons, sports medicine physicians, and allied health practitioners as part of a structured ${escapeHtml(t.category)} evaluation protocol.
-        </p>
-        <p class="text-blue-800 leading-relaxed text-[15px] mb-3">
-          The ${escapeHtml(t.title)} carries ${evidenceDesc}. ${accuracyNote}
-          As with all clinical special tests, findings must be interpreted alongside patient history, imaging studies, and other physical examination findings to guide diagnosis and management.
-        </p>
-        <p class="text-blue-800 leading-relaxed text-[15px]">
-          Accurate execution of this test requires a thorough understanding of the relevant anatomy, biomechanics, and joint kinematics of the ${escapeHtml(t.category)} region. Correct patient positioning, appropriate force application, and assessment of end-feel are essential for reliable and reproducible results in both clinical and research settings.
-        </p>
-      </section>
-    `;
 
     const bodyContent = `
       <div class="max-w-4xl mx-auto px-4 py-8">
@@ -880,7 +839,6 @@ async function runPrerender() {
             <img src="/medortho/tests/images/${imageFilename}" alt="${escapeHtml(t.title)} Orthopedic Special Test" width="${imageMetadata[imageFilename]?.width || ""}" height="${imageMetadata[imageFilename]?.height || ""}" fetchpriority="high" decoding="async" class="max-h-[400px] object-contain" />
           </div>
           ` : ''}
-          ${introHtml}
 
           <div class="prose max-w-none">
             ${t.usedFor ? `
@@ -962,14 +920,12 @@ async function runPrerender() {
       if (art.app_id === "medortho" && renderedTestSlugs.has(art.slug)) return;
 
       const cleanContent = stripHtml(art.content || '');
-      const cleanDesc = art.content 
-        ? cleanContent.substring(0, 155).trim() + "..."
-        : `Learn about ${art.title} in the ${art.app_id === 'medortho' ? 'MedOrtho' : art.app_id} Wiki.`;
+      const cleanDesc = medicalDescription(art.title, cleanContent);
 
       const schemas = buildWikiArticleStructuredData(art.app_id, {
         title: art.title,
         description: cleanDesc,
-        lastUpdated: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        lastUpdated: art.updated_at ? new Date(art.updated_at).toISOString().split('T')[0] : undefined,
         category: art.category || 'Special Tests',
         evidence: art.evidence,
         subCategory: art.subCategory,
@@ -1501,7 +1457,7 @@ async function runPrerender() {
     {
       route: 'class-12-notes',
       title: "Class 12 Notes - Physics, Chemistry, Maths, Biology | Handwritten Notes PDF",
-      description: "Buy premium Class 12 handwritten notes for Physics, Chemistry, Maths & Biology. CBSE board exam focused content by 95%+ scorers. Essential for NEET & JEE 2025. Instant PDF delivery.",
+      description: "Buy premium Class 12 handwritten notes for Physics, Chemistry, Maths & Biology. CBSE board exam focused content by 95%+ scorers. Essential for NEET & JEE. Instant PDF delivery.",
       keywords: "class 12 notes, class 12 physics notes, class 12 chemistry notes, class 12 maths notes, class 12 biology notes, CBSE class 12 notes, handwritten notes class 12, topper notes class 12, NEET notes, JEE notes, board exam notes",
       bodyContent: `
         <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
@@ -1638,63 +1594,54 @@ async function runPrerender() {
       keywords: page.keywords,
       canonical: `${DOMAIN}/${page.route}`,
       ogImage: `${DOMAIN}/og-image.png`,
-      bodyContent: page.bodyContent + (topicPosts.length ? `<ul>${topicPosts.map(post => `<li><a href="/blog/${escapeHtml(post.slug)}">${escapeHtml(post.title)}</a></li>`).join('')}</ul>` : '')
+      bodyContent: page.bodyContent + (['class-11-notes', 'class-12-notes', 'neet-notes'].includes(page.route) ? `<section><h2>Browse study notes</h2><ul>${dbProducts.filter(p => page.route === 'neet-notes' ? /biology|physics|chemistry/i.test(p.subject) : p.class === (page.route === 'class-11-notes' ? '11' : '12')).map(p => `<li><a href="/product/${escapeHtml(p.id)}">${escapeHtml(p.title)}</a><p>${escapeHtml(p.description)}</p></li>`).join('')}</ul><a href="/products">All study materials</a></section>` : '') + (topicPosts.length ? `<ul>${topicPosts.map(post => `<li><a href="/blog/${escapeHtml(post.slug)}">${escapeHtml(post.title)}</a></li>`).join('')}</ul>` : '')
     };
     writePage(page.route, generatePageHtml(templateHtml, pageOptions));
   });
   console.log(`✅ Pre-rendered ${extraStaticPages.length} extra static and sub-sections pages.`);
 
-  // 7. Pre-render MedPosterHub detail pages
-  try {
-    const postersDataPath = path.resolve(process.cwd(), 'src/apps/medposterhub/data/posters.ts');
-    if (fs.existsSync(postersDataPath)) {
-      const postersContent = fs.readFileSync(postersDataPath, 'utf8');
-      const blocks = postersContent.split(/\{\s*id:\s*/).slice(1);
-      let posterCount = 0;
-      
-      blocks.forEach(block => {
-        const getVal = (key) => {
-          const regex = new RegExp(key + ':\\s*["\']([^\'"]+)["\']');
-          const matchResult = block.match(regex);
-          return matchResult ? matchResult[1] : null;
-        };
-        
-        const slug = getVal('slug');
-        const title = getVal('title');
-        const description = getVal('description') || `High-quality medical poster for clinics, classrooms, and study.`;
-        const category = getVal('category') || 'Medical';
-        const seoTitle = getVal('seoTitle');
-        const seoDescription = getVal('seoDescription');
-        
-        if (slug && title) {
-          posterCount++;
-          const pageOptions = {
-            title: seoTitle || `${title} Poster | MedPosterHub`,
-            description: seoDescription || description,
-            keywords: `${title.toLowerCase()}, medical poster, anatomy chart, ${category.toLowerCase()}`,
-            canonical: `${DOMAIN}/medposterhub/${slug}`,
-            ogImage: `${DOMAIN}/og-image.png`,
-            bodyContent: `
-              <div class="max-w-4xl mx-auto px-4 py-16 text-left text-white">
-                <nav class="text-sm text-slate-400 mb-6">
-                  <a href="/medposterhub" class="hover:underline">MedPosterHub</a> &gt; 
-                  <span class="text-white">${escapeHtml(title)}</span>
-                </nav>
-                <h1 class="text-4xl font-extrabold mb-6">${escapeHtml(title)}</h1>
-                <p class="text-lg text-slate-300 leading-relaxed mb-6">
-                  ${escapeHtml(description)}
-                </p>
-              </div>
-            `
-          };
-          writePage(`medposterhub/${slug}`, generatePageHtml(templateHtml, pageOptions));
-        }
-      });
-      console.log(`✅ Pre-rendered ${posterCount} MedPosterHub detail pages.`);
-    }
-  } catch (e) {
-    console.warn('⚠️ Could not pre-render MedPosterHub detail pages:', e.message);
+  // Render actual poster records, imagery, prices and crawlable catalog links.
+  const { posters, calculateVariantPrice, buildPosterProductSchema } = await loadPosterData();
+  const posterLinks = posters.map(p => `<li><a href="/medposterhub/${escapeHtml(p.slug)}">${escapeHtml(p.title)}</a><p>${escapeHtml(p.description)}</p></li>`).join('');
+  const supportLinks = '<nav><a href="/medposterhub/bulk-orders">Bulk orders</a> · <a href="/medposterhub/contact">Contact</a> · <a href="/medposterhub/shipping">Shipping</a> · <a href="/medposterhub/returns">Returns</a> · <a href="/medposterhub/privacy-terms">Privacy and terms</a></nav>';
+  writePage('medposterhub', generatePageHtml(templateHtml, {
+    title: 'Medical Anatomy Posters | MedPosterHub',
+    description: 'Browse anatomy, orthopedics and neurology posters for clinics, classrooms and study. Compare designs, sizes and current prices at MedPosterHub.',
+    canonical: `${DOMAIN}/medposterhub`, ogImage: `${DOMAIN}/og-image.png`,
+    bodyContent: `<main><h1>Medical Anatomy Posters</h1><p>Browse medical posters by subject and select a design to compare sizes and materials.</p><ul>${posterLinks}</ul>${supportLinks}</main>`
+  }));
+  for (const poster of posters) {
+    const prices = poster.sizes.map(size => `<tr><th scope="row">${escapeHtml(size)}</th>${['matte', 'framed', 'acrylic'].map(material => `<td>₹${calculateVariantPrice(poster.price, material, size)}</td>`).join('')}</tr>`).join('');
+    writePage(`medposterhub/${poster.slug}`, generatePageHtml(templateHtml, {
+      title: poster.seoTitle || `${poster.title} – Buy ${poster.category} Poster Online | MedPosterHub`,
+      description: poster.seoDescription || `${poster.description} Available in A3 (₹699), A2 (₹899), Framed & Acrylic editions. Premium 300 GSM archival print. Worldwide shipping available. Order now from MedPosterHub.`,
+      canonical: `${DOMAIN}/medposterhub/${poster.slug}`, ogImage: `${DOMAIN}${poster.image}`, ogType: 'product',
+      schemas: [buildPosterProductSchema(poster)],
+      bodyContent: `<main><nav><a href="/medposterhub">Medical Anatomy Posters</a></nav><h1>${escapeHtml(poster.title)}</h1><img src="${escapeHtml(poster.image)}" alt="${escapeHtml(poster.title)} poster" style="max-width:100%;height:auto" /><p>${escapeHtml(poster.description)}</p><h2>Sizes and prices</h2><table><thead><tr><th>Size</th><th>Matte</th><th>Framed</th><th>Acrylic</th></tr></thead><tbody>${prices}</tbody></table>${supportLinks}</main>`
+    }));
   }
+
+  const supportPages = [
+    { route: 'medposterhub/bulk-orders', title: 'Bulk Orders for Clinics | MedPosterHub', description: 'Special pricing and packages for medical colleges, hospitals, and new clinic setups ordering 10 or more posters.', body: '<h1>Bulk Orders for Clinics &amp; Hospitals</h1><p>Setting up a new practice or upgrading your hospital walls? We offer special discounts for bulk purchases.</p><h2>Combo Discounts</h2><p>Order 10 or more posters (mix and match designs and sizes) to qualify for bulk pricing.</p><h2>Custom Sizing</h2><p>Contact our team to discuss custom print sizes and a tailored quote.</p><a href="https://wa.me/919460970342">WhatsApp +91 94609 70342</a>' },
+    { route: 'medposterhub/contact', title: 'Contact Us | MedPosterHub', description: 'Get in touch with MedPosterHub for order inquiries, bulk clinic posters, or support.', body: '<h1>Contact Our Support Team</h1><p>Need help with an order or looking for custom clinic posters? Reach out through WhatsApp or email.</p><h2>WhatsApp Support</h2><p>9 AM – 7 PM IST</p><a href="https://wa.me/919460970342">+91 94609 70342</a><h2>Email Us</h2><a href="mailto:contact@examessentials.in">contact@examessentials.in</a><h2>Corporate Office</h2><p>Deewan complex, Deewan Mohalla, Behror, Rajasthan 301701, India.</p>' }
+  ];
+  for (const page of supportPages) writePage(page.route, generatePageHtml(templateHtml, {
+    ...page, canonical: `${DOMAIN}/${page.route}`, ogImage: `${DOMAIN}/og-image.png`, bodyContent: `<main>${page.body}${supportLinks}</main>`
+  }));
+
+  // These routes remain functional but must never inherit public homepage SEO.
+  for (const route of ['auth', 'profile', 'cart', 'admin', 'neet-app', 'medposterhub/checkout', 'medposterhub/success']) {
+    writePage(route, generatePageHtml(templateHtml, {
+      title: 'Account and Private Services | Exam Essentials', description: 'Account, checkout and private services for Exam Essentials.',
+      canonical: `${DOMAIN}/${route}`, noIndex: true, ogImage: `${DOMAIN}/og-image.png`,
+      bodyContent: '<main><h1>Exam Essentials</h1><p>Loading your account or service…</p></main>'
+    }));
+  }
+  fs.writeFileSync(path.join(distDir, '404.html'), generatePageHtml(templateHtml, {
+    title: 'Page Not Found | Exam Essentials', description: 'The requested page does not exist or has moved.',
+    canonical: '', noIndex: true, ogImage: `${DOMAIN}/og-image.png`,
+    bodyContent: '<main><h1>Page Not Found</h1><p>The requested page does not exist or has moved.</p><a href="/">Home</a><a href="/products">Study notes</a><a href="/medortho">MedOrtho</a></main>'
+  }).replace(/<link[^>]*rel="canonical"[^>]*>/g, ''));
 
   // 8. Pre-render the Home page / and overwrite dist/index.html
   console.log('🔄 Pre-rendering homepage (index.html)...');
@@ -1703,8 +1650,8 @@ async function runPrerender() {
     const rootDivContent = rootDivMatch ? rootDivMatch[1] : '';
 
     const homePageOptions = {
-      title: "Exam Essentials — Topper Handwritten Notes for Class 11, 12, NEET & JEE",
-      description: "Buy India's best topper-handwritten notes for CBSE Class 11 & 12, NEET and JEE. Physics, Chemistry, Maths & Biology. Also: medical anatomy posters for MBBS students. Order now.",
+      title: "Exam Essentials | Class 11, 12, NEET & JEE Notes",
+      description: "Browse handwritten Physics, Chemistry, Maths and Biology notes for Class 11, Class 12, NEET and JEE, plus medical anatomy posters and clinical references.",
       keywords: "exam essentials, board exam essentials, best handwritten notes India, topper notes class 11, topper notes class 12, CBSE board exam notes, NEET notes PDF, JEE notes PDF, physics handwritten notes, chemistry handwritten notes, biology handwritten notes, maths handwritten notes, study material for boards, medical posters",
       canonical: `${DOMAIN}/`,
       ogImage: `${DOMAIN}/og-image.png`,
@@ -1751,7 +1698,7 @@ async function runPrerender() {
           }
         }
       ],
-      bodyContent: rootDivContent
+      bodyContent: rootDivContent + `<section><h2>Study materials</h2><p>Handwritten notes for Class 11 and Class 12 students preparing for CBSE, NEET and JEE.</p><ul>${dbProducts.map(p => `<li><a href="/product/${escapeHtml(p.id)}">${escapeHtml(p.title)}</a></li>`).join('')}</ul></section><section><h2>Medical learning resources</h2><p>Browse orthopedic examination references and medical anatomy posters for study and clinics.</p><a href="/medortho">MedOrtho special tests</a><a href="/medposterhub">Medical anatomy posters</a></section>`
     };
 
     const preRenderedHomeHtml = generatePageHtml(templateHtml, homePageOptions);

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Poster, posters, PosterMaterial, calculateVariantPrice, MEDPOSTER_AMAZON_URL } from "../data/posters";
+import { Poster, posters, buildPosterProductSchema, PosterMaterial, calculateVariantPrice, MEDPOSTER_AMAZON_URL } from "../data/posters";
 import { useCart } from "../context/CartContext";
 import { MedPosterHeader } from "../components/MedPosterHeader";
 import { MedFooter } from "../components/MedFooter";
@@ -102,42 +102,7 @@ const MedPosterDetailContent = () => {
 
   // Build SEO structured data
   const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: poster.title,
-      description: poster.description,
-      image: `${BASE_URL}${poster.image}`,
-      sku: `MEDPOSTER-${poster.id}`,
-      brand: {
-        "@type": "Brand",
-        name: "MedPosterHub by Exam Essentials",
-      },
-      category: `Medical Posters > ${poster.category}`,
-      offers: {
-        "@type": "AggregateOffer",
-        priceCurrency: "INR",
-        lowPrice: poster.price.small,
-        highPrice: poster.price.large,
-        offerCount: 3,
-        availability: "https://schema.org/InStock",
-        seller: {
-          "@type": "Organization",
-          name: "MedPosterHub by Exam Essentials",
-        },
-      },
-      ...(poster.rating
-        ? {
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: poster.rating.toString(),
-              reviewCount: (poster.reviewCount || 50).toString(),
-              bestRating: "5",
-              worstRating: "1",
-            },
-          }
-        : {}),
-    },
+    buildPosterProductSchema(poster),
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -177,7 +142,7 @@ const MedPosterDetailContent = () => {
         ogImage={`${BASE_URL}${poster.image}`}
         ogType="product"
         structuredData={structuredData}
-        productPrice={poster.price.small}
+        productPrice={getUnitPrice(selectedSize, selectedMaterial)}
       />
 
       <MedPosterHeader searchQuery="" setSearchQuery={() => {}} />
