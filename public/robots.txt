@@ -113,11 +113,50 @@ Disallow: /medposterhub/success
 User-agent: CCBot
 Disallow: /
 
-User-agent: anthropic-ai
-Disallow: /
+# ─── OTHER AI SEARCH & ASSISTANT CRAWLERS ─────────────────────
+# These agents may retrieve public pages for answers and citations. Private and
+# transactional routes remain blocked below for every explicitly allowed agent.
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+Disallow: /medposterhub/checkout
+Disallow: /medposterhub/success
 
-User-agent: Claude-Web
-Disallow: /
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+Disallow: /profile
+Disallow: /purchase/
+Disallow: /cart
 
 # ─── DEFAULT FOR ALL OTHER BOTS ───────────────────────────────
 User-agent: *

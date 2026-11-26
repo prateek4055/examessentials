@@ -109,6 +109,7 @@ const SEOHead = ({
       {/* ── Language & Geo ──────────────────────────────────────── */}
       <meta name="language" content="en" />
       <meta httpEquiv="content-language" content="en" />
+      <link rel="alternate" type="text/plain" href={`${baseUrl}/llms.txt`} title="AI-readable site guide" />
       {/* Only apply India geo lock for non-international pages */}
       {!isInternational && <meta name="geo.region" content="IN" />}
       {!isInternational && <meta name="geo.placename" content="India" />}

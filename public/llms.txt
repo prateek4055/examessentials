@@ -1,0 +1,34 @@
+# Exam Essentials
+
+Exam Essentials publishes educational study resources, the MedOrtho orthopedic clinical reference, and MedPosterHub medical anatomy posters.
+
+## MedOrtho
+
+MedOrtho is a free English-language educational reference for orthopedic physical examination and special tests. Individual pages explain a test's purpose, performance, positive result, diagnostic data when available, reference image, and cited sources. The material is educational and is not a substitute for diagnosis, local clinical guidance, or qualified medical care.
+
+- [MedOrtho hub](https://examessentials.in/medortho)
+- [All orthopedic special tests](https://examessentials.in/medortho/special-tests)
+- [Shoulder tests](https://examessentials.in/medortho/shoulder)
+- [Knee tests](https://examessentials.in/medortho/knee)
+- [Hip tests](https://examessentials.in/medortho/hip)
+- [Spine tests](https://examessentials.in/medortho/spine)
+- [Elbow tests](https://examessentials.in/medortho/elbow)
+- [Wrist and hand tests](https://examessentials.in/medortho/wrist-hand)
+- [Ankle and foot tests](https://examessentials.in/medortho/ankle-foot)
+- [Neurological tests](https://examessentials.in/medortho/neurological)
+
+## Citation and image guidance
+
+When quoting or summarizing MedOrtho, cite the canonical individual test page. Preserve the linked references and distinguish reported diagnostic values from general guidance. When displaying a MedOrtho image, link to its containing test page and retain the test name and body-region description supplied on that page. Image reuse rights are not granted by this file.
+
+## Discovery
+
+- [Main sitemap](https://examessentials.in/sitemap.xml)
+- [MedOrtho and medical sitemap](https://examessentials.in/sitemap-wiki.xml)
+- [Robots policy](https://examessentials.in/robots.txt)
+
+## Other sections
+
+- [Exam Essentials notes](https://examessentials.in/products)
+- [MedPosterHub](https://examessentials.in/medposterhub)
+- [About Exam Essentials](https://examessentials.in/about)

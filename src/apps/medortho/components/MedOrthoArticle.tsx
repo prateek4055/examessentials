@@ -2,7 +2,7 @@ import imageMetadata from "../data/imageMetadata.json";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
-import { X, Calendar, Clock, Eye, Shield, Stethoscope, BookOpen, ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
+import { X, Clock, Shield, Stethoscope, BookOpen, ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
@@ -116,66 +116,18 @@ const RightSidebarPortal: React.FC<{ children: React.ReactNode }> = ({ children 
   return createPortal(children, target);
 };
 
-// ─── DIAGNOSTIC ACCURACY TABLE ───
-const DiagnosticTable: React.FC<{ accuracy: string; title: string; category: string }> = ({ accuracy, title, category }) => {
-  // Extract sensitivity and specificity from HTML
-  const sensMatch = accuracy.match(/Sensitivity:?\s*(?:<\/strong>)?\s*([\d%-\s\.]+)/i);
-  const specMatch = accuracy.match(/Specificity:?\s*(?:<\/strong>)?\s*([\d%-\s\.]+)/i);
-  
-  const sensVal = sensMatch ? sensMatch[1].replace(/<\/?li>/g, "").trim() : "75-89%";
-  const specVal = specMatch ? specMatch[1].replace(/<\/?li>/g, "").trim() : "30-48%";
-
-  // Generate plausible Likelihood Ratios if not defined
-  const sensNum = parseFloat(sensVal) / 100 || 0.78;
-  const specNum = parseFloat(specVal) / 100 || 0.58;
-  const posLR = (sensNum / (1 - specNum)).toFixed(1);
-  const negLR = ((1 - sensNum) / specNum).toFixed(2);
-
+// Only display diagnostic values supplied by the source data. Medical pages must
+// never manufacture cohorts, reference standards, or likelihood ratios.
+const DiagnosticTable: React.FC<{ accuracy: string }> = ({ accuracy }) => {
   return (
-    <div className="my-6">
-      {/* Highlight Pills */}
-      <div className="flex flex-wrap gap-3 mb-5">
-        <span className="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-green-50/70 text-green-700 dark:bg-green-950/20 dark:text-green-400 border border-green-200/50">
-          ✅ Sensitivity: {sensVal}
-        </span>
-        <span className="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-blue-50/70 text-blue-700 dark:bg-blue-950/20 dark:text-blue-400 border border-blue-200/50">
-          ✅ Specificity: {specVal}
-        </span>
-      </div>
-
-      {/* Proper HTML Table */}
-      <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm mb-6">
-        <table className="w-full text-sm border-collapse text-left">
-          <thead>
-            <tr className="bg-gray-50/80 dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 text-gray-700 dark:text-gray-300 font-bold">
-              <th className="p-3">Study / Population</th>
-              <th className="p-3">Reference Standard</th>
-              <th className="p-3 text-center">Sensitivity</th>
-              <th className="p-3 text-center">Specificity</th>
-              <th className="p-3 text-center">+LR</th>
-              <th className="p-3 text-center">−LR</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 dark:divide-zinc-900 text-gray-600 dark:text-gray-400">
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-zinc-900/10">
-              <td className="p-3 font-medium text-gray-800 dark:text-gray-200">Systematic Review (n=1,127)</td>
-              <td className="p-3">MRI / Arthroscopy</td>
-              <td className="p-3 text-center">{sensVal}</td>
-              <td className="p-3 text-center">{specVal}</td>
-              <td className="p-3 text-center">{posLR}</td>
-              <td className="p-3 text-center">{negLR}</td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-zinc-900/10">
-              <td className="p-3 font-medium text-gray-800 dark:text-gray-200">Clinical Cohort Study (n=946)</td>
-              <td className="p-3">Surgical Findings</td>
-              <td className="p-3 text-center">{(sensNum * 0.95 * 100).toFixed(0)}%</td>
-              <td className="p-3 text-center">{(specNum * 1.05 * 100).toFixed(0)}%</td>
-              <td className="p-3 text-center">{(sensNum * 0.95 / (1 - specNum * 1.05)).toFixed(1)}</td>
-              <td className="p-3 text-center">{((1 - sensNum * 0.95) / (specNum * 1.05)).toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div className="my-6 rounded-xl border border-gray-200 bg-gray-50/70 p-5 text-sm text-slate-700 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-gray-300">
+      <div
+        className="prose prose-sm max-w-none dark:prose-invert"
+        dangerouslySetInnerHTML={{ __html: accuracy }}
+      />
+      <p className="mt-3 text-xs text-slate-500">
+        Accuracy varies by study population, technique, and reference standard. Review the cited sources before clinical use.
+      </p>
     </div>
   );
 };
@@ -292,11 +244,9 @@ export const renderWikiContent = (content: string, accuracyHtml?: string, title?
       // Auto-inject diagnostic table after Diagnostic Accuracy header
       if (id === "diagnostic-accuracy" && accuracyHtml) {
         elements.push(
-          <DiagnosticTable 
+          <DiagnosticTable
             key={`accuracy-table-${elementKey++}`} 
-            accuracy={accuracyHtml} 
-            title={title || ""} 
-            category={category || ""} 
+            accuracy={accuracyHtml}
           />
         );
       }
@@ -458,17 +408,7 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
   const [isIosSubmitted, setIsIosSubmitted] = useState(false);
   const [relatedTests, setRelatedTests] = useState<any[]>([]);
 
-  // 1. Calculate simulated consistent reader counts
-  const getSimulatedReaders = (title: string) => {
-    let hash = 0;
-    for (let i = 0; i < title.length; i++) {
-      hash = title.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const num = Math.abs(hash % 40000) + 12000; // consistent between 12k and 52k
-    return num.toLocaleString();
-  };
-
-  // 2. Calculate dynamic reading time
+  // Calculate dynamic reading time from the visible article content.
   const getReadingTime = (content: string) => {
     const words = content.split(/\s+/).length;
     return Math.max(4, Math.ceil(words / 150)); // at least 4 min read
@@ -485,14 +425,12 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
         const matches = data.filter(
           (t: any) => t.category === article.category && t.id !== article.id
         );
-        // Shuffle list and slice 4
-        const shuffled = matches.sort(() => 0.5 - Math.random()).slice(0, 4);
-        setRelatedTests(shuffled);
+        // Keep links stable so users and crawlers see the same related resources.
+        setRelatedTests(matches.slice(0, 4));
       })
       .catch((err) => console.error("Error loading related tests:", err));
   }, [article.id, article.category]);
 
-  const readersCount = getSimulatedReaders(article.title);
   const readingTime = getReadingTime(article.content);
 
   // Extract clean hero image path
@@ -558,16 +496,8 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
           {/* Upgraded Meta Bar */}
           <div className="flex flex-wrap items-center gap-y-3.5 gap-x-6 py-4.5 border-y border-gray-100 dark:border-zinc-900 text-xs font-medium text-slate-500">
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-slate-400" />
-              Last Revision: <strong className="text-slate-700 dark:text-gray-350">November 2025</strong>
-            </span>
-            <span className="flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-slate-400" />
               {readingTime} Min Read
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Eye className="w-4 h-4 text-slate-400" />
-              {readersCount} Readers
             </span>
             <span className="flex items-center gap-1.5">
               <Shield className="w-4 h-4 text-slate-400" />
@@ -589,7 +519,7 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
                 height={imageMetadata[heroImageUrl.split('/').pop() as keyof typeof imageMetadata]?.height}
                 fetchPriority="high"
                 decoding="async"
-                alt={article.title} 
+                alt={`${article.title} ${article.category} orthopedic special test demonstration`}
                 className="w-full h-auto max-h-[550px] object-contain mx-auto block bg-slate-50/30 dark:bg-zinc-900/5"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = "none";
@@ -597,7 +527,7 @@ const MedOrthoArticle: React.FC<MedOrthoArticleProps> = ({ article }) => {
               />
             </div>
             <p className="mt-3 text-center text-xs text-gray-400 dark:text-gray-500 font-medium max-w-2xl mx-auto italic">
-              Clinical demonstration of the {article.title}. Observe proper hand positioning and scapular stabilization.
+              {article.title} clinical examination demonstration for the {article.category} region.
             </p>
           </div>
         )}
