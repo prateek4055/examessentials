@@ -58,6 +58,21 @@ function stripHtml(html) {
     .trim();
 }
 
+function referenceCitations(html) {
+  if (!html) return [];
+  const listItems = [...String(html).matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)].map(match => match[1]);
+  const entries = listItems.length ? listItems : [String(html)];
+  return entries.map(entry => {
+    const anchor = entry.match(/<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i);
+    const name = stripHtml(anchor ? anchor[2] : entry).replace(/\s+/g, ' ').trim();
+    return name ? {
+      "@type": "CreativeWork",
+      "name": name,
+      ...(anchor ? { "url": anchor[1] } : {})
+    } : null;
+  }).filter(Boolean);
+}
+
 // Helper to replace meta tags in the template index.html
 function generatePageHtml(templateHtml, options) {
   const { title, keywords, canonical, ogImage, schemas, bodyContent } = options;
@@ -137,6 +152,7 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
   const cleanHowTo = stripHtml(article.howTo);
   const cleanResult = stripHtml(article.result);
   const cleanAccuracy = stripHtml(article.accuracy);
+  const citations = referenceCitations(article.references);
 
   const imageFilename = article.image1 ? article.image1.split('/').pop() : null;
   const imageUrl = imageFilename 
@@ -200,6 +216,12 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
         "url": DOMAIN,
       },
       "inLanguage": "en",
+      ...(citations.length ? { "citation": citations } : {}),
+      "author": {
+        "@type": "Organization",
+        "name": "Exam Essentials",
+        "url": DOMAIN
+      },
     }
   ];
 

@@ -19,6 +19,16 @@ function stripHtml(html?: string): string {
     .trim();
 }
 
+function referencesToCitations(references?: string[]): object[] {
+  return (references || [])
+    .map((reference) => stripHtml(reference))
+    .filter(Boolean)
+    .map((reference) => ({
+      "@type": "CreativeWork",
+      name: reference,
+    }));
+}
+
 /**
  * Generates a comprehensive array of structured data schemas for each medical app page.
  * Includes: BreadcrumbList, SoftwareApplication/MobileApplication, FAQPage, WebPage.
@@ -188,6 +198,7 @@ export function buildWikiArticleStructuredData(
     howTo?: string;
     result?: string;
     image?: string;
+    references?: string[];
   },
   slug: string
 ): object[] {
@@ -201,6 +212,7 @@ export function buildWikiArticleStructuredData(
   const cleanDescription =
     article.description ||
     `Learn how to perform the ${article.title} orthopedic special test — indications, step-by-step procedure, positive findings, and diagnostic accuracy.`;
+  const citations = referencesToCitations(article.references);
 
   const schemas: object[] = [];
 
@@ -284,6 +296,12 @@ export function buildWikiArticleStructuredData(
     },
     isAccessibleForFree: true,
     inLanguage: "en",
+    ...(citations.length ? { citation: citations } : {}),
+    author: {
+      "@type": "Organization",
+      name: "Exam Essentials",
+      url: BASE_URL,
+    },
     about: {
       "@type": "MedicalTest",
       name: article.title,

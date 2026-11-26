@@ -40,10 +40,21 @@ test('every prerendered test has unique route metadata and original image dimens
     assert.equal(medicalPage.inLanguage, 'en');
     assert.equal(medicalPage.primaryImageOfPage.contentUrl, medicalPage.thumbnailUrl);
     assert.equal(medicalPage.primaryImageOfPage.representativeOfPage, true);
+    if (t.references) assert.ok(medicalPage.citation?.length > 0, `${slug} must expose its references as citations`);
     assert.ok(!schemas.some(s => s['@type'] === 'MobileApplication'), slug);
     const size = dimensions[t.image1.split('/').pop()];
     assert.ok(html.includes(`width="${size.width}" height="${size.height}"`), slug);
   }
+});
+
+test('AI assistants can discover public MedOrtho content without private routes', () => {
+  const robots = fs.readFileSync('public/robots.txt', 'utf8');
+  const llms = fs.readFileSync('public/llms.txt', 'utf8');
+  for (const agent of ['OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot', 'Google-Extended']) {
+    assert.ok(robots.includes(`User-agent: ${agent}`), agent);
+  }
+  assert.ok(llms.includes('https://examessentials.in/medortho/special-tests'));
+  assert.ok(llms.includes('Image reuse rights are not granted'));
 });
 test('neurological prerender includes matching subcategories', () => {
   const html = fs.readFileSync('dist/medortho/neurological/index.html', 'utf8');
