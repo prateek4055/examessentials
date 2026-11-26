@@ -142,6 +142,17 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
   const imageUrl = imageFilename 
     ? `${DOMAIN}/medortho/tests/images/${imageFilename}` 
     : `${DOMAIN}/og-image.png`;
+  const imageSize = imageFilename ? imageMetadata[imageFilename] : null;
+  const imageObject = {
+    "@type": "ImageObject",
+    "contentUrl": imageUrl,
+    "url": imageUrl,
+    "name": `${article.title} clinical examination image`,
+    "caption": `${article.title} ${article.category} orthopedic special test demonstration`,
+    "representativeOfPage": true,
+    "encodingFormat": "image/webp",
+    ...(imageSize ? { "width": imageSize.width, "height": imageSize.height } : {})
+  };
 
   const schemas = [
     {
@@ -174,8 +185,9 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
       "name": title,
       "description": article.description || `Learn how to perform the ${article.title} orthopedic special test including indications, test procedure, positive results, and diagnostic accuracy.`,
       "url": url,
-      "image": imageUrl,
-      "primaryImageOfPage": { "@type": "ImageObject", "url": imageUrl },
+      "image": imageObject,
+      "primaryImageOfPage": imageObject,
+      "thumbnailUrl": imageUrl,
       "aspect": [
         "Indications",
         "Clinical examination procedure",
@@ -187,7 +199,7 @@ function buildWikiArticleStructuredData(appSlug, article, slug) {
         "name": "Exam Essentials",
         "url": DOMAIN,
       },
-      "inLanguage": "en-IN",
+      "inLanguage": "en",
     }
   ];
 
@@ -879,10 +891,10 @@ async function runPrerender() {
             <section class="mb-8 p-5 bg-slate-50 border border-slate-100 rounded-xl">
               <h2 class="text-lg font-bold text-slate-800 mb-3">Clinical Context &amp; Limitations</h2>
               <p class="text-slate-600 leading-relaxed text-[15px] mb-2">
-                The ${escapeHtml(t.title)} should be considered as one component of a comprehensive musculoskeletal assessment. No single special test has perfect diagnostic accuracy; thus, clinical decision-making should integrate test results with patient-reported symptoms, mechanism of injury, functional impairment, and relevant imaging.
+                The ${escapeHtml(t.title)} is one component of a musculoskeletal assessment. Interpret the result alongside the history, symptoms, functional findings, and other clinically appropriate investigations.
               </p>
               <p class="text-slate-600 leading-relaxed text-[15px]">
-                Clinicians should be aware of potential false-positive results in patients with pain sensitisation, muscle guarding, or poor relaxation. For the ${escapeHtml(t.category)} region, combining the ${escapeHtml(t.title)} with complementary examination tests significantly improves overall diagnostic confidence.
+                Technique, patient selection, and the reference standard can affect reported accuracy. Use the cited sources and local clinical guidance when applying this test.
               </p>
             </section>
 

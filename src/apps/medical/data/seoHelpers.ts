@@ -303,11 +303,16 @@ export function buildWikiArticleStructuredData(
 
   // Add ImageObject if article has an image
   if (article.image) {
+    const imageName = `${article.title} clinical examination image`;
     medWebPage.image = {
       "@type": "ImageObject",
+      contentUrl: article.image,
       url: article.image,
-      description: `${article.title} orthopedic special test demonstration`,
-      name: `${article.title} - Clinical Test Image`,
+      description: `${article.title} ${article.category} orthopedic special test demonstration`,
+      caption: `${article.title} ${article.category} orthopedic special test demonstration`,
+      name: imageName,
+      representativeOfPage: true,
+      encodingFormat: "image/webp",
     };
     medWebPage.primaryImageOfPage = medWebPage.image;
     medWebPage.thumbnailUrl = article.image;

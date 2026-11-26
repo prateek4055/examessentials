@@ -35,7 +35,11 @@ test('every prerendered test has unique route metadata and original image dimens
     assert.equal((html.match(/name="description"/g) || []).length, 1, slug);
     assert.ok(html.includes(`href="https://examessentials.in/medortho/tests/${slug}"`));
     const schemas = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(m => JSON.parse(m[1]));
-    assert.ok(schemas.some(s => s['@type'] === 'MedicalWebPage' && s.primaryImageOfPage));
+    const medicalPage = schemas.find(s => s['@type'] === 'MedicalWebPage');
+    assert.ok(medicalPage?.primaryImageOfPage);
+    assert.equal(medicalPage.inLanguage, 'en');
+    assert.equal(medicalPage.primaryImageOfPage.contentUrl, medicalPage.thumbnailUrl);
+    assert.equal(medicalPage.primaryImageOfPage.representativeOfPage, true);
     assert.ok(!schemas.some(s => s['@type'] === 'MobileApplication'), slug);
     const size = dimensions[t.image1.split('/').pop()];
     assert.ok(html.includes(`width="${size.width}" height="${size.height}"`), slug);
@@ -109,6 +113,7 @@ test('medical initial HTML does not invent clinical validation or expert consens
     assert.ok(!html.includes('is a validated orthopedic special test'));
     assert.ok(!html.includes('clinical utility supported by expert consensus'));
     assert.ok(!html.includes('Clinical Overview'));
+    assert.ok(!html.includes('significantly improves overall diagnostic confidence'));
     if (item.usedFor) assert.ok(html.includes(item.usedFor));
   }
 });
